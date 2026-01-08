@@ -3,10 +3,10 @@
   "/_global-error/page": "/_global-error",
   "/login/page": "/login",
   "/page": "/",
+  "/dashboard/briefs/page": "/dashboard/briefs",
   "/dashboard/page": "/dashboard",
   "/dashboard/projects/page": "/dashboard/projects",
   "/dashboard/projects/new/page": "/dashboard/projects/new",
-  "/dashboard/projects/[id]/edit/page": "/dashboard/projects/[id]/edit",
-  "/dashboard/briefs/page": "/dashboard/briefs",
-  "/dashboard/projects/[id]/page": "/dashboard/projects/[id]"
+  "/dashboard/projects/[id]/page": "/dashboard/projects/[id]",
+  "/dashboard/projects/[id]/edit/page": "/dashboard/projects/[id]/edit"
 }
