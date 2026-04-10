@@ -1,0 +1,109 @@
+{
+  "version": "8.0.0",
+  "project_name": "Monteerly Studio OS V5.0 - Ultimate Sovereign Edition",
+  "default_locale": "ar",
+  "compliance": {
+    "license": "Sovereign Enterprise License",
+    "jurisdiction": "MENA",
+    "data_classification": "top_secret",
+    "retention_policy_days": 180,
+    "retention_type": "soft_delete",
+    "financial_audit_required": true
+  },
+  "gitops": {
+    "enabled": true,
+    "auto_commit_dev": true
+  },
+  "required_pages": {
+    "landing": {
+      "route": "/",
+      "priority": 1,
+      "type": "public",
+      "desc": "واجهة Monteerly لربط المونتيرين وصناع المحتوى"
+    },
+    "workspace": {
+      "route": "/workspace",
+      "priority": 1,
+      "type": "workspace",
+      "desc": "بيئة المونتاج السحابية (QC Scopes, Compare View)"
+    },
+    "ai_studio": {
+      "route": "/ai-studio",
+      "priority": 1,
+      "type": "ai_studio",
+      "desc": "أدوات الذكاء الاصطناعي (Digital Twin, Dubbing, Script Writer)"
+    },
+    "finance": {
+      "route": "/finance",
+      "priority": 1,
+      "type": "finance",
+      "desc": "نظام الضمان المالي (Escrow) والفوترة الضريبية"
+    },
+    "security": {
+      "route": "/security",
+      "priority": 1,
+      "type": "security",
+      "desc": "القبة الحديدية (Watermarking, Zero Trust, Leak Detector)"
+    },
+    "executive": {
+      "route": "/executive",
+      "priority": 2,
+      "type": "executive",
+      "desc": "اللوحة الاستراتيجية (C-Level & KPIs)"
+    },
+    "political": {
+      "route": "/political",
+      "priority": 2,
+      "type": "political",
+      "desc": "إدارة التنظيم والأدوار المعمارية الستة (Core to Intelligence)"
+    },
+    "community": {
+      "route": "/community",
+      "priority": 2,
+      "type": "community",
+      "desc": "مجتمع المونتيرين، ساحة النقاش، والتلعيب (Gamification)"
+    },
+    "crm": {
+      "route": "/crm",
+      "priority": 2,
+      "type": "crm",
+      "desc": "إدارة الوكالات، العملاء، والمستثمرين"
+    },
+    "devops": {
+      "route": "/devops",
+      "priority": 3,
+      "type": "devops",
+      "desc": "حوكمة الأصول (DAR) والسياسات"
+    },
+    "marketplace": {
+      "route": "/marketplace",
+      "priority": 3,
+      "type": "public",
+      "desc": "سوق الأصول، القوالب، والمكاتب الاستشارية"
+    },
+    "pricing": {
+      "route": "/pricing",
+      "priority": 3,
+      "type": "public",
+      "desc": "خطط الاشتراكات للمستقلين والاستوديوهات"
+    },
+    "workflow": {
+      "route": "/workflow",
+      "priority": 4,
+      "type": "workflow",
+      "desc": "مساحة العمليات (Kanban & Deep Focus Mode)"
+    },
+    "support": {
+      "route": "/support",
+      "priority": 4,
+      "type": "generic",
+      "desc": "حل النزاعات مدعوماً بسجلات المحادثات (DisputePage)"
+    },
+    "database_schema": {
+      "route": "/api/agent/schema",
+      "priority": 1,
+      "type": "schema",
+      "desc": "واجهة برمجة مسار Schema قاعدة البيانات"
+    }
+  }
+}

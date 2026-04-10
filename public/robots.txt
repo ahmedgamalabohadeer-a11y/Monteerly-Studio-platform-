@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /apps/
+
+Sitemap: https://monteerly.com/sitemap.xml

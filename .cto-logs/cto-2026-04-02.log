@@ -1,0 +1,132 @@
+[WARN] [02:09:08] ⚠️   RAM: 72% مستخدم (1003MB من 3626MB متاح)
+[WARN] [02:09:12] ⚠️   Git snapshot: Command failed: git commit -m "🤖 pre-heal state [$(date '+%
+[INFO] [02:09:12] ℹ️   حجم .next: 32MB
+[SUCCESS] [02:09:15] ✅  .next.snapshot.tar.gz (32MB) محفوظ
+[SUCCESS] [02:09:15] ✅  .next cache: تم التنظيف
+[SUCCESS] [02:09:15] ✅  هيكل src/app/ صحيح
+[SUCCESS] [02:09:15] ✅  اكتمل العلاج الذاتي ✓
+[WARN] [02:09:15] ⚠️   RAM: 71% مستخدم (1062MB من 3626MB متاح)
+[SUCCESS] [02:09:15] ✅  next: ^15.1.3
+[SUCCESS] [02:09:15] ✅  react: ^18.2.0
+[SUCCESS] [02:09:15] ✅  @supabase/supabase-js: ^2.101.0
+[SUCCESS] [02:09:15] ✅  node_modules: ✓
+[INFO] [02:09:15] ℹ️   فحص ملفات البيئة (.env.local)...
+[SUCCESS] [02:09:15] ✅  نسخة احتياطية: .env.local.bak
+[SUCCESS] [02:09:15] ✅  NEXT_PUBLIC_SUPABASE_URL: ✓
+[SUCCESS] [02:09:15] ✅  NEXT_PUBLIC_SUPABASE_ANON_KEY: ✓
+[SUCCESS] [02:09:16] ✅  Supabase: متصل (HTTP 401)
+[SUCCESS] [02:09:16] ✅  Tailwind v4: صيغة صحيحة ✓
+[SUCCESS] [02:09:16] ✅  هيكل src/app/ صحيح
+[SUCCESS] [02:09:16] ✅  المنصة جاهزة للإقلاع 🚀
+[SUCCESS] [02:09:16] ✅  المنفذ 3000 متاح
+[SYSTEM] [02:09:16] 🧠  تشغيل الخادم (جاهزية: 100%)...
+[WARN] [02:21:33] ⚠️   RAM: 76% مستخدم (870MB من 3626MB متاح)
+[WARN] [02:21:42] ⚠️   Git snapshot: Command failed: git commit -m "🤖 pre-heal state [$(date '+%
+[INFO] [02:21:42] ℹ️   حجم .next: 0MB
+[SUCCESS] [02:21:42] ✅  .next.snapshot.tar.gz (0MB) محفوظ
+[SUCCESS] [02:21:42] ✅  .next cache: تم التنظيف
+[SUCCESS] [02:21:42] ✅  هيكل src/app/ صحيح
+[SUCCESS] [02:21:42] ✅  اكتمل العلاج الذاتي ✓
+[WARN] [02:21:42] ⚠️   RAM: 74% مستخدم (941MB من 3626MB متاح)
+[SUCCESS] [02:21:42] ✅  next: ^15.1.3
+[SUCCESS] [02:21:42] ✅  react: ^18.2.0
+[SUCCESS] [02:21:42] ✅  @supabase/supabase-js: ^2.101.0
+[SUCCESS] [02:21:42] ✅  node_modules: ✓
+[INFO] [02:21:42] ℹ️   فحص ملفات البيئة (.env.local)...
+[SUCCESS] [02:21:42] ✅  نسخة احتياطية: .env.local.bak
+[SUCCESS] [02:21:42] ✅  NEXT_PUBLIC_SUPABASE_URL: ✓
+[SUCCESS] [02:21:42] ✅  NEXT_PUBLIC_SUPABASE_ANON_KEY: ✓
+[SUCCESS] [02:21:43] ✅  Supabase: متصل (HTTP 401)
+[SUCCESS] [02:21:43] ✅  Tailwind v4: صيغة صحيحة ✓
+[SUCCESS] [02:21:43] ✅  هيكل src/app/ صحيح
+[SUCCESS] [02:21:43] ✅  المنصة جاهزة للإقلاع 🚀
+[SUCCESS] [02:21:43] ✅  المنفذ 3000 متاح
+[SYSTEM] [02:21:43] 🧠  تشغيل الخادم (جاهزية: 100%)...
+[SUCCESS] [02:27:57] ✅  RAM: 1074MB متاحة من 3626MB (70% مستخدم)
+[WARN] [02:28:02] ⚠️   Git snapshot: Command failed: git commit -m "🤖 pre-heal state [$(date '+%
+[INFO] [02:28:02] ℹ️   حجم .next: 41MB
+[SUCCESS] [02:28:05] ✅  .next.snapshot.tar.gz (41MB) محفوظ
+[SUCCESS] [02:28:05] ✅  .next cache: تم التنظيف
+[SUCCESS] [02:28:05] ✅  هيكل src/app/ صحيح
+[SUCCESS] [02:28:05] ✅  اكتمل العلاج الذاتي ✓
+[WARN] [02:28:05] ⚠️   RAM: 72% مستخدم (1004MB من 3626MB متاح)
+[SUCCESS] [02:28:05] ✅  next: ^15.1.3
+[SUCCESS] [02:28:05] ✅  react: ^18.2.0
+[SUCCESS] [02:28:05] ✅  @supabase/supabase-js: ^2.101.0
+[SUCCESS] [02:28:05] ✅  node_modules: ✓
+[INFO] [02:28:05] ℹ️   فحص ملفات البيئة (.env.local)...
+[SUCCESS] [02:28:05] ✅  نسخة احتياطية: .env.local.bak
+[SUCCESS] [02:28:05] ✅  NEXT_PUBLIC_SUPABASE_URL: ✓
+[SUCCESS] [02:28:05] ✅  NEXT_PUBLIC_SUPABASE_ANON_KEY: ✓
+[SUCCESS] [02:28:06] ✅  Supabase: متصل (HTTP 401)
+[SUCCESS] [02:28:06] ✅  Tailwind v4: صيغة صحيحة ✓
+[SUCCESS] [02:28:06] ✅  هيكل src/app/ صحيح
+[SUCCESS] [02:28:06] ✅  المنصة جاهزة للإقلاع 🚀
+[SUCCESS] [02:28:06] ✅  المنفذ 3000 متاح
+[SYSTEM] [02:28:06] 🧠  تشغيل الخادم (جاهزية: 100%)...
+[WARN] [02:35:50] ⚠️   RAM: 73% مستخدم (993MB من 3626MB متاح)
+[WARN] [02:35:56] ⚠️   Git snapshot: Command failed: git commit -m "🤖 pre-heal state [$(date '+%
+[INFO] [02:35:56] ℹ️   حجم .next: 41MB
+[SUCCESS] [02:35:59] ✅  .next.snapshot.tar.gz (41MB) محفوظ
+[SUCCESS] [02:35:59] ✅  .next cache: تم التنظيف
+[SUCCESS] [02:35:59] ✅  هيكل src/app/ صحيح
+[SUCCESS] [02:35:59] ✅  اكتمل العلاج الذاتي ✓
+[WARN] [02:35:59] ⚠️   RAM: 72% مستخدم (1026MB من 3626MB متاح)
+[SUCCESS] [02:35:59] ✅  next: ^15.1.3
+[SUCCESS] [02:35:59] ✅  react: ^18.2.0
+[SUCCESS] [02:35:59] ✅  @supabase/supabase-js: ^2.101.0
+[SUCCESS] [02:35:59] ✅  node_modules: ✓
+[INFO] [02:35:59] ℹ️   فحص ملفات البيئة (.env.local)...
+[SUCCESS] [02:35:59] ✅  نسخة احتياطية: .env.local.bak
+[SUCCESS] [02:35:59] ✅  NEXT_PUBLIC_SUPABASE_URL: ✓
+[SUCCESS] [02:35:59] ✅  NEXT_PUBLIC_SUPABASE_ANON_KEY: ✓
+[SUCCESS] [02:36:00] ✅  Supabase: متصل (HTTP 401)
+[SUCCESS] [02:36:00] ✅  Tailwind v4: صيغة صحيحة ✓
+[SUCCESS] [02:36:00] ✅  هيكل src/app/ صحيح
+[SUCCESS] [02:36:00] ✅  المنصة جاهزة للإقلاع 🚀
+[SUCCESS] [02:36:00] ✅  المنفذ 3000 متاح
+[SYSTEM] [02:36:00] 🧠  تشغيل الخادم (جاهزية: 100%)...
+[SUCCESS] [02:41:29] ✅  RAM: 1182MB متاحة من 3626MB (67% مستخدم)
+[WARN] [02:41:35] ⚠️   Git snapshot: Command failed: git commit -m "🤖 pre-heal state [$(date '+%
+[INFO] [02:41:35] ℹ️   حجم .next: 41MB
+[SUCCESS] [02:41:38] ✅  .next.snapshot.tar.gz (41MB) محفوظ
+[SUCCESS] [02:41:38] ✅  .next cache: تم التنظيف
+[SUCCESS] [02:41:38] ✅  هيكل src/app/ صحيح
+[SUCCESS] [02:41:38] ✅  اكتمل العلاج الذاتي ✓
+[SUCCESS] [02:41:38] ✅  RAM: 1203MB متاحة من 3626MB (67% مستخدم)
+[SUCCESS] [02:41:38] ✅  next: ^15.1.3
+[SUCCESS] [02:41:38] ✅  react: ^18.2.0
+[SUCCESS] [02:41:38] ✅  @supabase/supabase-js: ^2.101.0
+[SUCCESS] [02:41:38] ✅  node_modules: ✓
+[INFO] [02:41:38] ℹ️   فحص ملفات البيئة (.env.local)...
+[SUCCESS] [02:41:38] ✅  نسخة احتياطية: .env.local.bak
+[SUCCESS] [02:41:38] ✅  NEXT_PUBLIC_SUPABASE_URL: ✓
+[SUCCESS] [02:41:38] ✅  NEXT_PUBLIC_SUPABASE_ANON_KEY: ✓
+[SUCCESS] [02:41:39] ✅  Supabase: متصل (HTTP 401)
+[SUCCESS] [02:41:39] ✅  Tailwind v4: صيغة صحيحة ✓
+[SUCCESS] [02:41:39] ✅  هيكل src/app/ صحيح
+[SUCCESS] [02:41:39] ✅  المنصة جاهزة للإقلاع 🚀
+[SUCCESS] [02:41:39] ✅  المنفذ 3000 متاح
+[SYSTEM] [02:41:39] 🧠  تشغيل الخادم (جاهزية: 100%)...
+[WARN] [02:47:58] ⚠️   RAM: 72% مستخدم (1018MB من 3626MB متاح)
+[WARN] [02:48:04] ⚠️   Git snapshot: Command failed: git commit -m "🤖 pre-heal state [$(date '+%
+[INFO] [02:48:04] ℹ️   حجم .next: 46MB
+[SUCCESS] [02:48:08] ✅  .next.snapshot.tar.gz (46MB) محفوظ
+[SUCCESS] [02:48:08] ✅  .next cache: تم التنظيف
+[SUCCESS] [02:48:08] ✅  هيكل src/app/ صحيح
+[SUCCESS] [02:48:08] ✅  اكتمل العلاج الذاتي ✓
+[WARN] [02:48:08] ⚠️   RAM: 71% مستخدم (1053MB من 3626MB متاح)
+[SUCCESS] [02:48:08] ✅  next: ^15.1.3
+[SUCCESS] [02:48:08] ✅  react: ^18.2.0
+[SUCCESS] [02:48:08] ✅  @supabase/supabase-js: ^2.101.0
+[SUCCESS] [02:48:08] ✅  node_modules: ✓
+[INFO] [02:48:08] ℹ️   فحص ملفات البيئة (.env.local)...
+[SUCCESS] [02:48:08] ✅  نسخة احتياطية: .env.local.bak
+[SUCCESS] [02:48:08] ✅  NEXT_PUBLIC_SUPABASE_URL: ✓
+[SUCCESS] [02:48:08] ✅  NEXT_PUBLIC_SUPABASE_ANON_KEY: ✓
+[SUCCESS] [02:48:09] ✅  Supabase: متصل (HTTP 401)
+[SUCCESS] [02:48:09] ✅  Tailwind v4: صيغة صحيحة ✓
+[SUCCESS] [02:48:09] ✅  هيكل src/app/ صحيح
+[SUCCESS] [02:48:09] ✅  المنصة جاهزة للإقلاع 🚀
+[SUCCESS] [02:48:09] ✅  المنفذ 3000 متاح
+[SYSTEM] [02:48:09] 🧠  تشغيل الخادم (جاهزية: 100%)...

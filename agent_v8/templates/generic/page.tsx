@@ -1,0 +1,1 @@
+export default function Page() { return <div dir='rtl' className='p-10'><h1>صفحة نظام</h1></div>; }

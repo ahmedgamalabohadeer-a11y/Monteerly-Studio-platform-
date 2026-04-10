@@ -1,0 +1,151 @@
+'use client';
+import React, { useState, useRef, useEffect } from 'react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Maximize, Settings, Monitor } from 'lucide-react';
+import { formatTimecode } from '@/lib/utils/timecode';
+import { VideoAnnotation } from '@/components/workspace/VideoAnnotation';
+
+export function ProVideoPlayer({ src }: { src?: string }) {
+  const [playing, setPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(185); // Dummy duration for demo
+  const [volume, setVolume] = useState(0.8);
+  const [hoverTime, setHoverTime] = useState<number | null>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+
+  // Frame Stepping Logic (24fps)
+  const stepFrame = (direction: 1 | -1) => {
+    const frameTime = 1 / 24;
+    setCurrentTime(prev => Math.min(duration, Math.max(0, prev + (direction * frameTime))));
+  };
+
+  // Simulate Playback
+  useEffect(() => {
+    let interval: any;
+    if (playing) {
+      interval = setInterval(() => {
+        setCurrentTime(prev => (prev >= duration ? 0 : prev + 0.1));
+      }, 100);
+    }
+    return () => clearInterval(interval);
+  }, [playing, duration]);
+
+  // Handle Progress Bar Hover
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!progressBarRef.current) return;
+    const rect = progressBarRef.current.getBoundingClientRect();
+    const pos = (e.clientX - rect.left) / rect.width;
+    setHoverTime(pos * duration);
+  };
+
+  return (
+    <div className="relative group bg-black rounded-xl overflow-hidden shadow-2xl border border-white/10 select-none">
+       {/* Screen Area */}
+       <div className="relative aspect-video bg-slate-900 flex items-center justify-center overflow-hidden">
+          
+          {/* Annotation Layer (Drawing) */}
+          <VideoAnnotation />
+          
+          {/* Mock Video Content */}
+          <img 
+            src="/images/features/workspace.jpg" 
+            className="w-full h-full object-cover opacity-90" 
+            alt="Video Content" 
+          />
+
+          {/* Center Play Button (Big) */}
+          {!playing && (
+             <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm transition-opacity">
+                <button 
+                  onClick={() => setPlaying(true)}
+                  className="w-20 h-20 bg-white/10 border border-white/20 rounded-full flex items-center justify-center text-white hover:scale-110 hover:bg-indigo-600 hover:border-indigo-500 transition-all shadow-2xl"
+                >
+                   <Play size={36} fill="currentColor" className="ml-2" />
+                </button>
+             </div>
+          )}
+
+          {/* Timecode Overlay (Professional Look) */}
+          <div className="absolute top-6 right-6 font-mono text-xl font-bold text-white bg-black/60 px-3 py-1 rounded border border-white/10 backdrop-blur-md shadow-lg pointer-events-none">
+             {formatTimecode(currentTime)}
+          </div>
+       </div>
+
+       {/* Pro Controls Bar */}
+       <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black via-black/90 to-transparent pt-12 pb-4 px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          
+          {/* Progress Bar (Scrubbable) */}
+          <div 
+             ref={progressBarRef}
+             className="relative h-2 bg-white/20 rounded-full mb-4 cursor-pointer group/bar"
+             onMouseMove={handleMouseMove}
+             onMouseLeave={() => setHoverTime(null)}
+             onClick={(e) => {
+                if(progressBarRef.current) {
+                   const rect = progressBarRef.current.getBoundingClientRect();
+                   const pos = (e.clientX - rect.left) / rect.width;
+                   setCurrentTime(pos * duration);
+                }
+             }}
+          >
+             {/* Buffered Bar */}
+             <div className="absolute top-0 left-0 h-full bg-white/30 rounded-full w-[60%]" />
+             
+             {/* Playhead Bar */}
+             <div 
+                className="absolute top-0 left-0 h-full bg-indigo-500 rounded-full relative" 
+                style={{ width: `${(currentTime / duration) * 100}%` }}
+             >
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-lg scale-0 group-hover/bar:scale-100 transition-transform" />
+             </div>
+
+             {/* Hover Preview Tooltip */}
+             {hoverTime !== null && (
+                <div 
+                   className="absolute bottom-4 bg-black border border-white/20 text-white text-xs px-2 py-1 rounded -translate-x-1/2"
+                   style={{ left: `${(hoverTime / duration) * 100}%` }}
+                >
+                   {formatTimecode(hoverTime).slice(0, 8)}
+                </div>
+             )}
+          </div>
+
+          {/* Buttons Row */}
+          <div className="flex items-center justify-between">
+             <div className="flex items-center gap-4 text-slate-200">
+                <button onClick={() => setPlaying(!playing)} className="hover:text-white hover:scale-110 transition-transform">
+                   {playing ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" />}
+                </button>
+                
+                <div className="flex items-center gap-2 border-l border-white/10 pl-4 ml-2">
+                   <button onClick={() => stepFrame(-1)} className="hover:text-white" title="Previous Frame (J)">
+                      <SkipBack size={18} />
+                   </button>
+                   <button onClick={() => stepFrame(1)} className="hover:text-white" title="Next Frame (L)">
+                      <SkipForward size={18} />
+                   </button>
+                </div>
+
+                <div className="flex items-center gap-2 group/vol ml-4">
+                   <button onClick={() => setVolume(v => v === 0 ? 0.8 : 0)}><Volume2 size={20} /></button>
+                   <div className="w-0 overflow-hidden group-hover/vol:w-20 transition-all duration-300">
+                      <input type="range" min="0" max="1" step="0.1" value={volume} onChange={e => setVolume(Number(e.target.value))} className="h-1 w-full accent-indigo-500" />
+                   </div>
+                </div>
+                
+                <span className="text-xs font-mono text-slate-400 ml-2">
+                   {formatTimecode(currentTime).slice(0,8)} <span className="text-slate-600">/</span> {formatTimecode(duration).slice(0,8)}
+                </span>
+             </div>
+
+             <div className="flex items-center gap-4 text-slate-200">
+                <button className="flex items-center gap-1 text-xs font-bold bg-white/10 px-2 py-1 rounded border border-white/5 hover:bg-white/20">
+                   <Monitor size={14} /> 4K
+                </button>
+                <button className="hover:text-white hover:rotate-45 transition-transform"><Settings size={20} /></button>
+                <button className="hover:text-white"><Maximize size={20} /></button>
+             </div>
+          </div>
+       </div>
+    </div>
+  );
+}

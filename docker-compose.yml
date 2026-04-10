@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # The Monteerly App
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/monteerly
+      - REDIS_URL=redis://cache:6379
+    depends_on:
+      - db
+      - cache
+    restart: always
+
+  # Postgres Database
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=monteerly
+    ports:
+      - "5432:5432"
+
+  # Redis Cache (For Real-time & Queues)
+  cache:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:

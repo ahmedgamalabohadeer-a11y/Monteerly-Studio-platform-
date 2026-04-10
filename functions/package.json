@@ -1,0 +1,26 @@
+{
+  "name": "monteerly-studio-functions",
+  "description": "Cloud Functions for Monteerly Studio",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": "18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "serve": "firebase emulators:start --only=functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "firebase-admin": "^11.11.0",
+    "firebase-functions": "^4.5.0",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.18.0",
+    "typescript": "^5.2.0"
+  }
+}

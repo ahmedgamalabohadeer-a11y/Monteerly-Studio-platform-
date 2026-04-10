@@ -1,0 +1,33 @@
+{
+  "system": {
+    "loading_studio": "Initializing Editing Deck...",
+    "saving": "Encrypted & Saved to Cloud",
+    "offline": "Operating in Offline Mode",
+    "error_boundary": "Temporary conflict detected. Restoring session..."
+  },
+  "auth": {
+    "login_btn": "Login",
+    "register_btn": "Create Sovereign Account",
+    "secure_login": "256-bit Encrypted Auth"
+  },
+  "finance": {
+    "wallet_title": "Escrow Financials",
+    "available_balance": "Available Balance",
+    "pending_balance": "Pending Funds",
+    "escrow_tooltip": "Funds are secured in the Iron Dome until delivery.",
+    "withdraw_btn": "Withdraw Earnings"
+  },
+  "workspace": {
+    "title": "Workspace",
+    "projects_active": "Active Projects",
+    "deploy": "Launch Studio",
+    "render": "Final Render",
+    "zen_mode_enter": "Block Distractions & Enter Flow",
+    "zen_mode_exit": "Return to World"
+  },
+  "iron_dome": {
+    "status_safe": "Security: Excellent",
+    "status_warning": "Suspicious Activity Detected (Fraud Score)",
+    "watermark_active": "Forensic Watermark Active"
+  }
+}

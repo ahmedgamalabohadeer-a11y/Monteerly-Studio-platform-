@@ -1,0 +1,991 @@
+=== خريطة مشروع Monteerly OS ===
+
+├── .env.example
+├── .env.local
+├── .env.local.bak
+├── .eslintrc.json
+├── .github
+│   └── workflows
+│       └── deploy.yml
+├── .gitignore
+├── .npmrc
+├── Dockerfile
+├── Monteerly_Status_Report.md
+├── README.md
+├── _archive
+│   ├── academy
+│   │   ├── [courseId]
+│   │   │   └── page.tsx
+│   │   └── page.tsx
+│   ├── ad-studio
+│   │   └── page.tsx
+│   ├── dashboard-english
+│   │   ├── layout.tsx
+│   │   ├── marketplace
+│   │   │   └── page.tsx
+│   │   ├── messages
+│   │   │   └── page.tsx
+│   │   ├── page.tsx
+│   │   └── projects
+│   │       └── page.tsx
+│   ├── disputes
+│   │   └── page.tsx
+│   ├── legal
+│   │   └── page.tsx
+│   ├── referral
+│   │   └── page.tsx
+│   └── web
+│       ├── .env.local
+│       ├── .gitignore
+│       ├── AGENTS.md
+│       ├── CLAUDE.md
+│       ├── README.md
+│       ├── eslint.config.mjs
+│       ├── next-env.d.ts
+│       ├── next.config.ts
+│       ├── package-lock.json
+│       ├── package.json
+│       ├── postcss.config.mjs
+│       ├── public
+│       │   ├── file.svg
+│       │   ├── globe.svg
+│       │   ├── next.svg
+│       │   ├── vercel.svg
+│       │   └── window.svg
+│       ├── src
+│       │   ├── app
+│       │   │   ├── api
+│       │   │   │   ├── auth
+│       │   │   │   ├── events
+│       │   │   │   └── payments
+│       │   │   ├── favicon.ico
+│       │   │   ├── globals.css
+│       │   │   ├── layout.tsx
+│       │   │   └── page.tsx
+│       │   ├── components
+│       │   │   ├── auth
+│       │   │   ├── events
+│       │   │   ├── payments
+│       │   │   └── ui
+│       │   ├── hooks
+│       │   │   └── useAuth.ts
+│       │   ├── lib
+│       │   │   └── firebase.ts
+│       │   ├── services
+│       │   │   ├── api
+│       │   │   │   └── index.ts
+│       │   │   └── firebase
+│       │   ├── store
+│       │   │   ├── authStore.ts
+│       │   │   └── eventStore.ts
+│       │   ├── styles
+│       │   └── types
+│       └── tsconfig.json
+├── agent_v10
+│   └── omega.py
+├── agent_v11_auto.py
+├── agent_v12_auto.py
+├── agent_v13_ui.py
+├── agent_v15_master.py
+├── agent_v8
+│   ├── backups
+│   ├── brain
+│   ├── config
+│   │   └── vision.json
+│   ├── core
+│   │   ├── __pycache__
+│   │   │   ├── gitops.cpython-313.pyc
+│   │   │   ├── registry.cpython-313.pyc
+│   │   │   └── template_engine.cpython-313.pyc
+│   │   ├── gitops.py
+│   │   ├── registry.py
+│   │   └── template_engine.py
+│   ├── db
+│   │   ├── master_schema.sql
+│   │   └── schema.sql
+│   ├── docs
+│   │   └── DAR.json
+│   ├── logs
+│   ├── main.py
+│   ├── state
+│   └── templates
+│       ├── ai_studio
+│       │   └── page.tsx
+│       ├── community
+│       │   └── page.tsx
+│       ├── crm
+│       ├── dashboard
+│       ├── devops
+│       ├── executive
+│       ├── finance
+│       ├── generic
+│       │   └── page.tsx
+│       ├── political
+│       ├── public
+│       │   └── page.tsx
+│       ├── security
+│       │   └── page.tsx
+│       ├── workflow
+│       └── workspace
+│           └── page.tsx
+├── auto_check.sh
+├── check-architecture.sh
+├── components
+│   ├── auth
+│   ├── chat
+│   │   └── ChatInterface.tsx
+│   ├── payment
+│   └── ui
+│       ├── GallerySection.tsx
+│       ├── Navbar.tsx
+│       └── OptimizedImage.tsx
+├── deploy_dashboard.py
+├── deploy_package_7.py
+├── docker-compose.yml
+├── errors_report.txt
+├── fix-integration.sh
+├── fix_and_deploy.py
+├── fix_css.py
+├── fix_dynamic_routes.sh
+├── fix_phase2.py
+├── fix_tailwind_v4.py
+├── functions
+│   ├── lib
+│   │   ├── auth
+│   │   │   ├── email-verification.js
+│   │   │   └── email-verification.js.map
+│   │   ├── index.js
+│   │   ├── index.js.map
+│   │   └── payment
+│   │       ├── paymob-processor.js
+│   │       └── paymob-processor.js.map
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── src
+│   │   ├── auth
+│   │   │   └── email-verification.ts
+│   │   ├── index.ts
+│   │   ├── payment
+│   │   │   └── paymob-processor.ts
+│   │   └── utils
+│   └── tsconfig.json
+├── lib
+│   ├── auth
+│   ├── firebase.ts
+│   └── payment
+├── monteerly-cto.sh
+├── monteerly_ultimate_admin.sh
+├── monteerly_ultimate_admin_prompt.txt
+├── next-env.d.ts
+├── next.config.mjs
+├── next.config.ts
+├── package-lock.json
+├── package.json
+├── ping-db.mjs
+├── postcss.config.js
+├── postcss.config.mjs
+├── prisma
+│   └── schema.prisma
+├── public
+│   ├── brand
+│   │   └── logo.png
+│   ├── favicon.ico
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── icons
+│   ├── images
+│   │   └── monteerly
+│   │       ├── gamification_power_action.png
+│   │       ├── monteerly_01_favicon_app_icon.png
+│   │       ├── monteerly_02_main_logo_full.svg
+│   │       ├── monteerly_03_profile_ahmed_gamal_circle.png
+│   │       ├── monteerly_04_hero_header_marketing_banner.png
+│   │       ├── monteerly_05_security_digital_lock_cyber.png
+│   │       ├── monteerly_06_marketing_showcase_full.png
+│   │       ├── monteerly_07_tech_innovation_portrait.png
+│   │       ├── monteerly_08_branding_creative_assets.png
+│   │       ├── monteerly_09_ai_performance_advisor_hologram.png
+│   │       ├── monteerly_10_multi_platform_publishing_hero.png
+│   │       ├── monteerly_11_global_collaboration_grid_4up.png
+│   │       ├── monteerly_12_editor_red_shirt_timeline.png
+│   │       ├── monteerly_13_analytics_dashboard_woman_ai.png
+│   │       ├── monteerly_14_editor_professional_dual_screen.png
+│   │       ├── monteerly_15_creator_workspace_laptop_modern.png
+│   │       ├── monteerly_16_editor_arab_thobe_collaboration.png
+│   │       ├── monteerly_17_testimonial_woman_gray_suit_office.png
+│   │       ├── monteerly_18_testimonial_executive_growth_charts.png
+│   │       ├── monteerly_19_testimonial_creative_hoodie_freelance.png
+│   │       ├── monteerly_20_testimonial_business_exec_corporate.png
+│   │       ├── monteerly_21_photographer_saudi_heritage_traditional.png
+│   │       ├── monteerly_22_photographer_algerian_drone_aerial.png
+│   │       ├── monteerly_23_photographer_library_heritage_cinematic.png
+│   │       └── monteerly_24_photographer_algerian_drone_cityshot.png
+│   ├── manifest_legacy_backup.json
+│   ├── manifest_legacy_backup.webmanifest
+│   ├── next.svg
+│   ├── robots.txt
+│   ├── vercel.svg
+│   └── window.svg
+├── restore_landing_page.py
+├── restore_original_home.py
+├── review_files.py
+├── safe-archive-cleanup.sh
+├── setup-agent-v11.sh
+├── setup-agent-v12.sh
+├── setup-agent-v8-0.sh
+├── setup-agent-v8-1.sh
+├── setup-auth-v9.sh
+├── setup-master-v15.sh
+├── setup-omega-v10.sh
+├── setup-ui-v13.sh
+├── src
+│   ├── _backups
+│   │   └── page_legacy_backup.tsx
+│   ├── app
+│   │   ├── [locale]
+│   │   │   ├── ai-studio
+│   │   │   │   └── page.tsx
+│   │   │   ├── auth
+│   │   │   │   ├── login
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── register
+│   │   │   │       └── page.tsx
+│   │   │   ├── finance
+│   │   │   │   └── page.tsx
+│   │   │   ├── layout.tsx
+│   │   │   ├── library
+│   │   │   │   └── page.tsx
+│   │   │   ├── marketplace
+│   │   │   │   └── page.tsx
+│   │   │   ├── page.tsx
+│   │   │   └── workspace
+│   │   │       └── page.tsx
+│   │   ├── api
+│   │   │   ├── agent
+│   │   │   │   ├── audit
+│   │   │   │   ├── dar
+│   │   │   │   └── policy
+│   │   │   ├── auth
+│   │   │   │   └── signup
+│   │   │   ├── checkout
+│   │   │   │   └── stripe
+│   │   │   │       └── route.ts
+│   │   │   ├── db-test
+│   │   │   │   └── route.ts
+│   │   │   ├── guardian
+│   │   │   │   └── route.ts
+│   │   │   ├── health
+│   │   │   │   └── route.ts
+│   │   │   ├── payments
+│   │   │   │   ├── init
+│   │   │   │   └── paymob
+│   │   │   │       ├── init
+│   │   │   │       │   └── route.ts
+│   │   │   │       └── webhook
+│   │   │   │           └── route.ts
+│   │   │   ├── paymob
+│   │   │   │   └── route.ts
+│   │   │   ├── projects
+│   │   │   │   ├── [id]
+│   │   │   │   │   ├── approve
+│   │   │   │   │   │   └── route.ts
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── route.ts
+│   │   │   ├── protected
+│   │   │   │   └── admin
+│   │   │   └── wallet
+│   │   │       └── withdraw
+│   │   │           └── route.ts
+│   │   └── globals.css
+│   ├── components
+│   │   ├── AppHeader.tsx
+│   │   ├── BottomAppNav.tsx
+│   │   ├── Header.tsx
+│   │   ├── HeroGallery.tsx
+│   │   ├── LanguageSwitcher.tsx
+│   │   ├── Navbar.tsx
+│   │   ├── PowerFab.tsx
+│   │   ├── Sidebar.tsx
+│   │   ├── SocialProofToast.tsx
+│   │   ├── ThemeProvider.tsx
+│   │   ├── ThemeToggle.tsx
+│   │   ├── a11y
+│   │   │   ├── AccessibilityMenu.tsx
+│   │   │   └── SkipLink.tsx
+│   │   ├── academy
+│   │   │   ├── CertificateCard.tsx
+│   │   │   ├── ContentLock.tsx
+│   │   │   ├── CourseCard.tsx
+│   │   │   ├── CoursePlayer.tsx
+│   │   │   └── SkillTree.tsx
+│   │   ├── admin
+│   │   │   ├── ArbitrationConsole.tsx
+│   │   │   ├── BanModal.tsx
+│   │   │   ├── DisputeCard.tsx
+│   │   │   ├── EmailPreview.tsx
+│   │   │   ├── InvoiceBuilder.tsx
+│   │   │   ├── LiveActivityMap.tsx
+│   │   │   ├── MatrixSwitcher.tsx
+│   │   │   ├── ModerationQueue.tsx
+│   │   │   ├── RichTextEditor.tsx
+│   │   │   ├── RoleSwitcher.tsx
+│   │   │   ├── SuperAdminDashboard.tsx
+│   │   │   ├── UserViewIndicator.tsx
+│   │   │   ├── UsersTable.tsx
+│   │   │   └── god-mode
+│   │   │       ├── LiveOpsMap.tsx
+│   │   │       └── TrafficControl.tsx
+│   │   ├── agency
+│   │   │   ├── AgencyStats.tsx
+│   │   │   ├── AgencyTeamList.tsx
+│   │   │   └── WhiteLabelConfig.tsx
+│   │   ├── ai
+│   │   │   ├── ScriptGenerator.tsx
+│   │   │   ├── StoryboardGen.tsx
+│   │   │   ├── StoryboardGenerator.tsx
+│   │   │   ├── digital-twin
+│   │   │   │   └── DigitalTwinSetup.tsx
+│   │   │   └── vision
+│   │   │       └── FaceVault.tsx
+│   │   ├── analytics
+│   │   │   ├── AnalyticsProvider.tsx
+│   │   │   ├── ContentHeatmap.tsx
+│   │   │   ├── CreatorAnalytics.tsx
+│   │   │   └── advanced
+│   │   │       └── VideoHeatmap.tsx
+│   │   ├── assessments
+│   │   │   └── SkillQuiz.tsx
+│   │   ├── assets
+│   │   │   ├── DeduplicationAlert.tsx
+│   │   │   └── VisualSearch.tsx
+│   │   ├── audio
+│   │   │   └── AudioMixer.tsx
+│   │   ├── auth
+│   │   │   ├── AuthForm.tsx
+│   │   │   ├── AuthLayout.tsx
+│   │   │   ├── BiometricLogin.tsx
+│   │   │   ├── OtpTimer.tsx
+│   │   │   ├── SessionTimeout.tsx
+│   │   │   └── TwoFactorSetup.tsx
+│   │   ├── automation
+│   │   │   └── WorkflowBuilder.tsx
+│   │   ├── bi
+│   │   │   └── StudioAnalytics.tsx
+│   │   ├── blog
+│   │   │   └── BlogCard.tsx
+│   │   ├── calendar
+│   │   │   ├── AvailabilityScheduler.tsx
+│   │   │   └── BookingCalendar.tsx
+│   │   ├── casting
+│   │   │   └── CastingGrid.tsx
+│   │   ├── chat
+│   │   │   ├── ChatInterface.tsx
+│   │   │   ├── OfferBubble.tsx
+│   │   │   └── SecureChat.tsx
+│   │   ├── checkout
+│   │   │   └── CouponInput.tsx
+│   │   ├── collaboration
+│   │   │   └── LiveCursors.tsx
+│   │   ├── community
+│   │   │   ├── CommunityFeed.tsx
+│   │   │   └── DiscussionCard.tsx
+│   │   ├── compliance
+│   │   │   └── ComplianceTracker.tsx
+│   │   ├── contracts
+│   │   │   ├── DigitalSigner.tsx
+│   │   │   └── NdaModal.tsx
+│   │   ├── cx
+│   │   │   ├── ClientLoungePlayer.tsx
+│   │   │   └── ScopeGuard.tsx
+│   │   ├── dashboard
+│   │   │   ├── ActivityLog.tsx
+│   │   │   ├── AiMorningBrief.tsx
+│   │   │   ├── CreatorStats.tsx
+│   │   │   ├── DashboardWidgets.tsx
+│   │   │   ├── DeepFocusMode.tsx
+│   │   │   ├── DraggableWidgets.tsx
+│   │   │   ├── ExportQueue.tsx
+│   │   │   ├── GlobalAssetLibrary.tsx
+│   │   │   ├── Greeting.tsx
+│   │   │   ├── IngestStatus.tsx
+│   │   │   ├── KanbanBoard.tsx
+│   │   │   ├── MorningBrief.tsx
+│   │   │   ├── OnboardingProgress.tsx
+│   │   │   ├── ProjectCalendar.tsx
+│   │   │   ├── ProjectCard.tsx
+│   │   │   ├── ProjectFilters.tsx
+│   │   │   ├── ProjectTemplates.tsx
+│   │   │   ├── ProjectTimeline.tsx
+│   │   │   ├── RenderFarmMonitor.tsx
+│   │   │   ├── ServiceStatus.tsx
+│   │   │   ├── Sidebar.tsx
+│   │   │   ├── StorageAnalysis.tsx
+│   │   │   ├── TeamChannels.tsx
+│   │   │   └── Topbar.tsx
+│   │   ├── debug
+│   │   │   ├── DesignSystem.tsx
+│   │   │   └── LaunchChecklist.tsx
+│   │   ├── developer
+│   │   │   ├── ApiDocsViewer.tsx
+│   │   │   ├── ApiKeyManager.tsx
+│   │   │   ├── ApiKeysManager.tsx
+│   │   │   └── DeveloperConsole.tsx
+│   │   ├── devops
+│   │   │   ├── ChaosControl.tsx
+│   │   │   ├── PerformanceDashboard.tsx
+│   │   │   └── SeoPreview.tsx
+│   │   ├── distribution
+│   │   │   └── PublishManager.tsx
+│   │   ├── dock
+│   │   │   ├── NeuralDock.tsx
+│   │   │   └── NotificationHub.tsx
+│   │   ├── drive
+│   │   │   ├── DriveBrowser.tsx
+│   │   │   ├── FileCard.tsx
+│   │   │   └── UploadZone.tsx
+│   │   ├── emails
+│   │   │   └── EmailPreview.tsx
+│   │   ├── enterprise
+│   │   │   ├── BrandingEditor.tsx
+│   │   │   └── QCReport.tsx
+│   │   ├── error
+│   │   │   └── ErrorBoundary.tsx
+│   │   ├── events
+│   │   │   └── LiveStage.tsx
+│   │   ├── exchange
+│   │   │   └── AssetGrid.tsx
+│   │   ├── extensions
+│   │   │   └── AppStoreGrid.tsx
+│   │   ├── feed
+│   │   │   ├── BeforeAfterSlider.tsx
+│   │   │   ├── CreativeFeedItem.tsx
+│   │   │   └── FeedContainer.tsx
+│   │   ├── feedback
+│   │   │   ├── CommunityBoard.tsx
+│   │   │   └── FeedbackWidget.tsx
+│   │   ├── festival
+│   │   │   └── FestivalHall.tsx
+│   │   ├── files
+│   │   │   └── FileConflictModal.tsx
+│   │   ├── finance
+│   │   │   ├── BalanceCard.tsx
+│   │   │   ├── CheckoutSummary.tsx
+│   │   │   ├── InvoiceGenerator.tsx
+│   │   │   ├── InvoiceViewer.tsx
+│   │   │   ├── MilestoneTracker.tsx
+│   │   │   ├── PaymentMethods.tsx
+│   │   │   ├── TaxResidencyForm.tsx
+│   │   │   ├── TransactionHistory.tsx
+│   │   │   └── WalletOverview.tsx
+│   │   ├── fintech
+│   │   │   ├── RevenueSplitter.tsx
+│   │   │   └── VirtualCard.tsx
+│   │   ├── frictionless
+│   │   │   ├── EmptyState.tsx
+│   │   │   ├── OnboardingChecklist.tsx
+│   │   │   └── ResumableUploader.tsx
+│   │   ├── gamification
+│   │   │   ├── GamificationBadges.tsx
+│   │   │   ├── Leaderboard.tsx
+│   │   │   ├── LeaderboardTable.tsx
+│   │   │   ├── PowerFab.tsx
+│   │   │   └── SkillTree.tsx
+│   │   ├── gear
+│   │   │   └── GearGrid.tsx
+│   │   ├── growth
+│   │   │   ├── AffiliateDashboard.tsx
+│   │   │   ├── GamificationBadges.tsx
+│   │   │   ├── PricingTable.tsx
+│   │   │   ├── ReferralDashboard.tsx
+│   │   │   ├── ViralUnlock.tsx
+│   │   │   └── ViralWatermark.tsx
+│   │   ├── hardware
+│   │   │   └── StreamDeckMapper.tsx
+│   │   ├── headless
+│   │   │   └── ApiPlayground.tsx
+│   │   ├── heritage
+│   │   │   └── RestorationLab.tsx
+│   │   ├── home
+│   │   │   ├── AITechSection.tsx
+│   │   │   ├── GamificationSection.tsx
+│   │   │   ├── Hero.tsx
+│   │   │   ├── HeroSection.tsx
+│   │   │   ├── MarketplacePreview.tsx
+│   │   │   ├── PaymentMethods.tsx
+│   │   │   ├── SolutionsSection.tsx
+│   │   │   ├── StatsSection.tsx
+│   │   │   ├── StrategicFeatures.tsx
+│   │   │   └── Testimonials.tsx
+│   │   ├── incubator
+│   │   │   └── PitchCard.tsx
+│   │   ├── integrations
+│   │   │   ├── AdobePanel.tsx
+│   │   │   └── IntegrationsHub.tsx
+│   │   ├── intelligence
+│   │   │   ├── ChurnPredictor.tsx
+│   │   │   ├── command
+│   │   │   │   └── MagicCommand.tsx
+│   │   │   └── proactive
+│   │   │       ├── ActionCenter.tsx
+│   │   │       └── ContextBrain.tsx
+│   │   ├── inventory
+│   │   │   └── InventoryScanner.tsx
+│   │   ├── jobs
+│   │   │   └── BriefGenerator.tsx
+│   │   ├── layout
+│   │   │   ├── A11yToolbar.tsx
+│   │   │   ├── ClientShell.tsx
+│   │   │   ├── CommandPalette.tsx
+│   │   │   ├── ContextShortcutsBar.tsx
+│   │   │   ├── CookieBanner.tsx
+│   │   │   ├── CookieSettings.tsx
+│   │   │   ├── DragDropOverlay.tsx
+│   │   │   ├── FeedbackWidget.tsx
+│   │   │   ├── Footer.tsx
+│   │   │   ├── GlobalDragOverlay.tsx
+│   │   │   ├── GlobalUX.tsx
+│   │   │   ├── Header.tsx
+│   │   │   ├── LatencyMonitor.tsx
+│   │   │   ├── LocaleSwitcher.tsx
+│   │   │   ├── MaintenanceMode.tsx
+│   │   │   ├── MobileNav.tsx
+│   │   │   ├── Navbar.tsx
+│   │   │   ├── NeuralSidebar.tsx
+│   │   │   ├── NotificationDropdown.tsx
+│   │   │   ├── OfflineIndicator.tsx
+│   │   │   ├── OnboardingTour.tsx
+│   │   │   ├── ProductTour.tsx
+│   │   │   ├── PwaInstall.tsx
+│   │   │   ├── ResponsiveWrapper.tsx
+│   │   │   ├── SeoHead.tsx
+│   │   │   ├── ShortcutsModal.tsx
+│   │   │   ├── ShortcutsOverlay.tsx
+│   │   │   ├── Sidebar.tsx
+│   │   │   ├── SystemBanner.tsx
+│   │   │   ├── SystemCheck.tsx
+│   │   │   ├── ThemeToggle.tsx
+│   │   │   ├── TransferCenter.tsx
+│   │   │   ├── UserMenu.tsx
+│   │   │   └── ZenModeToggle.tsx
+│   │   ├── legal
+│   │   │   ├── ContractGenerator.tsx
+│   │   │   ├── ContractWizard.tsx
+│   │   │   ├── ContractWizard.tsx.patch
+│   │   │   ├── DisputeCenter.tsx
+│   │   │   ├── DisputeWizard.tsx
+│   │   │   ├── LegalVault.tsx
+│   │   │   ├── SignaturePad.tsx
+│   │   │   └── public
+│   │   │       └── LegalLayout.tsx
+│   │   ├── loading
+│   │   │   ├── DashboardSkeleton.tsx
+│   │   │   └── Skeleton.tsx
+│   │   ├── localization
+│   │   │   ├── ContractLocalizer.tsx
+│   │   │   ├── NeuralChat.tsx
+│   │   │   └── SubtitleEditor.tsx
+│   │   ├── mam
+│   │   │   ├── AutoTagLog.tsx
+│   │   │   └── SemanticSearch.tsx
+│   │   ├── management
+│   │   │   ├── KanbanBoard.tsx
+│   │   │   ├── ProjectTimeline.tsx
+│   │   │   └── TeamManager.tsx
+│   │   ├── market
+│   │   │   ├── AiMatcher.tsx
+│   │   │   ├── CompareTable.tsx
+│   │   │   ├── ContestHub.tsx
+│   │   │   ├── CostCalculator.tsx
+│   │   │   ├── DesktopFilters.tsx
+│   │   │   ├── ExpertCard.tsx
+│   │   │   ├── HireModal.tsx
+│   │   │   ├── LicenseCertificate.tsx
+│   │   │   ├── StockAssetCard.tsx
+│   │   │   └── TalentMap.tsx
+│   │   ├── marketing
+│   │   │   ├── AppBanner.tsx
+│   │   │   ├── BlogCard.tsx
+│   │   │   ├── EarningsCalculator.tsx
+│   │   │   ├── HeroSection.tsx
+│   │   │   ├── LiveSocialProof.tsx
+│   │   │   ├── LiveStatsTicker.tsx
+│   │   │   ├── LiveTicker.tsx
+│   │   │   ├── PlanComparison.tsx
+│   │   │   ├── PricingCard.tsx
+│   │   │   ├── PricingTable.tsx
+│   │   │   ├── ROICalculator.tsx
+│   │   │   ├── ReferralDashboard.tsx
+│   │   │   ├── ReferralSystem.tsx
+│   │   │   ├── SmartROI.tsx
+│   │   │   ├── SocialProof.tsx
+│   │   │   └── SocialProofToast.tsx
+│   │   ├── marketplace
+│   │   │   ├── InstantBookingModal.tsx
+│   │   │   ├── MarketFilters.tsx
+│   │   │   ├── TalentCard.tsx
+│   │   │   └── VideoHoverCard.tsx
+│   │   ├── merch
+│   │   │   └── MerchDesigner.tsx
+│   │   ├── metaverse
+│   │   │   └── ScreeningRoom.tsx
+│   │   ├── mobile
+│   │   │   ├── MobileApprovalCard.tsx
+│   │   │   ├── id
+│   │   │   │   └── DigitalPass.tsx
+│   │   │   ├── logger
+│   │   │   │   └── QuickLogger.tsx
+│   │   │   └── monitor
+│   │   │       └── PocketReview.tsx
+│   │   ├── narrative
+│   │   │   └── ScreenwriterEditor.tsx
+│   │   ├── navigation
+│   │   │   └── OmniCommand.tsx
+│   │   ├── newsroom
+│   │   │   ├── GraphicsGen.tsx
+│   │   │   ├── LiveStreamCutter.tsx
+│   │   │   └── WebPrompter.tsx
+│   │   ├── notifications
+│   │   │   └── NotificationPanel.tsx
+│   │   ├── onboarding
+│   │   │   └── WelcomeTour.tsx
+│   │   ├── player
+│   │   │   └── ProVideoPlayer.tsx
+│   │   ├── portfolio
+│   │   ├── production
+│   │   │   ├── CallSheetBuilder.tsx
+│   │   │   ├── ProductionSchedule.tsx
+│   │   │   └── ShotList.tsx
+│   │   ├── profile
+│   │   │   ├── HireMeWidget.tsx
+│   │   │   ├── PortfolioManager.tsx
+│   │   │   └── PublicPortfolio.tsx
+│   │   ├── projects
+│   │   │   ├── ArchiveVault.tsx
+│   │   │   ├── ArchivedProjectView.tsx
+│   │   │   ├── ProjectActivityLog.tsx
+│   │   │   ├── ProjectCard.tsx
+│   │   │   └── ProjectEmptyState.tsx
+│   │   ├── proposals
+│   │   │   └── CounterOfferModal.tsx
+│   │   ├── recruitment
+│   │   │   └── TalentSearch.tsx
+│   │   ├── reviews
+│   │   │   └── ReviewSubmission.tsx
+│   │   ├── robotics
+│   │   │   └── RobotArmControl.tsx
+│   │   ├── roles
+│   │   │   ├── AgencyDashboard.tsx
+│   │   │   └── GuestReviewView.tsx
+│   │   ├── rookie
+│   │   │   └── AutoReelsGen.tsx
+│   │   ├── sales
+│   │   │   └── NegotiatorBot.tsx
+│   │   ├── search
+│   │   │   ├── ActionPalette.tsx
+│   │   │   ├── GlobalSearchResults.tsx
+│   │   │   └── TranscriptSearch.tsx
+│   │   ├── security
+│   │   │   ├── AuditLogTable.tsx
+│   │   │   ├── AuditLogViewer.tsx
+│   │   │   ├── DeviceSessions.tsx
+│   │   │   ├── ForensicWatermark.tsx
+│   │   │   ├── SecurityPolicies.tsx
+│   │   │   ├── WatermarkSettings.tsx
+│   │   │   ├── forensics
+│   │   │   │   └── WatermarkManager.tsx
+│   │   │   └── sovereignty
+│   │   │       ├── DataResidency.tsx
+│   │   │       └── ZeroTrustBuilder.tsx
+│   │   ├── settings
+│   │   │   ├── ActiveSessions.tsx
+│   │   │   ├── ActivityLog.tsx
+│   │   │   ├── ApiKeys.tsx
+│   │   │   ├── ApiKeysManager.tsx
+│   │   │   ├── AuditLog.tsx
+│   │   │   ├── BillingSettings.tsx
+│   │   │   ├── CacheManager.tsx
+│   │   │   ├── ChangePassword.tsx
+│   │   │   ├── ConnectedAccounts.tsx
+│   │   │   ├── CustomDomain.tsx
+│   │   │   ├── DangerZone.tsx
+│   │   │   ├── DataExport.tsx
+│   │   │   ├── DataPrivacy.tsx
+│   │   │   ├── DeviceSessions.tsx
+│   │   │   ├── FontManager.tsx
+│   │   │   ├── IdentityVerification.tsx
+│   │   │   ├── NotificationMatrix.tsx
+│   │   │   ├── NotificationPrefs.tsx
+│   │   │   ├── NotificationSettings.tsx
+│   │   │   ├── PermissionEditor.tsx
+│   │   │   ├── ProfileEditor.tsx
+│   │   │   ├── ProfileForm.tsx
+│   │   │   ├── ReferralDashboard.tsx
+│   │   │   ├── SecurityTab.tsx
+│   │   │   ├── ShortcutManager.tsx
+│   │   │   ├── StorageManager.tsx
+│   │   │   ├── SubscriptionManager.tsx
+│   │   │   ├── TaxSettings.tsx
+│   │   │   ├── TeamManager.tsx
+│   │   │   ├── TeamMembersList.tsx
+│   │   │   ├── TimezoneSelect.tsx
+│   │   │   ├── TwoFactorSetup.tsx
+│   │   │   ├── VisualKeyboard.tsx
+│   │   │   ├── WebhookLogs.tsx
+│   │   │   ├── WebhooksManager.tsx
+│   │   │   └── WhiteLabelSettings.tsx
+│   │   ├── social
+│   │   │   ├── CreatePost.tsx
+│   │   │   └── PostCard.tsx
+│   │   ├── store
+│   │   │   ├── AssetCard.tsx
+│   │   │   └── AssetItem.tsx
+│   │   ├── storyboard
+│   │   │   └── StoryboardGen.tsx
+│   │   ├── studio
+│   │   │   ├── StudioPlayer.tsx
+│   │   │   ├── bridge
+│   │   │   │   ├── AssetBrowser.tsx
+│   │   │   │   └── StudioBridgeLayout.tsx
+│   │   │   └── mobile
+│   │   │       └── TouchControls.tsx
+│   │   ├── support
+│   │   │   ├── EdgeStatus.tsx
+│   │   │   ├── HelpCategory.tsx
+│   │   │   ├── HelpCategoryCard.tsx
+│   │   │   ├── HelpCenterSearch.tsx
+│   │   │   ├── LiveChatWidget.tsx
+│   │   │   ├── ServiceStatus.tsx
+│   │   │   ├── TicketForm.tsx
+│   │   │   └── TicketModal.tsx
+│   │   ├── sync
+│   │   │   ├── LiveProjectBoard.tsx
+│   │   │   └── ScriptVideoLinker.tsx
+│   │   ├── system
+│   │   │   ├── InteractiveButton.tsx
+│   │   │   ├── Motion.tsx
+│   │   │   └── SmartIcon.tsx
+│   │   ├── team
+│   │   │   └── InviteMemberModal.tsx
+│   │   ├── tech
+│   │   │   ├── LiveMonitor.tsx
+│   │   │   └── QCScopes.tsx
+│   │   ├── tools
+│   │   │   ├── AiDubbing.tsx
+│   │   │   ├── AiScriptWriter.tsx
+│   │   │   ├── BitrateCalculator.tsx
+│   │   │   ├── ColorBlindFilter.tsx
+│   │   │   ├── MacroRecorder.tsx
+│   │   │   ├── PaletteGenerator.tsx
+│   │   │   ├── QuickTranscoder.tsx
+│   │   │   ├── RtcDebugger.tsx
+│   │   │   ├── SpeedTest.tsx
+│   │   │   ├── TimeTracker.tsx
+│   │   │   ├── TimecodeCalculator.tsx
+│   │   │   └── WatermarkEditor.tsx
+│   │   ├── ui
+│   │   │   ├── Accordion.tsx
+│   │   │   ├── AppButton.tsx
+│   │   │   ├── AudioPlayer.tsx
+│   │   │   ├── Avatar.tsx
+│   │   │   ├── Badge.tsx
+│   │   │   ├── BeforeAfterSlider.tsx
+│   │   │   ├── Breadcrumbs.tsx
+│   │   │   ├── BulkOperationsBar.tsx
+│   │   │   ├── Button.tsx
+│   │   │   ├── Card.tsx
+│   │   │   ├── Chart.tsx
+│   │   │   ├── Checkbox.tsx
+│   │   │   ├── CommandPalette.tsx
+│   │   │   ├── CommentsSection.tsx
+│   │   │   ├── ConfirmationModal.tsx
+│   │   │   ├── ConnectionStatus.tsx
+│   │   │   ├── ContextMenu.tsx
+│   │   │   ├── CreditCardForm.tsx
+│   │   │   ├── DateRangePicker.tsx
+│   │   │   ├── EmptyState.tsx
+│   │   │   ├── ErrorBoundaryFallback.tsx
+│   │   │   ├── FeatureHotspots.tsx
+│   │   │   ├── FileDropzone.tsx
+│   │   │   ├── FilePreviewModal.tsx
+│   │   │   ├── FileUploadProgress.tsx
+│   │   │   ├── GallerySection.tsx
+│   │   │   ├── GlobalSwitcher.tsx
+│   │   │   ├── HeroGallery.tsx
+│   │   │   ├── ImageViewer.tsx
+│   │   │   ├── InfiniteScroll.tsx
+│   │   │   ├── Input.tsx
+│   │   │   ├── InputError.tsx
+│   │   │   ├── KeyboardShortcuts.tsx
+│   │   │   ├── KeystrokeHud.tsx
+│   │   │   ├── Label.tsx
+│   │   │   ├── MobileDrawer.tsx
+│   │   │   ├── Navbar.tsx
+│   │   │   ├── NetworkStatus.tsx
+│   │   │   ├── Pagination.tsx
+│   │   │   ├── PdfViewer.tsx
+│   │   │   ├── ProgressBar.tsx
+│   │   │   ├── ReportModal.tsx
+│   │   │   ├── SecureInput.tsx
+│   │   │   ├── ShortcutsModal.tsx
+│   │   │   ├── Skeleton.tsx
+│   │   │   ├── SkipLink.tsx
+│   │   │   ├── SocialShare.tsx
+│   │   │   ├── StarRating.tsx
+│   │   │   ├── Switch.tsx
+│   │   │   ├── TagsInput.tsx
+│   │   │   ├── Textarea.tsx
+│   │   │   ├── Toast
+│   │   │   │   └── Toaster.tsx
+│   │   │   ├── Toast.tsx
+│   │   │   ├── Tooltip.tsx
+│   │   │   ├── TypingIndicator.tsx
+│   │   │   └── Watermark.tsx
+│   │   ├── university
+│   │   │   ├── credentials
+│   │   │   │   └── CertificateBadge.tsx
+│   │   │   ├── exam
+│   │   │   │   └── ExamInterface.tsx
+│   │   │   └── live-lab
+│   │   │       └── InstructorCockpit.tsx
+│   │   ├── vendor
+│   │   │   ├── OrderPipeline.tsx
+│   │   │   ├── ServiceCatalog.tsx
+│   │   │   └── VendorStats.tsx
+│   │   ├── wallet
+│   │   │   ├── InvoiceView.tsx
+│   │   │   ├── PayoutMethods.tsx
+│   │   │   ├── TransactionRow.tsx
+│   │   │   └── WithdrawalModal.tsx
+│   │   ├── wellbeing
+│   │   │   ├── HealthGuardian.tsx
+│   │   │   └── ZenController.tsx
+│   │   └── workspace
+│   │       ├── AnnotationCanvas.tsx
+│   │       ├── AudioMixer.tsx
+│   │       ├── ClientDeliveryView.tsx
+│   │       ├── ColorExtractor.tsx
+│   │       ├── ColorScopes.tsx
+│   │       ├── CompareView.tsx
+│   │       ├── DeliveryReview.tsx
+│   │       ├── ExportPresets.tsx
+│   │       ├── FileTree.tsx
+│   │       ├── HistoryPanel.tsx
+│   │       ├── LabelManager.tsx
+│   │       ├── LiveCursors.tsx
+│   │       ├── LiveSession.tsx
+│   │       ├── LutLibrary.tsx
+│   │       ├── MediaLibrary.tsx
+│   │       ├── MediaProperties.tsx
+│   │       ├── MeetingRoom.tsx
+│   │       ├── MilestonesList.tsx
+│   │       ├── Moodboard.tsx
+│   │       ├── NleExportModal.tsx
+│   │       ├── PipToggle.tsx
+│   │       ├── PlaybackControls.tsx
+│   │       ├── ProjectArchiver.tsx
+│   │       ├── ProjectFeed.tsx
+│   │       ├── ProjectNotepad.tsx
+│   │       ├── RecycleBin.tsx
+│   │       ├── RenderQueue.tsx
+│   │       ├── ResourceMonitor.tsx
+│   │       ├── ShareReviewModal.tsx
+│   │       ├── SharedLinksManager.tsx
+│   │       ├── ShotList.tsx
+│   │       ├── SplitScreenPlayer.tsx
+│   │       ├── Storyboard.tsx
+│   │       ├── SubtitleEditor.tsx
+│   │       ├── SyncPlayer.tsx
+│   │       ├── Telestrator.tsx
+│   │       ├── VersionHistory.tsx
+│   │       ├── VersionSelector.tsx
+│   │       ├── VideoAnnotation.tsx
+│   │       ├── VideoAnnotator.tsx
+│   │       ├── VideoCompare.tsx
+│   │       ├── VideoOverlays.tsx
+│   │       ├── VoiceoverRecorder.tsx
+│   │       ├── VrPlayer.tsx
+│   │       ├── Whiteboard.tsx
+│   │       └── ZenModeToggle.tsx
+│   ├── context
+│   │   ├── AuthContext.tsx
+│   │   └── LanguageContext.tsx
+│   ├── db
+│   │   └── schema.sql
+│   ├── design-system
+│   │   ├── components
+│   │   │   ├── Button.tsx
+│   │   │   └── FeatureCard.tsx
+│   │   └── utils
+│   │       └── cn.ts
+│   ├── hooks
+│   │   ├── ui
+│   │   │   ├── use-sound.ts
+│   │   │   └── use-touch.ts
+│   │   └── useContent.ts
+│   ├── legacy
+│   │   ├── .backups
+│   │   ├── README.md
+│   │   └── firebase-v2-original.ts
+│   ├── lib
+│   │   ├── auth-service.ts
+│   │   ├── auth.ts
+│   │   ├── constants
+│   │   │   └── roles.ts
+│   │   ├── content.ts
+│   │   ├── context
+│   │   │   ├── CollaborationContext.tsx
+│   │   │   ├── RoleContext.tsx
+│   │   │   └── SuperIDContext.tsx
+│   │   ├── db.ts
+│   │   ├── design
+│   │   │   └── tokens.ts
+│   │   ├── firebase-modern.ts
+│   │   ├── firebase.ts
+│   │   ├── guardian.ts
+│   │   ├── hooks
+│   │   │   └── useGeoLocation.ts
+│   │   ├── i18n
+│   │   │   ├── ar.json
+│   │   │   ├── en.json
+│   │   │   └── getDictionary.ts
+│   │   ├── i18n.tsx
+│   │   ├── logic
+│   │   │   └── iron-dome.ts
+│   │   ├── payment-gateway.ts
+│   │   ├── rbac-middleware.ts
+│   │   ├── services
+│   │   │   └── mockSocket.ts
+│   │   ├── store
+│   │   ├── supabase.ts
+│   │   ├── theme.tsx
+│   │   ├── types.ts
+│   │   ├── utils
+│   │   │   └── timecode.ts
+│   │   ├── utils.ts
+│   │   └── wallet.ts
+│   ├── messages
+│   │   ├── ar.json
+│   │   └── en.json
+│   ├── middleware.ts
+│   ├── providers
+│   │   └── ToastProvider.tsx
+│   ├── services
+│   │   └── base.ts
+│   ├── store
+│   │   ├── useProjectStore.ts
+│   │   └── useWalletStore.ts
+│   ├── styles
+│   └── types
+│       └── monteerly.d.ts
+├── strict_restore.py
+├── supabase-schema.sql
+├── tailwind.config.js
+├── tailwind.config.ts
+├── tsconfig.json
+├── tsconfig.tsbuildinfo
+├── types
+├── upgrade_dashboard_full.py
+├── upgrade_full_home.py
+└── utils
+
+===============================

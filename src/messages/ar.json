@@ -1,0 +1,33 @@
+{
+  "system": {
+    "loading_studio": "جاري تجهيز طاولة المونتاج...",
+    "saving": "تم التشفير والحفظ السحابي",
+    "offline": "العمل مستمر في الوضع المحلي (Offline Mode)",
+    "error_boundary": "تم رصد تعارض مؤقت. جاري استعادة الجلسة..."
+  },
+  "auth": {
+    "login_btn": "تسجيل الدخول",
+    "register_btn": "أنشئ حسابك السيادي الآن",
+    "secure_login": "مصادقة مشفرة 256-bit"
+  },
+  "finance": {
+    "wallet_title": "الضمان المالي (Escrow)",
+    "available_balance": "الرصيد المتاح",
+    "pending_balance": "قيد التنفيذ (معلق)",
+    "escrow_tooltip": "أموالك محتجزة بأمان في القبة الحديدية حتى تسليم العمل.",
+    "withdraw_btn": "سحب الأرباح"
+  },
+  "workspace": {
+    "title": "مساحة العمل",
+    "projects_active": "مشاريع قيد العمل",
+    "deploy": "أطلق الاستوديو",
+    "render": "معالجة نهائية",
+    "zen_mode_enter": "عزل المشتتات وبدء التدفق",
+    "zen_mode_exit": "العودة للعالم"
+  },
+  "iron_dome": {
+    "status_safe": "حماية الحساب: ممتاز",
+    "status_warning": "تم رصد نشاط مشبوه (Fraud Score)",
+    "watermark_active": "البصمة الجنائية مفعلة"
+  }
+}

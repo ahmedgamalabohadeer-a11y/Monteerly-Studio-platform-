@@ -1,0 +1,1 @@
+export default function Public() { return <div dir='rtl' className='p-10'><h1>Monteerly Studio OS</h1></div>; }

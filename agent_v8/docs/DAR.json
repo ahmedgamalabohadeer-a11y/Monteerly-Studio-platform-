@@ -1,0 +1,106 @@
+[
+  {
+    "path": "src/app/[ar]/workspace/page.tsx",
+    "type": "workspace",
+    "action": "create",
+    "created": "2026-03-31T08:35:16Z",
+    "last_modified": "2026-03-31T08:35:16Z",
+    "deleted": false
+  },
+  {
+    "path": "src/app/[ar]/ai-studio/page.tsx",
+    "type": "ai_studio",
+    "action": "create",
+    "created": "2026-03-31T08:35:16Z",
+    "last_modified": "2026-03-31T08:35:16Z",
+    "deleted": false
+  },
+  {
+    "path": "src/app/[ar]/finance/page.tsx",
+    "type": "finance",
+    "action": "create",
+    "created": "2026-03-31T08:35:16Z",
+    "last_modified": "2026-03-31T08:35:16Z",
+    "deleted": false
+  },
+  {
+    "path": "src/app/[ar]/security/page.tsx",
+    "type": "security",
+    "action": "create",
+    "created": "2026-03-31T08:35:16Z",
+    "last_modified": "2026-03-31T08:35:16Z",
+    "deleted": false
+  },
+  {
+    "path": "src/app/[ar]/executive/page.tsx",
+    "type": "executive",
+    "action": "create",
+    "created": "2026-03-31T08:35:16Z",
+    "last_modified": "2026-03-31T08:35:16Z",
+    "deleted": false
+  },
+  {
+    "path": "src/app/[ar]/political/page.tsx",
+    "type": "political",
+    "action": "create",
+    "created": "2026-03-31T08:35:16Z",
+    "last_modified": "2026-03-31T08:35:16Z",
+    "deleted": false
+  },
+  {
+    "path": "src/app/[ar]/community/page.tsx",
+    "type": "community",
+    "action": "create",
+    "created": "2026-03-31T08:35:16Z",
+    "last_modified": "2026-03-31T08:35:16Z",
+    "deleted": false
+  },
+  {
+    "path": "src/app/[ar]/crm/page.tsx",
+    "type": "crm",
+    "action": "create",
+    "created": "2026-03-31T08:35:16Z",
+    "last_modified": "2026-03-31T08:35:16Z",
+    "deleted": false
+  },
+  {
+    "path": "src/app/[ar]/devops/page.tsx",
+    "type": "devops",
+    "action": "create",
+    "created": "2026-03-31T08:35:16Z",
+    "last_modified": "2026-03-31T08:35:16Z",
+    "deleted": false
+  },
+  {
+    "path": "src/app/[ar]/marketplace/page.tsx",
+    "type": "public",
+    "action": "create",
+    "created": "2026-03-31T08:35:16Z",
+    "last_modified": "2026-03-31T08:35:16Z",
+    "deleted": false
+  },
+  {
+    "path": "src/app/[ar]/pricing/page.tsx",
+    "type": "public",
+    "action": "create",
+    "created": "2026-03-31T08:35:16Z",
+    "last_modified": "2026-03-31T08:35:16Z",
+    "deleted": false
+  },
+  {
+    "path": "src/app/[ar]/workflow/page.tsx",
+    "type": "workflow",
+    "action": "create",
+    "created": "2026-03-31T08:35:16Z",
+    "last_modified": "2026-03-31T08:35:16Z",
+    "deleted": false
+  },
+  {
+    "path": "src/app/[ar]/support/page.tsx",
+    "type": "generic",
+    "action": "create",
+    "created": "2026-03-31T08:35:16Z",
+    "last_modified": "2026-03-31T08:35:16Z",
+    "deleted": false
+  }
+]
