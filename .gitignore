@@ -42,3 +42,6 @@ next-env.d.ts
 config/google-service-account.json
 .env.local
 config/google-service-account.json
+node_modules/
+.env
+*.log
