@@ -1,4 +1,6 @@
 "use client";
+import { createClient } from "@supabase/supabase-js";
+import { Cpu, Activity, Zap, ShieldCheck } from "lucide-react";
 
 import { useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
@@ -17,15 +19,41 @@ interface Project {
   createdAt: any;
 }
 
+
+// إعداد عميل Supabase للمراقبة الذكية
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
 export default function ProjectsPage() {
-  const { user } = useAuth();
+  const { user } = useAuth(); 
+  console.log("👤 [Auth] حالة المستخدم الحالية:", user ? "مسجل دخول (" + user.uid + ")" : "غير مسجل دخول - مجهول");
+  // منطق مراقبة الذكاء الاصطناعي المطور
+  const [aiStats, setAiStats] = useState({ total: 0, loading: true });
+  useEffect(() => {
+    async function getAiData() {
+      try {
+        const { count } = await supabase.from("ai_usage_logs").select("*", { count: "exact", head: true });
+        setAiStats({ total: count || 0, loading: false });
+      } catch (e) {
+        console.error("⚠️ AI Telemetry Error:", e);
+      }
+    }
+    getAiData();
+  }, []);
+
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
 
   // قراءة البيانات لحظياً من Firestore
   useEffect(() => {
-    if (!user) return;
+    if (!user) { 
+      console.log("⚠️ [Auth] توقف: لا يوجد مستخدم مسجل. إيقاف Spinner التحميل..."); 
+      setLoading(false); 
+      return; 
+    }
 
     // استعلام لجلب مشاريع المستخدم الحالي فقط
     const q = query(
@@ -33,13 +61,13 @@ export default function ProjectsPage() {
       orderBy("createdAt", "desc")
     );
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
+    console.log("📡 [Firebase] جاري محاولة الاتصال بـ Firestore استلام البيانات..."); const unsubscribe = onSnapshot(q, (snapshot) => { console.log("📦 [Firebase] استلمنا تحديثاً (Snapshot) من السيرفر.");
       const projectsData = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       })) as Project[];
       setProjects(projectsData);
-      setLoading(false);
+      console.log("✅ [Firebase] نجاح! استلمنا المشاريع من قاعدة البيانات."); setLoading(false);
     });
 
     return () => unsubscribe();
@@ -74,6 +102,20 @@ export default function ProjectsPage() {
 
   return (
     <div className="space-y-6">
+      {/* لوحة مراقبة الذكاء الاصطناعي - Corporate OS Feature */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="bg-card/50 backdrop-blur-xl border border-border p-4 rounded-3xl flex items-center justify-between hover:border-emerald-500/50 transition-colors">
+          <div><p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">AI Invocations</p>
+          <p className="text-2xl font-black text-emerald-500">{aiStats.total}</p></div>
+          <Cpu className="text-emerald-500/20" size={32} />
+        </div>
+        <div className="bg-card/50 backdrop-blur-xl border border-border p-4 rounded-3xl flex items-center justify-between hover:border-sky-500/50 transition-colors">
+          <div><p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">System Status</p>
+          <div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-sky-500 animate-pulse"/><p className="text-lg font-bold">Online</p></div></div>
+          <Activity className="text-sky-500/20" size={32} />
+        </div>
+      </div>
+
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">مشاريعي</h1>
