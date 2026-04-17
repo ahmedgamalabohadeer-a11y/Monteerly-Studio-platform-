@@ -13,7 +13,6 @@ CREATE TABLE fraud_detection (
 );
 
 -- 2. جدول سجلات الويب هوك (للتدقيق الجنائي)
-CREATE TABLE stripe_webhooks (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     event_id VARCHAR(255) UNIQUE, -- لمنع التكرار (Idempotency)
     event_type VARCHAR(100),
@@ -28,10 +27,7 @@ CREATE TABLE stripe_webhooks (
     INDEX idx_processed (processed)
 );
 
--- 3. تحديث جدول المعاملات لدعم Stripe والنزاعات
 ALTER TABLE transactions 
-ADD COLUMN stripe_session_id VARCHAR(255),
-ADD COLUMN stripe_payment_intent_id VARCHAR(255),
 ADD COLUMN webhook_received_at TIMESTAMP NULL,
 ADD COLUMN webhook_event_id VARCHAR(255);
 

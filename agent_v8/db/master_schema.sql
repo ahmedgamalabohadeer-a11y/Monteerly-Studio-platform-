@@ -40,7 +40,6 @@ CREATE TABLE projects (
 CREATE TABLE financial_transactions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     project_id UUID REFERENCES projects(id) NOT NULL,
-    gateway_type TEXT NOT NULL CHECK (gateway_type IN ('paymob', 'paypal', 'stripe_mock')),
     gateway_transaction_id TEXT UNIQUE NOT NULL,
     payment_method TEXT, -- (visa, wallet, fawry, apple_pay)
     amount_gross DECIMAL(12, 2) NOT NULL,

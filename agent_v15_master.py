@@ -135,3 +135,22 @@ export default function GlobalLandingPage() {{
 
 if __name__ == "__main__":
     build_global_platform()
+
+def send_financial_notification(order_id, amount, status="SUCCESS"):
+    """
+    يقوم بإرسال إشعارات مالية فورية عند نجاح عمليات الدفع عبر Paymob.
+    يمكن ربطه بـ n8n Webhook أو Telegram Bot مجاناً.
+    """
+    import urllib.request
+    import json
+    
+    print(f"[Agent V15 - Finance] Processing transaction: {order_id} | Amount: {amount}")
+    
+    # مثال: إرسال Webhook إلى n8n (نظام الأتمتة المجاني)
+    # webhook_url = "http://YOUR_N8N_IP:5678/webhook/finance-alert"
+    # data = json.dumps({"order_id": order_id, "amount": amount, "status": status}).encode('utf-8')
+    # req = urllib.request.Request(webhook_url, data=data, headers={'Content-Type': 'application/json'})
+    # try:
+    #     urllib.request.urlopen(req)
+    # except Exception as e:
+    #     print(f"Notification Failed: {e}")

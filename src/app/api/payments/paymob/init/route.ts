@@ -3,32 +3,24 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { projectId, amount, paymentMethod } = body;
+    const { amount_cents, order_id, billing_data } = body;
 
-    // التحقق المبدئي من البيانات
-    if (!projectId || !amount) {
-      return NextResponse.json({ success: false, error: "بيانات المشروع أو المبلغ مفقودة" }, { status: 400 });
-    }
+    console.log(`[Paymob Mock] Initiating payment for Order: ${order_id} | Amount: ${amount_cents / 100} EGP`);
 
-    // ====================================================================
-    // محاكاة وضع الاختبار (Test Mode) لـ Paymob
-    // ====================================================================
-    console.log(`[FINANCE LOG] Initiating Test Payment - Project: ${projectId}, Amount: ${amount} EGP, Method: ${paymentMethod}`);
+    // محاكاة استجابة Paymob المعقدة
+    const mockToken = "mock_paymob_token_" + Math.random().toString(36).substring(2, 15);
+    
+    // في العالم الحقيقي، هذا الرابط يكون iframe الخاص بـ Paymob
+    // حالياً سنقوم بتوجيه المستخدم لصفحة "محاكاة ناجحة" داخل منصتنا
+    const mockPaymentUrl = `/checkout/simulator?token=${mockToken}&order=${order_id}&amount=${amount_cents}`;
 
-    // محاكاة الخطوات: 1. Auth -> 2. Order -> 3. Payment Key
-    const mockTransactionId = `TEST_PAYMOB_${Math.floor(Math.random() * 1000000)}`;
-    const mockCheckoutUrl = `https://accept.paymob.com/api/acceptance/iframes/123456?payment_token=test_token_${mockTransactionId}`;
-
-    // إرجاع الرابط الوهمي للواجهة الأمامية
-    return NextResponse.json({
-      success: true,
-      transaction_id: mockTransactionId,
-      checkout_url: mockCheckoutUrl,
-      message: "تم إنشاء جلسة الدفع الوهمية بنجاح (Test Mode)"
+    return NextResponse.json({ 
+      success: true, 
+      payment_url: mockPaymentUrl, 
+      token: mockToken,
+      transaction_id: `mock_txn_${Date.now()}`
     });
-
   } catch (error) {
-    console.error("[PAYMENT ERROR]", error);
-    return NextResponse.json({ success: false, error: "فشل تهيئة نظام الدفع" }, { status: 500 });
+    return NextResponse.json({ error: 'Mock Payment Init Failed' }, { status: 500 });
   }
 }

@@ -42,7 +42,7 @@ export function CreditCardForm() {
        </Button>
        
        <p className="text-xs text-center text-muted-foreground flex items-center justify-center gap-1">
-          <Lock size={10} /> مدفوعات آمنة ومشفرة بواسطة Stripe
+          <Lock size={10} /> مدفوعات آمنة ومشفرة بواسطة Paymob
        </p>
     </div>
   );
