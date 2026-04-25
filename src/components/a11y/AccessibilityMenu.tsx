@@ -17,8 +17,6 @@ export function AccessibilityMenu() {
 
     if (settings.highContrast) document.documentElement.classList.add('high-contrast');
     else document.documentElement.classList.remove('high-contrast');
-    
-    // Note: Actual CSS implementation for these classes would be in globals.css
   }, [settings]);
 
   const toggleSetting = (key: keyof typeof settings) => {
@@ -66,7 +64,7 @@ export function AccessibilityMenu() {
                   onClick={() => toggleSetting('reduceMotion')}
                   className={`w-full flex items-center justify-between p-2 rounded-lg text-xs font-bold transition-colors ${settings.reduceMotion ? 'bg-indigo-600 text-white' : 'bg-white/5 text-slate-300 hover:bg-white/10'}`}
                 >
-                   <span className="flex items-center gap-2"><Eye size={14}/> إيقاف الحركات</span>
+                   <span className="flex items-center gap-2"><Eye size={14}/> تقليل الحركة</span>
                    <div className={`w-3 h-3 rounded-full ${settings.reduceMotion ? 'bg-white' : 'bg-slate-600'}`} />
                 </button>
              </div>
