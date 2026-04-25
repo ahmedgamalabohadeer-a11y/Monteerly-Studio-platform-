@@ -59,3 +59,46 @@ CREATE TABLE security_logs (
     action_taken TEXT NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- إنشاء الجداول الإضافية يدوياً في Supabase
+
+CREATE TABLE IF NOT EXISTS public.legal_contracts (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    project_id UUID NOT NULL REFERENCES public.projects(id),
+    user_id UUID NOT NULL REFERENCES public.users(id),
+    contract_type TEXT NOT NULL,
+    status TEXT DEFAULT 'draft',
+    signature_hash TEXT,
+    document_url TEXT,
+    created_at TIMESTAMPTZ DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS public.general_ledger (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    transaction_id UUID REFERENCES public.financial_transactions(id),
+    account_type TEXT NOT NULL,
+    debit DECIMAL(12,2) DEFAULT 0,
+    credit DECIMAL(12,2) DEFAULT 0,
+    description TEXT,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS public.ai_agents (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    agent_name TEXT UNIQUE NOT NULL,
+    description TEXT,
+    status TEXT DEFAULT 'active',
+    last_run TIMESTAMPTZ,
+    success_rate DECIMAL(5,2),
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS public.notifications (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES public.users(id),
+    title TEXT NOT NULL,
+    message TEXT NOT NULL,
+    is_read BOOLEAN DEFAULT false,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
