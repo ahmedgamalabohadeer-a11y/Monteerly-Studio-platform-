@@ -11,7 +11,7 @@ import {
   Settings, 
   LogOut,
   FolderOpen,
-  ShoppingBag, Gavel,
+  ShoppingBag, Gavel, Library, Monitor,
   Zap
 } from 'lucide-react';
 
@@ -84,10 +84,94 @@ export function Sidebar() {
     { 
       name: 'المشاريع', 
     { 
+      name: 'مكتبة الأصول', 
+      href: `/${locale}/dashboard/library`, 
+      icon: Library, 
+      color: 'text-sky-400' 
+    }, 
+    { 
+      name: 'مساحة العمل', 
+      href: `/${locale}/dashboard/workspace`, 
+      icon: Monitor, 
+      color: 'text-rose-400' 
+    },
+    { 
+    { 
+      name: 'مكتبة الأصول', 
+      href: `/${locale}/dashboard/library`, 
+      icon: Library, 
+      color: 'text-sky-400' 
+    }, 
+    { 
+      name: 'مساحة العمل', 
+      href: `/${locale}/dashboard/workspace`, 
+      icon: Monitor, 
+      color: 'text-rose-400' 
+    },
       name: 'النزاعات والتحكيم', 
+    { 
+      name: 'مكتبة الأصول', 
+      href: `/${locale}/dashboard/library`, 
+      icon: Library, 
+      color: 'text-sky-400' 
+    }, 
+    { 
+      name: 'مساحة العمل', 
+      href: `/${locale}/dashboard/workspace`, 
+      icon: Monitor, 
+      color: 'text-rose-400' 
+    },
       href: `/${locale}/dashboard/disputes`, 
+    { 
+      name: 'مكتبة الأصول', 
+      href: `/${locale}/dashboard/library`, 
+      icon: Library, 
+      color: 'text-sky-400' 
+    }, 
+    { 
+      name: 'مساحة العمل', 
+      href: `/${locale}/dashboard/workspace`, 
+      icon: Monitor, 
+      color: 'text-rose-400' 
+    },
       icon: Gavel, 
+    { 
+      name: 'مكتبة الأصول', 
+      href: `/${locale}/dashboard/library`, 
+      icon: Library, 
+      color: 'text-sky-400' 
+    }, 
+    { 
+      name: 'مساحة العمل', 
+      href: `/${locale}/dashboard/workspace`, 
+      icon: Monitor, 
+      color: 'text-rose-400' 
+    },
       color: 'text-red-400' 
+    { 
+      name: 'مكتبة الأصول', 
+      href: `/${locale}/dashboard/library`, 
+      icon: Library, 
+      color: 'text-sky-400' 
+    }, 
+    { 
+      name: 'مساحة العمل', 
+      href: `/${locale}/dashboard/workspace`, 
+      icon: Monitor, 
+      color: 'text-rose-400' 
+    },
+    },
+    { 
+      name: 'مكتبة الأصول', 
+      href: `/${locale}/dashboard/library`, 
+      icon: Library, 
+      color: 'text-sky-400' 
+    }, 
+    { 
+      name: 'مساحة العمل', 
+      href: `/${locale}/dashboard/workspace`, 
+      icon: Monitor, 
+      color: 'text-rose-400' 
     },
       href: `/${locale}/dashboard/marketplace`, 
     { 
