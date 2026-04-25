@@ -3,7 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname, useParams } from 'next/navigation';
 import { 
-  LayoutDashboard, Sparkles, MessageSquare, 
+  LayoutDashboard, Sparkles, BarChart3, MessageSquare, 
   ShieldAlert, 
   Landmark, 
   Users, 
@@ -24,51 +24,93 @@ export function Sidebar() {
     { 
       name: 'لوحة التحكم', 
     { 
+      name: 'مركز البيانات والتحليلات', 
+      href: `/${locale}/dashboard/analytics`, 
+      icon: BarChart3, 
+      color: 'text-emerald-400' 
+    },
+    { 
+    { 
+      name: 'مركز البيانات والتحليلات', 
+      href: `/${locale}/dashboard/analytics`, 
+      icon: BarChart3, 
+      color: 'text-emerald-400' 
+    },
       name: 'استوديو AI الذكي', 
+    { 
+      name: 'مركز البيانات والتحليلات', 
+      href: `/${locale}/dashboard/analytics`, 
+      icon: BarChart3, 
+      color: 'text-emerald-400' 
+    },
       href: `/${locale}/dashboard/ai-studio`, 
-      icon: Sparkles, 
+    { 
+      name: 'مركز البيانات والتحليلات', 
+      href: `/${locale}/dashboard/analytics`, 
+      icon: BarChart3, 
+      color: 'text-emerald-400' 
+    },
+      icon: Sparkles, BarChart3, 
+    { 
+      name: 'مركز البيانات والتحليلات', 
+      href: `/${locale}/dashboard/analytics`, 
+      icon: BarChart3, 
+      color: 'text-emerald-400' 
+    },
       color: 'text-indigo-400' 
+    { 
+      name: 'مركز البيانات والتحليلات', 
+      href: `/${locale}/dashboard/analytics`, 
+      icon: BarChart3, 
+      color: 'text-emerald-400' 
+    },
+    },
+    { 
+      name: 'مركز البيانات والتحليلات', 
+      href: `/${locale}/dashboard/analytics`, 
+      icon: BarChart3, 
+      color: 'text-emerald-400' 
     },
     { 
     { 
       name: 'استوديو AI الذكي', 
       href: `/${locale}/dashboard/ai-studio`, 
-      icon: Sparkles, 
+      icon: Sparkles, BarChart3, 
       color: 'text-indigo-400' 
     },
       name: 'الرسائل والمفاوضات', 
     { 
       name: 'استوديو AI الذكي', 
       href: `/${locale}/dashboard/ai-studio`, 
-      icon: Sparkles, 
+      icon: Sparkles, BarChart3, 
       color: 'text-indigo-400' 
     },
       href: `/${locale}/dashboard/messages`, 
     { 
       name: 'استوديو AI الذكي', 
       href: `/${locale}/dashboard/ai-studio`, 
-      icon: Sparkles, 
+      icon: Sparkles, BarChart3, 
       color: 'text-indigo-400' 
     },
       icon: MessageSquare, 
     { 
       name: 'استوديو AI الذكي', 
       href: `/${locale}/dashboard/ai-studio`, 
-      icon: Sparkles, 
+      icon: Sparkles, BarChart3, 
       color: 'text-indigo-400' 
     },
       color: 'text-indigo-400' 
     { 
       name: 'استوديو AI الذكي', 
       href: `/${locale}/dashboard/ai-studio`, 
-      icon: Sparkles, 
+      icon: Sparkles, BarChart3, 
       color: 'text-indigo-400' 
     },
     },
     { 
       name: 'استوديو AI الذكي', 
       href: `/${locale}/dashboard/ai-studio`, 
-      icon: Sparkles, 
+      icon: Sparkles, BarChart3, 
       color: 'text-indigo-400' 
     },
       href: `/${locale}/dashboard`, 
@@ -78,7 +120,7 @@ export function Sidebar() {
       icon: MessageSquare, 
       color: 'text-indigo-400' 
     },
-      icon: LayoutDashboard, Sparkles, MessageSquare,
+      icon: LayoutDashboard, Sparkles, BarChart3, MessageSquare,
     { 
       name: 'الرسائل والمفاوضات', 
       href: `/${locale}/dashboard/messages`, 
