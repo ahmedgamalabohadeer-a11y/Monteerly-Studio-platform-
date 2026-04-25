@@ -1,7 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import { Sparkles, CheckCircle, Clock, AlertTriangle, X } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+// استخدام زر TypeUI
+import Button from '@/components/ui/Button';
 
 export function AiMorningBrief() {
   const [visible, setVisible] = useState(true);
@@ -28,17 +29,17 @@ export function AiMorningBrief() {
                    <div className="flex items-center gap-3 p-2 bg-white/5 rounded-lg border border-white/5 hover:bg-white/10 transition-colors cursor-pointer">
                       <AlertTriangle size={16} className="text-red-400" />
                       <span className="text-sm text-slate-200 flex-1">مشروع "إعلان رمضان" يحتاج مراجعة نهائية (ينتهي اليوم)</span>
-                      <Button size="sm" className="h-7 text-xs bg-red-500/20 text-red-300 hover:bg-red-500 hover:text-white">افتح المشروع</Button>
+                      <button className="h-7 px-3 rounded text-xs font-bold bg-red-500/20 text-red-300 hover:bg-red-500 hover:text-white transition-colors">افتح المشروع</button>
                    </div>
                    <div className="flex items-center gap-3 p-2 bg-white/5 rounded-lg border border-white/5 hover:bg-white/10 transition-colors cursor-pointer">
                       <Clock size={16} className="text-yellow-400" />
                       <span className="text-sm text-slate-200 flex-1">فاتورة #9021 مستحقة الدفع من العميل</span>
-                      <Button size="sm" className="h-7 text-xs bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500 hover:text-white">تذكير العميل</Button>
+                      <button className="h-7 px-3 rounded text-xs font-bold bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500 hover:text-white transition-colors">تذكير العميل</button>
                    </div>
                    <div className="flex items-center gap-3 p-2 bg-white/5 rounded-lg border border-white/5 hover:bg-white/10 transition-colors cursor-pointer">
                       <CheckCircle size={16} className="text-green-400" />
                       <span className="text-sm text-slate-200 flex-1">تمت الموافقة على النسخة v2 من "وثائقي النيل"</span>
-                      <Button size="sm" className="h-7 text-xs bg-green-500/20 text-green-300 hover:bg-green-500 hover:text-white">أرشفة</Button>
+                      <button className="h-7 px-3 rounded text-xs font-bold bg-green-500/20 text-green-300 hover:bg-green-500 hover:text-white transition-colors">أرشفة</button>
                    </div>
                 </div>
              </div>

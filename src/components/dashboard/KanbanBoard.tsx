@@ -29,8 +29,8 @@ function KanbanColumn({ title, count, children, color }: any) {
     return (
         <div className={`min-w-[280px] w-80 rounded-xl p-4 flex flex-col gap-3 ${color}`}>
             <div className="flex justify-between items-center mb-2">
-                <h4 className="font-bold text-sm">{title} <span className="opacity-50">({count})</span></h4>
-                <button className="text-muted-foreground hover:text-foreground"><Plus size={16} /></button>
+                <h4 className="font-bold text-sm text-slate-900 dark:text-white">{title} <span className="opacity-50">({count})</span></h4>
+                <button className="text-slate-500 hover:text-indigo-500"><Plus size={16} /></button>
             </div>
             <div className="flex-1 overflow-y-auto space-y-3 pr-1 custom-scrollbar">
                 {children}
@@ -41,13 +41,13 @@ function KanbanColumn({ title, count, children, color }: any) {
 
 function KanbanItem({ title, client, tag, active }: any) {
     return (
-        <div className={`bg-card p-3 rounded-lg shadow-sm border cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow ${active ? 'border-primary ring-1 ring-primary/20' : 'border-border'}`}>
+        <div className={`bg-white dark:bg-slate-900 p-3 rounded-lg shadow-sm border cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow ${active ? 'border-indigo-500 ring-1 ring-indigo-500/20' : 'border-slate-200 dark:border-slate-700'}`}>
             <div className="flex justify-between items-start mb-2">
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted font-bold text-muted-foreground">{tag}</span>
-                <button className="text-muted-foreground"><MoreHorizontal size={14} /></button>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 font-bold text-slate-600 dark:text-slate-300">{tag}</span>
+                <button className="text-slate-400"><MoreHorizontal size={14} /></button>
             </div>
-            <h5 className="font-bold text-sm mb-1">{title}</h5>
-            <p className="text-xs text-muted-foreground">{client}</p>
+            <h5 className="font-bold text-sm mb-1 text-slate-900 dark:text-white">{title}</h5>
+            <p className="text-xs text-slate-500">{client}</p>
         </div>
     )
 }
