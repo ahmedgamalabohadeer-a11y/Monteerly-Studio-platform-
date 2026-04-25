@@ -63,3 +63,5 @@ function Row({ label, c1, c2, c3 }: any) {
 function Stars({ n }: { n: number }) {
     return <div className="flex justify-center gap-1 text-yellow-500">{Array(n).fill(0).map((_, i) => <Star key={i} size={14} fill="currentColor" />)}</div>
 }
+
+################################################################################

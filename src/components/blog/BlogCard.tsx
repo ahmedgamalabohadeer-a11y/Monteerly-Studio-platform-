@@ -47,3 +47,5 @@ export function BlogCard({ title, excerpt, image, author, date, category, slug }
     </div>
   );
 }
+
+################################################################################

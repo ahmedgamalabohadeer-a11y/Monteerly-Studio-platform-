@@ -1,0 +1,33 @@
+======================
+>>> APP ROUTER MAP
+======================
+[LAYOUT] src/app/[locale]/[courseId]/layout.tsx
+[PAGE]   src/app/[locale]/[courseId]/page.tsx
+[PAGE]   src/app/[locale]/admin/finances/page.tsx
+[PAGE]   src/app/[locale]/checkout/page.tsx
+[PAGE]   src/app/[locale]/checkout/simulator/page.tsx
+[LAYOUT] src/app/[locale]/dashboard/layout.tsx
+[PAGE]   src/app/[locale]/dashboard/marketplace/page.tsx
+[PAGE]   src/app/[locale]/dashboard/messages/page.tsx
+[PAGE]   src/app/[locale]/dashboard/page.tsx
+[PAGE]   src/app/[locale]/disputes/page.tsx
+[LAYOUT] src/app/[locale]/layout.tsx
+[PAGE]   src/app/[locale]/page.tsx
+[API]    src/app/api/checkout/route.ts
+[API]    src/app/api/db-test/route.ts
+[API]    src/app/api/guardian/route.ts
+[API]    src/app/api/health/route.ts
+[API]    src/app/api/payments/paymob/init/route.ts
+[API]    src/app/api/payments/paymob/webhook/route.ts
+[API]    src/app/api/payments/paypal/webhook/route.ts
+[API]    src/app/api/paymob/route.ts
+[API]    src/app/api/projects/[id]/approve/route.ts
+[PAGE]   src/app/api/projects/[id]/page.tsx
+[API]    src/app/api/projects/route.ts
+[API]    src/app/api/wallet/withdraw/route.ts
+
+===== SUMMARY =====
+Layouts: 3
+Pages:   10
+APIs:    11
+

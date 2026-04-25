@@ -1,0 +1,194 @@
+======================
+>>> APP ROUTER FILES (layout/page/route)
+======================
+src/app/[locale]/[courseId]/layout.tsx
+src/app/[locale]/[courseId]/page.tsx
+src/app/[locale]/admin/finances/page.tsx
+src/app/[locale]/checkout/page.tsx
+src/app/[locale]/checkout/simulator/page.tsx
+src/app/[locale]/dashboard/layout.tsx
+src/app/[locale]/dashboard/marketplace/page.tsx
+src/app/[locale]/dashboard/messages/page.tsx
+src/app/[locale]/dashboard/page.tsx
+src/app/[locale]/disputes/page.tsx
+src/app/[locale]/layout.tsx
+src/app/[locale]/page.tsx
+src/app/api/checkout/route.ts
+src/app/api/db-test/route.ts
+src/app/api/guardian/route.ts
+src/app/api/health/route.ts
+src/app/api/payments/paymob/init/route.ts
+src/app/api/payments/paymob/webhook/route.ts
+src/app/api/payments/paypal/webhook/route.ts
+src/app/api/paymob/route.ts
+src/app/api/projects/[id]/approve/route.ts
+src/app/api/projects/[id]/page.tsx
+src/app/api/projects/route.ts
+src/app/api/wallet/withdraw/route.ts
+
+======================
+>>> APP FILES COUNT (by extension)
+======================
+     14 tsx
+     11 ts
+
+======================
+>>> next.config.ts
+======================
+// next.config.ts
+import { withSentryConfig } from "@sentry/nextjs";
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  // إزالة eslint لأن Next 16 لم يعد يدعم هذا المفتاح في next.config
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+    ],
+    deviceSizes: [320, 420, 640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+  },
+};
+
+export default withSentryConfig(nextConfig, {
+  org: "monteerly-studio-platform-1",
+  project: "sentry-champagne-lantern",
+  silent: true,
+  widenClientFileUpload: true,
+  // استبدال hideSourceMaps بإعداد sourcemaps الرسمي (لو تريد إخفاء السورسماب فعليًا)
+  // راجع docs لو أردت خيارات أكثر تفصيلاً، لكن هذا الشكل مقبول وحديث:
+  sourcemaps: {
+    disable: true, // يعطل رفع السورسماب لسنتري
+  },
+  disableLogger: true,
+});
+
+
+======================
+>>> tsconfig.json
+======================
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "baseUrl": ".",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+
+
+======================
+>>> tailwind.config.ts
+======================
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+          primary: "#006B8F", // Deep Ocean Blue
+          secondary: "#0DB7B4", // Vibrant Teal (Action)
+          alert: "#FF6B6B", // Coral (Power/Delete)
+          success: "#10B981", // Emerald (Money)
+          dark: "#020617", // Night Slate
+          surface: "#1e293b", // Card Background
+        },
+      },
+      fontFamily: {
+        cairo: ["var(--font-cairo)", "sans-serif"],
+        tajawal: ["var(--font-tajawal)", "sans-serif"],
+      },
+      animation: {
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'blob': 'blob 7s infinite',
+      },
+      keyframes: {
+        blob: {
+          '0%': { transform: 'translate(0px, 0px) scale(1)' },
+          '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+          '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+          '100%': { transform: 'translate(0px, 0px) scale(1)' },
+        },
+      },
+    },
+  },
+  plugins: [],
+};
+export default config;
+
+
+======================
+>>> tailwind.config.js
+======================
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./lib/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+
+
+======================
+>>> postcss.config.mjs
+======================
+/** @type {import('postcss-load-config').Config} */
+const config = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+export default config;
+
+
+======================
+>>> postcss.config.js
+======================
+module.exports = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+    autoprefixer: {},
+  },
+};
+
+

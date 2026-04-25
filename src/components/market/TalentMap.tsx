@@ -69,3 +69,5 @@ export function TalentMap() {
 function InputPlaceholder({ placeholder }: { placeholder: string }) {
     return <input className="px-3 py-1.5 rounded-md border border-gray-200 text-sm outline-none focus:border-primary" placeholder={placeholder} />
 }
+
+################################################################################

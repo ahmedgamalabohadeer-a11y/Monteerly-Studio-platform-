@@ -27,3 +27,5 @@ export function ResponsiveWrapper({ desktop, mobile, tablet }: ResponsiveWrapper
   if (device === 'tablet') return <>{tablet || desktop}</>; // Fallback to desktop if tablet not provided
   return <>{desktop}</>;
 }
+
+################################################################################

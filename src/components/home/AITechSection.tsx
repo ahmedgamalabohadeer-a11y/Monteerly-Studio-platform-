@@ -25,24 +25,3 @@ export function AITechSection() {
                     <h4 className="font-bold text-lg">{feat.title}</h4>
                     <p className="text-sm text-muted-foreground">{feat.desc}</p>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          {/* Main Tech Visual */}
-          <div className="flex-1 relative w-full aspect-square max-w-md lg:max-w-lg">
-            <div className="absolute inset-0 bg-secondary/20 blur-3xl rounded-full" />
-            <Image 
-              src={ai_tech.mainImage} 
-              alt="AI Innovation" 
-              fill 
-              className="object-contain relative z-10 drop-shadow-2xl" 
-            />
-          </div>
-        
-        </div>
-      </div>
-    </section>
-  );
-}

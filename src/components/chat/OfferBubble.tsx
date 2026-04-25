@@ -50,3 +50,5 @@ export function OfferBubble({ title, price, days, status, isSender }: OfferProps
     </div>
   );
 }
+
+################################################################################
