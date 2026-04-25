@@ -1,61 +1,71 @@
-"use client";
-import { useState } from "react";
+'use client';
+import React from 'react';
+import { MessageSquare, ShieldCheck, Zap, MoreVertical } from 'lucide-react';
+import { ChatInterface } from '@/components/chat/ChatInterface';
+import { SecureChat } from '@/components/chat/SecureChat';
+import { OfferBubble } from '@/components/chat/OfferBubble';
 
 export default function MessagesPage() {
-  const [selected, setSelected] = useState(0);
-  const contacts = [
-    { id: 0, name: "فريق الدعم", msg: "مرحباً، كيف يمكننا مساعدتك؟", time: "الآن", active: true },
-    { id: 1, name: "أحمد محمد", msg: "تم تسليم الملفات المطلوبة.", time: "10:30 ص", active: false },
-    { id: 2, name: "Sarah Smith", msg: "Can we reschedule?", time: "أمس", active: false },
-  ];
-
   return (
-    <div className="h-[calc(100vh-8rem)] flex rounded-2xl border border-border bg-card overflow-hidden">
-      {/* Sidebar List */}
-      <div className="w-80 border-l border-border bg-muted/20 flex flex-col">
-        <div className="p-4 border-b border-border font-bold">الرسائل</div>
-        <div className="flex-1 overflow-y-auto">
-          {contacts.map((c) => (
-            <div 
-              key={c.id} 
-              onClick={() => setSelected(c.id)}
-              className={`p-4 border-b border-border/50 cursor-pointer hover:bg-accent/50 transition-colors ${selected === c.id ? "bg-accent" : ""}`}
-            >
-              <div className="flex justify-between mb-1">
-                <span className="font-semibold text-sm">{c.name}</span>
-                <span className="text-xs text-muted-foreground">{c.time}</span>
-              </div>
-              <p className="text-xs text-muted-foreground truncate">{c.msg}</p>
+    <div className="flex flex-col h-[calc(100vh-100px)] bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden mx-6 my-4 shadow-2xl" dir="rtl">
+      
+      {/* Header - شريط حالة الأمان */}
+      <div className="bg-slate-900 border-b border-slate-800 p-4 flex justify-between items-center">
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 bg-indigo-600/20 rounded-full flex items-center justify-center border border-indigo-500/30">
+            <MessageSquare className="text-indigo-400" size={20} />
+          </div>
+          <div>
+            <h1 className="text-white font-bold text-lg">مركز المراسلات المؤمن</h1>
+            <div className="flex items-center gap-1.5">
+               <ShieldCheck size={12} className="text-emerald-500" />
+               <span className="text-[10px] text-slate-500 uppercase font-black tracking-widest">End-to-End Encrypted</span>
             </div>
-          ))}
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-3">
+          <div className="hidden md:flex flex-col items-end">
+            <span className="text-[10px] text-slate-500 font-bold">حالة الربط</span>
+            <span className="text-xs text-emerald-400 font-bold flex items-center gap-1">
+               <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" /> متصل الآن
+            </span>
+          </div>
+          <button className="p-2 text-slate-400 hover:bg-slate-800 rounded-lg transition-colors">
+            <MoreVertical size={20} />
+          </button>
         </div>
       </div>
 
-      {/* Chat Area */}
-      <div className="flex-1 flex flex-col bg-background/50">
-        <div className="p-4 border-b border-border flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm">
-            {contacts[selected].name.charAt(0)}
-          </div>
-          <span className="font-bold">{contacts[selected].name}</span>
-        </div>
+      {/* Main Chat Area */}
+      <div className="flex-1 flex overflow-hidden">
         
-        <div className="flex-1 p-4 overflow-y-auto space-y-4">
-          <div className="flex justify-start">
-            <div className="bg-muted p-3 rounded-2xl rounded-tr-none max-w-sm text-sm">
-              {contacts[selected].msg}
-            </div>
-          </div>
-           <div className="flex justify-end">
-            <div className="bg-primary text-primary-foreground p-3 rounded-2xl rounded-tl-none max-w-sm text-sm">
-              شكراً لك، سأقوم بالمراجعة.
-            </div>
-          </div>
+        {/* المكون الرئيسي من الأرشيف: واجهة الشات */}
+        <div className="flex-1 relative flex flex-col bg-slate-950">
+           <ChatInterface />
+           
+           {/* طبقة الأمان الإضافية ودمج العروض العقودية */}
+           <div className="absolute top-4 right-4 z-10 w-72 space-y-3 pointer-events-none">
+              <div className="pointer-events-auto">
+                 <SecureChat />
+              </div>
+              <div className="pointer-events-auto opacity-90 hover:opacity-100 transition-opacity">
+                 <OfferBubble 
+                    price="$1,200" 
+                    deadline="5 أيام" 
+                    onAccept={() => console.log('Accepted')} 
+                 />
+              </div>
+           </div>
         </div>
 
-        <div className="p-4 border-t border-border">
-          <input type="text" placeholder="اكتب رسالتك..." className="w-full p-3 rounded-xl border border-input bg-background focus:outline-none focus:ring-1 focus:ring-primary" />
-        </div>
+      </div>
+
+      {/* Footer Note */}
+      <div className="bg-slate-900/50 p-2 text-center border-t border-slate-800">
+        <p className="text-[10px] text-slate-600">
+          جميع المحادثات موثقة قانونياً وتخضع لاتفاقية الخصوصية الخاصة بـ Monteerly Studio.
+        </p>
       </div>
     </div>
   );

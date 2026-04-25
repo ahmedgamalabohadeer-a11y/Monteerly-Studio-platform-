@@ -3,7 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname, useParams } from 'next/navigation';
 import { 
-  LayoutDashboard, 
+  LayoutDashboard, MessageSquare, 
   ShieldAlert, 
   Landmark, 
   Users, 
@@ -23,9 +23,39 @@ export function Sidebar() {
   const navItems = [
     { 
       name: 'لوحة التحكم', 
+    { 
+      name: 'الرسائل والمفاوضات', 
+      href: `/${locale}/dashboard/messages`, 
+      icon: MessageSquare, 
+      color: 'text-indigo-400' 
+    },
       href: `/${locale}/dashboard`, 
-      icon: LayoutDashboard,
+    { 
+      name: 'الرسائل والمفاوضات', 
+      href: `/${locale}/dashboard/messages`, 
+      icon: MessageSquare, 
+      color: 'text-indigo-400' 
+    },
+      icon: LayoutDashboard, MessageSquare,
+    { 
+      name: 'الرسائل والمفاوضات', 
+      href: `/${locale}/dashboard/messages`, 
+      icon: MessageSquare, 
+      color: 'text-indigo-400' 
+    },
       color: 'text-slate-400' 
+    { 
+      name: 'الرسائل والمفاوضات', 
+      href: `/${locale}/dashboard/messages`, 
+      icon: MessageSquare, 
+      color: 'text-indigo-400' 
+    },
+    },
+    { 
+      name: 'الرسائل والمفاوضات', 
+      href: `/${locale}/dashboard/messages`, 
+      icon: MessageSquare, 
+      color: 'text-indigo-400' 
     },
     { 
       name: 'مركز العمليات (OS)', 
