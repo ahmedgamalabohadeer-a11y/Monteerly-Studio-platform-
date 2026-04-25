@@ -8,7 +8,7 @@ import {
   Landmark, 
   Users, 
   GraduationCap, 
-  Settings, 
+  Settings, Book, 
   LogOut,
   FolderOpen,
   ShoppingBag, Gavel, Library, Monitor,
