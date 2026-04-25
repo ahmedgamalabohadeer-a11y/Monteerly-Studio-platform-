@@ -11,7 +11,7 @@ import {
   Settings, 
   LogOut,
   FolderOpen,
-  ShoppingBag,
+  ShoppingBag, Gavel,
   Zap
 } from 'lucide-react';
 
@@ -53,9 +53,39 @@ export function Sidebar() {
     },
     { 
       name: 'المشاريع', 
+    { 
+      name: 'النزاعات والتحكيم', 
+      href: `/${locale}/dashboard/disputes`, 
+      icon: Gavel, 
+      color: 'text-red-400' 
+    },
       href: `/${locale}/dashboard/marketplace`, 
+    { 
+      name: 'النزاعات والتحكيم', 
+      href: `/${locale}/dashboard/disputes`, 
+      icon: Gavel, 
+      color: 'text-red-400' 
+    },
       icon: FolderOpen,
+    { 
+      name: 'النزاعات والتحكيم', 
+      href: `/${locale}/dashboard/disputes`, 
+      icon: Gavel, 
+      color: 'text-red-400' 
+    },
       color: 'text-purple-400' 
+    { 
+      name: 'النزاعات والتحكيم', 
+      href: `/${locale}/dashboard/disputes`, 
+      icon: Gavel, 
+      color: 'text-red-400' 
+    },
+    },
+    { 
+      name: 'النزاعات والتحكيم', 
+      href: `/${locale}/dashboard/disputes`, 
+      icon: Gavel, 
+      color: 'text-red-400' 
     },
   ];
 
