@@ -40,3 +40,5 @@ export function SimpleChart({ data, labels, type = 'line', color = '#3b82f6', he
     </div>
   );
 }
+
+################################################################################

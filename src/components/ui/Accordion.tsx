@@ -40,3 +40,5 @@ export function Accordion({ items }: { items: AccordionItemProps[] }) {
     </div>
   );
 }
+
+################################################################################
