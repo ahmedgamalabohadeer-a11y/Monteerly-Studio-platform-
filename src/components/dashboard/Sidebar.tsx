@@ -3,7 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname, useParams } from 'next/navigation';
 import { 
-  LayoutDashboard, MessageSquare, 
+  LayoutDashboard, Sparkles, MessageSquare, 
   ShieldAlert, 
   Landmark, 
   Users, 
@@ -24,9 +24,51 @@ export function Sidebar() {
     { 
       name: 'لوحة التحكم', 
     { 
+      name: 'استوديو AI الذكي', 
+      href: `/${locale}/dashboard/ai-studio`, 
+      icon: Sparkles, 
+      color: 'text-indigo-400' 
+    },
+    { 
+    { 
+      name: 'استوديو AI الذكي', 
+      href: `/${locale}/dashboard/ai-studio`, 
+      icon: Sparkles, 
+      color: 'text-indigo-400' 
+    },
       name: 'الرسائل والمفاوضات', 
+    { 
+      name: 'استوديو AI الذكي', 
+      href: `/${locale}/dashboard/ai-studio`, 
+      icon: Sparkles, 
+      color: 'text-indigo-400' 
+    },
       href: `/${locale}/dashboard/messages`, 
+    { 
+      name: 'استوديو AI الذكي', 
+      href: `/${locale}/dashboard/ai-studio`, 
+      icon: Sparkles, 
+      color: 'text-indigo-400' 
+    },
       icon: MessageSquare, 
+    { 
+      name: 'استوديو AI الذكي', 
+      href: `/${locale}/dashboard/ai-studio`, 
+      icon: Sparkles, 
+      color: 'text-indigo-400' 
+    },
+      color: 'text-indigo-400' 
+    { 
+      name: 'استوديو AI الذكي', 
+      href: `/${locale}/dashboard/ai-studio`, 
+      icon: Sparkles, 
+      color: 'text-indigo-400' 
+    },
+    },
+    { 
+      name: 'استوديو AI الذكي', 
+      href: `/${locale}/dashboard/ai-studio`, 
+      icon: Sparkles, 
       color: 'text-indigo-400' 
     },
       href: `/${locale}/dashboard`, 
@@ -36,7 +78,7 @@ export function Sidebar() {
       icon: MessageSquare, 
       color: 'text-indigo-400' 
     },
-      icon: LayoutDashboard, MessageSquare,
+      icon: LayoutDashboard, Sparkles, MessageSquare,
     { 
       name: 'الرسائل والمفاوضات', 
       href: `/${locale}/dashboard/messages`, 
