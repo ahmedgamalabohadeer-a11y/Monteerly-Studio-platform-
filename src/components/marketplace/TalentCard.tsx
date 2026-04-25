@@ -76,3 +76,5 @@ export function TalentCard({ name, role, rating, reviews, rate, skills, image, v
     </div>
   );
 }
+
+################################################################################

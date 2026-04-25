@@ -65,14 +65,3 @@ export function CacheManager() {
              <Button 
                 variant="outline" 
                 className="text-red-500 hover:bg-red-50 border-red-200"
-                onClick={handleClear}
-                disabled={clearing}
-                icon={clearing ? <RefreshCw size={16} className="animate-spin" /> : <Trash2 size={16} />}
-             >
-                {clearing ? 'جاري التنظيف...' : 'تنظيف الكاش الآن'}
-             </Button>
-          </div>
-       </div>
-    </div>
-  );
-}
