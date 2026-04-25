@@ -46,3 +46,5 @@ export const getUserWallet = async (userId: string) => {
   const docSnap = await getDoc(docRef);
   return docSnap.exists() ? docSnap.data() : { balance: 0, pending: 0 };
 };
+
+################################################################################

@@ -6,3 +6,5 @@ export function useContent() {
   const langKey = (language === 'ar' || language === 'en') ? language : 'ar';
   return SITE_CONTENT[langKey];
 }
+
+################################################################################

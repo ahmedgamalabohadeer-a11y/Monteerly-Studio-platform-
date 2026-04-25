@@ -1,33 +1,117 @@
 {
   "system": {
-    "loading_studio": "Initializing Editing Deck...",
-    "saving": "Encrypted & Saved to Cloud",
-    "offline": "Operating in Offline Mode",
-    "error_boundary": "Temporary conflict detected. Restoring session..."
+    "brand_name": "Monteerly OS",
+    "loading": {
+      "init": "Initializing Core Systems...",
+      "assets": "Fetching Cloud Assets...",
+      "security": "Establishing Secure Handshake...",
+      "render": "Allocating GPU Nodes..."
+    },
+    "errors": {
+      "network": "Satellite Connection Lost. Local Backup Active.",
+      "permission": "Access Denied. Clearance Level Insufficient.",
+      "generic": "System Anomaly Detected. Auto-recovery Initiated."
+    },
+    "actions": {
+      "save": "Save Changes",
+      "cancel": "Abort",
+      "confirm": "Execute",
+      "delete": "Terminate",
+      "edit": "Modify"
+    }
   },
   "auth": {
-    "login_btn": "Login",
-    "register_btn": "Create Sovereign Account",
-    "secure_login": "256-bit Encrypted Auth"
+    "login": {
+      "title": "Access Terminal",
+      "email_placeholder": "operator@studio.com",
+      "pass_placeholder": "Secure Passphrase",
+      "btn": "Authenticate"
+    },
+    "register": {
+      "title": "Join the Elite",
+      "subtitle": "Create your secure production environment.",
+      "btn": "Deploy Studio"
+    }
+  },
+  "landing": {
+    "hero": {
+      "headline": "The Operating System for Modern Production.",
+      "subhead": "Manage chaos, secure assets, and scale revenue. One unified platform.",
+      "cta_primary": "Launch Studio Free",
+      "cta_secondary": "System Walkthrough"
+    },
+    "security": {
+      "badge": "Military-Grade Encryption",
+      "desc": "Your assets are locked in a digital vault until payment is verified."
+    }
+  },
+  "studio": {
+    "toolbar": {
+      "select": "Selection Tool (V)",
+      "cut": "Razor Blade (C)",
+      "text": "Typography (T)",
+      "ai": "AI Copilot"
+    },
+    "timeline": {
+      "empty": "Timeline is clear. Drag assets to begin sequencing.",
+      "tracks": "Video Track / Audio Bed"
+    },
+    "export": {
+      "btn": "Render & Publish",
+      "estimating": "Calculating Time Remaining...",
+      "quality": "Resolution: 4K (Ultra HD)"
+    },
+    "bridge": {
+      "title": "Asset Browser",
+      "buy_btn": "License & Import",
+      "drag_hint": "Drag to Timeline"
+    }
+  },
+  "marketplace": {
+    "nav": {
+      "browse": "Explore Assets",
+      "creators": "Top Talent",
+      "collections": "Curated Packs"
+    },
+    "product": {
+      "buy": "Acquire License",
+      "preview": "Live Preview",
+      "rights": "Commercial Use Allowed"
+    }
   },
   "finance": {
-    "wallet_title": "Escrow Financials",
-    "available_balance": "Available Balance",
-    "pending_balance": "Pending Funds",
-    "escrow_tooltip": "Funds are secured in the Iron Dome until delivery.",
-    "withdraw_btn": "Withdraw Earnings"
+    "wallet": {
+      "balance": "Withdrawable Funds",
+      "pending": "In Escrow",
+      "withdraw_btn": "Transfer to Bank"
+    },
+    "invoice": {
+      "create": "Generate Smart Invoice",
+      "status_paid": "Settled",
+      "status_unpaid": "Outstanding"
+    }
   },
-  "workspace": {
-    "title": "Workspace",
-    "projects_active": "Active Projects",
-    "deploy": "Launch Studio",
-    "render": "Final Render",
-    "zen_mode_enter": "Block Distractions & Enter Flow",
-    "zen_mode_exit": "Return to World"
+  "developer": {
+    "console": {
+      "title": "Developer Command Center",
+      "keys": "API Credentials",
+      "webhook": "Event Webhooks",
+      "docs_btn": "View SDK Documentation"
+    }
   },
-  "iron_dome": {
-    "status_safe": "Security: Excellent",
-    "status_warning": "Suspicious Activity Detected (Fraud Score)",
-    "watermark_active": "Forensic Watermark Active"
+  "wellbeing": {
+    "zen": {
+      "enter": "Enter Deep Work",
+      "exit": "Exit Zen Mode",
+      "advice": "Hydration Check Required."
+    }
+  },
+  "feedback": {
+    "trigger": "Report / Suggest",
+    "bug_label": "System Glitch",
+    "feature_label": "Feature Request",
+    "submit": "Transmit to Engineering"
   }
 }
+
+################################################################################

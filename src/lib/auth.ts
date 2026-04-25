@@ -30,3 +30,5 @@ export const getCurrentUser = (): Promise<User | null> => {
 
 // Alias for API routes compatibility
 export const getUserSession = getCurrentUser;
+
+################################################################################

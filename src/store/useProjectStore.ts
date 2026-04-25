@@ -21,3 +21,5 @@ export const useProjectStore = create<ProjectState>((set) => ({
   setDuration: (duration) => set({ duration: duration }),
   setSecurityAlert: (status) => set({ securityAlert: status }),
 }));
+
+################################################################################

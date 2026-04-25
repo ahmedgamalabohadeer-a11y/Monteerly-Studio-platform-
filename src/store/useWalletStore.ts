@@ -38,3 +38,5 @@ export const useWalletStore = create<WalletState>((set) => ({
     }, ...state.transactions]
   })),
 }));
+
+################################################################################

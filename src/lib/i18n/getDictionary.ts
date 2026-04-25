@@ -8,3 +8,5 @@ const dictionaries = {
 export const getDictionary = async (locale: 'ar' | 'en') => {
   return dictionaries[locale]?.() ?? dictionaries.ar();
 };
+
+################################################################################
