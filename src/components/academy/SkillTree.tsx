@@ -12,7 +12,7 @@ export function SkillTree() {
   ];
 
   return (
-    <div className="bg-slate-900 border border-white/10 rounded-xl p-8 relative overflow-hidden">
+    <div className="bg-slate-900 border border-slate-800 rounded-xl p-8 relative overflow-hidden">
        {/* Header */}
        <div className="flex justify-between items-end mb-12 relative z-10">
           <div>
@@ -20,48 +20,29 @@ export function SkillTree() {
              <p className="text-slate-400 text-sm">أكمل المسار لتحصل على شارة التوثيق في السوق.</p>
           </div>
           <div className="text-right">
-             <div className="text-3xl font-black text-indigo-400">Level 3</div>
-             <div className="text-xs text-slate-500 font-mono">1,250 / 2,500 XP</div>
+             <p className="text-xs text-indigo-400 font-bold mb-1">XP الإجمالي</p>
+             <p className="text-3xl font-black text-white">1,250</p>
           </div>
        </div>
 
-       {/* Tree Structure */}
-       <div className="relative space-y-0 relative z-10">
-          {/* Vertical Line */}
-          <div className="absolute left-8 top-4 bottom-4 w-1 bg-white/5 rounded-full -z-10" />
-
-          {levels.map((level, i) => (
-             <div key={level.id} className="group relative flex items-start gap-6 pb-12 last:pb-0">
-                {/* Icon Node */}
-                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border-4 relative z-10 transition-all duration-500 ${
-                   level.status === 'completed' ? 'bg-green-500 border-green-600 text-black shadow-[0_0_20px_rgba(34,197,94,0.4)]' : 
-                   level.status === 'active' ? 'bg-indigo-600 border-indigo-400 text-white animate-pulse shadow-[0_0_30px_rgba(99,102,241,0.5)]' : 
-                   'bg-slate-800 border-slate-700 text-slate-500 grayscale'
+       {/* Tree Flow */}
+       <div className="relative z-10 space-y-6">
+          {levels.map((level, index) => (
+             <div key={level.id} className={`flex items-center gap-4 ${level.status === 'locked' ? 'opacity-50' : 'opacity-100'}`}>
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 border-2 ${
+                   level.status === 'completed' ? 'bg-indigo-600 border-indigo-600 text-white' : 
+                   level.status === 'active' ? 'bg-slate-800 border-indigo-500 text-indigo-400 animate-pulse' : 
+                   'bg-slate-800 border-slate-700 text-slate-500'
                 }`}>
-                   <level.icon size={24} fill={level.status === 'completed' ? 'currentColor' : 'none'} />
+                   <level.icon size={20} />
                 </div>
-
-                {/* Content Card */}
-                <div className={`flex-1 p-5 rounded-xl border transition-all duration-300 ${
-                   level.status === 'active' ? 'bg-indigo-900/20 border-indigo-500/50 translate-x-2' : 
-                   level.status === 'locked' ? 'bg-white/5 border-transparent opacity-50' : 
-                   'bg-slate-800/50 border-white/10 hover:border-white/20'
-                }`}>
-                   <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-bold text-white text-lg">{level.title}</h3>
-                      <span className="text-xs font-mono bg-black/30 px-2 py-1 rounded text-slate-300">+{level.xp} XP</span>
+                <div className="flex-1 bg-slate-800/50 border border-slate-700 rounded-lg p-4 flex justify-between items-center">
+                   <div>
+                      <h4 className={`font-bold ${level.status === 'active' ? 'text-indigo-400' : 'text-white'}`}>{level.title}</h4>
+                      <p className="text-xs text-slate-400 mt-1">+{level.xp} XP</p>
                    </div>
-                   
-                   {level.status === 'active' && (
-                      <div className="w-full bg-black/50 h-2 rounded-full overflow-hidden mt-3">
-                         <div className="bg-indigo-500 h-full w-[45%] rounded-full relative overflow-hidden">
-                            <div className="absolute inset-0 bg-white/20 animate-[shimmer_2s_infinite]" />
-                         </div>
-                      </div>
-                   )}
-                   
-                   {level.status === 'active' && <p className="text-xs text-indigo-300 mt-2">جاري التقدم: 45%</p>}
-                   {level.status === 'completed' && <p className="text-xs text-green-400 mt-2 flex items-center gap-1"><Check size={12}/> مكتمل</p>}
+                   {level.status === 'completed' && <p className="text-xs text-green-400 flex items-center gap-1 font-bold"><Check size={12}/> مكتمل</p>}
+                   {level.status === 'locked' && <Lock size={16} className="text-slate-500" />}
                 </div>
              </div>
           ))}
