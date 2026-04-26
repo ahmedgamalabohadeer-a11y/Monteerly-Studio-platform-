@@ -1,0 +1,4 @@
+90c90
+< <SignaturePad onSign={handleFinish} />
+---
+> <SignaturePad onSign={() => handleFinish()} />

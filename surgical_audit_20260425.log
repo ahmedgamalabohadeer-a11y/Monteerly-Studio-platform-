@@ -1,0 +1,48 @@
+--- [بدء الفحص والتحقق من التبعيات لـ Monteerly Studio] ---
+[إضافة جديدة] academy/page.tsx
+  [فحص التبعيات لـ: page.tsx]
+[إضافة جديدة] academy/[courseId]/page.tsx
+  [فحص التبعيات لـ: page.tsx]
+[إضافة جديدة] ad-studio/page.tsx
+  [فحص التبعيات لـ: page.tsx]
+[إضافة جديدة] dashboard-english/layout.tsx
+  [فحص التبعيات لـ: layout.tsx]
+[إضافة جديدة] dashboard-english/page.tsx
+  [فحص التبعيات لـ: page.tsx]
+[إضافة جديدة] dashboard-english/marketplace/page.tsx
+  [فحص التبعيات لـ: page.tsx]
+[إضافة جديدة] dashboard-english/messages/page.tsx
+  [فحص التبعيات لـ: page.tsx]
+[إضافة جديدة] dashboard-english/projects/page.tsx
+  [فحص التبعيات لـ: page.tsx]
+[إضافة جديدة] disputes/page.tsx
+  [فحص التبعيات لـ: page.tsx]
+[إضافة جديدة] legal/page.tsx
+  [فحص التبعيات لـ: page.tsx]
+[إضافة جديدة] referral/page.tsx
+  [فحص التبعيات لـ: page.tsx]
+[إضافة جديدة] web/next.config.ts
+  [فحص التبعيات لـ: next.config.ts]
+[إضافة جديدة] web/package-lock.json
+  [فحص التبعيات لـ: package-lock.json]
+[إضافة جديدة] web/package.json
+  [فحص التبعيات لـ: package.json]
+[إضافة جديدة] web/tsconfig.json
+  [فحص التبعيات لـ: tsconfig.json]
+[إضافة جديدة] web/src/app/globals.css
+  [فحص التبعيات لـ: globals.css]
+[إضافة جديدة] web/src/app/layout.tsx
+  [فحص التبعيات لـ: layout.tsx]
+[إضافة جديدة] web/src/app/page.tsx
+  [فحص التبعيات لـ: page.tsx]
+[إضافة جديدة] web/src/hooks/useAuth.ts
+  [فحص التبعيات لـ: useAuth.ts]
+    ⚠️ تنبيه: التبعية [@/store/authStore] مفقودة.
+[إضافة جديدة] web/src/lib/firebase.ts
+  [فحص التبعيات لـ: firebase.ts]
+[إضافة جديدة] web/src/services/api/index.ts
+  [فحص التبعيات لـ: index.ts]
+[إضافة جديدة] web/src/store/authStore.ts
+  [فحص التبعيات لـ: authStore.ts]
+[إضافة جديدة] web/src/store/eventStore.ts
+  [فحص التبعيات لـ: eventStore.ts]

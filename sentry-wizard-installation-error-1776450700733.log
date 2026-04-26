@@ -1,0 +1,7 @@
+npm error code EBADPLATFORM
+npm error notsup Unsupported platform for lightningcss-linux-arm64-gnu@1.32.0: wanted {"os":"linux","cpu":"arm64"} (current: {"os":"android","cpu":"arm64"})
+npm error notsup Valid os:   linux
+npm error notsup Actual os:  android
+npm error notsup Valid cpu:  arm64
+npm error notsup Actual cpu: arm64
+npm error A complete log of this run can be found in: /data/data/com.termux/files/home/.npm/_logs/2026-04-17T18_31_08_422Z-debug-0.log

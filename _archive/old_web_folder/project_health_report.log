@@ -1,0 +1,100 @@
+--- [بدء الفحص الشامل لـ Monteerly Studio] ---
+Sat Apr 25 12:46:17 EEST 2026
+
+[1/4] فحص أخطاء الأنواع (Static Typing)...
+✅ لا توجد أخطاء في الأنواع.
+
+[2/4] فحص معايير الكود (ESLint)...
+
+> web@0.1.0 lint
+> eslint
+
+
+/data/data/com.termux/files/home/Monteerly-Studio-platform-/web/src/services/api/index.ts
+  52:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 1 problem (1 error, 0 warnings)
+
+⚠️ توجد تنبيهات في تنسيق الكود.
+
+[3/4] فحص الثغرات الأمنية (npm audit)...
+# npm audit report
+
+@tootallnate/once  <3.0.1
+@tootallnate/once vulnerable to Incorrect Control Flow Scoping - https://github.com/advisories/GHSA-vpq2-c234-7xj6
+fix available via `npm audit fix --force`
+Will install firebase-admin@10.1.0, which is a breaking change
+node_modules/@tootallnate/once
+  http-proxy-agent  4.0.1 - 5.0.0
+  Depends on vulnerable versions of @tootallnate/once
+  node_modules/http-proxy-agent
+    teeny-request  3.9.1 - 10.1.0
+    Depends on vulnerable versions of http-proxy-agent
+    Depends on vulnerable versions of uuid
+    node_modules/teeny-request
+      @google-cloud/storage  2.2.0 - 2.5.0 || >=5.19.0
+      Depends on vulnerable versions of retry-request
+      Depends on vulnerable versions of teeny-request
+      Depends on vulnerable versions of uuid
+      node_modules/@google-cloud/storage
+        firebase-admin  >=10.2.0
+        Depends on vulnerable versions of @google-cloud/firestore
+        Depends on vulnerable versions of @google-cloud/storage
+        Depends on vulnerable versions of uuid
+        node_modules/firebase-admin
+      retry-request  7.0.0 - 7.0.2
+      Depends on vulnerable versions of teeny-request
+      node_modules/retry-request
+        google-gax  4.0.5-experimental - 4.6.1
+        Depends on vulnerable versions of retry-request
+        Depends on vulnerable versions of uuid
+        node_modules/google-gax
+          @google-cloud/firestore  7.5.0-pre.0 || 7.6.0 - 7.11.6
+          Depends on vulnerable versions of google-gax
+          node_modules/@google-cloud/firestore
+
+next  >=9.3.4-canary.0
+Severity: high
+Next.js has a Denial of Service with Server Components - https://github.com/advisories/GHSA-q4gf-8mx6-v5v3
+Depends on vulnerable versions of postcss
+fix available via `npm audit fix --force`
+Will install next@16.2.4, which is outside the stated dependency range
+node_modules/next
+
+postcss  <8.5.10
+Severity: moderate
+PostCSS has XSS via Unescaped </style> in its CSS Stringify Output - https://github.com/advisories/GHSA-qx2v-qp2m-jg93
+fix available via `npm audit fix --force`
+Will install next@16.2.4, which is outside the stated dependency range
+node_modules/next/node_modules/postcss
+
+uuid  <14.0.0
+Severity: moderate
+uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided - https://github.com/advisories/GHSA-w5hq-g745-h8pq
+fix available via `npm audit fix --force`
+Will install next-auth@3.29.10, which is a breaking change
+node_modules/@google-cloud/storage/node_modules/uuid
+node_modules/gaxios/node_modules/uuid
+node_modules/google-gax/node_modules/uuid
+node_modules/next-auth/node_modules/uuid
+node_modules/teeny-request/node_modules/uuid
+node_modules/uuid
+  gaxios  6.4.0 - 6.7.1
+  Depends on vulnerable versions of uuid
+  node_modules/gaxios
+  next-auth  <=0.0.0-pr.11562.ed0fce23 || 1.1.0 - 1.12.1 || 4.0.0-beta.1 - 4.0.0-beta.7 || 4.0.1 - 4.24.14
+  Depends on vulnerable versions of uuid
+  node_modules/next-auth
+
+13 vulnerabilities (2 low, 10 moderate, 1 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+✅ تم تسجيل تقرير الأمان.
+
+[4/4] محاكاة بناء النسخة النهائية (Build Test)...
+error: unknown option '--no-lint'
+❌ فشل بناء النسخة النهائية (خطأ فادح).
