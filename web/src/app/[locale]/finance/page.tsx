@@ -3,8 +3,18 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase/client';
 import { DollarSign, TrendingUp, CreditCard, Activity } from 'lucide-react';
 
+
+interface Ledger {
+  id: string | number;
+  client_name: string;
+  total_amount: number | string;
+  paid_amount: number | string;
+  remaining_amount: number | string;
+  payment_status: 'pending' | 'completed' | string;
+}
+
 export default function FinancePage() {
-  const [ledgers, setLedgers] = useState([]);
+  const [ledgers, setLedgers] = useState<Ledger[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
