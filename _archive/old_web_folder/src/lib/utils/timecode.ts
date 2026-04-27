@@ -1,1 +1,0 @@
-export const formatTimecode = (time: number = 0): string => '00:00:00';

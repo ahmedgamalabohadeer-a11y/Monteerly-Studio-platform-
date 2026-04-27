@@ -1,1 +1,0 @@
-export const LAYER_COLORS: Record<string, string> = { admin: 'bg-red-500', user: 'bg-blue-500' };
