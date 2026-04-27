@@ -1,0 +1,4 @@
+components/chat/ChatInterface.tsx(4,26): error TS2307: Cannot find module '@/lib/guardian' or its corresponding type declarations.
+sentry.client.config.ts(1,25): error TS2307: Cannot find module '@sentry/nextjs' or its corresponding type declarations.
+sentry.edge.config.ts(1,25): error TS2307: Cannot find module '@sentry/nextjs' or its corresponding type declarations.
+sentry.server.config.ts(1,25): error TS2307: Cannot find module '@sentry/nextjs' or its corresponding type declarations.
