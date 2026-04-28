@@ -12,7 +12,7 @@ type AuditPayload = {
 export async function logAuditEvent(payload: AuditPayload) {
   const { actorType = 'system', actorIdentifier, action, module, entityId, snapshot } = payload;
 
-  await supabase.from('audit_logs').insert({
+  const { error } = await supabase.from('audit_logs').insert({
     actor_type: actorType,
     actor_identifier: actorIdentifier,
     action,
@@ -20,4 +20,8 @@ export async function logAuditEvent(payload: AuditPayload) {
     entity_id: entityId,
     payload_snapshot: snapshot ?? null,
   });
+
+  if (error) {
+    console.error('🚨 Audit Log Error:', error.message);
+  }
 }
