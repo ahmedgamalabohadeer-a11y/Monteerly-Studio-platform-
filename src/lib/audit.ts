@@ -1,0 +1,23 @@
+import { supabase } from './supabase';
+
+type AuditPayload = {
+  actorType?: 'system' | 'user' | 'agent';
+  actorIdentifier: string;
+  action: string;
+  module: 'hr' | 'finance' | 'contracts' | string;
+  entityId?: string;
+  snapshot?: Record<string, any>;
+};
+
+export async function logAuditEvent(payload: AuditPayload) {
+  const { actorType = 'system', actorIdentifier, action, module, entityId, snapshot } = payload;
+
+  await supabase.from('audit_logs').insert({
+    actor_type: actorType,
+    actor_identifier: actorIdentifier,
+    action,
+    module,
+    entity_id: entityId,
+    payload_snapshot: snapshot ?? null,
+  });
+}
