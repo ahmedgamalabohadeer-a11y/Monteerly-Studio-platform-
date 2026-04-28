@@ -1,6 +1,6 @@
 # 🌐 Monteerly Platform – Ultimate Blueprint (v3.1 - Master)
 
-> **Metadata**: تم استخراج 2907 فقرة من مجلد المصادر.
+> **Metadata**: تم استخراج 14103 فقرة من مجلد المصادر.
 > **Source**: Multi-format Extraction (PDF, DOCX, MD, TXT).
 
 ## 🏗️ Systems & Architecture
@@ -71,6 +71,89 @@
 - اﻟﻨﻘﺎط: Checklist 📊 %99 ﺗﻘﺘﻞ اﻟﺘﻲ :ﻣﻦ ﺗﺤﻘﻖ ،20 ﻳﻮم ﻗﺒﻞ  text Stripe Webhooks ✅Webhook endpoint responds ☐    in < 1 second Event ID deduplication works ☐   Both success and failure ☐    events logged Retry mechanism tested ☐     Escrow State Machine ✅ created →  funded ☐    funded →  held ☐    held →  approved ☐    approved →  released ☐    Can't skip states ☐    Idempotent operations ☐     48h Guard ✅Release time calculated ☐    correctlyTimer is accurate (use system ☐    clock, not user clock)Background job fires at ☐    correct time Survives server restart ☐     Fraud Detection ✅ fraud_score initialized to 0 ☐    Dispute →  +10 ☐    Chargeback →  +30 ☐   Score ≥ 20 →  blocks instant ☐    withdrawalScore ≥ 50 →  auto-suspend ☐    account  Withdrawal Logic ✅48h check compares to latest ☐    release date Minimum 5$ enforced ☐    Maximum 4/month enforced ☐   Instant fee calculated (2% or ☐    5$ min)Balance deducted ☐    immediately  Error Handling ✅Payment fails →  escrow stays ☐    createdWebhook fails →  retry ☐    mechanismWithdrawal fails →  balance ☐    restoredNo money gets lost in error ☐    states
 - المشروع: Monteerly Studio (Infrastructure & Ecosystem)
 - بدلاً من مشغل واحد يحمل كل شيء، سنعتمد "البنية التركيبية" (Plugin Architecture):
+- هذه الوثيقة تحوِّل المواصفة المعمارية **Monteerly‑AI‑OS‑Master‑Spec** إلى خطة تنفيذ عملية على مراحل، تبدأ من وضع المشروع الحالي في GitHub وتصل تدريجيًا إلى نسخة متقدمة شبه ذاتية (Semi‑Autonomous) قابلة للتوسع إلى SaaS ومستعدة للتطور نحو DA‑AIOS وUMA v3 وSelf‑Healing v2 كما في تقرير التصميم الموحد للمؤسسة.[^ref-master][^ref-unified]
+- #### 5. Canonical Architecture Confirmation
+- - Confirm which merged systems remain in the core baseline.
+- - Defer optional or unclear subsystems until after stabilization.
+- **الهدف:** توسيع Monteerly‑AI‑OS إلى منصة SaaS متعددة العملاء، مع استعداد لتبنّي معمارية DA‑AIOS (vLLM Cluster, MoE, UMA v3 الكاملة).
+- المجموعة F – Advanced Systems, RAG, MoE, and Deployment
+- Monteerly‑AI‑OS هو نظام تشغيل ذكي (AI Operating System) يُبنى فوق منصة Monteerly Studio ليعمل كـ "عقل مركزي" يدير دورة حياة التطوير والتشغيل بالكامل لمنصة إنتاج ومونتاج رقمية موجهة للمونتيرين وصُنّاع المحتوى.[^ref-os-strategy] يعتمد النظام على معمارية طبقية تتكون من Orchestrator، طبقة وكلاء (Multi‑Agent System)، طبقة ذاكرة موحَّدة (Project Memory OS + UMA v3)، طبقة RAG، طبقة تنفيذ النماذج (Multi‑LLM)، وطبقات CI/CD والنشر والمراقبة والأتمتة والأمن.[^ref-os-unified]
+- في المرحلة الحالية يتم التركيز على تنفيذ نسخة عملية قابلة للتشغيل فوق البنية المتاحة فعليًا (GitHub + Termux + Perplexity Pro + Gemini Pro + Google Drive)، مع استخدام خدمات سحابية مجانية/مفتوحة المصدر مثل Supabase, Vercel, PostHog, OpenReplay, Uptime Kuma, n8n، ثم التطور التدريجي نحو معمارية موزعة (DA‑AIOS) تشمل vLLM Cluster, MoE Router, UMA v3, Self‑Healing v2، وطبقة SaaS متعددة العملاء.[^ref-tools]
+- ## 2. System Architecture Diagram Description (Textual)
+- الوصف التالي يمثّل المخطط المعماري النصي لـ Monteerly‑AI‑OS من الأعلى إلى الأسفل:
+- - تنفيذ متوازي قدر الإمكان (Parallel Agents) مع Agent Critic System لمراجعة النتائج قبل التنفيذ.[^ref-multi-agent]
+- - يقترح تغييرات على المعمارية (ملفات، وحدات، Services، DB schema) دون كسر ما هو موجود.
+- - ينتج وثيقة تصميم خفيفة (Architecture Notes) وحزمة Patches مقترحة.
+- - يشارك في تصميم Prompt Security (منع Prompt Injection، عزل System Prompts).
+- | Architect | تصميم معماري وتحديد تغييرات الكود/DB | RAG, GitHub API (قراءة فقط) | قبل أي عمل على الكود، يكتب Design Notes |
+- - System Prompts للوكلاء والـ Orchestrator تُخزَّن في ملفات/جداول منفصلة لا يمكن للمستخدم تعديلها مباشرة.
+- [^ref-os-unified]: مستخرج من تقرير "Monteerly‑AI‑OS – Enterprise Unified Design" الذي يعرّف Project Memory OS، Multi‑Agent System، UMA v3، DA‑AIOS، Self‑Healing.
+- [^ref-multi-agent]: القسم الخاص بـ Autonomous Multi‑Agent System وAgent Critic System في تقرير Monteerly‑AI‑OS.
+- منصة **عزة الإسلام** هي **شركة رقمية تجارية ذكية (AI‑Native Platform)** تعمل كنظام بيئي (Ecosystem) متكامل يهدف إلى:
+- ## 6. رحلة المستخدم الشاملة (User Journey System)
+- ## 11. نظام الإعلانات المجانية (Free Ads System)
+- ## 14. بنية المنصة – الصفحات الرئيسية (Information Architecture)
+- - يمكن توسيع كل قسم لاحقًا إلى وثائق مستقلة (Design System، Tech Specs، Legal Docs) لكن **لا يجوز التناقض معها**.
+- Never assume the file structure - inspect it systematically first, then process the data.
+- هذه الوثيقة ليست مجرد قالب نظري، بل إطار تشغيل احترافي وعملي لإدارة دمج الأرشيف النصي monteerly_source_full2.txt مع الكود الحالي للمشروع، مع الاستفادة المرجعية من ملفات مجلد monteerly Studio platform فقط، دون خلط هذا العمل مع أي ملفات خارج هذا النطاق. وهي تأتي بعد المواصفة المعمارية الرئيسية وخارطة التنفيذ، لأن وظيفتها ليست تعريف النظام المستهدف فقط، بل إدارة الفرق بين الماضي والحاضر بطريقة قابلة للتنفيذ داخل GitHub وعلى مراحل آمنة.[file:86]
+- الهدف النهائي من Archive‑Diff‑Plan هو إنتاج قرارات دمج نهائية قابلة للتحويل مباشرة إلى Stories وTasks وPull Requests، بحيث نعرف بدقة: ما الذي سيبقى من الكود الحالي، ما الذي سيؤخذ من الأرشيف، ما الذي سيُعاد بناؤه من الصفر، وما الذي سيُرفض نهائيًا لعدم توافقه مع المعمارية الحديثة أو الحوكمة أو الأمان أو تجربة الاستخدام المستهدفة.[file:86]
+- REJECT_LEGACY: عندما يكون العنصر متعارضًا مع المعمارية أو الأمن أو الرؤية الحديثة ويجب استبعاده نهائيًا.[file:86]
+- in tasks like dialogue systems or document summarization by understanding sentence
+- updating parameters to minimize loss eﬃciently across deep LLM architectures.
+- • Uniﬁed Architecture: Combines text and image processing for parameter eﬃciency.
+- LLMs use transformer architectures, massive datasets, and unsupervised pretraining,
+- LLMs are AI systems trained on vast text corpora to understand and generate human-like
+- الهدف: ضمان أن GitHub هو المرجع البرمجي الوحيد قبل أي تحريك معماري.
+- 2. التحليل المعماري والبنية التحتية لإطار العمل
+- تعتمد منصة "Monteerly Studio" على معمارية حديثة وموجهة للأداء الفائق، مستفيدة من أحدث إصدارات أطر العمل لتلبية متطلبات تطبيقات المؤسسات (Enterprise SaaS). يكشف تحليل ملف التكوين package.json أن النظام مبني بالكامل على إطار عمل Next.js 15.1.3 وبيئة React 18.2.0 ``. هذا الاختيار الاستراتيجي يتوافق مع المعايير الصناعية لعام 2026، حيث يوفر موجه التطبيقات (App Router) بنية تحتية قوية تدعم مكونات الخادم (Server Components) بشكل افتراضي [span_0](start_span)[span_0](end_span)[span_1](start_span)[span_1](end_span). يسمح هذا النهج بتقليل حجم حزمة جافا سكريبت (JavaScript Bundle) المرسلة إلى متصفح العميل، مما ينعكس إيجاباً على سرعة التحميل الأولي [span_2](start_span)[span_2](end_span).
+- التزاماً بالتعليمات الصارمة بعدم حذف أي كود قديم نهائياً، تم اعتماد معمارية "التحسين غير التدميري" (Non-Destructive Refactoring):
+- المعمارية: استخدام Paymob Marketplace Payouts لإدارة توجيه الأموال (Routing) واحتساب عمولة المنصة تلقائياً وتوزيعها على المحافظ [span_4](start_span)[span_4](end_span).
+- تم إجراء تدقيق عميق وشامل لملف monteerly_source_full2.txt، سطر بسطر. أدناه الخريطة المعمارية الكاملة للمكونات التي تم استخراجها والاحتفاظ بها وتطويرها:
+- ☐ Timer is accurate (use system clock, not user clock)
+- الكود الذي بين يديك الآن هو أضخم هيكل (Skeleton Architecture) لمنصة SaaS في الشرق الأوسط.
+- «لمسة سينمائية» — لقطات معمارية وتراثية بأسلوب أفلام.
+- تشريح البيئة التشغيلية الأساسية: معمارية Termux على نظام أندرويد
+- لكي يعمل الوكيل الذكي ومحاكي الطرفية بكفاءة وموثوقية، تفرض البيئة متطلبات تشغيلية دقيقة على عتاد وبرمجيات الجهاز. تشير البيانات التقنية إلى وجود محددات واضحة للحد الأدنى من الأنظمة المدعومة. تاريخياً، كانت النسخ الكلاسيكية من التطبيق تدعم إصدارات أندرويد بدءاً من الإصدار 5.0 وحتى الإصدار 12.0 (مع تسجيل بعض التحديات والمشكلات التقنية في الإصدارات الأحدث نظراً لتغييرات سياسات الأمان في أندرويد). ومع ذلك، فإن التحديثات الحديثة والدعم الأمثل لحزم الذكاء الاصطناعي وتشغيل الوكلاء يتطلب نظام أندرويد 7.0 كحد أدنى، وذلك نظراً لتوقف مجتمع المطورين عن تقديم الدعم المعماري للإصدارات الأقدم (أندرويد 5 و6) بسبب افتقارها للمكتبات الحديثة لمعالجة البيانات.
+- أثناء مرحلة التثبيت والتشغيل المستدام لتطبيق Termux والوكلاء الذكيين المدمجين فيه مثل Agent Ultra، يطلب النظام حزمة من الأذونات الجوهرية (Permissions) لضمان التكامل الوظيفي العميق مع نظام التشغيل الأم. يشمل ذلك إذن الوصول المطلق إلى مساحة التخزين (Storage) لتمكين قراءة وكتابة الملفات والبيانات الحساسة، بالإضافة إلى إذن الوصول غير المقيد إلى الشبكة (Network) لتنزيل الحزم المستقلة، واستقبال التحديثات الدورية، وإنشاء قنوات اتصال مستمرة مع الخوادم البعيدة التي قد تستضيف النماذج اللغوية الضخمة. يثير هذا المستوى العالي من الوصول نقاشاً تقنياً واسع النطاق في أوساط المطورين حول القيود الهيكلية التي تفرضها الشركات المصنعة للهواتف الذكية. تتجه أنظمة أندرويد المعاصرة بشكل متسارع لتصبح أنظمة مغلقة، مقيدة، ومملوكة (Proprietary)، مما يقلص من قدرة التطبيقات على التفاعل مع طبقات النظام العميقة. يجادل الخبراء بأن ميزات استثنائية كتلك التي يقدمها Termux يجب ألا تكون محدودة بغياب صلاحيات الجذر (Non-root access)، إلا أن عبقرية أدوات مثل Agent Ultra تتجلى في قدرتها على استغلال الثغرات البرمجية القانونية وواجهات إمكانية الوصول (Accessibility) لتقديم مستوى تحكم شامل ضمن هذه القيود المعمارية الصارمة.
+- المعمارية البرمجية الجوهرية للوكيل الذكي Agent Ultra
+- يُمثل "Agent Ultra" تحفة هندسية في مجال تكامل الأنظمة، حيث تم تصميمه كإطار عمل برمجي متقدم يعمل كـ "خادم" يعتمد على بروتوكول سياق النموذج (Model Context Protocol - MCP) داخل بيئة Termux. هذا التصميم المعماري العبقري يقلب مفاهيم الحوسبة المتنقلة رأساً على عقب؛ فهو يحول الهاتف الذكي من مجرد جهاز طرفي محكوم بواسطة المستخدم البشري، إلى عقدة تنفيذية متقدمة (Execution Node) تخضع لتوجيهات الذكاء الاصطناعي الخارجي.
+- يسمح هذا التنسيق عالي الدقة بأتمتة سير عمل بالغ التعقيد (Complex workflows) باستخدام أوامر اللغة الطبيعية الصادرة من عملاء سطح المكتب. هنا تتجلى نقطة القوة المحورية لمعمارية بروتوكول (MCP)؛ حيث يتم تفريغ العبء الإدراكي، والتحليل المنطقي، والعمليات الحسابية المتوازية المكثفة التي تتطلبها نماذج الذكاء الاصطناعي إلى أجهزة مكتبية قوية أو خوادم سحابية متخصصة، بينما يكتفي جهاز الأندرويد المتواضع بلعب دور الذراع التنفيذي والعين المراقبة، وهو هيكل يضمن مرونة استثنائية واستهلاكاً بالغ الكفاءة للطاقة والموارد المحدودة للهواتف الذكية.
+- أظهرت مبادرات التطوير المستقلة إمكانية بناء بيئات تشغيل فائقة التطور للوكلاء على هواتف الأندرويد. على سبيل المثال، نجح ممارسون في بناء أنظمة وكلاء مثل "ClawLite" بالاعتماد الحصري على معمارية الهاتف (ARM64 Termux) كبيئة تطوير (Vibe coding) دون تدخل من حواسيب تقليدية. اعتمد هذا النظام المرجعي على بناء محرك تشغيل باستخدام لغة بايثون (Python runtime)، متضمناً بوابات اتصال مستمرة (HTTP/WebSocket gateway)، أنظمة مجدولة بدقة (Cron scheduler)، تسليم تقارير وأوامر عبر منصة تيليجرام مع آليات هندسية للتعافي من الانقطاعات (Retry/backoff mechanisms)، وذاكرة معرفية مستمرة (Persistent memory).
+- يؤدي هذا التضافر بين النماذج المختلفة، بدلاً من التعويل على نموذج واحد لكل شيء، إلى اتخاذ قرارات تخطيطية ذات دقة أعلى، وتخفيف ملموس للقيود المفروضة أثناء المهام الشائكة التي يتطلبها التنقل البصري في التطبيقات متعددة النوافذ. يتم تعريف هؤلاء الوكلاء الفرعيين (Subagents) المساعدين داخل منصات مثل Verdent باستخدام ملفات نصية بتنسيق Markdown في مسارات محددة (مثل ~/.verdent/subagents/)، حيث يتلقى كل وكيل موجهاً نظامياً (System prompt) خاصاً به وقواعد استدعاء متفردة تناسب تخصصه الدقيق.
+- كما تشير مقاييس الأداء للمنصات الموازية للأتمتة والوكلاء (مثل منصة CrewAI ذات الطابع المؤسسي وتوزيع الفرق)، يتم بناء بنية معمارية تفصل بين طاقم الوكلاء المستقلين المستمرين في العمل (Autonomous agent teams) وبين خطوط تدفق العمل المبنية على الأحداث (Event-driven workflow pipelines) لإنتاج أنظمة فائقة الجودة. على الصعيد العملي والمؤسسي، أثبتت هذه الأطر جدارة استثنائية، حيث سجلت مؤسسات كبرى مثل PwC قفزات في دقة توليد الشفرات البرمجية من 10% إلى 70%، مع إمكانات تنفيذ أسرع بـ 5.76 ضعف مقارنة بأطر عمل منافسة مثل LangGraph، مما يعكس الأهمية الاقتصادية الفائقة لاستخدام الوكلاء المستقلين.
+- يفتح التكامل المعماري بين خادم بروتوكول MCP، مثل الوكيل Agent Ultra، ونظام تشغيل أندرويد في مسار اتصال مفتوح، الباب واسعاً أمام عدد غير محدود من التطبيقات المبتكرة التي كانت تبدو أقرب للخيال العلمي وتتجه اليوم نحو واقع الأتمتة المؤسسية:
+- 286. Develop a systematic review methodology to assess
+- ecosystem, e.g., “tropical rainforests”]?
+- واﺟﮭﺔ اﻟﻣﺳﺗﺧدم  وﺗﺟرﺑﺔ  اﻟﺗﻔﺎﻋل  Frontend  Architecture)
+- ﻗﺳم ﻣﻧظوﻣﺔ اﻟﻣﻧﺻﺔ  Ecosystem)  ﺑﺻﻔﺣﺔ اﻟﮭﺑوط
+- The  Central  Operating  System  for  Modern  Production."
+- Military-Grade  Asset  Protection.  Your  work  is  not  just  files,  it's  digital  assets.  We  protect  them  with  AES-256  encryption  and  an  Escrow  system  until  delivery."
+- "Route  Not  Found  in  System  Map  (404)."
+- ﻣﺣﺎﻛﺎة أﺳﺎﻟﯾب  ﻋﻠم  اﻟﻧﻔس  اﻟﻣﮭﻧﻲ  ﻟﻣﺳﺎﻋدة اﻟﻣﺑدع  ﻋﻠﻰ  اﻟﻐوص  ﻓﻲ  اﻟﺗرﻛﯾز.  اﻟﺗﻐذﯾﺔ اﻟراﺟﻌﺔ  واﻟﺷﻛﺎوى  "ﺳﺎھم  ﻓﻲ  ھﻧدﺳﺔ  اﻟﻧظﺎم."  /  Contribute  to  System  إﺷﻌﺎر اﻟﻣﺳﺗﺧدم  ﺑﺄﻧﮫ  ﺷرﯾك  ﻓﻲ
+- ﻋﻠﻰ ﺻﻌﯾد اﻟﺑﻧﯾﺔ  اﻟﺗﺣﺗﯾﺔ  ﻟﻠﺑﯾﺎﻧﺎت  واﻟﻣﺻﺎدﻗﺔ،  ﺗﺗﺑﻧﻰ  اﻟﻣﻧﺻﺔ  ﻧﮭﺟﺎً  ھﺟﯾﻧﺎً  Hybrid  Architecture)  ﯾﺟﻣﻊ  ﺑﯾن  ﻣروﻧﺔ  ﻗواﻋد  اﻟﺑﯾﺎﻧﺎت
+- Monteerly  AI  OS  ھو  ﻧظﺎم  ذﻛﺎء  اﺻطﻧﺎﻋﻲ  ﺗﺷﻐﯾﻠﻲ  AI  Operating  System)  ﻣﺻﻣم  ﻟﺗﺣوﯾل  أي  ﻓﻛرة  أو  ﻣﺷروع  إﻟﻰ:
+- اﻟﻧظﺎم ﻻ ﯾﻌﺗﻣد  ﻋﻠﻰ  ﻧﺎﻓذة  اﻟﺳﯾﺎق،  ﺑل  ﻋﻠﻰ  ﺑﻧﯾﺔ  ﺗﺷﻐﯾل  ﺧﺎرﺟﯾﺔ  External  Cognitive  Architecture)  ﺗﺗﺣﻛم  ﻓﻲ  اﻟذاﻛرة  واﻟﺗﻧﻔﯾذ  واﻟﺗﻧﺳﯾق  ﺑﯾن  اﻟﻧﻣﺎذج.
+- 🧠  3)  ﻧظﺎم  اﻟذاﻛرة  Project  Memory  System)
+- "project_id":  "enterprise_app_001",    "vision":  "ﻣﻧﺻﺔ  إدارة  أﻋﻣﺎل  ﻣﺗﻛﺎﻣﻠﺔ,"    state":  "active",    "architecture":  {},    "tasks":  [],    "code_artifacts":  [],    "deployment":  {},    "summary_memory":  "",    "timeline":  []  }
+- 👥  4)  ﻧظﺎم  اﻟوﻛﻼء  Multi-Agent  System)
+- 🛡  8)  ﻧظﺎم  اﻷﻣﺎن  Security  Architecture)
+- Idea  →  Vision  →  Architecture  →  Tasks  →  Code  →  Test  →  Deploy  →  Memory  Save
+- ﻓﯾﻣﺎ ﯾﻠﻲ  ﺗﺻﻣﯾم  Unified  Memory  Architecture  (UMA)  اﺣﺗراﻓﯾﺔ  ﻟﻧظﺎم  Monteerly  AI  OS  ﺑﺣﯾث  ﺗرﺑط:
+- 🧠  Unified  Memory  Architecture  (UMA)  —  Monteerly  AI  OS
+- {    "project_id":  "web_01",    "vision":  "...",    "architecture":  "...",    "tasks":  [],    "code":  [],
+- >  Unified  Memory  Architecture  ﺗﺣول  اﻟذﻛﺎء  اﻻﺻطﻧﺎﻋﻲ  ﻣن  “ﻧﻣوذج  ﯾﻌﺗﻣد  ﻋﻠﻰ  اﻟﻧص  اﻟﺣﺎﻟﻲ”  إﻟﻰ  “ﻧظﺎم  ﻣﻌرﻓﻲ  ﻣﺳﺗﻣر”  ﯾدﯾر  اﻟﻣﻌرﻓﺔ  واﻟﻘرارات  واﻟﻣﺷﺎرﯾﻊ  ﻋﺑر  طﺑﻘﺎت  ذاﻛرة  ﻣﺗﻌددة  ﻣﺗﺻﻠﺔ  ﺑوﺳﯾط
+- ●  Multi-Agent  System  ●  RAG  +  Memory  ●  Tool  Execution  ●  Deployment  Pipeline  ●  Versioning  +  Rollback  ●  Self-Healing
+- ┌──────────────────────┐                  │    USER  REQUEST        │                  └─────────┬────────────┘                            ↓          ┌──────────────────────────────────┐          │    ORCHESTRATOR  CORE  ENGINE        │          │---------------------------------│          │  1.  Intent  Analyzer                │          │  2.  Task  Planner                   │          │  3.  Agent  Router                   │          │  4.  Memory  Manager                 │          │  5.  Execution  Controller           │          │  6.  Self-Healing  Engine            │          └───────────┬──────────────────────┘                      ↓          ┌──────────────────────────────────┐          │  MULTI-AGENT  EXECUTION  LAYER       │          └───────────┬──────────────────────┘                      ↓          ┌──────────────────────────────────┐          │  TOOLS  +  DEPLOYMENT  +  RAG  SYSTEM   │          └──────────────────────────────────┘
+- 2)  Task  Planner  (ﺗﺣوﯾل  اﻟﻔﻛرة  إﻟﻰ  Graph)  Tasks:  1.  Design  architecture  2.  Create  backend  3.  Create  frontend  4.  Connect  database  5.  Deploy  6.  Test
+- USER   ↓  ORCHESTRATOR  CORE   ↓  TASK  GRAPH  ENGINE   ↓  AGENT  CLUSTER   ↓  MEMORY  +  RAG   ↓  EXECUTION  LAYER   ↓  DEPLOYMENT  SYSTEM   ↓  SELF-HEALING  LOOP
+- 🧠  AI  Operating  System  for  Full  Software
+- 🧩  “ھرﻣﯾﺔ  ﺣﻘﯾﻘﺔ”  Truth  Hierarchy  System)
+- 🧠  Monteerly  AI  OS  —  Ultra  Architecture  (MoE  +  Multi-Agent  +  Autonomous  SaaS)
+- >  AI  Operating  System  +  Autonomous  Dev  Team  +  SaaS  Platform  +  Distributed
+- ﺷﺑﻛﺔ ﻧﻣﺎذج  ﻣﺗﺧﺻﺻﺔ  MoE  Runtime)  +  Orchestrator  +  Memory  System  ✅
+- 2)  🧩  اﻟﻣﻌﻣﺎرﯾﺔ  اﻟﻛﺎﻣﻠﺔ  Final  Architecture)
+- │   MoE  Runtime  (Experts  System)        │
+- │   Multi-Agent  System                 │
 
 ## 🚀 Feature Catalog
 - نقد معماري: على الرغم من أن هذا النهج يعمل، إلا أنه "هش" (Brittle). الاعتماد على exec يفتح ثغرات حقن الأوامر (Command Injection) إذا لم يتم تعقيم اسم الملف بدقة متناهية. كما أن معالجة الصور المتزامنة على خادم الويب (Next.js Server) ستؤدي إلى اختناق (Bottleneck) فوري عند زيادة الحمل، حيث أن عمليات OCR تستهلك وحدة المعالجة المركزية (CPU-Bound) بكثافة.
@@ -167,6 +250,62 @@
 - تمثل منصة "Monteerly Studio" إنجازاً هندسياً يدمج قدرات معالجة الوسائط المتقدمة مع الأنظمة المالية المعقدة (FinTech) وبروتوكولات الأمان السيبراني ضمن بيئة سحابية موحدة. إن تنفيذ التحسينات المعمارية المقترحة في هذا التقرير، مقروناً بالخطة التشغيلية الصارمة، سيضمن تحويل هذا المستودع البرمجي إلى منتج مؤسسي قادر على التوسع، ومستعد لإعادة تشكيل اقتصاد صناع المحتوى في المنطقة بكل كفاءة وموثوقية.
 - 1. The Complete Guide to Next.js 15: Features, Setup, and Best Practices | Rajesh R Nair, https://rajeshrnair.com/blog/the-complete-guide-to-nextjs-15-features-setup-and-best-practices
 - اﻷﺧﻴﺮة اﻟﺤﻜﻤﺔ 💡وﻣﻨﺼﺔ ﻧﺎﺟﺤﺔ ﻣﻨﺼﺔ ﺑﻴﻦ اﻟﻔﺮق .Features اﻟـ ﻓﻲ ﻟﻴﺲ ﻣﻴﺘﺔ .ﻳﻮم 20 اﻟـ ﺗﻠﻚ ﻓﻲ ﻫﻮ :ﺗﻜﺘﺸﻒ ﻫﻨﺎ ﻣﻮﺛﻮﻗﺔ؟ Webhooks ﻫﻞ○ آﻣﻨﺔ؟ اﻷﻣﻮال ﻫﻞ○ اﻟﺴﺮﻗﺔ؟ ﻳﺤﺎوﻟﻮن اﻟﻨﺎس ﻫﻞ○ ﻛﺎﻓﻲ؟ 48h Guard اﻟـ ﻫﻞ○ :ﻫﻨﺎ ﻓﺸﻠﺖ إذا .ﻣﺴﻜﻨﺎت = آﺧﺮ ﺷﻲء أي ﺗﺒﺪأ؟ ﻣﺘﻰ .اﻵن .Database :1 اﻟﻴﻮم .Projects :3 اﻟﻴﻮم .Stripe :9 اﻟﻴﻮم .ﻧﺒﻀﻚ ﻓﺤﺺ: 20 اﻟﻴﻮم
+- - تنظيم الفروع الحالية، توحيد التسميات (`main`, `develop`, `feature/*`).
+- - مخرجات: قائمة Tasks نصية مع تصنيف (Feature/Bug/Refactor/Doc) وأولوية.
+- The full archive has already been merged into the current project. Therefore, the project must not continue as if archive comparison is still the active concern. The immediate priority is now stabilization, cleanup, verification, and roadmap correction before any major new feature expansion or cloud-agent scaling.
+- - Reduced duplication across modules, pages, components, prompts, and configs.
+- - Review top-level folders and module boundaries.
+- - Detect duplicate features, pages, and components.
+- - No major new feature expansion should begin unless directly required for stabilization.
+- [^ref-master]: مواصفة Monteerly‑AI‑OS‑Master‑Spec 1.0 التي تعرّف الطبقات والوكلاء والذاكرة الموحدة.
+- - كل Agent عبارة عن Endpoint/Service (Serverless Function) أو وحدة منطقية يستطيع Orchestrator استدعاءها مع سياق محدد.
+- - PostHog لتحليل سلوك المستخدمين، الأحداث، Feature Flags.
+- - **PostHog:** تحليلات استخدام، Funnels، Feature Flags.
+- - ينشئ فرعًا جديدًا في GitHub (`feature/video-library`).
+- - Monteerly‑AI‑OS سيُبنى كنظام طبقي واضح فوق أدوات مفتوحة/مجانية قدر الإمكان، مع Orchestrator ذكي، Multi‑Agent System متخصّص، RAG عالي الجودة، وذاكرة مشاريع موحدة (UMA v3).
+- - أي ميزة جديدة أو صفحة جديدة يجب أن تُسأل: هل تتوافق مع هذه الرؤية؟ هل تضيف قيمة للمستخدم؟ هل تنسجم مع مرجعيتنا الشرعية والقانونية؟
+- If a query is in this Never Search category, always answer directly without searching or using any tools. Never search the web for queries about timeless information, fundamental concepts, or general knowledge that Claude can answer directly without searching at all. Unifying features:
+- If a query is in this Do Not Search But Offer category, always answer normally WITHOUT using any tools, but should OFFER to search. Unifying features:
+- If queries are in this Single Search category, use web_search or another relevant tool ONE single time immediately without asking. Often are simple factual queries needing current information that can be answered with a single authoritative source, whether using external or internal tools. Unifying features:
+- CRITICAL: Claude always responds as if it is completely face blind. If the shared image happens to contain a human face, Claude never identifies or names any humans in the image, nor does it state or imply that it recognizes the human, also avoiding referencing the human in a web search tool search query. Claude is face blind to all humans, even if they are famous celebrities, business people, or politicians. Claude does not mention or allude to details about a person that it could only know if it recognized who the person was (for example their occupation or notable accomplishments). Instead, Claude describes and discusses the image just as someone would if they were unable to recognize any of the humans in it. Claude can request the user to tell it who the individual is. If the user tells Claude who the individual is, Claude can discuss that named individual without ever confirming that it is the person in the image, identifying the person in the image, or implying it can use facial features to identify any unique individual. It should always reply as someone would if they were unable to recognize any humans in the image, even if the humans are famous celebrities or political figures.
+- يتم تحليل مشروع GitHub الحالي وإنتاج جرد مماثل بعناصر موحدة مثل:
+- REWRITE_FROM_ARCHIVE_IDEA: عندما تكون فكرة الأرشيف قوية لكن الكود نفسه لا يصلح، فيتم إعادة بناء الميزة من الصفر.
+- إذا كانت ميزة موجودة في الأرشيف لكنها لا تنسجم مع الرؤية النهائية الموجودة في ملفات مجلد monteerly Studio platform، فلا تُدمج حتى لو كانت جيدة تقنيًا.[file:86]
+- كل عنصر يخرج بقرار MERGE_ARCHIVE_INTO_CURRENT أو REWRITE_FROM_ARCHIVE_IDEA يجب أن يتحول إلى Story تنفيذية موحدة الصياغة.
+- Rationale: الميزة لا تزال مطلوبة وفق الرؤية الحالية، لكن تنفيذها القديم غير متوافق مع بنية Next.js الحالية.
+- DoD: تعمل الميزة داخل البنية الحالية، تمر عبر CI، وتُوثق في Memory OS.
+- • Modular Architectures: Adding task-speciﬁc modules to avoid overwriting.
+- These features enhance scalability and performance in tasks like translation.
+- 20 Question 20: How does GPT-4 diﬀer from GPT-3 in features
+- These features make Gemini more stable and scalable than models like GPT-4.
+- Discriminative AI, like sentiment classiﬁers, predicts labels based on input features, mod-
+- الشراء الفوري عبر روابط الدفع (Guest Checkout): استلهاماً من منصة Zadwork، تم اقتراح ميزة السماح للعملاء بشراء الخدمات الجاهزة أو دفع المستحقات عبر روابط دفع آمنة مباشرة دون الحاجة لإنشاء حساب معقد ``.
+- بمعدل وحدة واحدة يوميًا أو يومًا كل يومين
+- الوحدة الثانية: الأنواع الأساسية للذكاء الاصطناعي
+- الوحدة الثالثة: كيف تتعامل مع أدوات الذكاء الاصطناعي؟
+- الوحدة الرابعة: فن كتابة الأوامر الاحترافية
+- الوحدة الخامسة: الذكاء الاصطناعي في العمل المكتبي
+- الوحدة السادسة: الذكاء الاصطناعي في الإدارة والمال
+- الوحدة السابعة: الذكاء الاصطناعي في القانون والكتابة الاحترافية
+- الوحدة الثامنة: الذكاء الاصطناعي في التصميم، المونتاج، والمحتوى
+- "اكتب سكربت فيديو مختصر (30–40 ثانية) لشرح ميزة [المنتج] بشكل بسيط وواضح، يناسب جمهور غير متخصص، اختم بدعوة متابعة."
+- الوحدة التاسعة: الذكاء الاصطناعي في البرمجة وبناء المواقع والبرامج
+- الوحدة العاشرة: الأمان، الخصوصية، والحدود
+- الفكرة أن تدرس وحدة واحدة في اليوم أو يومًا كل يومين، وتكرر ما تتعلمه في شغلك اليومي.
+- لتحويل كل وحدة إلى تطبيق عملي اتبع هذه الخطوات:
+- اختَر مهارة واحدة من الوحدة وطبّقها في شغلك أو حياتك اليومية
+- بما أنك تجمع بين الإدارة، المحاسبة، القانون، المونتاج، والبرمجة، اختر مهارة واحدة من كل وحدة تُطبّقها في يومك، مثل:
+- ابدأ بالوحدة الأولى اليوم، وطبّق درسًا واحدًا كل يوم. بعد 30 يومًا، ستجد نفسك قد تحولت استخدام الذكاء الاصطناعي إلى عادة يومية تزيد إنتاجيتك وكفاءتك بشكل ملموس.
+- الفرق بين منصة ناجحة ومنصة ميتة ليس في الـ Features.
+- وتذكر تحذيرى هذا دائما في جميع الخطوات القادمة بعدم حذف أى شىء من التصميم نهائيا سواء عنصر أو مهمة أو ميزة أو مكون أو قسم أو صفحة أو أى شىء حرفياً ولا تقوم بتكرار أى ملف فقط قم بالتطوير والإضافة فقط دون حذف أو هدم أو إغفال أى مكون نهائيا
+- والآن أكتب تقرير شامل بجميع العناصر والأهداف والمهام والميزات والمكونات الناقصة فى جميع صفحات التصميم وتكون مبتكرة ومتطورة جدا ومستقبلية قابلة للتنفيذ وتناسب التصميم وتزيد من الاحترافية والربح والتنافسية عربياً وعالمياً والانتشار السريع والمستدام وكذلك بالمثل جميع الاقسام والصفحات الناقصة وتطوير انواع المستخدمين الحاليين مثل مبتدئ ومحترف وخبير وجميع الأنواع الأخرى لجميع المستخدمين الحاليين وزيادة عدد المستخدمين وانواعهم بما يتناسب مع الرؤية الشاملة للتصميم النهائي وتطويرها بما يزيد من الربحية والتنافسية عربياً وعالمياً والانتشار عربياً وعالمياً و بتقرير شامل ومفصل يحتوي على أدوار جميع المستخدمين الحاليين بجميع انواعهم دور دور ونوع نوع وبالتفصيل الملل وكذلك بالمثل جميع المستخدمين المضافين وذلك بتقرير احترافي ومتكامل ونهائي ويتلافى جميع السلبيات والاخطاء والمشاكل بجميع انواعها وجوانبها وتحليل كل شيء حرفياً قبل وبعد التطوير من جميع الجوانب وكذلك بالمثل بالنسبة للحلول وسهولة الاستخدام وزيادة الالفه والأمان وكل شيئ احترافي تراه أنت الأنسب للمنصة في هذا المجال وكذلك بالمثل بالنسبة للأهداف الحالية والجديدة المضافة وذلك عقب مراجعة هذه الدردشة من البداية حتى النهاية جيداً وحللها كويس جدا رد رد وطبقاً للرؤية الشاملة النهائية للتصميم النهائي للمنصة ومراجعة جميع المواقع والمنصات المنافسة عربياً وعالمياً لكل عنصر ومهمة وميزة ومكون وقسم وصفحة وذلك ببحث عميق وشامل لكل شيء حرفياً وما تراه أنت الأنسب للمنصة ومراجعة هذه الدردشة من البداية حتى النهاية جيداً وحللها كويس جدا رد رد وببحث عميق وشامل ومتكامل ونهائي بكل شيئ حرفياً ونفذ جميع التعليمات السابقة بكل دقة واحترافية وعمق وبحث عميق وشامل ومتكامل ونهائي بكل شيئ حرفياً وبالتفصيل الملل وعنصر عنصر وبتحليل عميق جدا قبل وبعد التطوير ويتلافى جميع السلبيات والاخطاء والمشاكل والنواقص وتطبق جميع التحسينات والتطويرات والإقتراحات والأفكار والايجابيات ولاتنسى تنسي إدراج أى شىء
+- لكي يتمكن الذكاء الاصطناعي من الإحاطة الكاملة ببيئة الهاتف المادية والبرمجية، يقدم Agent Ultra مجموعة قوية واستثنائية تتألف من أكثر من 45 أداة متميزة تمثل واجهات برمجة وظيفية تتيح التفاعل العميق والشامل مع الجهاز (Deep interaction and device control). تُشكل هذه الأدوات طبقة تجريدية (Abstraction Layer) بالغة الأهمية تجعل من الممكن لنموذج الذكاء الاصطناعي معالجة الهاتف المادي ومكوناته كأنها مجموعة من المتغيرات والموارد القابلة للبرمجة اللانهائية.
+- الميزة الرائدة: الأتمتة المتقدمة لواجهة المستخدم المعتمدة على الرؤية
+- تُعد تقنية أتمتة واجهة المستخدم (UI Automation) السمة الرئيسية والجوهرية (Flagship feature) للوكيل Agent Ultra، وهي التي تفصله عن بقية أدوات التحكم التقليدية. تاريخياً، في هندسة البرمجيات، كانت أتمتة نظام أندرويد (عبر أدوات مثل Appium أو واجهات الاختبار) تعتمد كلياً على معرفات العناصر (DOM selectors) أو بروتوكولات مطوري التطبيقات المخصصة. المشكلة المتأصلة في هذا النهج هي الهشاشة المفرطة؛ فإذا قام أي تطبيق بتحديث واجهته وتغيير معرفات الأزرار، تنهار نصوص الأتمتة فوراً. يتجاوز الوكيل الذكي Agent Ultra هذا القيد المعماري المعضلة من خلال الاعتماد على التحليل البصري والمكاني الديناميكي لواجهة المستخدم الرسومية.
+- إدارة الموارد، الامتثال واستنزاف الطاقة (Resource Throttling and Compliance): تتطلب العمليات المستمرة المستندة إلى معالجة الإطارات المرئية ولقطات الشاشة المتتابعة، وتحليل شجرة عناصر واجهة المستخدم عبر تفريغات (XML dumps) المعقدة استهلاكاً ضارياً ومستمراً لدورات وحدة المعالجة المركزية، مما يتسبب في استنزاف سريع ومتسارع للبطارية وإشغالاً هائلاً لسعات الذاكرة العشوائية المتاحة. ورغم أن عمليات المعالجة العصبية الضخمة تُنقل لمعالجتها خارج الهاتف (Offloaded to Desktop/Cloud)، إلا أن أعباء إرسال إطارات الشاشة بانتظام عبر الشبكة اللاسلكية واستقبال تدفقات الأوامر في الوقت الحقيقي تشكل تحدياً حرجاً على استقرارية الأجهزة القديمة التي لا تزال تُستخدم، وخصوصاً تلك المشمولة في نطاق التوافق الممتد من أنظمة أندرويد 5.0 إلى النسخ الوسطية. علاوة على ذلك، في سياق الاستخدام المؤسساتي (Enterprise Use)، يجب أن تتأكد فرق التطوير التي تعتمد حلول الوكلاء المستقلين وسير العمل المؤتمت من امتثال أدواتها وتقنياتها التنسيقية لمعايير الصناعة، مثل شهادات (SOC 2 Type II) وشهادات الآيزو الأمنية (ISO 27001) المطبقة في منصات الأتمتة الموثوقة والمصادق عليها (كما هو الحال في أدوات تكامل قوية مثل منصة Zencoder)، للتأكد من حماية البيانات المتدفقة من وإلى الوكيل.
+- 1. 3519: How Verdent AI is Building the Next Generation AI Coding Agents. | The Tech Talks Network | Enterprise Tech Podcasts, https://techtalksnetwork.com/podcast/tech-talks-daily/episode/3517-how-verdent-ai-is-building-the-next-generation-ai-coding-agents 2. Termux: Advanced Android Remote Control & UI ... - MCP Market, https://mcpmarket.com/server/termux 3. Gemini 3 Just Launched: Google Finally Delivers 'Project Astra' Features (Better Than GPT-5?), https://aitoolanalysis.com/gemini-3-review/ 4. How to install and Setup Termux on Android: A beginner's guide - DEV Community, https://dev.to/techwithdavid/how-to-install-and-use-termux-on-android-a-beginners-guide-1h23 5. What Is Termux? Exploring Its Architecture, Super User and Rooted Non-Rooted Functionality | by Abimanyu | T3CH | Medium, https://medium.com/h7w/what-is-termux-762c4b3bcdbe 6. Termux Wiki, https://wiki.termux.com/wiki/Main_Page 7. Verdent AI｜Agentic Coding with Multiple Parallel Agents, https://www.verdent.ai 8. I built an AI agent runtime on Termux, fully on my phone, using AI to write the code - Reddit, https://www.reddit.com/r/termux/comments/1rlkiqc/i_built_an_ai_agent_runtime_on_termux_fully_on_my/ 9. Termux AI Assistant - Run Powerful AI Models in Your Android Terminal! - YouTube, https://www.youtube.com/watch?v=E00ExeuaJxo 10. HKUDS/nanobot: " nanobot: The Ultra-Lightweight Personal AI Agent" - GitHub, https://github.com/HKUDS/nanobot 11. The Definitive Guide to Turning Your Old Phone into a 24/7 AI Agent | by Ganesh Sowdepalli, https://medium.com/@ganeshsowdepalli/the-definitive-guide-to-turning-your-old-phone-into-a-24-7-ai-agent-ce01cf873106 12. Verdent & VS Code Extension: This IS SO GOOD! This AI Coding AGENT combines GPT-5 & Claude! - YouTube, https://www.youtube.com/watch?v=mGuV_urjDBE 13. Multi-Agent Coding: Team Tools - Verdent AI, https://www.verdent.ai/guides/multi-agent-coding-tools 14. Verdent vs Codex App (2026): Parallel Engineering IDE vs Universal Agent OS, https://www.verdent.ai/guides/verdent-vs-codex-app-2026 15. Termux hacking GPTs - There's An AI For That®, https://theresanaiforthat.com/gpts/s/termux+hacking/ 16. Ai generator - There's An AI For That®, https://theresanaiforthat.com/s/ai+generator/ 17. How to Get Started with Verdent AI (Quick Guide) - Skywork, https://skywork.ai/blog/vibecoding/verdent-ai-quick-start-guide/ 18. 2,746 Agent Id Royalty-Free Images, Stock Photos & Pictures | Shutterstock, https://www.shutterstock.com/search/agent-id 19. Daily Agent royalty-free images - Shutterstock, https://www.shutterstock.com/search/daily-agent 20. Agent on termux android? : r/AI_Agents - Reddit, https://www.reddit.com/r/AI_Agents/comments/1jmpzek/agent_on_termux_android/ 21. AI Coding Tools Comparison 2026: Agents, IDEs & Multi-Agent Platforms - Verdent Guides, https://www.verdent.ai/guides/ai-coding-tools-comparison-2026
+- 1.  The  Complete  Guide  to  Next.js  15:  Features,  Setup,  and  Best  Practices  |  Rajesh  R  Nair,
+- https://rajeshrnair.com/blog/the-complete-guide-to-nextjs-15-features-setup-and-best-practices
 
 ## 📱 Pages & Screens
 - في عصر يشهد تحولات جذرية في هيكلية الاقتصاد الرقمي، تبرز الحاجة الملحة لمنصات تتجاوز مفهوم "الأسواق التقليدية" (Marketplaces) لتصبح "أنظمة تشغيل" (Operating Systems) متكاملة تدير دورة حياة العمل الإبداعي بالكامل. إن وثيقة "Monteerly_Master_Vision_V5" لا تمثل مجرد خطة تطوير برمجية، بل هي دستور تقني واستراتيجي يهدف إلى تحويل "Monteerly Studio" من مجرد واجهة أولية واعدة (MVP) إلى بنية تحتية رقمية راسخة تقود قطاع الإنتاج الإعلامي في الشرق الأوسط وشمال أفريقيا (MENA). يستند هذا التقرير إلى تحليل جنائي دقيق للكود المصدري الحالي، واستخلاص العبر من عمالقة الصناعة مثل Frame.io وUpwork، ودمج أحدث أنماط هندسة البرمجيات في Next.js 15.
@@ -422,6 +561,55 @@
 - 👥 الجزء الثاني: مصفوفة المستخدمين الهرمية (The Tiered Matrix)
 - تم إعادة هيكلة الـ 22 دوراً ليس كقائمة مسطحة، بل كـ طبقات (Layers). المستخدم لا يرى الأدوار التي لا تهمه.
 - * الطبقات تحمي المستخدم: المبتدئ لا يرى تعقيدات المحترف، والمحترف لا يرى تعقيدات المؤسسة.
+- - تحديد الوكلاء (Agents) والنماذج (LLMs) والأدوات الخارجية المستخدمة في كل مرحلة.
+- - الاتصال بـ Supabase عبر مفتاح Service Role مخزن في Env (ليس في الكود).
+- - Validate the main routes and core user flows.
+- - Confirm the intended role of AI OS layers.
+- 1. **Multi‑Project & Multi‑User Support**
+- - توسيع جداول Supabase لإضافة tenants وroles.
+- [^ref-llm]: ملف "LLM‑Interview‑Questions.pdf" المستخدم كمرجع لأسئلة التقييم الخمسين.
+- الهدف هو الوصول إلى نظام شبه ذاتي (Semi‑Autonomous) يستطيع استقبال أهداف عالية المستوى من المستخدم، تحويلها إلى خطط تنفيذية، توليد تعديلات على كود المشروع في GitHub، تشغيل اختبارات وعمليات نشر تلقائية، مراقبة المنظومة، ثم استخدام نتائج المراقبة لبناء تحسينات جديدة، مع حلقة تقييم مستمرة تعتمد على Benchmark من 50 سؤال LLM Interview لتقييم النماذج والوكلاء وسلوك النظام ككل.[^ref-llm-questions]
+- - مستخدم واحد في البداية (المالك/المؤسس) مع خطة لدعم أدوار متعددة لاحقًا (Admin, Editor, Client).
+- العقل المركزي الذي يستقبل الأهداف من المستخدم، يبني خطة مهام، يختار الوكلاء والنماذج، ينسّق تنفيذ الـ Workflows، ويراقب النتائج ويحدِّث Project Memory.
+- - يقدم تقارير للمستخدم وMeta‑Agent حول أداء النماذج والوكلاء.
+- - الأهداف المدخلة من المستخدم، حالتها، الأولويات.
+- - **PostHog Cloud Free** كبداية لتحليلات المستخدم والمنتج.
+- السيناريو التالي يوضح دورة أتمتة كاملة من هدف المستخدم إلى النشر والتحسين:
+- - مدخلات المستخدم تُعامل دائمًا كبيانات غير موثوقة؛ قبل تنفيذ أي أمر حرج يتم تمريره عبر طبقة Validation (Security Agent) للتأكد من خلوه من أوامر خبيثة.
+- - الخطط المجانية لخدمات مثل Supabase/Vercel/PostHog/LLM APIs قد لا تكفي عند زيادة الاستخدام (مستخدمين/مشاريع/Traffic).
+- - دعم Multi‑Project & Multi‑User & Role‑Based Access.
+- [^ref-llm-questions]: ملف "LLM‑Interview‑Questions.pdf" المستخدم كـ Benchmark مكون من 50 سؤالاً حول LLM.
+- export async function signInUser({ email, password }: LoginParams) {
+- const userCredential = await signInWithEmailAndPassword(auth, email.trim(), password);
+- const firebaseUser = userCredential.user;
+- const userDocSnap = await getDoc(userDocRef);
+- throw new Error("بيانات المستخدم غير موجودة");
+- const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
+- errorMessage = "البريد الإلكتروني مستخدم بالفعل";
+- export async function getUserProjects({ userId, status, limitCount = 100 }: any) {
+- export async function updateProject({ projectId, userId, data }: any) {
+- if (projectSnap.data().userId !== userId) {
+- export async function deleteProject({ projectId, userId }: any) {
+- if (!userId || !title || !clientName || !clientEmail) {
+- export async function getUserBriefs({ userId, status, limitCount = 100 }: any) {
+- export async function updateBriefStatus({ briefId, userId, status, data }: any) {
+- if (briefSnap.data().userId !== userId) {
+- const result = await signInUser({ email, password });
+- import { registerUser } from '@/lib/auth';
+- const result = await registerUser({ email, password, confirmPassword, fullName });
+- import { signOutUser } from '@/lib/auth';
+- const result = await createProject({ userId, title, description, ... });
+- import { getUserProjects } from '@/lib/db';
+- const result = await getUserProjects({ userId, status });
+- const result = await updateProject({ projectId, userId, data });
+- const result = await deleteProject({ projectId, userId });
+- const result = await createBrief({ userId, title, clientName, ... });
+- import { getUserBriefs } from '@/lib/db';
+- const result = await getUserBriefs({ userId, status });
+- const result = await updateBriefStatus({ briefId, userId, status });
+- - يقوم نظام الذكاء الاصطناعي ببناء **مسار مخصص** للمستخدم:
+- - **Onboarding**: بناء ملف المستخدم الأولي.
+- > "كل مستخدم يمكنه الإعلان مجانًا داخل المنصة، لكن قوة وصول إعلانه تعتمد على **الثقة والجودة** لا على الدفع فقط".
 
 ## 🔄 Workflows
 - يقوم النظام باستلام الصورة كـ FormData، وكتابتها في ملف مؤقت داخل os.tmpdir()، ثم استدعاء عملية فرعية child_process.exec لتشغيل Tesseract OCR.
@@ -467,38 +655,200 @@
 - تم تصميم هذا المستند ليكون دليلاً شاملاً للمبتدئين، حيث يقوم بتفكيك 50 مفهوماً أساسياً ومتقدماً حول النماذج اللغوية الكبيرة وتبسيطها باستخدام أمثلة واقعية ومقارنات عملية.
 - المفهوم التقني: التجزئة هي عملية تكسير النص إلى وحدات أصغر (Tokens) مثل الكلمات، أجزاء الكلمات، أو الحروف. الحواسيب لا تفهم النصوص، بل تعالج الأرقام.
 - المفهوم التقني: LORA هي طريقة لتحديث أجزاء صغيرة جداً من النموذج بدلاً من إعادة تدريبه بالكامل. QLORA تضيف عملية ضغط (Quantization) لتقليل استهلاك الذاكرة أكثر.
+- - Workflow في GitHub Actions يُستدعى يدويًا أو عند Tags خاصة لتشغيل Benchmarks وتخزين النتائج.
+- أفضل طريقة عملية لاستخدام هذا الملف ليست تشغيل الخمسين سؤالًا دفعة واحدة، بل تقسيمها إلى طبقات اختبار متدرجة. هذا يجعل التقييم أكثر واقعية، أقل كلفة، وأسهل في المقارنة والتحسين مع الوقت.[file:88]
+- أفضل طريقة عملية الآن هي استخدام هذا الملف كسجل تشغيل أولي داخل Sprint 01، مع البدء بمجموعة Core 10 فقط من أصل 50 سؤالًا، ثم التوسع لاحقًا بشكل منظم. هذا الأسلوب هو الأكثر واقعية واحترافية لأنه يحول المحتوى المرفق إلى أداة تقييم قابلة للاستخدام الفعلي داخل Monteerly‑AI‑OS دون تحميل المشروع عبئًا أكبر من اللازم في هذه المرحلة.[file:88][file:86]
+- - Meta‑Agent يراقب أداء الوكلاء والنماذج ويقترح تعديل الـ Prompts/Workflows.
+- - ينسّق عملية Deploy على Vercel/Netlify (Environment Variables, Preview URLs, Production).
+- - يتعامل مع n8n: إنشاء/تعديل Flows، ربط GitHub/Supabase/Notifications.
+- - يقترح تحسينات على Prompts/Workflows/Assignments.
+- - DevOps Agent مسؤول عن إنشاء/تحديث هذه الـ Workflows.
+- - **n8n** (Self‑Hosted أو Cloud Free) كمحرك Workflows رئيسي لربط GitHub/Supabase/Monitoring/Notifications.
+- | Automation | إدارة Flows في n8n | n8n API, Supabase | إنشاء تنبيهات، Jobs، مزامنة خارجية |
+- - DevOps/Deployment Agent يستطيع تعديل Workflows وEnv vars وفق سياسات محددة.
+- - أي عملية Merge إلى main أو تغيير Env حساس تتطلب موافقة بشرية صريحة.
+- - البدء بـ **MVP بسيط** يقلل عدد الوكلاء والـ workflows، ثم التوسيع التدريجي.
+- apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "",
+- authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "",
+- projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "",
+- storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "",
+- messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "",
+- appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "",
+- if (process.env.NODE_ENV === "development") {
+- ### 6.6 التحويل إلى دخل (Monetization Flow)
+- - تشمل نصوصًا، ودورات، وفيديوهات، وعروضًا تقديمية، ونماذج عملية، وملفات قابلة للتحميل.
+- - Create artifacts for text over 20 lines and meet criteria above. Shorter text (less than 20 lines) should be kept in message with NO artifact to maintain conversation flow.
+- - The tensorflow library is available to be imported by `import * as tf from 'tensorflow'`
+- - The Papaparse library is available to be imported. You should use Papaparse for processing CSVs.
+- - The SheetJS library is available to be imported and can be used for processing uploaded Excel files such as XLSX, XLS, etc.
+- - One of the biggest challenges when working with CSVs is processing headers correctly. You should always strip whitespace from headers, and in general be careful when working with headers.
+- - THIS IS VERY IMPORTANT: If you need to process or do computations on CSVs such as a groupby, use lodash for this. If appropriate lodash functions exist for a computation (such as groupby), then use those functions -- DO NOT write your own.
+- - When processing CSV data, always handle potential undefined values, even for expected columns.
+- For the most complex queries in the Research category, when over five tool calls are warranted, follow the process below. Use this thorough research process ONLY for complex queries, and NEVER use it for simpler queries.
+- I'll look into how the recent semiconductor export restrictions should impact your investment strategy. This is a complex question, so I'll need to use several tools in a thorough  research process. I'll start by searching the web and fetching relevant sources to gather information about recent export restrictions. Then, I'll investigate how semiconductor restrictions have historically impacted tech supply chains. Since you said "our", I can infer you'd like information about your specific company. Therefore, I'll use your enabled integrations like the Google Drive and Gmail tools to find relevant information. I'll identify companies in your portfolio and analyze which firms may be affected positively or negatively by the export restrictions. Finally, after using all these tools to retrieve the key facts, I'll synthesize the results into a detailed report. Time to dig into the research!
+- QUERY: "Help me write a script to process this CSV file"
+- سجل بالمخاطر التقنية والتنظيمية لكل عملية دمج أو استبعاد.
+- Definition of Done: ما الذي يجب أن يتحقق لكي تعتبر العملية مكتملة؟
+- "ial." This process is vital because LLMs process numerical representations of tokens,
+- The context window refers to the number of tokens an LLM can process at once, deﬁning
+- quence, often of diﬀerent lengths. They consist of an encoder to process the input and a
+- "currency." This approach allows LLMs to process rare or new words, ensuring robust
+- • Parallel Processing: Self-attention enables simultaneous token processing, unlike
+- • Multimodal Input: Processes text and images.
+- Encoders process input sequences into abstract representations, capturing context. De-
+- أفضل طريقة عملية لاستخدام هذا الملف هي عدم محاولة تعبئته بالكامل دفعة واحدة. بدلًا من ذلك، يتم العمل عليه على دفعات صغيرة ومنظمة:
+- وأنشئ منه نسخة عملية في Google Sheets أو Supabase Table.
+- هذا الملف هو أفضل نقطة انطلاق عملية واحترافية لتحويل Archive‑Diff‑Plan من وثيقة منهجية إلى نظام قرار تشغيلي. وهو لا يدّعي أنه يحتوي الآن على كل عناصر الأرشيف، بل يوفر البنية النهائية الصحيحة التي ستُملأ لاحقًا بعد مراجعة مباشرة لـ monteerly_source_full2.txt، والكود الحالي في GitHub، وملفات مجلد monteerly Studio platform فقط.[file:86]
+- هذا الـ Sprint هو أول مرحلة تنفيذ حقيقية بعد اكتمال ملفات التخطيط الثلاثة السابقة. هدفه ليس بناء Monteerly‑AI‑OS بالكامل، بل تثبيت الأساس التنفيذي الذي يسمح ببدء التطوير المنضبط والآمن والقابل للتوسع، بحيث تصبح لديك بنية عملية يمكن البناء فوقها دون إعادة فوضوية للقرارات.[file:86]
+- وضع بداية عملية لإدارة الأرشيف والتقييم دون الدخول في التعقيد الكامل بعد.
+- الهدف: إدخال أول نواة عملية للـ AI‑OS في بنية المشروع دون تعقيد زائد.
+- اختيار 5 إلى 10 أسئلة فقط كبداية Sprint 01 لاستخدامها لاحقًا في مقارنة عملية بين النماذج.[file:88]
+- لذلك، تعلّمه لم يعد رفاهية، بل أصبح مهارة عملية مهمة في أي مجال تقريبًا.
+- من أكثر الأساليب العملية فائدة للمبتدئين إطار من 5 خطوات: المهمة، السياق، المرجع، التقييم، ثم التحسين.
+- هذا النوع من البناء هو الأساس في الدورات العملية الحديثة الخاصة بكتابة الأوامر.
+- إذن، التفاعل مع الذكاء الاصطناعي ليس مرة واحدة فقط، بل هو عملية تحسين متدرج.
+- ولهذا تعتمد الكورسات العملية على مهام مثل البريد، الاجتماعات، والجداول لأنها تمثل الاستخدام الحقيقي في بيئة العمل.
+- وهذا مفيد جدًا لأنه يحول الكلام غير المرتب إلى مادة عملية قابلة للإرسال والمتابعة.
+- وبكتابة أوامر موجزة مثل: "حلّل هذا الملف وابحث عن أعلى مصروف وابحث عن أي انحراف مفاجئ"، تتحوّل المعطيات إلى ملاحظات عملية تساعد في اتخاذ القرار.
+- success_url: `${process.env.FRONTEND_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+- cancel_url: `${process.env.FRONTEND_URL}/payment/cancel`,
+- `UPDATE stripe_webhooks SET processed = ?, processed_at = ? WHERE event_id = ?`,
+- console.error('Webhook processing error:', error);
+- [creator.id, amount, fee, netAmount, true, 'processing']
+- event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+- console.error('Async webhook processing failed:', error);
+- قدرات التنفيذ عن بعد وإدارة سير العمل (Remote Execution and Workflow Orchestration)
+- التأثر التكاملي واستهلاك العتاد المادي: يتوقف النجاح التشغيلي الكامل والحصول على أقصى إنتاجية من الوكلاء المعقدين المتصلين بشاشات تفاعلية، على توفر بنية تحتية شبكية محلية ذات موثوقية عالية وسرعة فائقة (Low-latency networks)، نظراً للاعتماد المفرط للوكيل على بث بيانات الاستشعار البصري الدقيقة. ونظراً لوجود نطاق توافق متسع مع إصدارات أندرويد المتفاوتة، ومعايير أجهزة متباينة، قد تتطلب الأجهزة المتقادمة تفعيل استراتيجيات لتقييد تدفق الاستعلامات (Request Throttling Process) وإدارة طابور المهام بذكاء، للحيلولة دون تعرض نظام تشغيل أندرويد وذاكرته للتوقف أو الانهيار المفاجئ (Memory Exhaustion).
+- -- Table: stripe_webhooks (بدون Paymob الآن)CREATE TABLE stripe_webhooks (    id BIGINT PRIMARY KEY AUTO_INCREMENT,        event_id VARCHAR(255) UNIQUE,    event_type VARCHAR(100),        webhook_json JSON,        transaction_id BIGINT,        processed BOOLEAN DEFAULT FALSE,    processed_at TIMESTAMP NULL,        error_message TEXT,        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,        FOREIGN KEY (transaction_id) REFERENCES transactions(id) ON DELETE SET NULL,        INDEX idx_event_id (event_id),    INDEX idx_processed (processed));
+- // Background Job: Release Escrow after 48hreleaseQueue.process(async (job) => {  const { escrowAccountId } = job.data;    const escrow = await db.query(    'SELECT * FROM escrow_accounts WHERE id = ? AND status = ?',    [escrowAccountId, 'funded']  );    if (!escrow) return; // Already released or not funded    // Mark as available for release (but wait for approval)  await db.query(    `UPDATE escrow_accounts SET status = ? WHERE id = ?`,    ['held', escrowAccountId] // Now waiting for Client approval  );});
+- # 5. Manual test flow:curl -X POST http://localhost:3000/api/v1/payments/checkout/stripe \  -H "Authorization: Bearer TOKEN" \  -H "Content-Type: application/json" \  -d '{    "escrow_account_id": 1,    "amount_usd": 100  }'
+- // webhook.js - RETURN IMMEDIATELYapp.post('/webhook/stripe', express.raw({type: 'application/json'}), async (req, res) => {  const sig = req.headers['stripe-signature'];    let event;  try {    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);  } catch (err) {    return res.status(400).send('Webhook Error');  }    // ✅ RETURN IMMEDIATELY (don't wait for DB)  res.json({ received: true });    // Process in background  handleWebhookAsync(event);});
+- // Process asyncasync function handleWebhookAsync(event) {  try {    // Check if already processed    const existing = await db.query(      'SELECT id FROM stripe_webhooks WHERE event_id = ?',      [event.id]    );        if (existing.length > 0) {      return; // Already handled    }        // Process...    // (rest of webhook logic)      } catch (error) {    console.error('Async webhook processing failed:', error);    // Log to Sentry/tracking  }}
+- أرشدني في عملية العصف الذهني للأفكار الخاصة بموضوع بحثي في[مجال محدد] .
+- discussion section has a logical flow and make
+- suggestions to enhance the content flow - [Insert
+- أخبرني بالتطبيقات العملية للنتائج التالية-  [
+- [الموضوع]على الدراسات المستقبلية أو  التطبيقات العملية .
+- align with the overall structure and flow of the
+- 438. How do you ensure coherence and flow in a paper on
+- a logical flow and potential section headers,
+- flow. In the reference list, meticulousl y organize
+- alternatives. Pay attention to the logical flow of
+- اختتم  عملية   التدقيق  اللغوي   الخاصة  بك   بالتحقق   من   أن   الجزء   يتماشى   مع   المعايير   الأكاديمية   ويعزز
+- enhancing the coherence and flow of an academic paper
+- its [specific aspect, e.g., “argumentative flow”] and
+- flow. Point out any inconsistencies in reasoning.
+- من الحياة الواقعية وحكايات شخصية ونصائح عملية لجعل المحتوى  قابلاً للتواصل وإنسانيًا. استهدف
+- قم بتضمين أمثلة وسيناريوهات ذات صلة ونصائح عملية لإشراك القراء وجعل المحتوى يبدو أصيلاً
+- Block  Distractions  &  Enter  Flow"  /  "Return  to  World"
+- > **بفضل الموصلات (Connectors) المتاحة لك الآن (GitHub, Vercel, Supabase, Google Drive, Notion)، أطلب منك إجراء 'تدقيق شامل' (Deep Audit) للمشروع الحالي، ثم قيادة عملية التطوير حتى الإطلاق الفعلي (Day 1 of Operations).**
+- *(سيتم تحميل الأداة وتثبيتها محلياً. قد تستغرق العملية بضع دقائق حسب سرعة معالجة الجهاز).*
+- | **البُعد الإداري (التشغيلي)** | الأداة تعمل كـ "مدير مشروع" صامت. احتفاظ الذكاء الاصطناعي بسجل القرارات البرمجية السابقة يقلل من الأخطاء التراكمية ويسرّع عملية التطوير. | حاسم لضمان جودة الأكواد في منصة مخصصة لإدارة العمليات التجارية والقانونية. |
+- أي قسم من الأقسام الثلاثة للمنصة (الإداري، المالي، أم القانوني) ترغب في توجيه الذكاء الاصطناعي لبرمجته وبناء قاعدة البيانات الخاصة به كأول خطوة عملية لاستكمال الـ 80%؟
+- * بما أن المنصة تهدف لتكون "نظام تشغيل للشركات" (Corporate OS)، فإن عدد الملفات سيتجاوز المئات. تسمح نافذة السياق الكبيرة لـ Claude بمراجعة كامل قاعدة الأكواد (Codebase) دفعة واحدة، مما يسهل عملية "إعادة الهيكلة" (Refactoring) الشاملة دون كسر الروابط بين الوحدات.
+- - **Resource Rule:** NEVER introduce memory-heavy background processes, Java-based tools, or heavy ORMs unless absolutely necessary.
+- ‏> الأمر: قم بعمل هندسة عكسية لعملية التفكير الدقيقة لدى [اسم شخصية عبقرية/تاريخية] وعلمني كيف أحاكي طريقتهم في حل المشكلات. أعطني تمارين ذهنية عملية لبرمجة عقلي مثل عقلهم.
+- I am trying to setup of a webhook using Stripe and NextJS 13.2.3 - Stack Overflow, تم الوصول بتاريخ ‎يناير 21, 2026، https://stackoverflow.com/questions/75828724/i-am-trying-to-setup-of-a-webhook-using-stripe-and-nextjs-13-2-3
+- 2.  اﻟﻣﻌﺎﻟﺟﺔ  اﻟﺳﺣﺎﺑﯾﺔ  Cloud  Processing):  ○  ﯾﺗم  إرﺳﺎل  اﻟﺻور  إﻟﻰ  Google  Cloud  Vision  API  أو  AWS  Rekognition  ﻻﺳﺗﺧراج  اﻟﻧﺻوص
+- ●  ھﯾﻛل  اﻟﻌﻣوﻻت  Revenue  Model):  ○  رﺳوم  اﻟﺧدﻣﺔ  )ﻋﻠﻰ  اﻟﻌﻣﯾل(:  5 %  ﺗﺿﺎف  ﻓوق  ﻗﯾﻣﺔ  اﻟﻣﺷروع  Processing  Fee).  ○  ﻋﻣوﻟﺔ  اﻟﻣﻧﺻﺔ  )ﻣن  اﻟﻣﺑدع(:  15 %  ﺗﺧﺻم  ﻣن  اﻟﻣﺑﻠﻎ  اﻟﻣﺣرر.  ○  :ﻣﺛﺎل  ﻣﺷروع  ﺑﻘﯾﻣﺔ  100 .$  ﯾدﻓﻊ  اﻟﻌﻣﯾل  105 .$  ﺗﺳﺗﻠم  اﻟﻣﻧﺻﺔ  105 .$  ﻋﻧد  اﻟﺗﺣرﯾر،  ﯾﺣﺻل  اﻟﻣﺑدع  ﻋﻠﻰ
 
 ## 🗂️ Source Files Map
+- /sdcard/Download/monteerly_source/-citation_instructions-If the assistant's response is based on content returned by the web_search, drive_search, google_drive_search, or google_drive_fetch tool, the assistant must always appropriately cite its response.docx
+- /sdcard/Download/monteerly_source/LLM Interview Questions.pdf
+- /sdcard/Download/monteerly_source/MAI-OS-Roadmap (1).md
+- /sdcard/Download/monteerly_source/MAI-OS-Roadmap.md
+- /sdcard/Download/monteerly_source/MAI-OS-Spec (1).md
+- /sdcard/Download/monteerly_source/MAI-OS-Spec.md
+- /sdcard/Download/monteerly_source/MONTEERLY_FIREBASE_API(1).md
 - /sdcard/Download/monteerly_source/Monteerly Studio- Comprehensive Development Audit (1).pdf
+- /sdcard/Download/monteerly_source/Monteerly Studio- Comprehensive Development Audit.pdf
+- /sdcard/Download/monteerly_source/Monteerly-AI-OS-Archive-Diff-Plan (1).docx
+- /sdcard/Download/monteerly_source/Monteerly-AI-OS-Archive-Diff-Plan.docx
+- /sdcard/Download/monteerly_source/Monteerly-Archive-Diff-Matrix (1).docx
+- /sdcard/Download/monteerly_source/Monteerly-Archive-Diff-Matrix.docx
+- /sdcard/Download/monteerly_source/Monteerly-LLM-Benchmark-Register (1).docx
+- /sdcard/Download/monteerly_source/Monteerly-LLM-Benchmark-Register.docx
+- /sdcard/Download/monteerly_source/Monteerly-Post-Merge-Stabilization-Plan (1).md
+- /sdcard/Download/monteerly_source/Monteerly-Post-Merge-Stabilization-Plan.md
+- /sdcard/Download/monteerly_source/Monteerly-Sprint-01-Execution-Plan (1).docx
+- /sdcard/Download/monteerly_source/Monteerly-Sprint-01-Execution-Plan.docx
+- /sdcard/Download/monteerly_source/WRITING STYLE- FOLLOW THIS clear, simple language and adverbs.docx
 - /sdcard/Download/monteerly_source/claude-code-complete-guide-en (1).pdf
+- /sdcard/Download/monteerly_source/claude-code-complete-guide-en.pdf
+- /sdcard/Download/monteerly_source/ezzat-al-islam-spec.md
+- /sdcard/Download/monteerly_source/ezzat-wireframes.md
 - /sdcard/Download/monteerly_source/أسماء ووصف ومسارات صور المنصة .txt
 - /sdcard/Download/monteerly_source/التقرير الاستراتيجي الشامل لتنفيذ -Monteerly Studio .docx
+- /sdcard/Download/monteerly_source/الدستور النهائي 4.0 — Monteerly Agent Mesh.pdf
 - /sdcard/Download/monteerly_source/الرؤية الشاملة  لتصميم  للمنصة .txt
 - /sdcard/Download/monteerly_source/الرؤية الشاملة لتصميم monteerly Studio platform .pdf
 - /sdcard/Download/monteerly_source/العبارات الاحترافية في المنصة .txt
+- /sdcard/Download/monteerly_source/العبارات الاحترافية منصة مونتيرلى ستوديو .docx
+- /sdcard/Download/monteerly_source/الماجستير بجامعة المنوفية من غير أعضاء هيئة التدريس والهيئة المعاونة خلال (أخر عشر سنوات).pdf
 - /sdcard/Download/monteerly_source/المرجع الاستراتيجي والتقني الشامل لتنفيذ منصة Monteerly Studio- (1).docx
+- /sdcard/Download/monteerly_source/اوامر شات جي بي تي للبحوث الاكاديمية د-علاء طعيمة(1).pdf
 - /sdcard/Download/monteerly_source/بناءً على مراجعتي الشاملة لجميع الرسائل والوثائق المرفقة في هذه المحادثة من بدايتها وحتى الآن، قمت باستخراج وتوثيق جميع (1).docx
+- /sdcard/Download/monteerly_source/بناءً على مراجعتي الشاملة لجميع الرسائل والوثائق المرفقة في هذه المحادثة من بدايتها وحتى الآن، قمت باستخراج وتوثيق جميع.docx
+- /sdcard/Download/monteerly_source/تحليل شامل لمنصة Monteerly Studio.pdf
 - /sdcard/Download/monteerly_source/تطوير منصة Monteerly OS- استراتيجية شاملة.pdf
 - /sdcard/Download/monteerly_source/تطوير منصة Monteerly Studio الشامل ٢ (1).docx
+- /sdcard/Download/monteerly_source/تطوير منصة Monteerly Studio الشامل ٢.docx
+- /sdcard/Download/monteerly_source/تطوير منصة Monteerly Studio الشامل ٢.pdf
+- /sdcard/Download/monteerly_source/تطوير منصة Monteerly Studio الشامل.docx
+- /sdcard/Download/monteerly_source/تعلم ذكاء اصطناعي.docx
 - /sdcard/Download/monteerly_source/تقرير التدقيق الجنائي الفني والتحليل الاستراتيجي الشامل لمنصة -مونتيرلي ستوديو-.docx
 - /sdcard/Download/monteerly_source/تقرير التدقيق الفني الاستراتيجي والتحليل المعماري الشامل لمنصة -مونتيرلي ستوديو-.docx
 - /sdcard/Download/monteerly_source/تقرير التدقيق الفني الجنائي واستراتيجية التحول الرقمي الشامل لمنصة -Monteerly Studio-.docx
 - /sdcard/Download/monteerly_source/تقرير التصميم النهائي الشامل لنظام تشغيل مونتيرلي (Monteerly OS V5.0)- المخطط التنفيذي للسيادة الرقمية والاقتصاد الإبداعي.docx
 - /sdcard/Download/monteerly_source/تقرير النواقص .txt
+- /sdcard/Download/monteerly_source/تقرير النواقص 2 منصة مونتيرلى ستوديو .docx
 - /sdcard/Download/monteerly_source/تقرير النواقص i .txt
+- /sdcard/Download/monteerly_source/تقرير النواقص منصة مونتيرلى ستوديو .docx
+- /sdcard/Download/monteerly_source/تقرير فني منصة مونتيرلى ستوديو .pdf
 - /sdcard/Download/monteerly_source/جميع مستخدمين المنصة وأدوارهم .txt
+- /sdcard/Download/monteerly_source/جميع ملاحظات monteerly studio.docx
 - /sdcard/Download/monteerly_source/خطة التخزين السحابى للمنصة .txt
 - /sdcard/Download/monteerly_source/خطة التسعير monteerly Studio platform .pdf
+- /sdcard/Download/monteerly_source/خطة تطويرmonteerly Studio.docx
 - /sdcard/Download/monteerly_source/خطة عمل الذكاء الاصطناعي والامتثال.docx
 - /sdcard/Download/monteerly_source/دستور المحتوى النصي الشامل- (The Master Copywriting Constitution)..docx
 - /sdcard/Download/monteerly_source/دفتر ملاحظات ahmed.pdf
 - /sdcard/Download/monteerly_source/رؤية شاملة لتصميم منصة متكاملة (1).pdf
 - /sdcard/Download/monteerly_source/رؤية شاملة لتصميم منصة متكاملة.docx (1).rtf
+- /sdcard/Download/monteerly_source/رؤية شاملة لتصميم منصة متكاملة.docx.rtf.pdf
+- /sdcard/Download/monteerly_source/رؤية شاملة لتصميم منصة متكاملة.pdf
+- /sdcard/Download/monteerly_source/رؤية شاملة لمنصة Monteerly Studio (1).pdf
 - /sdcard/Download/monteerly_source/رؤية شاملة لمنصة Monteerly Studio (2).pdf
+- /sdcard/Download/monteerly_source/رؤية شاملة لمنصة Monteerly Studio.pdf
 - /sdcard/Download/monteerly_source/طرق الدفع فى المنصة .txt
 - /sdcard/Download/monteerly_source/طلب التحدث باللغة العربية (1).pdf
+- /sdcard/Download/monteerly_source/طلب التحدث باللغة العربية.docx
+- /sdcard/Download/monteerly_source/طلب التحدث باللغة العربية.pdf
 - /sdcard/Download/monteerly_source/ف Spec  للتصميم-هذا هو -الملف التنفيذي المقدس- (The Master Executable Spec).-.docx
 - /sdcard/Download/monteerly_source/كورس النماذج اللغوية الكبيرة (LLM) للمبتدئين (1).docx
+- /sdcard/Download/monteerly_source/كورس النماذج اللغوية الكبيرة (LLM) للمبتدئين.docx
 - /sdcard/Download/monteerly_source/مراجعة شاملة لمنصة Monteerly Studio (1).pdf
+- /sdcard/Download/monteerly_source/مراجعة شاملة لمنصة Monteerly Studio.pdf
 - /sdcard/Download/monteerly_source/ملف Spec  للتصميم .txt
+- /sdcard/Download/monteerly_source/ملف Spec النهائي للتصميم .docx
+- /sdcard/Download/monteerly_source/منشور عام الهيئة 4 لسنة-2022 تسوية معاشات الشرطة.pdf
 - /sdcard/Download/monteerly_source/مواصفات المساعد الذكى (1).txt
+- /sdcard/Download/monteerly_source/مواصفات ومميزات Agent Ultra في Termux.docx
+- /sdcard/Download/monteerly_source/‏مستند من Ahmed Gamal (1).docx
+- /sdcard/Download/monteerly_source/‏مستند من Ahmed Gamal.docx
+- /sdcard/Download/monteerly_source/‏مستند من Ahmed Gamal.pdf١٢.pdf
+- /sdcard/Download/monteerly_source/‏مستند من Ahmed Gamal٤ (1).docx
+- /sdcard/Download/monteerly_source/‏مستند من Ahmed Gamal٤.docx
+- /sdcard/Download/monteerly_source/‏مستند من ١ Ahmed Gamal.docx
+- /sdcard/Download/monteerly_source/‏مستند من ١٠Ahmed Gamal.docx
+- /sdcard/Download/monteerly_source/‏مستند من ١١Ahmed Gamal.docx
+- /sdcard/Download/monteerly_source/‏مستند من ٣Ahmed Gamal.docx
+- /sdcard/Download/monteerly_source/‏مستند من ٥Ahmed Gamal.docx
+- /sdcard/Download/monteerly_source/‏مستند من ٦Ahmed Gamal.docx
+- /sdcard/Download/monteerly_source/‏مستند من ٩Ahmed Gamal.docx
+- /sdcard/Download/monteerly_source/‏مستند من٢ Ahmed Gamal.docx
+- /sdcard/Download/monteerly_source/‏مستند من٧ Ahmed Gamal.docx
+- /sdcard/Download/monteerly_source/‏مستند من٨ Ahmed Gamal.docx
+- /sdcard/Download/monteerly_source/✅ الخطة الصحيحة للتسعير للمنصة مع الحماية الحقيقية.docx
+- /sdcard/Download/monteerly_source/🧠 Monteerly AI OS — التقرير المعماري النهائي (Enterprise Unified Design).docx
+- /sdcard/Download/monteerly_source/🧠 Monteerly AI OS — التقرير المعماري النهائي (Enterprise Unified Design).pdf
