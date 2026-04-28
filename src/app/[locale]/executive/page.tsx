@@ -13,7 +13,7 @@ export default async function ExecutiveDashboard() {
   const highRiskAlerts = transactions?.filter(t => t.risk_level === 'high').length || 0;
 
   // جلب إحصائيات العقود
-  const { count: totalContracts } = await supabase.from('contracts').select('*' , { count: 'exact' });
+  const { count: totalContracts } = await supabase.from('contracts').select('*', { count: 'exact' });
   
   // جلب سجل التدقيق
   const { data: auditLogs } = await supabase.from('audit_logs').select('module, action, created_at').order('created_at', { ascending: false }).limit(6);
@@ -68,7 +68,7 @@ export default async function ExecutiveDashboard() {
               <div key={i} className="flex items-center justify-between p-4 bg-white rounded-2xl shadow-sm border border-slate-100">
                 <div className="flex flex-col">
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">{log.module}</span>
-                  <span className="text-sm font-bold text-slate-800">{log.action.replace('_' , ' ')}</span>
+                  <span className="text-sm font-bold text-slate-800">{log.action.replace(/_/g, ' ')}</span>
                 </div>
                 <span className="text-xs font-mono text-slate-400 bg-slate-50 px-2 py-1 rounded-md">
                    {new Date(log.created_at).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}
