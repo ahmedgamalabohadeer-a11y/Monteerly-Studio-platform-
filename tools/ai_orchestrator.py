@@ -5,12 +5,13 @@ import requests
 import subprocess
 from dotenv import load_dotenv
 
-# تحميل المفاتيح من .env.local
+# تحميل المفاتيح
 load_dotenv('.env.local')
 load_dotenv('.env')
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key={GEMINI_API_KEY}"
+# تم التصحيح: استخدام النموذج المستقر gemini-1.5-pro
+GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key={GEMINI_API_KEY}"
 
 class AIOrchestrator:
     def __init__(self):
@@ -24,7 +25,7 @@ class AIOrchestrator:
             "thought": "تفكيرك المنطقي حول المهمة",
             "command": "أمر الـ bash أو termux-api المراد تنفيذه"
         }
-        لا تكتب أي نص خارج الـ JSON.
+        لا تكتب أي نص خارج الـ JSON ولا تستخدم علامات markdown (مثل ```json).
         """
 
     def plan_and_execute(self, task_description):
@@ -44,15 +45,20 @@ class AIOrchestrator:
             
             raw_text = result['candidates'][0]['content']['parts'][0]['text']
             
-            # تنظيف الرد لاستخراج الـ JSON
+            # تنظيف إضافي لضمان عمل JSON.loads
             raw_text = raw_text.replace('```json', '').replace('```', '').strip()
-            action_plan = json.loads(raw_text)
             
+            try:
+                action_plan = json.loads(raw_text)
+            except json.JSONDecodeError as e:
+                print(f"🚨 خطأ في تحليل JSON: {e}\nالنص المُستلم: {raw_text}")
+                return
+
             print(f"💡 [Planner Agent]: {action_plan['thought']}")
             command = action_plan['command']
             print(f"⚙️ [Agent Ultra] جاري التنفيذ: {command}")
             
-            # 2. التنفيذ الميكانيكي عبر Agent Ultra (Termux subprocess)
+            # 2. التنفيذ الميكانيكي عبر Agent Ultra
             exec_result = subprocess.run(command, shell=True, capture_output=True, text=True)
             
             if exec_result.returncode == 0:
@@ -60,8 +66,10 @@ class AIOrchestrator:
             else:
                 print(f"❌ [Error]:\n{exec_result.stderr.strip()}")
                 
+        except requests.exceptions.HTTPError as http_err:
+            print(f"🚨 [API Error] خطأ في الاتصال بالنموذج: {http_err.response.text}")
         except Exception as e:
-            print(f"🚨 [System Failure] فشل في الاتصال بالعقل أو التنفيذ: {str(e)}")
+            print(f"🚨 [System Failure] فشل غير متوقع: {str(e)}")
 
 if __name__ == "__main__":
     orchestrator = AIOrchestrator()
