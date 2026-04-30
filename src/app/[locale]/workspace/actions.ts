@@ -1,61 +1,48 @@
 'use server'
 
 import { supabase } from '@/lib/supabase';
-import { updateEscrowStatus } from '@/lib/escrow';
-import { notifyUser } from '@/lib/notifications';
-import { revalidatePath } from 'next/cache';
+import { getR2UploadUrl } from '@/lib/storage';
 import { logAuditEvent } from '@/lib/audit';
+import { revalidatePath } from 'next/cache';
 
-// 1. المونتير يسلم العمل
-export async function submitWork(orderId: string, clientId: string, fileUrl: string, notes: string) {
+/**
+ * الحصول على تذكرة رفع (Presigned URL) لرفع الفيديو مباشرة لـ R2
+ */
+export async function getUploadTicket(orderId: string, fileName: string, fileType: string) {
   const { data: user } = await supabase.auth.getUser();
-  if (!user?.user) throw new Error('يجب تسجيل الدخول');
+  if (!user?.user) throw new Error('غير مصرح لك');
+
+  // إنشاء مسار فريد للملف: orders/ID/timestamp_filename
+  const path = `orders/${orderId}/${Date.now()}_${fileName}`;
+  
+  const ticket = await getR2UploadUrl(path, fileType);
+
+  await logAuditEvent({
+    actorIdentifier: `freelancer:${user.user.id}`,
+    action: 'requested_upload_ticket',
+    module: 'storage',
+    entityId: orderId
+  });
+
+  return { uploadUrl: ticket.uploadUrl, publicUrl: ticket.publicUrl, path };
+}
+
+/**
+ * تحديث الطلب برابط التسليم النهائي بعد نجاح الرفع
+ */
+export async function finalizeDelivery(orderId: string, publicUrl: string, notes: string) {
+  const { data: user } = await supabase.auth.getUser();
+  if (!user?.user) throw new Error('غير مصرح لك');
 
   const { error } = await supabase.from('orders').update({
     status: 'review_pending',
-    delivery_url: fileUrl,
-    delivery_notes: notes
+    delivery_url: publicUrl,
+    delivery_notes: notes,
+    delivered_at: new Date().toISOString()
   }).eq('id', orderId);
 
-  if (error) return { success: false, message: 'حدث خطأ أثناء تسليم العمل' };
-
-  await notifyUser(clientId, 'تم تسليم مشروعك!', 'قام المونتير برفع مسودة الفيديو. يرجى المراجعة والاعتماد.');
-  
-  await logAuditEvent({
-    actorIdentifier: `freelancer:${user.user.id}`, action: 'work_submitted', module: 'workspace', entityId: orderId
-  });
+  if (error) throw error;
 
   revalidatePath('/[locale]/workspace');
-  return { success: true, message: 'تم إرسال العمل للعميل بنجاح' };
-}
-
-// 2. العميل يعتمد العمل ويصرف الأموال
-export async function approveWork(escrowId: string, orderId: string, freelancerId: string) {
-  const { data: user } = await supabase.auth.getUser();
-  if (!user?.user) throw new Error('يجب تسجيل الدخول');
-
-  // تحديث حالة الطلب
-  await supabase.from('orders').update({ status: 'completed' }).eq('id', orderId);
-  
-  // تحرير أموال الضمان للمونتير
-  await updateEscrowStatus(escrowId, 'released', user.user.id);
-  
-  await notifyUser(freelancerId, 'تم اعتماد العمل!', 'وافق العميل على مشروعك وتم تحرير أموال الضمان لمحفظتك.');
-
-  revalidatePath('/[locale]/workspace');
-  return { success: true, message: 'تم اعتماد العمل وصرف الأموال للمونتير' };
-}
-
-// 3. فتح نزاع
-export async function raiseDispute(escrowId: string, orderId: string, targetUserId: string, reason: string) {
-  const { data: user } = await supabase.auth.getUser();
-  if (!user?.user) throw new Error('يجب تسجيل الدخول');
-
-  await supabase.from('orders').update({ status: 'disputed' }).eq('id', orderId);
-  await updateEscrowStatus(escrowId, 'disputed', user.user.id);
-
-  await notifyUser(targetUserId, 'تم فتح نزاع', `تم تجميد المشروع وفتح نزاع مالي. السبب: ${reason}`);
-  
-  revalidatePath('/[locale]/workspace');
-  return { success: true, message: 'تم فتح النزاع وتحويله للإدارة' };
+  return { success: true };
 }
