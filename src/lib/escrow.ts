@@ -1,34 +1,22 @@
 import { supabase } from './supabase';
 import { logAuditEvent } from './audit';
 
-type EscrowPayload = {
-  orderId: string;
-  clientId: string;
-  freelancerId: string;
-  amount: number;
-};
+export type EscrowStatus = 'held' | 'released' | 'refunded' | 'disputed';
 
-// دالة حجز الأموال في الضمان
-export async function holdFundsInEscrow(payload: EscrowPayload) {
-  // 1. إنشاء سجل الضمان
+// 1. حجز الأموال (الموجودة سابقاً)
+export async function holdFundsInEscrow(orderId: string, clientId: string, freelancerId: string, amount: number) {
   const { data, error } = await supabase.from('escrow_accounts').insert({
-    order_id: payload.orderId,
-    client_id: payload.clientId,
-    freelancer_id: payload.freelancerId,
-    amount: payload.amount,
-    status: 'held',
+    order_id: orderId, client_id: clientId, freelancer_id: freelancerId, amount, status: 'held'
   }).select().single();
+  if (error) throw error;
+  await logAuditEvent({ actorIdentifier: `client:${clientId}`, action: 'escrow_held', module: 'finance', entityId: data.id });
+  return data;
+}
 
-  if (error) throw new Error('فشل في احتجاز الأموال');
-
-  // 2. تسجيل العملية في الصندوق الأسود
-  await logAuditEvent({
-    actorIdentifier: `client:${payload.clientId}`,
-    action: 'escrow_funds_held',
-    module: 'finance',
-    entityId: data.id,
-    snapshot: { amount: payload.amount, order_id: payload.orderId }
-  });
-
+// 2. تحديث الحالة (للدعم الفني والإدارة)
+export async function updateEscrowStatus(escrowId: string, status: EscrowStatus, actorId: string) {
+  const { data, error } = await supabase.from('escrow_accounts').update({ status }).eq('id', escrowId).select().single();
+  if (error) throw error;
+  await logAuditEvent({ actorIdentifier: `admin:${actorId}`, action: `escrow_${status}`, module: 'finance', entityId: escrowId });
   return data;
 }
