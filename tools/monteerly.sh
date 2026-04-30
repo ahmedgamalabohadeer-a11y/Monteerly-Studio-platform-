@@ -1,27 +1,26 @@
 #!/data/data/com.termux/files/usr/bin/bash
-# 🚀 Monteerly Corporate OS CLI - v1.0
+# 🚀 Monteerly Corporate OS CLI - v1.1 (Agent-Enabled)
 
 COMMAND="$1"
-FEATURE="$2"
+OPTION="$2"
 
 case "$COMMAND" in
-  init)
-    echo "🧩 MCOS: تهيئة النظام والتحقق من الموصلات..."
-    python tools/gen_file.py --check
-    ;;
-  sync)
-    echo "🔄 MCOS: مزامنة الدستور مع المستودع..."
-    git pull origin main && git status
-    ;;
-  build)
-    echo "🏗️ MCOS: بناء الميزة $FEATURE..."
-    # منطق استدعاء البناء
+  status)
+    python tools/ops_agent.py --status
     ;;
   audit)
-    echo "📊 MCOS: فحص النزاعات والتدقيق المالي..."
-    # استدعاء API التدقيق
+    python tools/ops_agent.py --audit
     ;;
-  *)
-    echo "Usage: monteerly [init|sync|build|audit]"
+  sync)
+    echo "🔄 MCOS: مزامنة الدستور والمستودع..."
+    git pull origin main
+    ;;
+  build)
+    echo "🏗️ MCOS: جاري بناء الميزة $OPTION..."
+    # منطق البناء الآلي
+    ;;
+  help|*)
+    echo "Usage: monteerly [status|audit|sync|build]"
+    echo "Example: monteerly status (لعرض ملخص المنصة)"
     ;;
 esac
