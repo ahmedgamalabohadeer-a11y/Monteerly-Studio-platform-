@@ -10,8 +10,8 @@ load_dotenv('.env.local')
 load_dotenv('.env')
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-# تم التصحيح: استخدام النموذج المستقر gemini-1.5-pro
-GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key={GEMINI_API_KEY}"
+# تم التحديث: استخدام نموذج gemini-2.5-flash للأتمتة اللحظية
+GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
 
 class AIOrchestrator:
     def __init__(self):
@@ -38,7 +38,7 @@ class AIOrchestrator:
         }
         
         try:
-            # 1. التفكير الاستدلالي عبر Gemini
+            # 1. التفكير الاستدلالي عبر Gemini 2.5 Flash
             response = requests.post(GEMINI_URL, json=payload, headers={'Content-Type': 'application/json'})
             response.raise_for_status()
             result = response.json()
