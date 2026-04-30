@@ -1,12 +1,11 @@
-# 🌐 Monteerly Corporate OS (MCOS) – Sacred Architecture v3.1
+# 🌐 Monteerly Corporate OS (MCOS) – Sacred Architecture v3.2
 
-<section_4_storage_strategy>
-## 4. استراتيجية التخزين السيادي (Sovereign Storage)
-تم اعتماد نموذج التخزين المزدوج (Dual-Storage) كمعيار إلزامي:
-1. **Supabase Storage**: للملفات الإدارية الخفيفة (< 5MB) مثل الأفاتار والعقود.
-2. **Cloudflare R2**: لملفات الفيديو والأصول الثقيلة. 
-   - **التقنية**: استخدام Pre-signed URLs لتقليل ضغط المعالجة عن الخادم الرئيسي.
-   - **التكلفة**: صفر رسوم تحميل (Zero Egress).
-</section_4_storage_strategy>
+<section_7_copywriting_constitution>
+## 7. دستور المحتوى النصي (Copywriting Constitution)
+تعتمد المنصة نبرة "الخبير التقني الحازم" لضمان الهيبة والاحترافية:
+1. **[span_9](start_span)النظام ليس موقعاً**: نستخدم "أطلق الاستوديو" (Deploy) بدلاً من "ابدأ"[span_9](end_span).
+2. **[span_10](start_span)السيادة المالية**: نستخدم "حساب الضمان" (Escrow) و"السيولة" (Liquidity)[span_10](end_span).
+3. **[span_11](start_span)[span_12](start_span)الأمان العسكري**: نستخدم "تشفير AES-256" و"تصريح أمني"[span_11](end_span)[span_12](end_span).
+</section_7_copywriting_constitution>
 
-[... بقية الأبواب ...]
+[... الأبواب السابقة ...]
