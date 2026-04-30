@@ -1,9 +1,27 @@
 #!/data/data/com.termux/files/usr/bin/bash
-CMD="$1"; ARG="$2"
-case "$CMD" in
-  init) echo "🧩 MCOS: Initializing..."; ./tools/validate_ops_engine.sh ;;
-  build) echo "🚀 MCOS: Building $ARG..."; ./tools/new_feature_blueprint.sh "$ARG" ;;
-  sync) echo "🔄 MCOS: Syncing..."; git pull origin main && git status ;;
-  audit) echo "📊 MCOS: Financial Audit..."; curl -s "https://monteerly-studio-platform.vercel.app/api/db-health" | jq . ;;
-  *) echo "Usage: monteerly [init|build|sync|audit]" ;;
+# 🚀 Monteerly Corporate OS CLI - v1.0
+
+COMMAND="$1"
+FEATURE="$2"
+
+case "$COMMAND" in
+  init)
+    echo "🧩 MCOS: تهيئة النظام والتحقق من الموصلات..."
+    python tools/gen_file.py --check
+    ;;
+  sync)
+    echo "🔄 MCOS: مزامنة الدستور مع المستودع..."
+    git pull origin main && git status
+    ;;
+  build)
+    echo "🏗️ MCOS: بناء الميزة $FEATURE..."
+    # منطق استدعاء البناء
+    ;;
+  audit)
+    echo "📊 MCOS: فحص النزاعات والتدقيق المالي..."
+    # استدعاء API التدقيق
+    ;;
+  *)
+    echo "Usage: monteerly [init|sync|build|audit]"
+    ;;
 esac

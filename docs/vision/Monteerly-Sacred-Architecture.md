@@ -1,29 +1,52 @@
-# 🌐 Monteerly Studio: The Purified Sacred Architecture (v2.2)
+# 🌐 Monteerly Corporate OS (MCOS) – Sacred Architecture v3.0
 
-> **إعلان السيادة الرقمية:** تم تطهير هذا المستند من كافة التناقضات التقنية. تم اعتماد (Supabase) كقاعدة بيانات وحيدة، وتحديد مسارات الدفع والرقابة والأتمتة بشكل قطعي لا يقبل التأويل.
+<section_0_identity>
+## 0. تعريف النظام (System Identity)
+- **الاسم**: Monteerly Corporate Operating System (MCOS).
+- **الجوهر**: نظام تشغيل مؤسسي سيادي مدمج بالذكاء الاصطناعي لإدارة صناعة الفيديو.
+- **النطاق**: حوكمة قانونية، إدارة مالية، أتمتة تشغيلية (SaaS Marketplace).
+</section_0_identity>
 
-## 🌟 الباب الأول: الهوية والأدوار (The Open Ecosystem)
-1. **المدير الإلهي (Super Admin):** يمتلك الرقابة المطلقة عبر "غرفة العمليات التنفيذية" والقدرة على فض النزاعات المالية.
-2. **صانع المحتوى / العميل (Client):** يطلب الخدمة، يدفع بنظام الضمان، ويراجع الفيديو بتوقيتات دقيقة.
-3. **المونتير (Editor):** مقدم الخدمة الأساسي، يمتلك محفظة مالية واستوديو افتراضي.
-4. **المصور (Videographer):** موفر اللقطات الخام وشريك في مشاريع الإنتاج الميداني.
-5. **الوكلاء الأذكياء (AI Agents):** (Guardian) للرقابة، (Legal) للعقود، و(Orchestrator) للأتمتة.
+<section_1_architecture>
+## 1. المعمارية التشغيلية (MCOS Layers)
+1. **Vision Engine**: (Docs Layer) - الدستور والخطط الاستراتيجية.
+2. **Execution Engine**: (Code Layer) - تطبيقات Next.js و Supabase.
+3. **Ops Engine**: (Termux CLI) - محرك الأتمتة والتحكم السيادي.
+4. **Intelligence Engine**: (AI Agents) - Guardian, Legal, and Builder Agents.
+5. **Governance Engine**: (Compliance) - Financial Escrow and Legal Versioning.
+</section_1_architecture>
 
-## 💰 الباب الثاني: الدستور المالي وبوابات الدفع
-يُمنع استخدام أي بوابات دفع خارج هذا الإطار:
-1. **Paymob (الخيار السيادي الأول):** يدعم (Visa/MasterCard، فوري، المحافظ، Apple Pay).
-2. **PayPal (للتعاملات الدولية):** خيار إضافي للعملاء خارج النطاق المحلي.
-- **نظام الضمان (Escrow):** تُحجز الأموال برمجياً ولا تُصرف إلا بـ (تسليم الفيديو + موافقة العميل) أو (قرار إداري عند النزاع).
+<section_2_feature_registry>
+## 2. سجل الميزات السيادي (Feature Registry)
+| ID | Feature | Status | Tech Stack | Governance |
+|:---|:---|:---|:---|:---|
+| F-001 | Auth & Profiles | LIVE | Supabase Auth | RLS Secured |
+| F-002 | Internal ERP (HR/Fin) | LIVE | Next.js/SQL | Audit Logged |
+| F-003 | Sacred Architecture | LIVE | Markdown/Python | System Brain |
+| F-004 | Guardian AI | LIVE | Backend/Edge | Fraud Detection |
+| F-005 | Escrow Engine | LIVE | PostgreSQL/TS | Financial Trust |
+| F-006 | Marketplace UI | LIVE | Tailwind/React | Zad-style |
+| F-007 | Contract System | PLANNED | Legal Engine | Versioning V1 |
+| F-008 | Agent-CLI | PLANNED | Python/Bash | Termux Ops |
+</section_2_feature_registry>
 
-## 🛡️ الباب الثالث: الرقابة الصارمة (Guardian AI)
-- **القاعدة الذهبية:** نظام Guardian AI يعمل **حصرياً في الـ Backend**. 
-- يُمنع إرسال أي بيانات (شات، ملفات، معاملات) لقاعدة البيانات قبل فحصها وتشفيرها في بيئة الخادم المعزولة.
-- **التشفير:** تشفير البيانات أثناء السكون (At-Rest) باستخدام AES-256 داخل Supabase.
+<section_4_ops_engine>
+## 4. محرك عمليات تيرموكس (Termux Ops Engine)
+- الأداة السيادية: `tools/monteerly.sh`
+- الأوامر: `init`, `sync`, `build`, `audit`, `agent`.
+</section_4_ops_engine>
 
-## 📦 الباب الرابع: استراتيجية التخزين المزدوج (Dual-Storage Strategy)
-تم استبعاد Firebase تماماً لبناء منظومة قابلة للتوسع من اليوم الأول:
-1. **Supabase Storage:** مخصص للملفات الخفيفة (صور شخصية، هويات، ملفات عقود PDF).
-2. **Cloudflare R2:** مخصص حصرياً للملفات الثقيلة (فيديوهات المونتاج، مسودات العرض). يوفر طبقة مجانية (10GB) وبدون رسوم تحميل (Zero Egress)، مع إصدار `Pre-signed URLs` ليقوم العميل بالرفع مباشرة من المتصفح.
+<section_6_governance>
+## 6. نظام الحوكمة (Governance & Risk)
+- **الرقابة المالية**: نظام Escrow مع "دورة حياة النزاعات" (Dispute Workflow).
+- **الامتثال القانوني**: توثيق كل حركة في `audit_logs` وربطها بـ `contract_revisions`.
+- **معدل العائد (ROI)**: كل ميزة يجب أن ترفع كفاءة الإنتاج أو تزيد أمان السيولة.
+</section_6_governance>
 
-## 🔔 الباب الخامس: التواصل اللحظي (Notifications)
-- الربط عبر **Supabase Realtime**. المنصة تعمل بنظام النبض (Pulse)؛ أي تحديث في حالة الطلب يظهر فوراً للمستخدم دون تحديث الصفحة.
+<section_7_roadmap>
+## 7. خارطة الطريق التنفيذية (MCOS Roadmap)
+1. **المرحلة 1**: ترسيخ MCOS و Feature Registry (الحالية).
+2. **المرحلة 2**: إنشاء Monteerly CLI الشامل.
+3. **المرحلة 3**: بناء Contract Management System (F-007).
+4. **المرحلة 4**: إطلاق الوكيل القانوني (Legal Agent).
+</section_7_roadmap>
