@@ -1,0 +1,107 @@
+'use client'
+
+import React, { useEffect, useState } from 'react';
+import { getExecutiveOverview, approveWithdrawal } from './actions';
+import { ShieldAlert, CheckCircle, Activity, Lock, Search } from 'lucide-react';
+
+export default function ExecutiveDashboard() {
+  const [data, setData] = useState<any>({ withdrawalRequests: [], disputes: [] });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    getExecutiveOverview().then(res => {
+      setData(res);
+      setIsLoading(false);
+    }).catch(console.error);
+  }, []);
+
+  const handleApprove = async (logId: string, freelancerStr: string, amount: number) => {
+    // استخراج المعرف من سلسلة freelancer:ID
+    const fId = freelancerStr.split(':')[1];
+    await approveWithdrawal(logId, fId, amount);
+    setData((prev: any) => ({
+      ...prev,
+      withdrawalRequests: prev.withdrawalRequests.filter((req: any) => req.id !== logId)
+    }));
+  };
+
+  if (isLoading) return <div className="min-h-screen bg-slate-950 flex items-center justify-center"><Activity className="w-10 h-10 text-indigo-500 animate-spin" /></div>;
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-50 p-8 font-sans" dir="rtl">
+      <header className="mb-12 border-b border-white/10 pb-6 flex justify-between items-end">
+        <div>
+          <h1 className="text-4xl font-black bg-gradient-to-l from-indigo-400 to-emerald-400 bg-clip-text text-transparent mb-2">مركز القيادة السيادي</h1>
+          <p className="text-slate-400 font-bold flex items-center gap-2">
+            <Lock className="w-4 h-4" /> مراقبة التدفقات النقدية والنزاعات (Executive Overview)
+          </p>
+        </div>
+        <div className="bg-slate-900 border border-white/10 px-4 py-2 rounded-full flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+          <span className="text-xs font-black tracking-widest text-emerald-400 uppercase">System Online</span>
+        </div>
+      </header>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* قسم المطالبات المالية */}
+        <div className="bg-slate-900 border border-white/5 rounded-[2rem] p-8">
+          <h2 className="text-xl font-black mb-6 flex items-center gap-3">
+            <Activity className="w-6 h-6 text-indigo-400" /> 
+            المطالبات المالية المعلقة (السيولة)
+          </h2>
+          
+          <div className="space-y-4">
+            {data.withdrawalRequests?.length === 0 ? (
+              <p className="text-slate-500 text-sm text-center py-8">لا توجد مطالبات مالية معلقة.</p>
+            ) : (
+              data.withdrawalRequests?.map((req: any) => (
+                <div key={req.id} className="bg-slate-950 p-6 rounded-2xl border border-white/5 flex justify-between items-center">
+                  <div>
+                    <p className="text-xs text-slate-500 mb-1 font-mono">{req.actor_identifier}</p>
+                    <p className="text-lg font-black text-white">${req.snapshot?.requested_amount} USD</p>
+                    <p className="text-[10px] text-slate-600 mt-1">{new Date(req.created_at).toLocaleString('ar-EG')}</p>
+                  </div>
+                  <button 
+                    onClick={() => handleApprove(req.id, req.actor_identifier, req.snapshot?.requested_amount)}
+                    className="bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500 hover:text-slate-950 px-6 py-3 rounded-xl font-black text-xs transition-all flex items-center gap-2"
+                  >
+                    <CheckCircle className="w-4 h-4" /> اعتماد الصرف
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        {/* قسم النزاعات القانونية */}
+        <div className="bg-slate-900 border border-white/5 rounded-[2rem] p-8">
+          <h2 className="text-xl font-black mb-6 flex items-center gap-3 text-rose-400">
+            <ShieldAlert className="w-6 h-6" /> 
+            النزاعات المعلقة (محرك الضمان)
+          </h2>
+          
+          <div className="space-y-4">
+            {data.disputes?.length === 0 ? (
+              <p className="text-slate-500 text-sm text-center py-8">الوضع التشغيلي مستقر. لا توجد نزاعات.</p>
+            ) : (
+              data.disputes?.map((dispute: any) => (
+                <div key={dispute.id} className="bg-rose-950/20 p-6 rounded-2xl border border-rose-500/20">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <p className="text-xs text-rose-400/70 mb-1">معرف العقد: {dispute.id.split('-')[0]}</p>
+                      <p className="text-sm font-bold text-white">نزاع على التسليم النهائي</p>
+                    </div>
+                    <span className="bg-rose-500 text-white text-[10px] font-black px-3 py-1 rounded-full">ACTION REQUIRED</span>
+                  </div>
+                  <button className="w-full bg-slate-950 text-slate-300 border border-white/10 py-3 rounded-xl text-xs font-bold hover:bg-rose-500/20 hover:text-rose-300 transition-colors flex items-center justify-center gap-2">
+                    <Search className="w-4 h-4" /> فتح ملف التحقيق والتدقيق
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
