@@ -20,14 +20,9 @@ export async function createOrder(serviceId: string, freelancerId: string, price
 
   if (orderError) return { success: false, message: 'حدث خطأ أثناء إنشاء الطلب' };
 
-  // 2. تفعيل الضمان المالي (Escrow)
+  // 2. تفعيل الضمان المالي (Escrow) - [تم إصلاح الاستدعاء هنا]
   try {
-    await holdFundsInEscrow({
-      orderId: order.id,
-      clientId: clientId,
-      freelancerId: freelancerId,
-      amount: price
-    });
+    await holdFundsInEscrow(order.id, clientId, freelancerId, price);
   } catch (escrowError: any) {
     return { success: false, message: escrowError.message };
   }
