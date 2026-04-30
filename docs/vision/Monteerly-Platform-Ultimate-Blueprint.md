@@ -28051,3 +28051,7 @@ Kubernetes + GPU cluster
 </section_7_copywriting_constitution>
 
 [... الأبواب السابقة ...]
+
+
+## 📝 ملحق: وثيقة الهندسة المعمارية العكسية (Monteerly AI OS v4.0)
+تم الانتقال إلى بنية الوكلاء المستقلين (Multi-Agent)، تفعيل GraphRAG للذاكرة الموحدة، وتحويل Termux إلى عقدة تنفيذ مادية (Agent Ultra) عبر بروتوكول MCP 2026.

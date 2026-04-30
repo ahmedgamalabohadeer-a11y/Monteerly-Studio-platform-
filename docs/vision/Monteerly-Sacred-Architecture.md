@@ -1,11 +1,27 @@
-# 🌐 Monteerly Corporate OS (MCOS) – Sacred Architecture v3.2
+# 🌐 Monteerly AI OS – Sacred Architecture v4.0
 
-<section_7_copywriting_constitution>
-## 7. دستور المحتوى النصي (Copywriting Constitution)
-تعتمد المنصة نبرة "الخبير التقني الحازم" لضمان الهيبة والاحترافية:
-1. **[span_9](start_span)النظام ليس موقعاً**: نستخدم "أطلق الاستوديو" (Deploy) بدلاً من "ابدأ"[span_9](end_span).
-2. **[span_10](start_span)السيادة المالية**: نستخدم "حساب الضمان" (Escrow) و"السيولة" (Liquidity)[span_10](end_span).
-3. **[span_11](start_span)[span_12](start_span)الأمان العسكري**: نستخدم "تشفير AES-256" و"تصريح أمني"[span_11](end_span)[span_12](end_span).
-</section_7_copywriting_constitution>
+<section_0_identity>
+## 0. تعريف النظام (System Identity)
+- **الاسم**: Monteerly AI OS v4.0.
+- **الجوهر**: بيئة تشغيل استدلالية متكاملة (Stateful, Autonomous, Multi-Agent System).
+- **العقدة الطرفية**: تحويل Termux إلى عقدة تحكم مادية (Agent Ultra).
+</section_0_identity>
 
-[... الأبواب السابقة ...]
+[... الأبواب من 1 إلى 7 تظل كما هي لتحكم الأساسيات ...]
+
+<section_8_ai_os_v4>
+## 8. معمارية الذكاء الاصطناعي (AI OS v4.0 Architecture)
+1. **هندسة الذاكرة الموحدة (UMA v3)**: 
+   - ذاكرة ساخنة (Supabase/Postgres).
+   - ذاكرة دافئة (pgvector) وباردة مدعومة بـ Neo4j و GraphRAG للاسترجاع الهجين.
+2. **منظومة الوكلاء المستقلين (Multi-Agent Topology)**:
+   - نظام المشرف والمستقلين (Supervisor-Worker) عبر LangGraph و ChatDev 2.0.
+   - وكلاء متخصصين: Planner, Architect, Developer, DevOps, Security Guardian.
+3. **عقدة التنفيذ المحمولة (Agent Ultra)**:
+   - يعمل داخل Termux عبر proot-distro لتنفيذ مهام مادية وبناء تطبيقات (APK).
+   - متصل ببروتوكول MCP 2026 عبر Streamable HTTP.
+4. **محرك التعافي الذاتي (MREE)**:
+   - "جراح آلي" يتدخل عند فشل العمليات لكتابة رقع تصحيحية (Patches) ذاتياً.
+5. **الرؤية الحاسوبية (UI-TARS)**:
+   - استخدام نماذج VLMs للتعامل مع إحداثيات الشاشة (X,Y) بدلاً من معرفات DOM الهشة.
+</section_8_ai_os_v4>
