@@ -1,0 +1,19 @@
+{
+  "navigation": {
+    "workspace": "Workspace",
+    "marketplace": "Marketplace",
+    "academy": "Academy",
+    "pricing": "Pricing",
+    "login": "Login"
+  },
+  "hero": {
+    "title": "Unleash Your Creativity. Unmatched Digital Sovereignty.",
+    "subtitle": "Monteerly Corporate OS: The enterprise platform combining smart contracts, cloud rendering, and secure escrow.",
+    "cta": "Start Your Sovereign Journey"
+  },
+  "system": {
+    "loading": "Encrypting & Syncing...",
+    "error": "Unexpected error occurred",
+    "success": "Operation completed successfully"
+  }
+}
