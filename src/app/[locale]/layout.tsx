@@ -1,18 +1,48 @@
-import React from "react";
-import { ToastProvider } from "@/components/ui/Toast";
+import React from 'react';
+import { Cairo, Geist } from 'next/font/google';
+import '@/app/globals.css';
 
-export default function RootFeatureLayout({ 
-  children 
-}: { 
-  children: React.ReactNode 
+// 1. فرض خط القاهرة العربي إجبارياً على جميع الواجهات
+const cairo = Cairo({ 
+  subsets: ['arabic', 'latin'], 
+  variable: '--font-cairo',
+  display: 'swap',
+  weight: ['400', '600', '700', '900']
+});
+
+// 2. فرض خط Geist المخصص للأكواد والأرقام المالية
+const geist = Geist({
+  subsets: ['latin'],
+  variable: '--font-geist-mono',
+  display: 'swap'
+});
+
+export const metadata = {
+  title: 'Monteerly Corporate OS | نظام الإنتاج السيادي',
+  description: 'أول نظام تشغيل متكامل لشركات الإنتاج والمبدعين مدعوم بالذكاء الاصطناعي.',
+};
+
+export default function RootLayout({
+  children,
+  params: { locale }
+}: {
+  children: React.ReactNode;
+  params: { locale: string };
 }) {
   return (
-    <ToastProvider>
-      <div className="min-h-screen bg-background text-foreground font-cairo antialiased">
-        <main className="relative flex min-h-screen flex-col">
-          <div className="flex-1">{children}</div>
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className={`${cairo.variable} ${geist.variable} scroll-smooth`}>
+      {/* 3. فرض الهوية اللونية الداكنة Slate-950 بشكل قاطع على كامل المنصة */}
+      <body className="bg-slate-950 text-slate-50 font-sans antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
+        
+        {/* شريط الإشعارات السيادي العالمي (Global Alert) */}
+        <div className="w-full bg-indigo-600 text-white text-center py-1.5 text-[10px] font-black tracking-widest uppercase z-[100] relative">
+          جميع الاتصالات مشفرة | MCOS V5.0 System Active
+        </div>
+
+        <main className="relative flex flex-col min-h-screen">
+          {children}
         </main>
-      </div>
-    </ToastProvider>
+      </body>
+    </html>
   );
 }
