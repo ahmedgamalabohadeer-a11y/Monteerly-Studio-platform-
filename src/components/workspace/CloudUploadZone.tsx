@@ -1,101 +1,125 @@
 'use client'
+import React, { useState, useRef } from 'react';
+import { UploadCloud, FileVideo, ShieldCheck, Loader2, CheckCircle } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
-import React, { useState } from 'react';
-import { getUploadTicket, finalizeDelivery } from '@/app/[locale]/workspace/actions';
-import { UploadCloud, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
-
-export default function CloudUploadZone({ orderId, clientId, ar }: { orderId: string, clientId: string, ar: any }) {
-  const [status, setStatus] = useState<'idle' | 'preparing' | 'uploading' | 'finalizing' | 'success'>('idle');
+export default function CloudUploadZone({ orderId, clientId, ar }: any) {
+  const [file, setFile] = useState<File | null>(null);
+  const [uploadStatus, setUploadStatus] = useState<'idle' | 'preparing' | 'uploading' | 'success' | 'error'>('idle');
   const [progress, setProgress] = useState(0);
-  const [error, setError] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    try {
-      setStatus('preparing');
-      // 1. استخدام عبارة "تخصيص المعالجة" من الدستور
-      console.log(ar.system.gpu_alloc); 
-
-      const ticket = await getUploadTicket(orderId, file.name, file.type);
-      
-      setStatus('uploading');
-      // 2. الرفع المباشر لـ Cloudflare R2
-      const xhr = new XMLHttpRequest();
-      xhr.open('PUT', ticket.uploadUrl, true);
-      xhr.setRequestHeader('Content-Type', file.type);
-
-      xhr.upload.onprogress = (event) => {
-        if (event.lengthComputable) {
-          const percent = Math.round((event.loaded / event.total) * 100);
-          setProgress(percent);
-        }
-      };
-
-      xhr.onload = async () => {
-        if (xhr.status === 200) {
-          setStatus('finalizing');
-          await finalizeDelivery(orderId, ticket.publicUrl, "تم الرفع عبر محرك MCOS السحابي");
-          setStatus('success');
-        } else {
-          setError('فشل الاتصال بالقمر الصناعي أثناء الرفع');
-        }
-      };
-
-      xhr.send(file);
-    } catch (err: any) {
-      setError(err.message);
-      setStatus('idle');
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
     }
   };
 
-  if (status === 'success') return (
-    <div className="bg-emerald-50 p-6 rounded-3xl border border-emerald-100 text-center animate-in fade-in zoom-in">
-      <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto mb-2" />
-      <p className="text-emerald-800 font-black">تم التسليم وتشفير الأصول بنجاح!</p>
-    </div>
-  );
+  const startSecureUpload = async () => {
+    if (!file) return;
+    setUploadStatus('preparing');
+
+    try {
+      // 1. طلب تصريح الرفع (Presigned URL) من السيرفر الخاص بنا
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      const presignRes = await fetch('/api/storage/r2', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.access_token || 'demo-token'}`
+        },
+        body: JSON.stringify({
+          fileName: file.name,
+          fileType: file.type,
+          projectId: orderId
+        })
+      });
+
+      const { uploadUrl, finalFileUrl, error } = await presignRes.json();
+      if (error) throw new Error(error);
+
+      setUploadStatus('uploading');
+
+      // 2. الرفع المباشر (Direct Upload) إلى Cloudflare R2
+      // نستخدم XMLHttpRequest لمتابعة نسبة التقدم بدقة للملفات الكبيرة
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', uploadUrl, true);
+      xhr.setRequestHeader('Content-Type', file.type);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const percentComplete = (e.loaded / e.total) * 100;
+          setProgress(Math.round(percentComplete));
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          setUploadStatus('success');
+          // هنا يمكن إرسال finalFileUrl لقاعدة البيانات لحفظ رابط الفيديو النهائي
+          console.log("File successfully uploaded to:", finalFileUrl);
+        } else {
+          throw new Error('فشل الرفع إلى السحابة');
+        }
+      };
+
+      xhr.onerror = () => { throw new Error('انقطع الاتصال بالسحابة'); };
+      xhr.send(file);
+
+    } catch (err) {
+      console.error(err);
+      setUploadStatus('error');
+    }
+  };
 
   return (
-    <div className="relative group">
-      <input type="file" onChange={handleUpload} disabled={status !== 'idle'} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 disabled:cursor-not-allowed" />
-      <div className={`p-8 border-2 border-dashed rounded-[2.5rem] transition-all flex flex-col items-center justify-center gap-4 ${status !== 'idle' ? 'bg-slate-50 border-slate-200' : 'bg-white border-slate-200 group-hover:border-slate-900 group-hover:bg-slate-50'}`}>
-        
-        {status === 'idle' && (
-          <>
-            <div className="p-4 bg-slate-900 text-white rounded-2xl shadow-xl group-hover:scale-110 transition-transform">
-              <UploadCloud className="w-8 h-8" />
-            </div>
-            <div className="text-center">
-              <p className="font-black text-slate-900 text-lg">أطلق المسودة النهائية</p>
-              <p className="text-slate-400 text-xs mt-1">اسحب الملف هنا أو انقر لاستدعاء الأصول</p>
-            </div>
-          </>
-        )}
+    <div className="bg-slate-900 border border-slate-800 rounded-[2rem] p-8 text-center" dir="rtl">
+      <h3 className="text-xl font-black text-white mb-2 flex justify-center items-center gap-2">
+        <UploadCloud className="w-6 h-6 text-emerald-400" />
+        بوابة R2 للرفع المباشر
+      </h3>
+      <p className="text-slate-400 text-sm mb-6">سرعة فائقة. لا يمر الفيديو بخوادمنا لمنع انهيار الذاكرة.</p>
 
-        {status !== 'idle' && status !== 'success' && (
-          <div className="w-full space-y-4 text-center">
-            <Loader2 className="w-10 h-10 text-slate-900 animate-spin mx-auto" />
-            <div className="space-y-1">
-              <p className="text-sm font-black text-slate-900">
-                {status === 'preparing' && ar.system.gpu_alloc}
-                {status === 'uploading' && `جاري تشفير ونقل البيانات... ${progress}%`}
-                {status === 'finalizing' && "تمت المزامنة مع السحابة (مشفر)..."}
-              </p>
-              <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                <div className="bg-slate-900 h-full transition-all duration-300" style={{ width: `${progress}%` }}></div>
-              </div>
-            </div>
-          </div>
-        )}
+      <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileSelect} accept="video/*" />
 
-        {error && (
-          <div className="flex items-center gap-2 text-red-600 text-xs font-bold mt-2">
-            <AlertCircle className="w-4 h-4" /> {error}
+      {uploadStatus === 'idle' || uploadStatus === 'error' ? (
+        <div 
+          onClick={() => fileInputRef.current?.click()}
+          className="border-2 border-dashed border-slate-700 rounded-2xl p-10 hover:border-emerald-500 cursor-pointer transition-colors"
+        >
+          <FileVideo className="w-12 h-12 text-slate-500 mx-auto mb-4" />
+          <p className="font-bold text-white mb-2">{file ? file.name : 'اختر ملف الفيديو (بلا حدود للحجم)'}</p>
+          <p className="text-xs text-slate-500">يتم الرفع عبر شبكة Cloudflare العالمية</p>
+        </div>
+      ) : uploadStatus === 'success' ? (
+        <div className="border-2 border-emerald-500/30 bg-emerald-500/10 rounded-2xl p-10">
+          <CheckCircle className="w-12 h-12 text-emerald-400 mx-auto mb-4" />
+          <p className="font-bold text-emerald-400">تم تأمين الملف في الخزنة السيادية بنجاح.</p>
+        </div>
+      ) : (
+        <div className="border-2 border-slate-700 rounded-2xl p-10">
+          <Loader2 className="w-12 h-12 text-indigo-400 animate-spin mx-auto mb-4" />
+          <p className="font-bold text-white mb-2">جاري الرفع السحابي...</p>
+          <div className="w-full bg-slate-800 rounded-full h-2.5 mt-4">
+            <div className="bg-indigo-500 h-2.5 rounded-full transition-all" style={{ width: `${progress}%` }}></div>
           </div>
-        )}
-      </div>
+          <p className="text-xs text-indigo-300 mt-2">{progress}%</p>
+        </div>
+      )}
+
+      {file && uploadStatus !== 'uploading' && uploadStatus !== 'success' && (
+        <button 
+          onClick={startSecureUpload}
+          className="w-full mt-6 bg-emerald-600 hover:bg-emerald-500 text-white py-4 rounded-xl font-black flex items-center justify-center gap-2 transition-all"
+        >
+          <ShieldCheck className="w-5 h-5" /> بدء التشفير والرفع
+        </button>
+      )}
+
+      {uploadStatus === 'error' && (
+        <p className="text-rose-400 text-sm font-bold mt-4">حدث خطأ أثناء الرفع. تأكد من اتصالك وحاول مجدداً.</p>
+      )}
     </div>
   );
 }
