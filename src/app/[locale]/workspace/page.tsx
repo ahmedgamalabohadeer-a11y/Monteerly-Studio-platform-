@@ -1,12 +1,12 @@
 'use client'
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Monitor, MessageSquare, ShieldCheck, Maximize2, X, FileVideo } from 'lucide-react';
+import { Monitor, ShieldCheck, FileVideo } from 'lucide-react';
 import CloudUploadZone from '@/components/workspace/CloudUploadZone';
 import ReviewPlayer from '@/components/workspace/ReviewPlayer';
+import LiveSync from '@/components/workspace/LiveSync';
 
 export default function CorporateOSWorkspace() {
-  // إدارة النوافذ (Window Management System)
   const [windows, setWindows] = useState([
     { id: 'player', title: 'شاشة العرض السيادية', icon: <Monitor className="w-4 h-4" />, isOpen: true, zIndex: 10 },
     { id: 'upload', title: 'محرك R2 السحابي', icon: <FileVideo className="w-4 h-4" />, isOpen: true, zIndex: 11 },
@@ -18,11 +18,12 @@ export default function CorporateOSWorkspace() {
 
   return (
     <div className="h-screen w-full bg-slate-950 overflow-hidden font-sans relative" dir="rtl">
-      {/* خلفية نظام التشغيل */}
+      {/* محرك المزامنة الحية (يعمل في الخلفية لرسم المؤشرات) */}
+      <LiveSync roomId="mcos-live-session-01" />
+
       <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564')] bg-cover bg-center opacity-10"></div>
       
-      {/* شريط المهام العلوي (Taskbar) */}
-      <header className="absolute top-0 w-full h-12 bg-slate-900/80 backdrop-blur-md border-b border-white/10 z-50 flex items-center justify-between px-4">
+      <header className="absolute top-0 w-full h-12 bg-slate-900/80 backdrop-blur-md border-b border-white/10 z-[60] flex items-center justify-between px-4">
         <div className="flex items-center gap-4">
           <div className="flex gap-2">
             <span className="w-3 h-3 rounded-full bg-rose-500"></span>
@@ -36,10 +37,7 @@ export default function CorporateOSWorkspace() {
         </div>
       </header>
 
-      {/* منطقة سطح المكتب (Desktop Area) */}
       <div className="relative w-full h-full pt-12 p-4">
-        
-        {/* نافذة مشغل الفيديو */}
         {windows.find(w => w.id === 'player')?.isOpen && (
           <motion.div 
             drag dragMomentum={false}
@@ -58,7 +56,6 @@ export default function CorporateOSWorkspace() {
           </motion.div>
         )}
 
-        {/* نافذة الرفع السحابي */}
         {windows.find(w => w.id === 'upload')?.isOpen && (
           <motion.div 
             drag dragMomentum={false}
@@ -76,7 +73,6 @@ export default function CorporateOSWorkspace() {
             </div>
           </motion.div>
         )}
-
       </div>
     </div>
   );
