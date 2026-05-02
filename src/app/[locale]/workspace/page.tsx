@@ -1,47 +1,82 @@
-import { supabase } from '@/lib/supabase';
-import { ShieldCheck, Server } from 'lucide-react';
+'use client'
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Monitor, MessageSquare, ShieldCheck, Maximize2, X, FileVideo } from 'lucide-react';
 import CloudUploadZone from '@/components/workspace/CloudUploadZone';
+import ReviewPlayer from '@/components/workspace/ReviewPlayer';
 
-export default async function WorkspacePage() {
-  const { data: authData } = await supabase.auth.getUser();
+export default function CorporateOSWorkspace() {
+  // إدارة النوافذ (Window Management System)
+  const [windows, setWindows] = useState([
+    { id: 'player', title: 'شاشة العرض السيادية', icon: <Monitor className="w-4 h-4" />, isOpen: true, zIndex: 10 },
+    { id: 'upload', title: 'محرك R2 السحابي', icon: <FileVideo className="w-4 h-4" />, isOpen: true, zIndex: 11 },
+  ]);
 
-  // محاكاة لمعرفات الطلب في النسخة التجريبية (MVP)
-  const orderId = "mcos-req-001";
-  const clientId = "mcos-client-001";
-
-  // قاموس العبارات الاحترافية المعتمد
-  const ar = {
-    system: { 
-      gpu_alloc: "تخصيص وحدات المعالجة الرسومية (GPU Allocation)...", 
-      loading: "جاري استدعاء الأصول السحابية وتجهيز بيئة العمل..." 
-    },
-    legal: { 
-      vault: "تمت المزامنة مع السحابة (مشفر)." 
-    }
+  const bringToFront = (id: string) => {
+    setWindows(windows.map(w => w.id === id ? { ...w, zIndex: 20 } : { ...w, zIndex: 10 }));
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-8 font-sans" dir="rtl">
-      <header className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-black text-slate-900">غرفة العمليات التعاونية</h1>
-          <p className="text-slate-500 font-bold mt-2 flex items-center gap-2">
-            <Server className="w-4 h-4" /> معالجة وتسليم نهائي | إنشاء رابط مراجعة آمن
-          </p>
+    <div className="h-screen w-full bg-slate-950 overflow-hidden font-sans relative" dir="rtl">
+      {/* خلفية نظام التشغيل */}
+      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564')] bg-cover bg-center opacity-10"></div>
+      
+      {/* شريط المهام العلوي (Taskbar) */}
+      <header className="absolute top-0 w-full h-12 bg-slate-900/80 backdrop-blur-md border-b border-white/10 z-50 flex items-center justify-between px-4">
+        <div className="flex items-center gap-4">
+          <div className="flex gap-2">
+            <span className="w-3 h-3 rounded-full bg-rose-500"></span>
+            <span className="w-3 h-3 rounded-full bg-amber-500"></span>
+            <span className="w-3 h-3 rounded-full bg-emerald-500"></span>
+          </div>
+          <span className="text-white font-black text-sm tracking-widest">MCOS V5.0</span>
         </div>
-        <div className="bg-emerald-100 text-emerald-800 border border-emerald-200 px-5 py-3 rounded-full font-black text-xs flex items-center gap-2 shadow-sm">
-          <ShieldCheck className="w-5 h-5 text-emerald-600" /> اتصال آمن بالخوادم السيادية
+        <div className="flex items-center gap-3 text-xs font-bold text-emerald-400 bg-emerald-400/10 px-3 py-1 rounded-full border border-emerald-500/20">
+          <ShieldCheck className="w-4 h-4" /> اتصال مشفر (E2EE)
         </div>
       </header>
 
-      <div className="bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-100">
-        <div className="mb-8 border-b border-slate-100 pb-6">
-          <h2 className="text-2xl font-black text-slate-900">محرك الرفع السحابي (R2)</h2>
-          <p className="text-slate-400 text-sm font-bold mt-1">تشفير AES-256 نشط. يرجى سحب الأصول الرقمية هنا.</p>
-        </div>
+      {/* منطقة سطح المكتب (Desktop Area) */}
+      <div className="relative w-full h-full pt-12 p-4">
         
-        {/* دمج المكون التفاعلي الجديد الذي تم بناؤه سابقاً */}
-        <CloudUploadZone orderId={orderId} clientId={clientId} ar={ar} />
+        {/* نافذة مشغل الفيديو */}
+        {windows.find(w => w.id === 'player')?.isOpen && (
+          <motion.div 
+            drag dragMomentum={false}
+            onMouseDown={() => bringToFront('player')}
+            className="absolute top-20 left-20 w-[800px] bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+            style={{ zIndex: windows.find(w => w.id === 'player')?.zIndex }}
+          >
+            <div className="bg-slate-950 px-4 py-3 flex items-center justify-between cursor-move border-b border-white/5">
+              <div className="flex items-center gap-2 text-slate-300 font-bold text-sm">
+                <Monitor className="w-4 h-4 text-indigo-400" /> شاشة العرض والتدقيق
+              </div>
+            </div>
+            <div className="p-4">
+              <ReviewPlayer url="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_5MB.mp4" orderId="mcos-live-01" ar={{system:{loading:'جاري..'}, legal:{vault:'مشفر'}}} />
+            </div>
+          </motion.div>
+        )}
+
+        {/* نافذة الرفع السحابي */}
+        {windows.find(w => w.id === 'upload')?.isOpen && (
+          <motion.div 
+            drag dragMomentum={false}
+            onMouseDown={() => bringToFront('upload')}
+            className="absolute top-40 right-20 w-[400px] bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+            style={{ zIndex: windows.find(w => w.id === 'upload')?.zIndex }}
+          >
+            <div className="bg-slate-950 px-4 py-3 flex items-center justify-between cursor-move border-b border-white/5">
+              <div className="flex items-center gap-2 text-slate-300 font-bold text-sm">
+                <FileVideo className="w-4 h-4 text-emerald-400" /> محرك R2 السحابي
+              </div>
+            </div>
+            <div className="p-4">
+              <CloudUploadZone orderId="live-01" clientId="client-01" ar={{system:{gpu_alloc:'تخصيص مسار آمن..'}, legal:{vault:'مزامنة مشفرة'}}} />
+            </div>
+          </motion.div>
+        )}
+
       </div>
     </div>
   );
