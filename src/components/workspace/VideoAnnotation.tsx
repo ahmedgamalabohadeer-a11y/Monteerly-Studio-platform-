@@ -1,9 +1,53 @@
 'use client';
 import React, { useState } from 'react';
+import { supabase } from '@/lib/supabase';
+import { useEffect } from 'react';
+
 import { Pen, Circle, Square, Eraser } from 'lucide-react';
 export function VideoAnnotation() {
   const [activeTool, setActiveTool] = useState<'pen' | 'circle' | 'square' | null>('pen');
   const [color, setColor] = useState('#ef4444');
+
+  const [annotations, setAnnotations] = useState<any[]>([]);
+
+  useEffect(() => {
+    // استقبال التعليقات اللحظية من الطرف الآخر
+    const channel = supabase.channel('annotations-sync')
+      .on('broadcast', { event: 'new_draw' }, (payload) => {
+        setAnnotations((prev) => [...prev, payload.payload]);
+      })
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'video_annotations' }, (payload) => {
+        setAnnotations((prev) => [...prev, payload.new]);
+      })
+      .subscribe();
+      
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
+  const handleDraw = async (path: string) => {
+    const payload = {
+      timecode: 0, 
+      tool: activeTool || 'pen',
+      color: color,
+      svg_path: path,
+      timestamp: Date.now()
+    };
+
+    // أ. البث اللحظي للطرف الآخر (بدون انتظار قاعدة البيانات)
+    const channel = supabase.channel('annotations-sync');
+    channel.send({
+      type: 'broadcast',
+      event: 'new_draw',
+      payload: payload
+    });
+
+    // ب. الحفظ الدائم في قاعدة البيانات للتوثيق القانوني
+    await supabase.from('video_annotations').insert(payload);
+    
+    // ج. تحديث الواجهة المحلية
+    setAnnotations((prev) => [...prev, payload]);
+  };
+
   return (
     <div className="absolute inset-0 z-30 pointer-events-none">
        <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-2 bg-black/80 backdrop-blur-md p-2 rounded-xl border border-white/10 pointer-events-auto shadow-2xl">
