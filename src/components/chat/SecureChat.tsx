@@ -15,7 +15,50 @@ export const SecureChat = () => {
     const channel = engineRef.current.enableRealtime((newMessage) => {
       setRealMessages((prev) => [...prev, newMessage]);
     });
-    return () => engineRef.current?.cleanup();
+    
+  const [isSending, setIsSending] = useState(false);
+
+  const handleSecureSend = async () => {
+    if (!message.trim() || isBlocked) return;
+    setIsSending(true);
+
+    try {
+      // 1. الفحص الاستباقي عبر وكيل الذكاء الاصطناعي
+      const res = await fetch('/api/ai/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: message, type: 'security_audit' })
+      });
+
+      const data = await res.json();
+      
+      // تنظيف استجابة Gemini لاستخراج الـ JSON الصافي
+      const cleanJson = data.result.replace(/```json/g, '').replace(/```/g, '').trim();
+      const aiResult = JSON.parse(cleanJson);
+
+      if (aiResult.isBlocked) {
+        setIsBlocked(true);
+        setSecurityAlert(true);
+        console.warn("🛡️ AI Guardian Blocked Message:", aiResult.reason);
+        setIsSending(false);
+        return;
+      }
+
+      // 2. إذا كان النص آمناً، يتم بثه فوراً للطرف الآخر عبر الـ Engine
+      if (engineRef.current) {
+         // في بيئة الإنتاج: يتم الحفظ في Supabase أولاً
+         engineRef.current.enableRealtime({ content: message, sender: 'me' }); 
+      }
+      setMessage('');
+
+    } catch (error) {
+      console.error("AI Check Error:", error);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  return () => engineRef.current?.cleanup();
   }, []);
 
   const setSecurityAlert = useProjectStore((state) => state.setSecurityAlert);
@@ -34,6 +77,49 @@ export const SecureChat = () => {
     } else {
       setIsBlocked(false);
       setSecurityAlert(false);
+    }
+  };
+
+  
+  const [isSending, setIsSending] = useState(false);
+
+  const handleSecureSend = async () => {
+    if (!message.trim() || isBlocked) return;
+    setIsSending(true);
+
+    try {
+      // 1. الفحص الاستباقي عبر وكيل الذكاء الاصطناعي
+      const res = await fetch('/api/ai/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: message, type: 'security_audit' })
+      });
+
+      const data = await res.json();
+      
+      // تنظيف استجابة Gemini لاستخراج الـ JSON الصافي
+      const cleanJson = data.result.replace(/```json/g, '').replace(/```/g, '').trim();
+      const aiResult = JSON.parse(cleanJson);
+
+      if (aiResult.isBlocked) {
+        setIsBlocked(true);
+        setSecurityAlert(true);
+        console.warn("🛡️ AI Guardian Blocked Message:", aiResult.reason);
+        setIsSending(false);
+        return;
+      }
+
+      // 2. إذا كان النص آمناً، يتم بثه فوراً للطرف الآخر عبر الـ Engine
+      if (engineRef.current) {
+         // في بيئة الإنتاج: يتم الحفظ في Supabase أولاً
+         engineRef.current.enableRealtime({ content: message, sender: 'me' }); 
+      }
+      setMessage('');
+
+    } catch (error) {
+      console.error("AI Check Error:", error);
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -98,10 +184,10 @@ export const SecureChat = () => {
               <Paperclip size={18} />
             </button>
             <button 
-              disabled={isBlocked || !message.trim()}
+              onClick={handleSecureSend} disabled={isBlocked || !message.trim() || isSending}
               className={`p-2 rounded-lg transition-colors ${isBlocked ? 'bg-gray-600 cursor-not-allowed' : 'bg-brand-secondary hover:bg-brand-primary text-white'}`}
             >
-              <Send size={18} className={isBlocked ? '' : 'rtl:-rotate-90'} />
+              {isSending ? <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span> : <Send size={18} className={isBlocked ? '' : 'rtl:-rotate-90'} />}
             </button>
           </div>
         </div>

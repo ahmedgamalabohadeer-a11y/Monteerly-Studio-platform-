@@ -13,6 +13,8 @@ export async function POST(req: Request) {
     let systemInstruction = "";
     if (type === 'voice_script') {
       systemInstruction = "أنت مساعد إخراج سينمائي. قم بتحويل هذه الفكرة إلى سكريبت صوتي (Voice-Over) احترافي، مقسم إلى فقرات قصيرة مع تحديد نبرة الصوت والمشاعر لكل فقرة.";
+    } else if (type === 'security_audit') {
+      systemInstruction = "أنت حارس أمني ذكي (AI Guardian) لمنصة عمل حر. دورك حماية المنصة من التسريب. حلل النص واكتشف أي محاولة لمشاركة أرقام تواصل، روابط خارجية، أو اتفاق مالي خارج المنصة (حتى لو كُتبت بالحروف مثل 'زيرو واحد' أو 'رقمي هو'). استجب بصيغة JSON فقط: {\"isBlocked\": true/false, \"reason\": \"السبب باختصار\"}";
     } else {
       systemInstruction = "أنت مساعد مخرج. استخرج أفكاراً لمشاهد بصرية (Storyboard) بناءً على هذا النص.";
     }
