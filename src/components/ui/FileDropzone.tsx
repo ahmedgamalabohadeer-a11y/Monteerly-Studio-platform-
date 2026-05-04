@@ -17,11 +17,55 @@ export function FileDropzone() {
       }));
       setFiles(prev => [...prev, ...fileArray]);
       
-      // Simulate Upload
-      fileArray.forEach((f, i) => {
-         setTimeout(() => {
-            setFiles(current => current.map((item, idx) => idx === current.length - 1 ? { ...item, progress: 100, status: 'done' } : item));
-         }, 1500);
+      // [تكامل سيادي] الرفع الفعلي السحابي (R2/S3) مع تتبع التقدم
+      fileArray.forEach(async (fItem) => {
+        try {
+          // 1. طلب تصريح الرفع المؤقت (Presigned URL) من الخادم الآمن
+          const res = await fetch('/api/storage/r2', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fileName: fItem.file.name, fileType: fItem.file.type, projectId: 'studio_project' })
+          });
+          
+          if (!res.ok) throw new Error('فشل التصريح الأمني');
+          const { uploadUrl, finalFileUrl } = await res.json();
+
+          // 2. الرفع المباشر للخادم السحابي مع مؤشر تقدم حي (XMLHttpRequest)
+          const xhr = new XMLHttpRequest();
+          xhr.open('PUT', uploadUrl, true);
+          xhr.setRequestHeader('Content-Type', fItem.file.type);
+          
+          xhr.upload.onprogress = (e) => {
+            if (e.lengthComputable) {
+              const percent = Math.round((e.loaded / e.total) * 100);
+              setFiles(current => current.map(item => 
+                item.file.name === fItem.file.name ? { ...item, progress: percent, status: 'uploading' } : item
+              ));
+            }
+          };
+
+          xhr.onload = () => {
+            if (xhr.status === 200) {
+              setFiles(current => current.map(item => 
+                item.file.name === fItem.file.name ? { ...item, progress: 100, status: 'done', url: finalFileUrl } : item
+              ));
+              console.log('تم تأمين الملف سحابياً:', finalFileUrl);
+            } else {
+              throw new Error('فشل النقل السحابي');
+            }
+          };
+          
+          xhr.onerror = () => {
+             setFiles(current => current.map(item => item.file.name === fItem.file.name ? { ...item, status: 'error' } : item));
+          };
+          
+          xhr.send(fItem.file);
+        } catch (error) {
+          console.error(error);
+          setFiles(current => current.map(item => 
+            item.file.name === fItem.file.name ? { ...item, status: 'error' } : item
+          ));
+        }
       });
     }
   };
@@ -56,10 +100,10 @@ export function FileDropzone() {
                    <div className="flex-1 min-w-0">
                       <div className="flex justify-between text-xs mb-1">
                          <span className="font-bold truncate">{item.file.name}</span>
-                         <span>{item.status === 'done' ? '100%' : 'Jari...'}</span>
+                         <span>{item.status === 'error' ? 'فشل' : Math.round(item.progress) + '%'}</span>
                       </div>
                       <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                         <div className="h-full bg-primary transition-all duration-500" style={{ width: item.status === 'done' ? '100%' : '40%' }} />
+                         <div className="h-full bg-primary transition-all duration-500" style={{ width: `${item.progress}%`, backgroundColor: item.status === 'error' ? '#ef4444' : '' }} />
                       </div>
                    </div>
                    <button onClick={() => setFiles(files.filter((_, i) => i !== idx))} className="text-muted-foreground hover:text-red-500">
