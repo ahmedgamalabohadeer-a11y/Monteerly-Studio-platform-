@@ -28055,3 +28055,10 @@ Kubernetes + GPU cluster
 
 ## 📝 ملحق: وثيقة الهندسة المعمارية العكسية (Monteerly AI OS v4.0)
 تم الانتقال إلى بنية الوكلاء المستقلين (Multi-Agent)، تفعيل GraphRAG للذاكرة الموحدة، وتحويل Termux إلى عقدة تنفيذ مادية (Agent Ultra) عبر بروتوكول MCP 2026.
+
+### 🚨 [تحديث سيادي: مايو 2026] - THE PRODUCTION ERA
+1. **Infrastructure Pivot:** تم الانتقال رسمياً من Microservices مكلفة إلى Serverless Architecture (Vercel + Supabase + Cloudflare R2 + Upstash).
+2. **Security & Escrow:** تم نقل حسابات الأموال (Revenue Splitter) إلى Server-Side APIs محمية بـ `withAuthGuard`، مع تفعيل Supabase `Service Role` لضمان التدقيق المالي.
+3. **Storage:** تم دمج `AWS S3 SDK` لتوليد Presigned URLs لرفع الفيديوهات مباشرة لـ Cloudflare R2 لتجنب انهيار Vercel.
+4. **UX/UI:** تم توحيد الواجهات لتكون Dark Mode (Slate-950) مع خطوط Cairo. وتم تفعيل `Zustand` لإدارة النوافذ، و `Framer Motion` للحركات.
+5. **E2E Testing:** تم دمج محرك `Playwright` لاختبار مسارات العميل والمونتير والموبايل والديسك توب بشكل آلي.
