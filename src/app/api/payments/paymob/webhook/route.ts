@@ -31,6 +31,23 @@ export async function POST(req: Request) {
       // 2. تفعيل عقد الضمان وتحويل الحالة (Escrow Trigger)
       await supabase.from('orders').update({ status: 'in_progress', payment_secured: true }).eq('id', orderId);
       await logAuditEvent({ actorIdentifier: 'PAYMOB', action: 'PAYMENT_SECURED', module: 'FINANCE', entityId: orderId, snapshot: { amount: data.obj.amount_cents / 100 }});
+
+      // [تكامل سيادي] 1. تسجيل المبلغ في محرك الضمان كـ (محتجز)
+      await supabase.from('transactions').insert({
+        reference_id: orderId.toString(),
+        client_id: data.obj.order.merchant_order_id, // في بيئة الإنتاج يجب استخراجه من الـ Metadata
+        amount: data.obj.amount_cents / 100,
+        status: 'locked',
+        type: 'escrow_deposit'
+      });
+
+      // [تكامل سيادي] 2. إطلاق نبضة التحديث اللحظي لجميع الواجهات المالية
+      supabase.channel('finance-channel').send({
+        type: 'broadcast',
+        event: 'escrow_locked',
+        payload: { orderId: orderId, amount: data.obj.amount_cents / 100 }
+      });
+
     }
 
     return NextResponse.json({ success: true }, { status: 200 });
