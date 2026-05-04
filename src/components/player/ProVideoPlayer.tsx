@@ -1,3 +1,4 @@
+import { VideoSyncEngine } from '@/lib/integration/VideoSyncEngine';
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Maximize, Settings, Monitor } from 'lucide-react';
@@ -5,6 +6,29 @@ import { formatTimecode } from '@/lib/utils/timecode';
 import { VideoAnnotation } from '@/components/workspace/VideoAnnotation';
 
 export function ProVideoPlayer({ src }: { src?: string }) {
+
+  const engineRef = useRef<VideoSyncEngine | null>(null);
+
+  // تفعيل محرك التزامن واستقبال الأحداث
+  useEffect(() => {
+    engineRef.current = new VideoSyncEngine('demo_project_id');
+    const channel = engineRef.current.enableSync((state) => {
+      // تطبيق حالة التشغيل المستلمة من الطرف الآخر
+      if (state.isPlaying !== undefined) {
+        setPlaying(state.isPlaying);
+      }
+    });
+
+    return () => engineRef.current?.cleanup();
+  }, []);
+
+  // بث التغييرات عند ضغط المستخدم على تشغيل/إيقاف
+  useEffect(() => {
+    if (engineRef.current) {
+      engineRef.current.broadcastState({ isPlaying: playing, currentTime });
+    }
+  }, [playing]);
+
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(185); // Dummy duration for demo
