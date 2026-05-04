@@ -37,7 +37,7 @@ export default function MarketplacePage() {
 
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold">النخب المتاحة</h2>
-          <button className="bg-slate-900 border border-slate-700 px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-slate-800 transition-colors">
+          <button className="bg-slate-900 border border-slate-700 px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-slate-950 transition-colors">
             <Filter className="w-4 h-4" /> تصفية يدوية
           </button>
         </div>
@@ -65,7 +65,7 @@ export default function MarketplacePage() {
                 </div>
                 <span className="text-xs text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded font-black">جاهز للعمل</span>
               </div>
-              <button className="w-full bg-white text-slate-950 hover:bg-indigo-500 hover:text-white py-3 rounded-xl font-black transition-all">
+              <button className="w-full bg-slate-950 text-slate-950 hover:bg-indigo-500 hover:text-white py-3 rounded-xl font-black transition-all">
                 بدء التفاوض السيادي
               </button>
             </div>

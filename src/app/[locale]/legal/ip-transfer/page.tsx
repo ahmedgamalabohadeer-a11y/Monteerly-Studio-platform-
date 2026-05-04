@@ -18,18 +18,18 @@ export default function IpTransferContract() {
           </button>
         </header>
 
-        <div className="bg-slate-50 text-slate-900 p-12 rounded-[2rem] shadow-2xl font-serif">
+        <div className="bg-slate-50 text-slate-50 p-12 rounded-[2rem] shadow-2xl font-serif">
           <div className="text-center mb-10 border-b-2 border-slate-200 pb-6">
             <h2 className="text-2xl font-black">عقد نقل حقوق الملكية الفكرية (IP Transfer)</h2>
             <p className="text-slate-500 font-bold mt-2">تم التوثيق عبر MCOS Smart Contracts</p>
           </div>
 
-          <div className="space-y-6 text-sm leading-relaxed text-slate-700 font-medium">
+          <div className="space-y-6 text-sm leading-relaxed text-slate-50 font-medium">
             <p>بموجب هذا العقد الرقمي، وبمجرد اكتمال تحويل الدفعة المالية من محفظة الضمان (Escrow) إلى حساب الطرف الثاني (المبدع/المونتير)، يقر الطرف الثاني بالتنازل الكامل والتام عن كافة حقوق الملكية الفكرية، وحقوق النشر، وحقوق التوزيع المتعلقة بالعمل الفني/المرئي المُسلم إلى الطرف الأول (العميل).</p>
             <p>يصبح الطرف الأول هو المالك الحصري والوحيد للمصنف، ويحق له تعديله، توزيعه، أو استغلاله تجارياً دون الرجوع للطرف الثاني أو التزام بأي تعويضات مالية إضافية.</p>
             
-            <div className="bg-slate-100 p-6 rounded-xl border border-slate-200 mt-8">
-              <h4 className="font-black text-slate-900 mb-4">التوقيعات المشفرة (Cryptographic Signatures)</h4>
+            <div className="bg-slate-950 p-6 rounded-xl border border-slate-200 mt-8">
+              <h4 className="font-black text-slate-50 mb-4">التوقيعات المشفرة (Cryptographic Signatures)</h4>
               <div className="grid grid-cols-2 gap-8">
                 <div>
                   <p className="text-xs text-slate-500 uppercase tracking-widest">توقيع العميل (الطرف الأول)</p>

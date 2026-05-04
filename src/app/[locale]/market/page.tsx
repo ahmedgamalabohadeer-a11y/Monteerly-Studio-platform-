@@ -12,14 +12,14 @@ export default async function MarketPage() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] p-8 font-sans" dir="rtl">
       <header className="mb-10 text-center max-w-2xl mx-auto">
-        <h1 className="text-4xl font-black text-slate-900 mb-4">سوق المونتاج السيادي</h1>
+        <h1 className="text-4xl font-black text-slate-50 mb-4">سوق المونتاج السيادي</h1>
         <p className="text-slate-500 text-lg">اختر الباقة المناسبة لمشروعك. أموالك في أمان تام (Escrow) حتى تستلم الفيديو النهائي وتوافق عليه.</p>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {services && services.length > 0 ? (
           services.map((service) => (
-            <div key={service.id} className="bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div key={service.id} className="bg-slate-950 rounded-[2.5rem] p-6 shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition-shadow">
               
               <div>
                 <div className="flex justify-between items-start mb-4">
@@ -31,7 +31,7 @@ export default async function MarketPage() {
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-slate-900 mb-2">{service.title}</h3>
+                <h3 className="text-xl font-bold text-slate-50 mb-2">{service.title}</h3>
                 <p className="text-slate-500 text-sm mb-4 line-clamp-3">{service.description}</p>
                 
                 <div className="flex items-center gap-4 text-xs font-bold text-slate-400 mb-6 pb-6 border-b border-slate-50">

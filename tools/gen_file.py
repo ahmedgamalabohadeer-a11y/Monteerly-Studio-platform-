@@ -1,18 +1,25 @@
+import os
 import sys
-from pathlib import Path
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python tools/gen_file.py <relative_path>")
-        sys.exit(1)
+        print("Usage: gen_file.py <filepath>")
+        return
 
-    rel_path = sys.argv[1]
-    target = Path(rel_path)
+    filepath = sys.argv[1]
+
+    directory = os.path.dirname(filepath)
+
+    # ✅ الحل هنا: لا تنشئ مجلد إذا كان المسار فارغ
+    if directory:
+        os.makedirs(directory, exist_ok=True)
+
     content = sys.stdin.read()
-    
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(content, encoding="utf-8")
-    print(f"✅ [MCOS Scaffold] تم بناء الملف بنجاح: {target} ({len(content)} حرف)")
+
+    with open(filepath, "w", encoding="utf-8") as f:
+        f.write(content)
+
+    print("File created:", filepath)
 
 if __name__ == "__main__":
     main()

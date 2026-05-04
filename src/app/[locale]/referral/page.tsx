@@ -43,7 +43,7 @@ export default function ReferralPage() {
           </h3>
           
           <div className="space-y-4">
-            <div className="flex justify-between items-center p-4 bg-gray-900 rounded-xl">
+            <div className="flex justify-between items-center p-4 bg-slate-950 rounded-xl">
               <div className="flex items-center gap-3">
                 <Users className="text-gray-400" />
                 <span className="text-gray-300">الأصدقاء المسجلين</span>
@@ -51,7 +51,7 @@ export default function ReferralPage() {
               <span className="font-bold text-2xl text-white">12</span>
             </div>
             
-            <div className="flex justify-between items-center p-4 bg-gray-900 rounded-xl border border-brand-success/20">
+            <div className="flex justify-between items-center p-4 bg-slate-950 rounded-xl border border-brand-success/20">
               <div className="flex items-center gap-3">
                 <Gift className="text-brand-success" />
                 <span className="text-gray-300">الأرباح المكتسبة</span>

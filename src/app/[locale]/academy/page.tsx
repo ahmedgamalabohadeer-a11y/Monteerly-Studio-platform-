@@ -36,7 +36,7 @@ export default function AcademyPage() {
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-black mb-4 group-hover:text-indigo-400 transition-colors">{course.title}</h3>
-                <button className="w-full py-3 bg-slate-800 hover:bg-indigo-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors">
+                <button className="w-full py-3 bg-slate-950 hover:bg-indigo-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors">
                   <PlayCircle className="w-4 h-4" /> ابدأ التعلم
                 </button>
               </div>

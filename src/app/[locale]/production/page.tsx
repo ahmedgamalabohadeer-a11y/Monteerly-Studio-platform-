@@ -63,7 +63,7 @@ export default function ProductionPage() {
                     <h3 className="text-2xl font-bold text-white mb-1">{project.project_name}</h3>
                     <p className="text-slate-400 text-sm">
                       العميل: <span className="text-white font-semibold">{project.legal_contracts?.client_name || 'غير متوفر'}</span>
-                      <span className="mx-2 text-slate-700">|</span> 
+                      <span className="mx-2 text-slate-50">|</span> 
                       كود الربط: {project.contract_id?.substring(0,8)}
                     </p>
                   </div>

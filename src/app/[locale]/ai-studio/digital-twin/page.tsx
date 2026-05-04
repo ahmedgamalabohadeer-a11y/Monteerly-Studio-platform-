@@ -55,7 +55,7 @@ export default function DigitalTwinSetup() {
 
             <button 
               onClick={() => { setIsCloning(true); setTimeout(() => setIsCloning(false), 3000); }}
-              className="w-full bg-slate-800 hover:bg-rose-600 text-white py-4 rounded-xl font-black flex items-center justify-center gap-2 transition-all"
+              className="w-full bg-slate-950 hover:bg-rose-600 text-white py-4 rounded-xl font-black flex items-center justify-center gap-2 transition-all"
             >
               {isCloning ? <Loader2 className="w-5 h-5 animate-spin" /> : <Mic className="w-5 h-5" />}
               {isCloning ? 'جاري تحليل البصمة وإنشاء التوأم...' : 'إنشاء التوأم الرقمي الآن'}
@@ -78,7 +78,7 @@ export default function DigitalTwinSetup() {
             <button 
               onClick={generateScript}
               disabled={isGenerating || !prompt}
-              className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 text-white py-3 rounded-xl font-black flex items-center justify-center gap-2 transition-all mb-6"
+              className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-950 text-white py-3 rounded-xl font-black flex items-center justify-center gap-2 transition-all mb-6"
             >
               {isGenerating ? <Loader2 className="w-5 h-5 animate-spin" /> : 'توليد السكريبت الاحترافي'}
             </button>
@@ -91,7 +91,7 @@ export default function DigitalTwinSetup() {
               )}
               
               {script && (
-                <button className="absolute bottom-4 left-4 bg-emerald-500 hover:bg-emerald-400 text-slate-900 px-6 py-2 rounded-lg font-black text-xs flex items-center gap-2 transition-all shadow-lg shadow-emerald-500/20">
+                <button className="absolute bottom-4 left-4 bg-emerald-500 hover:bg-emerald-400 text-slate-50 px-6 py-2 rounded-lg font-black text-xs flex items-center gap-2 transition-all shadow-lg shadow-emerald-500/20">
                   <Play className="w-4 h-4 fill-slate-900" /> تحدث بالتوأم الرقمي
                 </button>
               )}

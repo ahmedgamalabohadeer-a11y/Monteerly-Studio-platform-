@@ -5,7 +5,7 @@ import { Sparkles, Camera, Video, Music, Palette, PenTool, Layout, ShieldCheck }
 export default function FreelancerSetupPage() {
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 font-sans" dir="rtl">
-      <div className="max-w-5xl w-full bg-white rounded-[3.5rem] shadow-2xl border border-slate-100 overflow-hidden flex flex-col md:flex-row">
+      <div className="max-w-5xl w-full bg-slate-950 rounded-[3.5rem] shadow-2xl border border-slate-100 overflow-hidden flex flex-col md:flex-row">
         
         {/* القسم الجانبي: الهوية البصرية */}
         <div className="md:w-2/5 bg-slate-900 p-12 text-white flex flex-col justify-between relative overflow-hidden">
@@ -15,7 +15,7 @@ export default function FreelancerSetupPage() {
             <p className="text-slate-400 text-lg leading-relaxed">أنت الآن بصدد تفعيل استوديو العمل الخاص بك. هذه الخطوة تمنحك السيادة الكاملة على مشاريعك وعقودك المالية.</p>
           </div>
           
-          <div className="relative z-10 mt-12 bg-white/5 p-6 rounded-3xl border border-white/10 backdrop-blur-sm">
+          <div className="relative z-10 mt-12 bg-slate-950/5 p-6 rounded-3xl border border-white/10 backdrop-blur-sm">
              <img src={MONTEERLY_ASSETS.FEATURES.WORKSPACE} alt="Workspace Preview" className="rounded-2xl shadow-2xl mb-4" />
              <p className="text-xs text-slate-400 text-center font-bold uppercase tracking-widest">غرفة العمليات التعاونية</p>
           </div>
@@ -30,18 +30,18 @@ export default function FreelancerSetupPage() {
             <div className="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-full text-xs font-black mb-4">
               <Sparkles className="w-4 h-4" /> تفعيل الهوية الرقمية (F-009)
             </div>
-            <h1 className="text-3xl font-black text-slate-900">أكمل إعداد ملفك الشخصي</h1>
+            <h1 className="text-3xl font-black text-slate-50">أكمل إعداد ملفك الشخصي</h1>
           </header>
 
           <form action={finalizeFreelancerOnboarding} className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-3">
-                <label className="text-sm font-black text-slate-700">الاسم المهني (الذي سيظهر في العقود)</label>
+                <label className="text-sm font-black text-slate-50">الاسم المهني (الذي سيظهر في العقود)</label>
                 <input name="full_name" required type="text" placeholder="أحمد جمال..." className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 transition-all" />
               </div>
 
               <div className="space-y-3">
-                <label className="text-sm font-black text-slate-700">التخصص الأساسي (الدائرة الأولى)</label>
+                <label className="text-sm font-black text-slate-50">التخصص الأساسي (الدائرة الأولى)</label>
                 <select name="role" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 transition-all font-bold">
                   <option value="editor">المونتير (Video Editor)</option>
                   <option value="videographer">المصور (Videographer)</option>
@@ -54,12 +54,12 @@ export default function FreelancerSetupPage() {
             </div>
 
             <div className="space-y-3">
-              <label className="text-sm font-black text-slate-700">نبذة تعريفية (Bio)</label>
+              <label className="text-sm font-black text-slate-50">نبذة تعريفية (Bio)</label>
               <textarea name="bio" rows={3} placeholder="ما الذي يميز استوديو العمل الخاص بك؟" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 transition-all"></textarea>
             </div>
 
             <div className="space-y-3">
-              <label className="text-sm font-black text-slate-700">رابط معرض الأعمال (Portfolio)</label>
+              <label className="text-sm font-black text-slate-50">رابط معرض الأعمال (Portfolio)</label>
               <input name="portfolio_url" type="url" placeholder="https://vimeo.com/your-work" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 transition-all text-left" dir="ltr" />
             </div>
 

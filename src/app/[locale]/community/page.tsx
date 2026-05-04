@@ -53,12 +53,12 @@ export default function CommunityPage() {
               {assets.map((asset, i) => (
                 <div key={i} className="bg-slate-950 p-4 rounded-2xl border border-white/5 hover:border-emerald-500/30 transition-all">
                   <div className="flex justify-between items-start mb-2">
-                    <span className="text-[10px] bg-slate-800 text-slate-300 px-2 py-1 rounded font-black">{asset.type}</span>
+                    <span className="text-[10px] bg-slate-950 text-slate-300 px-2 py-1 rounded font-black">{asset.type}</span>
                     <span className={`text-xs font-black ${asset.price === 'مجاني' ? 'text-emerald-400' : 'text-indigo-400'}`}>{asset.price}</span>
                   </div>
                   <h4 className="font-bold text-sm mb-1">{asset.title}</h4>
                   <p className="text-xs text-slate-500 mb-3">بواسطة: {asset.author}</p>
-                  <button className="w-full bg-slate-800 hover:bg-emerald-600 text-white py-2 rounded-xl text-xs font-bold transition-all">
+                  <button className="w-full bg-slate-950 hover:bg-emerald-600 text-white py-2 rounded-xl text-xs font-bold transition-all">
                     تحميل إلى مكتبتي
                   </button>
                 </div>

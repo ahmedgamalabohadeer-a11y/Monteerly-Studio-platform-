@@ -20,7 +20,7 @@ export default function RoleSelectionPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {roles.map(role => (
-            <div key={role.id} className="bg-slate-900 border border-slate-800 p-8 rounded-3xl hover:border-slate-500 hover:bg-slate-800 cursor-pointer transition-all group text-center flex flex-col items-center">
+            <div key={role.id} className="bg-slate-900 border border-slate-800 p-8 rounded-3xl hover:border-slate-500 hover:bg-slate-950 cursor-pointer transition-all group text-center flex flex-col items-center">
               <div className="bg-slate-950 p-5 rounded-full mb-6 group-hover:scale-110 transition-transform shadow-xl">
                 {role.icon}
               </div>

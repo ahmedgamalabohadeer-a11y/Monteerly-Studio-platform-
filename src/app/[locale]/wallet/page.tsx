@@ -81,7 +81,7 @@ export default function WalletPage() {
             <button 
               onClick={requestWithdrawal}
               disabled={balance.available <= 0 || isWithdrawing}
-              className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 text-white py-3 rounded-xl font-black transition-all flex justify-center items-center gap-2"
+              className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-950 text-white py-3 rounded-xl font-black transition-all flex justify-center items-center gap-2"
             >
               {isWithdrawing ? <Loader2 className="w-5 h-5 animate-spin" /> : 'طلب تحرير الرصيد'}
             </button>
@@ -111,7 +111,7 @@ export default function WalletPage() {
           </div>
           <div className="divide-y divide-slate-800">
             {transactions.map((trx, i) => (
-              <div key={i} className="p-6 flex items-center justify-between hover:bg-slate-800/50 transition-colors">
+              <div key={i} className="p-6 flex items-center justify-between hover:bg-slate-950/50 transition-colors">
                 <div className="flex items-center gap-4">
                   <div className={`p-3 rounded-full ${trx.type === 'credit' ? 'bg-emerald-500/10 text-emerald-400' : trx.type === 'debit' ? 'bg-rose-500/10 text-rose-400' : 'bg-amber-500/10 text-amber-400'}`}>
                     {trx.type === 'credit' ? <ArrowDownRight className="w-6 h-6" /> : trx.type === 'debit' ? <ArrowUpRight className="w-6 h-6" /> : <Clock className="w-6 h-6" />}

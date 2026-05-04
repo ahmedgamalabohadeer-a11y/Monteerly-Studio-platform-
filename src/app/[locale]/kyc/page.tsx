@@ -19,7 +19,7 @@ export default function KYCSecurityPortal() {
       <div className="w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-[2rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
         
         {/* شريط التقدم */}
-        <div className="absolute top-0 left-0 w-full h-1.5 bg-slate-800">
+        <div className="absolute top-0 left-0 w-full h-1.5 bg-slate-950">
           <div className="h-full bg-emerald-500 transition-all duration-500" style={{ width: `${(step / 3) * 100}%` }}></div>
         </div>
 
@@ -62,7 +62,7 @@ export default function KYCSecurityPortal() {
             <button 
               onClick={simulateAIVerification}
               disabled={status === 'processing'}
-              className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 text-white py-4 rounded-xl font-black transition-all flex items-center justify-center gap-2"
+              className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-950 text-white py-4 rounded-xl font-black transition-all flex items-center justify-center gap-2"
             >
               {status === 'processing' ? <span className="animate-pulse">جاري فحص المستندات عبر الذكاء الاصطناعي...</span> : 'تشفير وإرسال للتحقق'}
             </button>
@@ -76,7 +76,7 @@ export default function KYCSecurityPortal() {
               <h2 className="text-2xl font-black text-emerald-400 mb-2">تم التوثيق بنجاح!</h2>
               <p className="text-emerald-200/80 text-sm">هويتك الآن موثقة (KYC Level 1). حدود السحب الخاصة بك ارتفعت إلى 10,000 دولار شهرياً.</p>
             </div>
-            <button onClick={() => window.location.href = '/ar/dashboard'} className="bg-slate-800 hover:bg-slate-700 text-white px-8 py-3 rounded-xl font-bold transition-all">
+            <button onClick={() => window.location.href = '/ar/dashboard'} className="bg-slate-950 hover:bg-slate-950 text-white px-8 py-3 rounded-xl font-bold transition-all">
               العودة للوحة القيادة
             </button>
           </div>

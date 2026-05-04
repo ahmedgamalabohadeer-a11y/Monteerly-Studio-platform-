@@ -31,8 +31,8 @@ export default function AdStudioPage() {
                 <label className="text-sm text-gray-300 mb-2 block">الهدف من الإعلان</label>
                 <div className="grid grid-cols-3 gap-2">
                   <button className="p-2 rounded-lg bg-brand-primary/20 border border-brand-primary text-brand-primary text-sm">مبيعات</button>
-                  <button className="p-2 rounded-lg bg-gray-800 border border-gray-700 text-gray-400 text-sm">وعي بالعلامة</button>
-                  <button className="p-2 rounded-lg bg-gray-800 border border-gray-700 text-gray-400 text-sm">زيارات</button>
+                  <button className="p-2 rounded-lg bg-slate-950 border border-gray-700 text-gray-400 text-sm">وعي بالعلامة</button>
+                  <button className="p-2 rounded-lg bg-slate-950 border border-gray-700 text-gray-400 text-sm">زيارات</button>
                 </div>
               </div>
 
@@ -53,7 +53,7 @@ export default function AdStudioPage() {
           <div className="bg-black/50 rounded-2xl border border-gray-800 flex items-center justify-center relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-t from-brand-dark to-transparent opacity-60"></div>
             <div className="text-center p-6 relative z-10">
-              <div className="w-20 h-20 bg-white/10 backdrop-blur rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform cursor-pointer">
+              <div className="w-20 h-20 bg-slate-950/10 backdrop-blur rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform cursor-pointer">
                 <Play className="text-white ml-1" size={32} />
               </div>
               <p className="text-gray-400 text-sm">ستظهر المعاينة هنا بعد التوليد</p>

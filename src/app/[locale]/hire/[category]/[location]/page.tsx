@@ -35,7 +35,7 @@ export default function SEO LandingPage({ params }: { params: { category: string
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl flex gap-4 hover:border-emerald-500/50 transition-colors">
-              <div className="w-16 h-16 bg-slate-800 rounded-full shrink-0 border-2 border-emerald-500/30"></div>
+              <div className="w-16 h-16 bg-slate-950 rounded-full shrink-0 border-2 border-emerald-500/30"></div>
               <div>
                 <h3 className="font-black text-lg text-white flex items-center gap-2">
                   مبدع محترف {i} <CheckCircle className="w-4 h-4 text-emerald-500" />
@@ -44,8 +44,8 @@ export default function SEO LandingPage({ params }: { params: { category: string
                   <MapPin className="w-3 h-3" /> {displayLocation}
                 </p>
                 <div className="mt-3 flex gap-2">
-                  <span className="text-[10px] bg-slate-800 px-2 py-1 rounded text-emerald-400 font-bold">باقة PRO</span>
-                  <span className="text-[10px] bg-slate-800 px-2 py-1 rounded text-slate-300">متاح الآن</span>
+                  <span className="text-[10px] bg-slate-950 px-2 py-1 rounded text-emerald-400 font-bold">باقة PRO</span>
+                  <span className="text-[10px] bg-slate-950 px-2 py-1 rounded text-slate-300">متاح الآن</span>
                 </div>
               </div>
             </div>

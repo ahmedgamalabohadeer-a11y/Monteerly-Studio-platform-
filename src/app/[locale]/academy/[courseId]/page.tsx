@@ -52,7 +52,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ courseI
             
             <div className="flex flex-wrap gap-6 text-sm">
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-full bg-slate-700" /> {/* Avatar Placeholder */}
+                <div className="w-10 h-10 rounded-full bg-slate-950" /> {/* Avatar Placeholder */}
                 <div>
                   <div className="text-slate-400 text-xs">المدرب</div>
                   <div className="font-bold">{COURSE_DETAILS.instructor}</div>
@@ -77,7 +77,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ courseI
 
           {/* بطاقة الاشتراك العائمة */}
           <div className="relative">
-            <div className="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-2xl lg:absolute lg:top-0 lg:left-0 lg:w-full">
+            <div className="bg-slate-950 border border-slate-700 rounded-2xl p-6 shadow-2xl lg:absolute lg:top-0 lg:left-0 lg:w-full">
               <div className="aspect-video bg-indigo-900 rounded-xl mb-6 flex items-center justify-center relative group cursor-pointer overflow-hidden">
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
                 <PlayCircle className="w-16 h-16 text-white opacity-90 group-hover:scale-110 transition-transform" />
@@ -88,7 +88,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ courseI
               <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-xl font-bold mb-4 transition-all hover:scale-[1.02]">
                 ابدأ التعلم الآن
               </button>
-              <button className="w-full border border-slate-600 hover:bg-slate-700 text-white py-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2">
+              <button className="w-full border border-slate-600 hover:bg-slate-950 text-white py-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2">
                 <Share2 className="w-4 h-4" />
                 مشاركة الدورة
               </button>
@@ -106,15 +106,15 @@ export default function CourseDetailPage({ params }: { params: Promise<{ courseI
           <div className="space-y-4">
             {COURSE_DETAILS.modules.map((module, i) => (
               <div key={i} className="border border-slate-800 rounded-xl overflow-hidden bg-slate-900/50">
-                <div className="bg-slate-800/50 p-4 font-bold border-b border-slate-800 flex justify-between">
+                <div className="bg-slate-950/50 p-4 font-bold border-b border-slate-800 flex justify-between">
                   <span>{module.title}</span>
                   <span className="text-sm text-slate-400">{module.lessons.length} دروس</span>
                 </div>
                 <div className="divide-y divide-slate-800/50">
                   {module.lessons.map((lesson, j) => (
-                    <div key={j} className="p-4 flex items-center justify-between hover:bg-slate-800/30 transition-colors group cursor-pointer">
+                    <div key={j} className="p-4 flex items-center justify-between hover:bg-slate-950/30 transition-colors group cursor-pointer">
                       <div className="flex items-center gap-4">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${lesson.type === 'open' ? 'bg-indigo-500/20 text-indigo-400' : 'bg-slate-800 text-slate-500'}`}>
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${lesson.type === 'open' ? 'bg-indigo-500/20 text-indigo-400' : 'bg-slate-950 text-slate-500'}`}>
                           {lesson.type === 'open' ? <PlayCircle className="w-5 h-5" /> : <Lock className="w-4 h-4" />}
                         </div>
                         <span className={lesson.type === 'locked' ? 'text-slate-400' : 'text-white'}>

@@ -1,3 +1,4 @@
+import { ChatEscrowEngine } from '@/lib/integration/ChatEscrowEngine';
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, AlertTriangle, Lock, Paperclip, ShieldCheck } from 'lucide-react';
@@ -6,6 +7,17 @@ import { useProjectStore } from '@/store/useProjectStore';
 export const SecureChat = () => {
   const [message, setMessage] = useState('');
   const [isBlocked, setIsBlocked] = useState(false);
+  const [realMessages, setRealMessages] = useState<any[]>([]);
+  const engineRef = useRef<ChatEscrowEngine | null>(null);
+
+  useEffect(() => {
+    engineRef.current = new ChatEscrowEngine('main_room'); // معرف الغرفة
+    const channel = engineRef.current.enableRealtime((newMessage) => {
+      setRealMessages((prev) => [...prev, newMessage]);
+    });
+    return () => engineRef.current?.cleanup();
+  }, []);
+
   const setSecurityAlert = useProjectStore((state) => state.setSecurityAlert);
   
   // Regex للكشف عن الأرقام المصرية والسعودية والإيميلات
@@ -36,7 +48,12 @@ export const SecureChat = () => {
         <span className="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">مشفر</span>
       </div>
 
-      {/* Messages Area (Mock) */}
+      {/* Realtime Messages Integration */}
+        {realMessages.map((msg, i) => (
+          <div key={i} className="flex gap-3 animate-in fade-in">
+            <div className="bg-brand-secondary/20 p-3 rounded-lg text-sm text-gray-200">{msg.content}</div>
+          </div>
+        ))}
       <div className="flex-1 p-4 overflow-y-auto space-y-4">
         <div className="flex gap-3">
           <div className="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center text-xs text-white">AM</div>

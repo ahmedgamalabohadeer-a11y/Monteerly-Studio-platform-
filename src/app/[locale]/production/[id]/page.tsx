@@ -114,7 +114,7 @@ export default function ProductionWorkspace({ params }: { params: Promise<{ id: 
               <button
                 key={s.id}
                 onClick={() => updateStatus(s.id)}
-                className={`p-4 rounded-2xl border-2 flex flex-col items-center gap-2 transition-all ${status === s.id ? `bg-slate-950 border-brand-primary ${s.color} scale-105` : 'border-transparent text-slate-600 hover:bg-slate-800'}`}
+                className={`p-4 rounded-2xl border-2 flex flex-col items-center gap-2 transition-all ${status === s.id ? `bg-slate-950 border-brand-primary ${s.color} scale-105` : 'border-transparent text-slate-600 hover:bg-slate-950'}`}
               >
                 <s.icon size={24} />
                 <span className="font-bold text-xs font-cairo">{s.label}</span>
@@ -155,7 +155,7 @@ export default function ProductionWorkspace({ params }: { params: Promise<{ id: 
               </div>
               <div className="divide-y divide-white/5">
                 {files.length > 0 ? files.map(f => (
-                  <div key={f.id} className="p-4 flex items-center justify-between hover:bg-slate-800/30 transition-colors">
+                  <div key={f.id} className="p-4 flex items-center justify-between hover:bg-slate-950/30 transition-colors">
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-slate-950 rounded-lg text-brand-primary"><File size={20} /></div>
                       <div>

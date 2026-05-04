@@ -97,7 +97,7 @@ export default function FinancePage() {
               {loading ? (
                 <tr><td colSpan={5} className="p-8 text-center text-slate-500">جاري تحميل البيانات المالية...</td></tr>
               ) : ledgers.map(l => (
-                <tr key={l.id} className="hover:bg-slate-800/50 transition-colors border-b border-slate-800/50">
+                <tr key={l.id} className="hover:bg-slate-950/50 transition-colors border-b border-slate-800/50">
                   <td className="p-4 font-bold text-white">{l.client_name}</td>
                   <td className="p-4 text-blue-400">${Number(l.total_amount).toLocaleString()}</td>
                   <td className="p-4 text-emerald-400">${Number(l.paid_amount).toLocaleString()}</td>

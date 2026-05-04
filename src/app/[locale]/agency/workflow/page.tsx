@@ -29,7 +29,7 @@ export default function AgencyWorkflow() {
               <p className="text-xs text-slate-500">بواسطة: أحمد (المصور)</p>
             </div>
             
-            <ArrowLeft className="w-8 h-8 text-slate-700 hidden md:block rotate-180 md:rotate-0 shrink-0" />
+            <ArrowLeft className="w-8 h-8 text-slate-50 hidden md:block rotate-180 md:rotate-0 shrink-0" />
             
             {/* خطوة 2 (AI) */}
             <div className="bg-indigo-500/10 border border-indigo-500/30 p-6 rounded-2xl w-full text-center">
@@ -38,7 +38,7 @@ export default function AgencyWorkflow() {
               <p className="text-xs text-indigo-500/70">بواسطة: MCOS AI Engine</p>
             </div>
 
-            <ArrowLeft className="w-8 h-8 text-slate-700 hidden md:block rotate-180 md:rotate-0 shrink-0" />
+            <ArrowLeft className="w-8 h-8 text-slate-50 hidden md:block rotate-180 md:rotate-0 shrink-0" />
 
             {/* خطوة 3 */}
             <div className="bg-slate-950 border border-slate-800 p-6 rounded-2xl w-full text-center opacity-50">

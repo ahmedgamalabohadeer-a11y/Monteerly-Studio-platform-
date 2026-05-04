@@ -6,6 +6,10 @@ import { supabaseAdmin } from '@/lib/supabaseAdmin';
 export async function POST(req: Request) {
   return withAuthGuard(req, async (req, user) => {
     try {
+      if (!amount || amount <= 0) {
+        return NextResponse.json({ error: 'مبلغ غير صالح' }, { status: 400 });
+      }
+
       const { amount, tier } = await req.json();
       const breakdown = RevenueEngine.calculateSplit(amount, tier);
 

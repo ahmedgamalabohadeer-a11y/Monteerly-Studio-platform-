@@ -42,7 +42,7 @@ export default function AutoSubtitles() {
 
           {status === 'done' && (
             <div className="flex gap-4">
-              <button className="flex-1 bg-slate-800 hover:bg-slate-700 text-white py-4 rounded-xl font-black flex items-center justify-center gap-2">
+              <button className="flex-1 bg-slate-950 hover:bg-slate-950 text-white py-4 rounded-xl font-black flex items-center justify-center gap-2">
                 <Download className="w-5 h-5" /> تحميل (SRT)
               </button>
               <button className="flex-1 bg-amber-600 hover:bg-amber-500 text-white py-4 rounded-xl font-black flex items-center justify-center gap-2">
