@@ -1,3 +1,4 @@
+import { activateSovereignAgreement } from '@/lib/contracts';
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { supabase } from '@/lib/supabase';
@@ -28,6 +29,12 @@ export async function POST(req: Request) {
     const isSuccess = data.obj.success;
 
     if (isSuccess) {
+      // [تكامل سيادي] توليد العقد وحجز الضمان آلياً فور نجاح الدفع
+      const { data: job } = await supabase.from('jobs').select('*').eq('id', orderId).single();
+      if (job) {
+        await activateSovereignAgreement(job.id, job.client_id, job.freelancer_id, job.budget);
+      }
+
       // 2. تفعيل عقد الضمان وتحويل الحالة (Escrow Trigger)
       await supabase.from('orders').update({ status: 'in_progress', payment_secured: true }).eq('id', orderId);
       await logAuditEvent({ actorIdentifier: 'PAYMOB', action: 'PAYMENT_SECURED', module: 'FINANCE', entityId: orderId, snapshot: { amount: data.obj.amount_cents / 100 }});

@@ -48,3 +48,15 @@ export async function generateContract(orderId: string, clientId: string, freela
 
   return contract;
 }
+
+import { holdFundsInEscrow } from './escrow';
+
+export async function activateSovereignAgreement(orderId: string, clientId: string, freelancerId: string, amount: number) {
+  // أ. توليد العقد القانوني وتوقيعه رقمياً
+  const contract = await generateContract(orderId, clientId, freelancerId, amount);
+  
+  // ب. حجز الأموال في حساب الضمان فوراً
+  const escrow = await holdFundsInEscrow(orderId, clientId, freelancerId, amount);
+  
+  return { contract, escrow };
+}
