@@ -29,6 +29,22 @@ export default function WalletPage() {
       const { data: user } = await supabase.auth.getUser();
       const userId = user?.user?.id || 'demo_user';
 
+      // [تكامل سيادي] الاتصال الفعلي بمحرك التقسيم والضمان
+      const response = await fetch('/api/finance/split', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: balance.available, tier: 'freelancer' })
+      });
+
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.error || 'تم رفض العملية من محرك الضمان السيادي');
+      }
+      
+      const splitResult = await response.json();
+      console.log('تم الاعتماد المالي بنجاح:', splitResult);
+
+
       const { error } = await supabase.from('audit_logs').insert({
         action: 'withdrawal_requested',
         actor_identifier: `freelancer:${userId}`,
