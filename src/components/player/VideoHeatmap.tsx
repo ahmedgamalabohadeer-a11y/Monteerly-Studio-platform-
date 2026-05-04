@@ -7,7 +7,7 @@ interface Marker {
   timecode: number;
 }
 
-export function VideoHeatmap({ jobId, duration }: { jobId: string; duration: number }) {
+export function VideoHeatmap({ jobId, duration, activeVersion = 1 }: { jobId: string; duration: number }) {
   const [markers, setMarkers] = useState<Marker[]>([]);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export function VideoHeatmap({ jobId, duration }: { jobId: string; duration: num
       const { data, error } = await supabase
         .from('video_annotations')
         .select('id, timecode')
-        .eq('job_id', jobId);
+        .eq('job_id', jobId).eq('version_number', activeVersion);
 
       if (!error && data) {
         setMarkers(data);
@@ -24,7 +24,6 @@ export function VideoHeatmap({ jobId, duration }: { jobId: string; duration: num
 
     fetchMarkers();
 
-    // الاستماع للإضافات الجديدة لحظياً
     const channel = supabase.channel('heatmap-sync')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'video_annotations' }, (payload) => {
         setMarkers((prev) => [...prev, payload.new as Marker]);
@@ -40,7 +39,7 @@ export function VideoHeatmap({ jobId, duration }: { jobId: string; duration: num
         <div
           key={marker.id}
           className="absolute w-1.5 h-1.5 bg-indigo-400 rounded-full border border-white/50 shadow-[0_0_8px_rgba(129,140,248,0.8)]"
-          style={{ left: `${(marker.timecode / duration) * 100}%` }}
+          style={{ left: `${(marker.timecode / duration) * 100}%`, transform: 'translateY(4px)' }}
         />
       ))}
     </div>

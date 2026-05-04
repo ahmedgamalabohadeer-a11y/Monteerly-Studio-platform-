@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 import { useEffect } from 'react';
 
 import { Pen, Circle, Square, Eraser } from 'lucide-react';
-export function VideoAnnotation() {
+export function VideoAnnotation({ activeVersion = 1 }: { activeVersion?: number }) {
   const [activeTool, setActiveTool] = useState<'pen' | 'circle' | 'square' | null>('pen');
   const [color, setColor] = useState('#ef4444');
 
@@ -16,7 +16,7 @@ export function VideoAnnotation() {
       .on('broadcast', { event: 'new_draw' }, (payload) => {
         setAnnotations((prev) => [...prev, payload.payload]);
       })
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'video_annotations' }, (payload) => {
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'video_annotations', filter: `version_number=eq.${activeVersion}` }, (payload) => {
         setAnnotations((prev) => [...prev, payload.new]);
       })
       .subscribe();
@@ -30,6 +30,7 @@ export function VideoAnnotation() {
       tool: activeTool || 'pen',
       color: color,
       svg_path: path,
+      version_number: activeVersion,
       timestamp: Date.now()
     };
 

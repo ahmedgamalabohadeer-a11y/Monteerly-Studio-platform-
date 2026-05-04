@@ -4,9 +4,135 @@ import { Wallet, ArrowUpRight, ArrowDownRight, Clock, ShieldCheck, DollarSign, L
 import { supabase } from '@/lib/supabase';
 
 export default function WalletPage() {
-  const [balance, setBalance] = useState({ available: 0, pending: 0, total_earned: 0 });
-  const [isWithdrawing, setIsWithdrawing] = useState(false);
-  const [withdrawalMsg, setWithdrawalMsg] = useState('');
+  const [notification, setNotification] = useState<{msg: string, type: 'success' | 'error'} | null>(null      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
+
+  useEffect(() => {
+    // الاستماع لنبضة الضمان المالي (Escrow Pulse)
+    const channel = supabase.channel('finance-channel')
+      .on('broadcast', { event: 'escrow_locked' }, (payload) => {
+        setNotification({ 
+          msg: `✅ تم تأمين مبلغ ${payload.payload.amount}$ في نظام الضمان بنجاح!`, 
+          type: 'success' 
+        }      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
+        // إخفاء الإشعار بعد 5 ثوانٍ
+        setTimeout(() => setNotification(null), 5000      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
+      })
+      .subscribe(      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
+      
+    return () => { supabase.removeChannel(channel      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    ); };
+  }, []      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
+
+  const [balance, setBalance] = useState({ available: 0, pending: 0, total_earned: 0 }      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
+  const [isWithdrawing, setIsWithdrawing] = useState(false      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
+  const [withdrawalMsg, setWithdrawalMsg] = useState(''      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
 
   // جلب البيانات المالية (محاكاة MVP - في الإنتاج يتم جلبها من Supabase RPC)
   useEffect(() => {
@@ -16,17 +142,77 @@ export default function WalletPage() {
         available: 1250.00,
         pending: 450.00,
         total_earned: 8900.00
-      });
-    }, 1000);
-  }, []);
+      }      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
+    }, 1000      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
+  }, []      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
 
   const requestWithdrawal = async () => {
     if (balance.available <= 0) return;
-    setIsWithdrawing(true);
+    setIsWithdrawing(true      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
     
     try {
       // إرسال طلب السحب إلى قاعدة البيانات ليتم مراجعته من الإدارة
-      const { data: user } = await supabase.auth.getUser();
+      const { data: user } = await supabase.auth.getUser(      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
       const userId = user?.user?.id || 'demo_user';
 
       // [تكامل سيادي] الاتصال الفعلي بمحرك التقسيم والضمان
@@ -34,15 +220,75 @@ export default function WalletPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: balance.available, tier: 'freelancer' })
-      });
+      }      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
 
       if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.error || 'تم رفض العملية من محرك الضمان السيادي');
+        const errData = await response.json(      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
+        throw new Error(errData.error || 'تم رفض العملية من محرك الضمان السيادي'      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
       }
       
-      const splitResult = await response.json();
-      console.log('تم الاعتماد المالي بنجاح:', splitResult);
+      const splitResult = await response.json(      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
+      console.log('تم الاعتماد المالي بنجاح:', splitResult      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
 
 
       const { error } = await supabase.from('audit_logs').insert({
@@ -50,19 +296,91 @@ export default function WalletPage() {
         actor_identifier: `freelancer:${userId}`,
         module: 'finance',
         snapshot: { requested_amount: balance.available, timestamp: new Date().toISOString() }
-      });
+      }      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
 
       if (error && error.code !== '42P01') { // تجاهل خطأ عدم وجود الجدول في وضع الـ Demo
         throw error;
       }
 
-      setWithdrawalMsg('تم إرسال طلب السحب بنجاح. قيد المراجعة الإدارية.');
-      setBalance(prev => ({ ...prev, pending: prev.pending + prev.available, available: 0 }));
+      setWithdrawalMsg('تم إرسال طلب السحب بنجاح. قيد المراجعة الإدارية.'      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
+      setBalance(prev => ({ ...prev, pending: prev.pending + prev.available, available: 0 })      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
     } catch (err) {
-      console.error(err);
-      setWithdrawalMsg('فشل إرسال الطلب. يرجى المحاولة لاحقاً.');
+      console.error(err      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
+      setWithdrawalMsg('فشل إرسال الطلب. يرجى المحاولة لاحقاً.'      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
     } finally {
-      setIsWithdrawing(false);
+      setIsWithdrawing(false      
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
     }
   };
 
@@ -149,5 +467,17 @@ export default function WalletPage() {
         </div>
       </div>
     </div>
-  );
+        
+      {notification && (
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
+          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+        }`}>
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+            <p className="font-bold text-sm">{notification.msg}</p>
+          </div>
+        </div>
+      )}
+
+    );
 }

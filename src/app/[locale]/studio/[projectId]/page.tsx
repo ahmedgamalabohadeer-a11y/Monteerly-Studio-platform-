@@ -82,7 +82,7 @@ export default function DynamicStudioPage({ params }: { params: { projectId: str
         </header>
 
         {/* Video Player Component */}
-        <ReviewPlayer url={currentVideoUrl} orderId={params.projectId} ar={{ system: { loading: 'تحميل...' }, legal: { vault: 'مشفر' } }} />
+        <ReviewPlayer url={currentVideoUrl} activeVersion={activeVersion} orderId={params.projectId} ar={{ system: { loading: 'تحميل...' }, legal: { vault: 'مشفر' } }} />
       </main>
     </div>
   );
