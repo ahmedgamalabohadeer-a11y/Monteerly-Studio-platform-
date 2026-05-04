@@ -1,31 +1,29 @@
-'use client';
 import React from 'react';
-import { LucideIcon } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { FileQuestion } from 'lucide-react';
+import Link from 'next/link';
 
 interface EmptyStateProps {
-  icon: LucideIcon;
+  icon?: React.ReactNode;
   title: string;
   description: string;
-  actionLabel?: string;
-  onAction?: () => void;
+  actionText?: string;
+  actionLink?: string;
 }
 
-export function EmptyState({ icon: Icon, title, description, actionLabel, onAction }: EmptyStateProps) {
+export default function EmptyState({ icon, title, description, actionText, actionLink }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 px-4 text-center border-2 border-dashed border-white/10 rounded-2xl bg-white/[0.02]">
-       <div className="w-16 h-16 bg-slate-900 rounded-full flex items-center justify-center mb-6 border border-white/10 shadow-xl">
-          <Icon size={32} className="text-slate-500" />
-       </div>
-       <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
-       <p className="text-slate-400 max-w-sm mb-8">{description}</p>
-       
-       {actionLabel && (
-          <Button onClick={onAction} className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold">
-             {actionLabel}
-          </Button>
-       )}
+    <div className="flex flex-col items-center justify-center p-12 text-center bg-slate-900/50 border border-slate-800 border-dashed rounded-3xl">
+      <div className="bg-slate-950 p-4 rounded-full mb-6 border border-slate-800 text-slate-500 shadow-inner">
+        {icon || <FileQuestion className="w-12 h-12" />}
+      </div>
+      <h3 className="text-xl font-black text-white mb-2">{title}</h3>
+      <p className="text-slate-400 text-sm max-w-md mx-auto mb-8 leading-relaxed">{description}</p>
+      
+      {actionText && actionLink && (
+        <Link href={actionLink} className="bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-400 border border-indigo-500/30 px-6 py-3 rounded-xl font-bold transition-all">
+          {actionText}
+        </Link>
+      )}
     </div>
   );
 }
-
