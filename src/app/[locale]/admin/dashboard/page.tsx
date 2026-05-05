@@ -4,6 +4,32 @@ import { supabase } from '@/lib/supabase';
 import { Shield, Wallet, FileCheck, AlertCircle } from 'lucide-react';
 
 export default function AdminDashboard() {
+  const releaseFunds = async (jobId: string, amount: number, freelancerId: string) => {
+    if (!confirm('هل أنت متأكد من تحرير الأموال للمبدع؟ هذا الإجراء لا يمكن التراجع عنه.')) return;
+    
+    try {
+      // 1. تحديث حالة الضمان
+      await supabase.from('escrow_accounts').update({ status: 'released' }).eq('order_id', jobId);
+      
+      // 2. تسجيل معاملة الخروج
+      await supabase.from('transactions').insert({
+        job_id: jobId,
+        user_id: freelancerId,
+        amount: amount,
+        type: 'escrow_release',
+        status: 'completed'
+      });
+
+      // 3. تحديث حالة المشروع
+      await supabase.from('jobs').update({ status: 'completed' }).eq('id', jobId);
+      
+      alert('✅ تم تحرير الأموال بنجاح!');
+      window.location.reload();
+    } catch (error) {
+      alert('❌ فشل تحرير الأموال');
+    }
+  };
+
   const [stats, setStats] = useState({ escrowTotal: 0, activeJobs: 0, pendingContracts: 0 });
 
   useEffect(() => {
