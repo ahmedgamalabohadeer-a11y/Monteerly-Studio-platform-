@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { ShieldCheck, Mail, Lock, User, Briefcase, Loader2, LogIn } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { MCOS_ASSETS } from '@/lib/ui/assets';
+import { OAuthProviders } from '@/components/auth/OAuthProviders';
 
 export default function AuthGateway() {
   const [isLogin, setIsLogin] = useState(true);
@@ -78,6 +79,7 @@ export default function AuthGateway() {
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : isLogin ? <><LogIn className="w-5 h-5" /> دخول مشفر</> : <><ShieldCheck className="w-5 h-5" /> توثيق الهوية</>}
             </button>
           </form>
+            <OAuthProviders />
 
           <button onClick={() => { setIsLogin(!isLogin); setMsg({text:'', type:''}); }} className="w-full mt-6 text-slate-400 hover:text-white text-sm font-bold transition-colors">
             {isLogin ? 'لا تملك هوية سيادية؟ أسس حسابك الآن' : 'لديك هوية بالفعل؟ سجل دخولك'}
