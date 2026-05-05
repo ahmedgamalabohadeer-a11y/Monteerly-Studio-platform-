@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import { AuthGuard } from '@/components/auth/AuthGuard';
 import { Shield, Wallet, FileCheck, Users, UserCog, CheckCircle } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -49,7 +50,8 @@ export default function AdminDashboard() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white p-8 font-sans" dir="rtl">
+    <AuthGuard requireAdmin={true}>
+      <main className="min-h-screen bg-slate-950 text-white p-8 font-sans" dir="rtl">
       <header className="mb-12">
         <h1 className="text-3xl font-black mb-2 flex items-center gap-3">
           <Shield className="text-indigo-500" /> لوحة التحكم السيادية (MCOS)
@@ -122,5 +124,6 @@ export default function AdminDashboard() {
         </div>
       </section>
     </main>
+    </AuthGuard>
   );
 }
