@@ -23,5 +23,11 @@ export async function generateContract(orderId: string, clientId: string, freela
 export async function activateSovereignAgreement(orderId: string, clientId: string, freelancerId: string, amount: number) {
   const contract = await generateContract(orderId, clientId, freelancerId, amount);
   const escrow = await holdFundsInEscrow(orderId, clientId, freelancerId, amount);
+  // إرسال إشعارات للطرفين
+  await supabase.from('notifications').insert([
+    { user_id: clientId, title: '✅ تم تأمين المشروع', message: `تم حجز مبلغ ${amount}$ وتوقيع العقد بنجاح.`, type: 'success' },
+    { user_id: freelancerId, title: '🚀 مشروع جديد', message: `العميل قام بتأمين ميزانية المشروع (${amount}$). يمكنك البدء في العمل الآن!`, type: 'success' }
+  ]);
+
   return { contract, escrow };
 }

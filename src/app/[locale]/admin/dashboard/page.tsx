@@ -22,6 +22,14 @@ export default function AdminDashboard() {
 
       // 3. تحديث حالة المشروع
       await supabase.from('jobs').update({ status: 'completed' }).eq('id', jobId);
+
+      // إرسال إشعار للمبدع بتحرير مستحقاته
+      await supabase.from('notifications').insert({
+        user_id: freelancerId,
+        title: '💰 تم تحرير مستحقاتك!',
+        message: `تم تحرير مبلغ ${amount}$ إلى محفظتك بنجاح بعد اعتماد المشروع من الإدارة.`,
+        type: 'success'
+      });
       
       alert('✅ تم تحرير الأموال بنجاح!');
       window.location.reload();
