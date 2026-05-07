@@ -4,8 +4,8 @@
  */
 export const MCOS_ASSETS = {
   branding: {
-    logoMain: "/assets/images/logo-main.png", // 1
-    logoIcon: "/assets/images/logo-icon.png", // 2
+    logoMain: "/images/monteerly/monteerly_02_main_logo_full.svg", // 1
+    logoIcon: "/brand/logo.png", // 2
   },
   hero: {
     mainVideoCover: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072", // 3

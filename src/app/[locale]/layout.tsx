@@ -34,7 +34,7 @@ export default async function RootLayout({
   const locale = resolvedParams.locale;
 
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className={`${cairo.variable} ${geist.variable} scroll-smooth`}>
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className={`${cairo.variable} ${geist.variable} scroll-smooth`} data-scroll-behavior="smooth">
       {/* 3. فرض الهوية اللونية الداكنة Slate-950 بشكل قاطع على كامل المنصة */}
       <body className="bg-slate-950 text-slate-50 font-sans antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
 
