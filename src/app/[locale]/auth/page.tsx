@@ -1,11 +1,13 @@
 'use client'
 import React, { useState } from 'react';
 import { ShieldCheck, Mail, Lock, User, Briefcase, Loader2, LogIn } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { MCOS_ASSETS } from '@/lib/ui/assets';
 import { OAuthProviders } from '@/components/auth/OAuthProviders';
 
 export default function AuthGateway() {
+  const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState({ text: '', type: '' });
@@ -19,7 +21,8 @@ export default function AuthGateway() {
         const { error } = await supabase.auth.signInWithPassword({ email: formData.email, password: formData.password });
         if (error) throw error;
         setMsg({ text: 'تم الدخول بنجاح. جاري التوجيه...', type: 'success' });
-        window.location.href = '/ar/dashboard';
+        router.push('/ar/dashboard');
+        router.refresh();
       } else {
         const { error } = await supabase.auth.signUp({
           email: formData.email, password: formData.password,

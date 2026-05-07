@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack",
+    "dev": "next dev --webpack 2>&1 | grep --line-buffered -vE 'Watchpack Error|Router action dispatched|Fast Refresh'",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
