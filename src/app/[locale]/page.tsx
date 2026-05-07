@@ -5,7 +5,9 @@ import { motion } from 'framer-motion';
 import { PlayCircle, ShieldCheck, Zap, Users, ArrowLeft, Star, Video, Trophy, Quote } from 'lucide-react';
 import { MCOS_ASSETS } from '@/lib/ui/assets';
 
-export default function UltimateLandingPage({ params: { locale } }: { params: { locale: string } }) {
+export default function UltimateLandingPage({ params }: { params: Promise<{ locale: string }> }) {
+  const resolvedParams = React.use(params);
+  const locale = resolvedParams.locale;
   const isAr = locale === 'ar';
   
   return (
