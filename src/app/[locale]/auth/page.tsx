@@ -21,8 +21,7 @@ export default function AuthGateway() {
         const { error } = await supabase.auth.signInWithPassword({ email: formData.email, password: formData.password });
         if (error) throw error;
         setMsg({ text: 'تم الدخول بنجاح. جاري التوجيه...', type: 'success' });
-        router.push('/ar/dashboard');
-        router.refresh();
+        window.location.replace('/ar/dashboard');
       } else {
         const { error } = await supabase.auth.signUp({
           email: formData.email, password: formData.password,

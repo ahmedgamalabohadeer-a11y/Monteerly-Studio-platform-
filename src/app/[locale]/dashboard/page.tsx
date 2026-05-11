@@ -33,7 +33,7 @@ export default function ElegantDashboard() {
 
   const modules = isSovereign
     ? [
-        { title: 'بوابة الإله', desc: 'إدارة المنصة بالكامل', icon: <Crown className="w-7 h-7 text-amber-500" />, link: '/ar/admin/sovereign', grad: 'from-amber-600/30 to-rose-600/30' },
+        { title: 'الغرفة المركزية', desc: 'إدارة المنصة بالكامل', icon: <Crown className="w-7 h-7 text-amber-500" />, link: '/ar/admin/sovereign', grad: 'from-amber-600/30 to-rose-600/30' },
         ...baseModules
       ]
     : baseModules;
