@@ -1,46 +1,82 @@
-/**
- * 🎨 MCOS Master Asset Registry (24 Images Architecture)
- * تم توسيع هذا السجل ليتوافق مع الدستور المرجعي. يجب دمج هذه الصور في كافة الصفحات.
- */
+export type Locale = 'ar' | 'en';
+export type AssetItem = {
+  src: string;
+  alt: { ar: string; en: string };
+  text?: { ar: string; en: string };
+};
+
 export const MCOS_ASSETS = {
   branding: {
-    logoMain: "/images/monteerly/monteerly_02_main_logo_full.svg", // 1
-    logoIcon: "/brand/logo.png", // 2
+    logoMain: {
+      src: "/images/monteerly/monteerly_02_main_logo_full.svg",
+      alt: { ar: "شعار Monteerly Studio – نظام التشغيل الإبداعي", en: "Monteerly Studio main logo – Creative OS" }
+    },
+    icon: {
+      src: "/images/monteerly/monteerly_01_favicon_app_icon.png",
+      alt: { ar: "أيقونة النظام", en: "System Icon" }
+    },
+    founder: {
+      src: "/images/monteerly/monteerly_03_profile_ahmed_gamal_circle.png",
+      alt: { ar: "أحمد جمال - المؤسس", en: "Ahmed Gamal - Founder" },
+      text: { 
+        ar: "أحمد جمال – المؤسس والرئيس التنفيذي. رؤيتنا تحويل الفوضى الإبداعية إلى تدفق رقمي منظم للمبدعين العرب.", 
+        en: "Ahmed Gamal – Founder & CEO. Our mission is to turn creative chaos into a structured digital revenue stream for Arabic creators." 
+      }
+    }
   },
   hero: {
-    mainVideoCover: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072", // 3
-    cyberGridPattern: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070", // 4
-    abstractShapes: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564", // 5
+    banner: {
+      src: "/images/monteerly/monteerly_04_hero_header_marketing_banner.png",
+      alt: { ar: "خلفية الهيرو", en: "Hero Background" },
+      text: { ar: "منصة الإنتاج الإعلامي الأكثر تكاملاً في الشرق الأوسط.", en: "The MENA region’s most comprehensive media production OS." }
+    }
   },
-  roles: {
-    editorCard: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070", // 6
-    photographerCard: "https://images.unsplash.com/photo-1542317148-8b4bdccb33ea?q=80&w=2000", // 7
-    agencyCard: "https://images.unsplash.com/photo-1601506521937-0121a7fc2a6b?q=80&w=2000", // 8
-    clientCard: "https://images.unsplash.com/photo-1556761175-4b46a572b786?q=80&w=2000", // 9
+  security: {
+    digitalLock: {
+      src: "/images/monteerly/monteerly_05_security_digital_lock_cyber.png",
+      alt: { ar: "قفل سيبراني", en: "Cyber Lock" },
+      text: { ar: "حماية من المستوى العسكري لأصولك الرقمية ومشاريعك الذكية.", en: "Military‑grade protection for your digital assets and smart projects." }
+    }
   },
   features: {
-    escrowShield: "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?q=80&w=2070", // 10
-    aiBrain: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1965", // 11
-    cloudStorage: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070", // 12
-    liveSync: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2000", // 13
+    showcase: { src: "/images/monteerly/monteerly_06_marketing_showcase_full.png", alt: { ar: "منظومة متكاملة تغنيك عن التشتت", en: "Integrated ecosystem" } },
+    brandAssets: { src: "/images/monteerly/monteerly_08_branding_creative_assets.png", alt: { ar: "إدارة أصول العلامة", en: "Brand Assets Management" } },
+    globalGrid: { src: "/images/monteerly/monteerly_11_global_collaboration_grid_4up.png", alt: { ar: "تعاون عالمي", en: "Global Collaboration" } }
   },
-  pricing: {
-    rookieBg: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070", // 14
-    proBg: "https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=2000", // 15
-    studioBg: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=1780", // 16
+  techAndAi: {
+    innovation: { src: "/images/monteerly/monteerly_07_tech_innovation_portrait.png", alt: { ar: "قلب تقني متطور", en: "Advanced Tech Core" } },
+    advisor: { src: "/images/monteerly/monteerly_09_ai_performance_advisor_hologram.png", alt: { ar: "مستشارك الذكي للأداء", en: "AI Performance Advisor" } },
+    publishing: { src: "/images/monteerly/monteerly_10_multi_platform_publishing_hero.png", alt: { ar: "نشر متعدد المنصات", en: "Multi-platform Publishing" } },
+    analytics: { src: "/images/monteerly/monteerly_13_analytics_dashboard_woman_ai.png", alt: { ar: "لوحة التحليلات الذكية", en: "Smart Analytics Dashboard" } }
+  },
+  workspace: {
+    timeline: { src: "/images/monteerly/monteerly_12_editor_red_shirt_timeline.png", alt: { ar: "استوديو الفيديو", en: "Video Studio" } },
+    dualScreen: { src: "/images/monteerly/monteerly_14_editor_professional_dual_screen.png", alt: { ar: "بيئة العمل الاحترافية", en: "Professional Workspace" } },
+    laptop: { src: "/images/monteerly/monteerly_15_creator_workspace_laptop_modern.png", alt: { ar: "حرية الإبداع", en: "Creative Freedom" } }
+  },
+  market: {
+    arabEditor: {
+      src: "/images/monteerly/monteerly_16_editor_arab_thobe_collaboration.png",
+      alt: { ar: "محرر فيديو عربي", en: "Arab Video Editor" },
+      text: { ar: "تقنية عالمية بلسان عربي مبين.", en: "World‑class tech with a native Arabic experience." }
+    }
   },
   testimonials: {
-    user1: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000", // 17
-    user2: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1000", // 18
-    user3: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1000", // 19
+    b2bWoman: { src: "/images/monteerly/monteerly_17_testimonial_woman_gray_suit_office.png", alt: { ar: "شهادة مديرة تسويق", en: "Marketing Manager Testimonial" } },
+    executive: { src: "/images/monteerly/monteerly_18_testimonial_executive_growth_charts.png", alt: { ar: "شهادة نمو تنفيذي", en: "Executive Growth Testimonial" } },
+    freelance: { src: "/images/monteerly/monteerly_19_testimonial_creative_hoodie_freelance.png", alt: { ar: "شهادة مبدع مستقل", en: "Freelancer Testimonial" } },
+    enterprise: { src: "/images/monteerly/monteerly_20_testimonial_business_exec_corporate.png", alt: { ar: "شهادة مؤسسة كبرى", en: "Enterprise Testimonial" } }
   },
-  library: {
-    lutsCover: "https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=2000", // 20
-    sfxCover: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000", // 21
-    rawVideoCover: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2000", // 22
+  heritageAndLibrary: {
+    saudiTraditional: { src: "/images/monteerly/monteerly_21_photographer_saudi_heritage_traditional.png", alt: { ar: "مكتبة الأصول - تراث سعودي", en: "Saudi Heritage Photography" } },
+    algerianDrone: { src: "/images/monteerly/monteerly_22_photographer_algerian_drone_aerial.png", alt: { ar: "تصوير جوي احترافي", en: "Professional Aerial Drone" } },
+    cinematic: { src: "/images/monteerly/monteerly_23_photographer_library_heritage_cinematic.png", alt: { ar: "أصول سينمائية", en: "Cinematic Assets" } },
+    cityDrone: { src: "/images/monteerly/monteerly_24_photographer_algerian_drone_cityshot.png", alt: { ar: "عمران ومدن حديثة", en: "Urban and Cityscapes" } }
   },
-  dashboard: {
-    walletBanner: "https://images.unsplash.com/photo-1614028674026-a65e31bfd27c?q=80&w=2000", // 23
-    aiStudioBanner: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2000", // 24
+  gamification: {
+    powerAction: { 
+      src: "/images/monteerly/gamification_power_action.png",
+      alt: { ar: "زر الطاقة والمكافآت", en: "Power Action & Rewards" } 
+    }
   }
 };

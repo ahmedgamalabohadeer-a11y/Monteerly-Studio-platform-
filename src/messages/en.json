@@ -1,0 +1,63 @@
+{
+  "nav": {
+    "login": "Gateway",
+    "lang": "العربية"
+  },
+  "hero": {
+    "badge": "Sovereign V5.0 Launched",
+    "title1": "The Central",
+    "title_highlight": "Operating System",
+    "title2": "for Modern Production",
+    "subtitle": "Manage chaos, secure assets, and scale revenue. One unified platform combining Cloud Studio, Marketplace, and Smart Contracts.",
+    "deploy_btn": "Deploy Studio Free",
+    "explore_btn": "Explore System"
+  },
+  "stats": {
+    "vol": "+$500K",
+    "vol_lbl": "Liquidity in Escrow",
+    "hrs": "+10,000",
+    "hrs_lbl": "Cloud Render Hours",
+    "upt": "AES-256",
+    "upt_lbl": "Military Encryption",
+    "fee": "0%",
+    "fee_lbl": "Hidden Fees"
+  },
+  "personas": {
+    "title": "Built Specifically For Your Ambition",
+    "editor": "Video Editor",
+    "photographer": "Photographer",
+    "creator": "Content Creator",
+    "agency": "Production Agency",
+    "editor_desc": "High-performance GPU allocation. Desktop-like workspace, floating windows. No more waiting on slow hardware.",
+    "photographer_desc": "A sovereign asset library to preserve your heritage. Showcase at top quality and acquire global licenses.",
+    "creator_desc": "Block distractions & enter flow. Creative freedom from anywhere, the system handles the rest.",
+    "agency_desc": "Generate formal invoices and manage your global team in one central dashboard."
+  },
+  "bento": {
+    "title": "Why Monteerly OS?",
+    "subtitle": "An entire arsenal to protect your time and money.",
+    "escrow": "Military-Grade Asset Protection",
+    "escrow_desc": "Your work isn't just files; it's digital assets. Protected with AES-256 and Escrow smart contracts until delivery.",
+    "ai": "Directorial Assistant (Co-Pilot)",
+    "ai_desc": "Analyzes projects, prices offers, and negotiates to maximize your ROI and reduce manual effort.",
+    "sync": "Create Secure Review Link",
+    "sync_desc": "Synced to Cloud Vault (Encrypted). Review work with clients in real-time with total confidence."
+  },
+  "testimonials": {
+    "title": "Trusted by Industry Leaders",
+    "t1": "The MCOS escrow system completely changed how I work. I now collaborate with top agencies securely.",
+    "t1_role": "Freelancer",
+    "t2": "We reduced production time by 40% thanks to the synced workspace and cloud assets.",
+    "t2_role": "Marketing Manager",
+    "t3": "This isn't just a freelance platform; it's a central OS that organized our creative chaos.",
+    "t3_role": "CEO"
+  },
+  "cta": {
+    "title": "Ready to Build Your Digital Empire?",
+    "subtitle": "Join the elite. No more scattered tools, start working with a unified sovereign OS today.",
+    "btn": "Establish Sovereign Identity"
+  },
+  "footer": {
+    "rights": "Monteerly Corporate OS © 2026. The Sovereign Platform."
+  }
+}
