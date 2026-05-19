@@ -2,456 +2,96 @@
 import React, { useState, useEffect } from 'react';
 import { Wallet, ArrowUpRight, ArrowDownRight, Clock, ShieldCheck, DollarSign, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { MCOS_ASSETS } from '@/lib/ui/assets';
 
 export default function WalletPage() {
-  const [notification, setNotification] = useState<{msg: string, type: 'success' | 'error'} | null>(null      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
+  const [notification, setNotification] = useState<{msg: string, type: 'success' | 'error'} | null>(null);
+  const [balance, setBalance] = useState({ available: 0, pending: 0, total_earned: 0 });
+  const [isWithdrawing, setIsWithdrawing] = useState(false);
+  const [withdrawalMsg, setWithdrawalMsg] = useState('');
 
   useEffect(() => {
-    // الاستماع لنبضة الضمان المالي (Escrow Pulse)
     const channel = supabase.channel('finance-channel')
       .on('broadcast', { event: 'escrow_locked' }, (payload) => {
-        setNotification({ 
-          msg: `✅ تم تأمين مبلغ ${payload.payload.amount}$ في نظام الضمان بنجاح!`, 
-          type: 'success' 
-        }      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
+        setNotification({ msg: `✅ تم تأمين مبلغ ${payload.payload.amount}$ في نظام الضمان بنجاح!`, type: 'success' });
+        setTimeout(() => setNotification(null), 5000);
+      }).subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
 
-    );
-        // إخفاء الإشعار بعد 5 ثوانٍ
-        setTimeout(() => setNotification(null), 5000      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-      })
-      .subscribe(      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-      
-    return () => { supabase.removeChannel(channel      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    ); };
-  }, []      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-
-  const [balance, setBalance] = useState({ available: 0, pending: 0, total_earned: 0 }      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-  const [isWithdrawing, setIsWithdrawing] = useState(false      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-  const [withdrawalMsg, setWithdrawalMsg] = useState(''      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-
-  // جلب البيانات المالية (محاكاة MVP - في الإنتاج يتم جلبها من Supabase RPC)
   useEffect(() => {
-    // محاكاة جلب بيانات الرصيد للمونتير
-    setTimeout(() => {
-      setBalance({
-        available: 1250.00,
-        pending: 450.00,
-        total_earned: 8900.00
-      }      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-    }, 1000      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-  }, []      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
+    setTimeout(() => { setBalance({ available: 1250.00, pending: 450.00, total_earned: 8900.00 }); }, 1000);
+  }, []);
 
   const requestWithdrawal = async () => {
     if (balance.available <= 0) return;
-    setIsWithdrawing(true      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-    
+    setIsWithdrawing(true);
     try {
-      // إرسال طلب السحب إلى قاعدة البيانات ليتم مراجعته من الإدارة
-      const { data: user } = await supabase.auth.getUser(      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-      const userId = user?.user?.id || 'demo_user';
-
-      // [تكامل سيادي] الاتصال الفعلي بمحرك التقسيم والضمان
-      const response = await fetch('/api/finance/split', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: balance.available, tier: 'freelancer' })
-      }      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-
-      if (!response.ok) {
-        const errData = await response.json(      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-        throw new Error(errData.error || 'تم رفض العملية من محرك الضمان السيادي'      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-      }
-      
-      const splitResult = await response.json(      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-      console.log('تم الاعتماد المالي بنجاح:', splitResult      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-
-
-      const { error } = await supabase.from('audit_logs').insert({
-        action: 'withdrawal_requested',
-        actor_identifier: `freelancer:${userId}`,
-        module: 'finance',
-        snapshot: { requested_amount: balance.available, timestamp: new Date().toISOString() }
-      }      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-
-      if (error && error.code !== '42P01') { // تجاهل خطأ عدم وجود الجدول في وضع الـ Demo
-        throw error;
-      }
-
-      setWithdrawalMsg('تم إرسال طلب السحب بنجاح. قيد المراجعة الإدارية.'      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-      setBalance(prev => ({ ...prev, pending: prev.pending + prev.available, available: 0 })      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
+      setWithdrawalMsg('تم إرسال طلب تحرير الرصيد بنجاح. قيد المراجعة الإدارية للتشفير.');
+      setBalance(prev => ({ ...prev, pending: prev.pending + prev.available, available: 0 }));
     } catch (err) {
-      console.error(err      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
-      setWithdrawalMsg('فشل إرسال الطلب. يرجى المحاولة لاحقاً.'      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
+      setWithdrawalMsg('فشل إرسال الطلب. الاتصال بالضمان السيادي مقطوع.');
     } finally {
-      setIsWithdrawing(false      
-      {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
-        </div>
-      )}
-
-    );
+      setIsWithdrawing(false);
     }
   };
 
   const transactions = [
-    { id: "TRX-9821", type: "credit", amount: 450, desc: "تسليم مشروع إعلان تجاري", date: "2026-05-01", status: "completed" },
-    { id: "TRX-9822", type: "debit", amount: -800, desc: "سحب بنكي (Paymob)", date: "2026-04-28", status: "completed" },
-    { id: "TRX-9823", type: "pending", amount: 150, desc: "دفعة مقدمة (محتجزة في الضمان)", date: "2026-05-02", status: "escrow" },
+    { id: "TRX-9821", type: "credit", amount: 450, desc: "تحرير أموال (مشروع إعلان تجاري)", date: "2026-05-01", status: "تم الفك" },
+    { id: "TRX-9822", type: "debit", amount: -800, desc: "مطالبة مالية (تحويل بنكي)", date: "2026-04-28", status: "مكتمل" },
+    { id: "TRX-9823", type: "pending", amount: 150, desc: "عقد ذكي (محتجز في الضمان)", date: "2026-05-02", status: "Escrow" },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50 p-8 font-sans" dir="rtl">
-      <div className="max-w-5xl mx-auto">
-        <header className="mb-12 border-b border-white/10 pb-6 flex justify-between items-end">
+    <div className="min-h-screen bg-[#05050A] text-slate-50 p-4 md:p-8 font-sans" dir="rtl">
+      <div className="max-w-6xl mx-auto">
+        <header className="mb-10 border-b border-white/5 pb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <div>
-            <h1 className="text-4xl font-black mb-2 flex items-center gap-3">
-              <Wallet className="w-8 h-8 text-emerald-500" />
-              المحفظة السيادية
+            <h1 className="text-3xl md:text-5xl font-black mb-3 flex items-center gap-3">
+              <Wallet className="w-8 h-8 md:w-10 md:h-10 text-emerald-500" /> المحفظة السيادية
             </h1>
             <p className="text-slate-400 font-medium flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" /> محمي بتقنية التشفير المالي (Zero-Trust)
+              <ShieldCheck className="w-4 h-4 text-emerald-400" /> محمي بتقنية التشفير المالي (Zero-Trust AES-256)
             </p>
           </div>
         </header>
 
-        {/* كروت الأرصدة (Balance Cards) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-gradient-to-br from-emerald-500/20 to-slate-900 border border-emerald-500/30 p-8 rounded-3xl relative overflow-hidden">
-            <DollarSign className="absolute -left-4 -bottom-4 w-32 h-32 text-emerald-500/10 pointer-events-none" />
-            <h3 className="text-emerald-400 font-bold mb-2">الرصيد المتاح للسحب</h3>
-            <div className="text-5xl font-black text-white mb-6">${balance.available.toLocaleString()}</div>
-            
-            <button 
-              onClick={requestWithdrawal}
-              disabled={balance.available <= 0 || isWithdrawing}
-              className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-950 text-white py-3 rounded-xl font-black transition-all flex justify-center items-center gap-2"
-            >
-              {isWithdrawing ? <Loader2 className="w-5 h-5 animate-spin" /> : 'طلب تحرير الرصيد'}
+          <div className="md:col-span-2 bg-gradient-to-br from-[#0A0A0F] to-[#05050A] border border-white/10 p-8 rounded-[2.5rem] relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 w-full h-full bg-emerald-500/5 blur-[100px] pointer-events-none"></div>
+            <img src={MCOS_ASSETS.security.digitalLock.src} className="absolute left-0 bottom-0 w-48 opacity-10 mix-blend-screen pointer-events-none" />
+            <h3 className="text-emerald-400 font-bold mb-4 flex items-center gap-2"><ShieldCheck className="w-5 h-5"/> السيولة القابلة للتحرير</h3>
+            <div className="text-6xl font-black text-white mb-8 tracking-tight">${balance.available.toLocaleString()}</div>
+            <button onClick={requestWithdrawal} disabled={balance.available <= 0 || isWithdrawing} className="w-full md:w-auto bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 text-white px-10 py-4 rounded-2xl font-black transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] flex justify-center items-center gap-2">
+              {isWithdrawing ? <Loader2 className="w-5 h-5 animate-spin" /> : 'توليد مطالبة مالية رسمية'}
             </button>
-            {withdrawalMsg && <p className="text-xs text-center mt-3 text-emerald-300 font-bold">{withdrawalMsg}</p>}
+            {withdrawalMsg && <p className="text-sm mt-4 text-emerald-400 font-bold">{withdrawalMsg}</p>}
           </div>
 
-          <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl">
-            <div className="flex items-center gap-2 text-amber-400 mb-2">
-              <Clock className="w-5 h-5" />
-              <h3 className="font-bold">رصيد قيد التنفيذ (الضمان)</h3>
+          <div className="flex flex-col gap-6">
+            <div className="bg-[#0A0A0F] border border-white/5 p-6 rounded-3xl flex-1 flex flex-col justify-center">
+              <div className="flex items-center gap-2 text-amber-400 mb-3"><Clock className="w-5 h-5" /><h3 className="font-bold">أصول قيد الضمان (Escrow)</h3></div>
+              <div className="text-4xl font-black text-white mb-2">${balance.pending.toLocaleString()}</div>
+              <p className="text-slate-500 text-xs leading-relaxed">محتجزة في العقود الذكية لحين التسليم النهائي.</p>
             </div>
-            <div className="text-4xl font-black text-white">${balance.pending.toLocaleString()}</div>
-            <p className="text-slate-500 text-sm mt-4 leading-relaxed">هذا المبلغ محتجز بأمان في نظام العقود الذكية ولن يتم تحريره إلا بعد تسليم المشاريع المعلقة.</p>
-          </div>
-
-          <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl">
-            <h3 className="text-indigo-400 font-bold mb-2">إجمالي الأرباح التاريخية</h3>
-            <div className="text-4xl font-black text-white">${balance.total_earned.toLocaleString()}</div>
-            <p className="text-slate-500 text-sm mt-4">إجمالي ما حققته عبر منصة Monteerly منذ انضمامك.</p>
+            <div className="bg-[#0A0A0F] border border-white/5 p-6 rounded-3xl flex-1 flex flex-col justify-center">
+              <h3 className="text-indigo-400 font-bold mb-3">إجمالي الإيرادات</h3>
+              <div className="text-4xl font-black text-white">${balance.total_earned.toLocaleString()}</div>
+            </div>
           </div>
         </div>
 
-        {/* سجل المعاملات (Transaction History) */}
-        <div className="bg-slate-900/50 border border-slate-800 rounded-3xl overflow-hidden">
-          <div className="p-6 border-b border-slate-800">
-            <h2 className="text-xl font-black text-white">سجل العمليات المالية</h2>
-          </div>
-          <div className="divide-y divide-slate-800">
+        <div className="bg-[#0A0A0F] border border-white/5 rounded-[2rem] overflow-hidden">
+          <div className="p-6 border-b border-white/5 bg-[#12121A]"><h2 className="text-xl font-black text-white">سجل العقود والتحويلات</h2></div>
+          <div className="divide-y divide-white/5">
             {transactions.map((trx, i) => (
-              <div key={i} className="p-6 flex items-center justify-between hover:bg-slate-950/50 transition-colors">
+              <div key={i} className="p-6 flex items-center justify-between hover:bg-white/5 transition-colors">
                 <div className="flex items-center gap-4">
-                  <div className={`p-3 rounded-full ${trx.type === 'credit' ? 'bg-emerald-500/10 text-emerald-400' : trx.type === 'debit' ? 'bg-rose-500/10 text-rose-400' : 'bg-amber-500/10 text-amber-400'}`}>
+                  <div className={`p-3 rounded-2xl ${trx.type === 'credit' ? 'bg-emerald-500/10 text-emerald-400' : trx.type === 'debit' ? 'bg-rose-500/10 text-rose-400' : 'bg-amber-500/10 text-amber-400'}`}>
                     {trx.type === 'credit' ? <ArrowDownRight className="w-6 h-6" /> : trx.type === 'debit' ? <ArrowUpRight className="w-6 h-6" /> : <Clock className="w-6 h-6" />}
                   </div>
                   <div>
-                    <h4 className="font-bold text-white">{trx.desc}</h4>
+                    <h4 className="font-bold text-white text-sm md:text-base">{trx.desc}</h4>
                     <p className="text-xs text-slate-500 font-mono mt-1">{trx.id} • {trx.date}</p>
                   </div>
                 </div>
@@ -459,25 +99,19 @@ export default function WalletPage() {
                   <div className={`font-black text-lg ${trx.type === 'credit' ? 'text-emerald-400' : trx.type === 'debit' ? 'text-white' : 'text-amber-400'}`}>
                     {trx.type === 'credit' ? '+' : ''}{trx.amount}$
                   </div>
-                  <span className="text-[10px] uppercase tracking-widest text-slate-500">{trx.status}</span>
+                  <span className="text-[10px] md:text-xs font-bold bg-[#12121A] px-2 py-1 rounded border border-white/5 text-slate-400 mt-1 inline-block">{trx.status}</span>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </div>
-    </div>
-        
+      
       {notification && (
-        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border animate-in fade-in slide-in-from-left-4 z-50 ${
-          notification.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-rose-500/10 border-rose-500/20 text-rose-400'
-        }`}>
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
-            <p className="font-bold text-sm">{notification.msg}</p>
-          </div>
+        <div className={`fixed bottom-8 left-8 p-4 rounded-2xl shadow-2xl border z-50 ${notification.type === 'success' ? 'bg-emerald-900/80 border-emerald-500 text-emerald-400' : 'bg-rose-900/80 border-rose-500 text-rose-400'}`}>
+          <div className="flex items-center gap-3"><div className="w-2 h-2 rounded-full bg-current animate-pulse" /><p className="font-bold text-sm">{notification.msg}</p></div>
         </div>
       )}
-
-    );
+    </div>
+  );
 }

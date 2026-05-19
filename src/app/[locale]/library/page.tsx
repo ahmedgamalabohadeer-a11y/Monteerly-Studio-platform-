@@ -1,62 +1,68 @@
 'use client'
 import React, { useState } from 'react';
-import { PlayCircle, Download, Film, Camera, Filter, ShoppingCart } from 'lucide-react';
+import { PlayCircle, Download, Film, Camera, Filter, ShoppingCart, ShieldCheck } from 'lucide-react';
+import { MCOS_ASSETS } from '@/lib/ui/assets';
 
-export default function RealisticVideoLibrary() {
-  const [activeTab, setActiveTab] = useState('raw');
+export default function SovereignLibrary() {
+  const [activeTab, setActiveTab] = useState('الكل');
 
+  // استخدام صور المبدعين والمكتبة الأصلية
   const assets = [
-    { id: 1, title: "لقطات درون للقاهرة (4K RAW)", type: "raw", author: "أحمد المصور", price: "$45", format: "ProRes 422", img: "https://images.unsplash.com/photo-1542317148-8b4bdccb33ea?q=80&w=2000" },
-    { id: 2, title: "حزمة مقابلات (Green Screen)", type: "raw", author: "استوديو العدسة", price: "$20", format: "MP4 10bit", img: "https://images.unsplash.com/photo-1601506521937-0121a7fc2a6b?q=80&w=2000" },
-    { id: 3, title: "انتقالات سينمائية (Glitch)", type: "presets", author: "MCOS Official", price: "مجاني للمشتركين", format: "Premiere Pro", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2000" }
+    { id: 1, title: "لقطات درون للجزائر (4K RAW)", type: "raw", author: "طيران سيادي", price: "$85", format: "ProRes 422", img: MCOS_ASSETS.heritageAndLibrary.cityDrone.src },
+    { id: 2, title: "أصول سينمائية (Glitch & LUTs)", type: "presets", author: "MCOS Official", price: "مجاني للنخبة", format: "Premiere Pro", img: MCOS_ASSETS.heritageAndLibrary.cinematic.src },
+    { id: 3, title: "تراث سعودي (Raw Footage)", type: "raw", author: "استوديو العدسة", price: "$120", format: "ARRI RAW", img: MCOS_ASSETS.heritageAndLibrary.saudiTraditional.src },
+    { id: 4, title: "تصوير جوي احترافي للطبيعة", type: "raw", author: "طيران سيادي", price: "$65", format: "H.265 10bit", img: MCOS_ASSETS.heritageAndLibrary.algerianDrone.src }
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50 p-8 font-sans" dir="rtl">
+    <div className="min-h-screen bg-[#05050A] text-slate-50 p-4 md:p-8 font-sans" dir="rtl">
       <div className="max-w-7xl mx-auto">
-        <header className="mb-12 border-b border-white/10 pb-8 flex justify-between items-end">
+        <header className="mb-12 border-b border-white/5 pb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
           <div>
-            <h1 className="text-4xl font-black mb-3 flex items-center gap-3">
-              <Film className="w-8 h-8 text-rose-500" /> مكتبة الفيديوهات والأصول الواقعية
+            <h1 className="text-3xl md:text-5xl font-black mb-3 flex items-center gap-3 text-white">
+              <Film className="w-8 h-8 md:w-10 md:h-10 text-rose-500" /> قبو الأصول السيادية
             </h1>
-            <p className="text-slate-400 text-lg">منصة المصورين لبيع اللقطات الخام (Raw Footage) ومشاركة الأصول الإبداعية.</p>
+            <p className="text-slate-400 text-sm md:text-lg font-medium">مكتبة حصرية للمبدعين لبيع اللقطات الخام، المؤثرات، وحفظ التراث العربي بأعلى جودة.</p>
           </div>
-          <button className="bg-slate-900 border border-slate-700 hover:border-rose-500 px-6 py-3 rounded-xl font-bold flex items-center gap-2 transition-all">
-            <Camera className="w-5 h-5" /> هل أنت مصور؟ بع لقطاتك
+          <button className="bg-[#12121A] border border-white/10 hover:bg-rose-600 hover:border-rose-500 px-6 py-4 rounded-2xl font-bold flex items-center gap-2 transition-all shadow-md">
+            <Camera className="w-5 h-5" /> استحوذ على التراخيص / بع لقطاتك
           </button>
         </header>
 
         {/* فلاتر التصنيف */}
-        <div className="flex gap-4 mb-8 overflow-x-auto pb-4">
-          {['الكل', 'لقطات خام (Raw)', 'قوالب بريمير', 'مؤثرات صوتية', 'فلاتر (LUTs)'].map(tab => (
-            <button key={tab} className="bg-slate-900 hover:bg-rose-600 border border-slate-800 px-6 py-2 rounded-full font-bold whitespace-nowrap transition-colors">
+        <div className="flex gap-3 mb-10 overflow-x-auto hide-scrollbar pb-2">
+          {['الكل', 'لقطات خام (RAW)', 'أصول سينمائية (LUTs)', 'مؤثرات صوتية (SFX)', 'تصوير جوي'].map(tab => (
+            <button key={tab} onClick={() => setActiveTab(tab)} className={`px-6 py-3 rounded-xl font-bold whitespace-nowrap transition-colors border ${activeTab === tab ? 'bg-rose-600 border-rose-500 text-white' : 'bg-[#12121A] border-white/5 text-slate-400 hover:text-white hover:bg-white/5'}`}>
               {tab}
             </button>
           ))}
-          <button className="mr-auto flex items-center gap-2 text-slate-400 hover:text-white">
-            <Filter className="w-4 h-4" /> تصفية متقدمة
+          <button className="mr-auto flex items-center gap-2 text-slate-400 hover:text-white px-4">
+            <Filter className="w-4 h-4" /> تصفية الذكاء الاصطناعي
           </button>
         </div>
 
-        {/* شبكة الفيديوهات */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* شبكة الأصول */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {assets.map(asset => (
-            <div key={asset.id} className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden group hover:border-rose-500/50 transition-all">
-              <div className="relative h-56 overflow-hidden">
-                <img src={asset.img} alt={asset.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <PlayCircle className="w-12 h-12 text-white" />
+            <div key={asset.id} className="bg-[#0A0A0F] border border-white/5 rounded-[2rem] overflow-hidden group hover:border-rose-500/50 hover:shadow-[0_0_30px_rgba(225,29,72,0.15)] transition-all flex flex-col">
+              <div className="relative h-48 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0F] to-transparent z-10 opacity-60"></div>
+                <img src={asset.img} alt={asset.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20">
+                  <PlayCircle className="w-12 h-12 text-white drop-shadow-lg" />
                 </div>
-                <div className="absolute top-4 right-4 bg-slate-950/80 backdrop-blur px-3 py-1 rounded-full text-xs font-bold font-mono text-rose-400">
-                  {asset.format}
+                <div className="absolute top-3 right-3 bg-[#05050A]/80 backdrop-blur border border-white/10 px-3 py-1 rounded-lg text-[10px] font-bold font-mono text-rose-400 z-20 flex items-center gap-1">
+                   <ShieldCheck className="w-3 h-3" /> {asset.format}
                 </div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-black mb-2">{asset.title}</h3>
-                <p className="text-slate-400 text-sm mb-4">المصور/المصمم: {asset.author}</p>
-                <div className="flex justify-between items-center border-t border-slate-800 pt-4">
-                  <span className="text-xl font-black text-white">{asset.price}</span>
-                  <button className="bg-rose-600 hover:bg-rose-500 text-white p-3 rounded-xl transition-all">
+              
+              <div className="p-5 flex flex-col flex-1">
+                <h3 className="text-lg font-black mb-1 text-white leading-snug">{asset.title}</h3>
+                <p className="text-slate-400 text-xs mb-4 font-medium">المالك الأصلي: {asset.author}</p>
+                
+                <div className="flex justify-between items-center mt-auto pt-4 border-t border-white/5">
+                  <span className="text-xl font-black text-emerald-400">{asset.price}</span>
+                  <button className="bg-[#12121A] border border-white/5 hover:bg-rose-600 text-slate-300 hover:text-white p-2.5 rounded-xl transition-all">
                     <ShoppingCart className="w-5 h-5" />
                   </button>
                 </div>
