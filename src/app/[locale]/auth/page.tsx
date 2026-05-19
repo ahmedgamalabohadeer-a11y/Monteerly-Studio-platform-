@@ -1,9 +1,10 @@
 'use client'
 import React, { useState } from 'react';
-import { ShieldCheck, Mail, Lock, User, Briefcase, Loader2, LogIn } from 'lucide-react';
+import { ShieldCheck, Mail, Lock, User, Briefcase, Loader2, LogIn, ChevronDown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { MCOS_ASSETS } from '@/lib/ui/assets';
+import { MCOS_ROLES } from '@/lib/constants/roles';
 import { OAuthProviders } from '@/components/auth/OAuthProviders';
 
 export default function AuthGateway() {
@@ -11,7 +12,8 @@ export default function AuthGateway() {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState({ text: '', type: '' });
-  const [formData, setFormData] = useState({ email: '', password: '', fullName: '', role: 'client' });
+  
+  const [formData, setFormData] = useState({ email: '', password: '', fullName: '', realm: 'foundation', role: 'video_editor' });
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +27,7 @@ export default function AuthGateway() {
       } else {
         const { error } = await supabase.auth.signUp({
           email: formData.email, password: formData.password,
-          options: { data: { full_name: formData.fullName, role: formData.role } }
+          options: { data: { full_name: formData.fullName, realm: formData.realm, role: formData.role } }
         });
         if (error) throw error;
         setMsg({ text: 'تم تأسيس الهوية السيادية! راجع بريدك لتفعيل التشفير.', type: 'success' });
@@ -37,8 +39,8 @@ export default function AuthGateway() {
 
   return (
     <div className="min-h-screen bg-[#05050A] flex font-sans" dir="rtl">
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12 relative z-10">
-        <div className="w-full max-w-md">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 md:p-12 relative z-10 overflow-y-auto">
+        <div className="w-full max-w-md py-10">
           <div className="mb-10 text-center lg:text-right">
             <img src={MCOS_ASSETS.branding.icon.src} alt="MCOS" className="w-14 h-14 mb-6 mx-auto lg:mx-0 opacity-90" />
             <h1 className="text-4xl md:text-5xl font-black text-white mb-2">{isLogin ? 'بوابة العبور' : 'تأسيس هوية سيادية'}</h1>
@@ -60,12 +62,29 @@ export default function AuthGateway() {
                   <User className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
                   <input required type="text" placeholder="الاسم الكامل (قانونياً لغايات الضمان)" value={formData.fullName} onChange={e => setFormData({...formData, fullName: e.target.value})} className="w-full bg-[#12121A] border border-white/10 rounded-2xl py-4 pr-12 pl-4 text-white focus:border-indigo-500 outline-none transition-colors" />
                 </div>
+                
+                {/* نظام اختيار الطبقة (Realm) */}
                 <div className="relative">
-                  <Briefcase className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
-                  <select value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})} className="w-full bg-[#12121A] border border-white/10 rounded-2xl py-4 pr-12 pl-4 text-white focus:border-indigo-500 outline-none appearance-none transition-colors">
-                    <option value="client">صانع محتوى / عميل</option>
-                    <option value="editor">مبدع / مونتير سيادي</option>
-                    <option value="agency">وكالة إنتاج إعلامي</option>
+                  <Briefcase className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-indigo-400" />
+                  <ChevronDown className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 pointer-events-none" />
+                  <select value={formData.realm} onChange={e => {
+                    const newRealm = e.target.value as keyof typeof MCOS_ROLES;
+                    setFormData({...formData, realm: newRealm, role: MCOS_ROLES[newRealm].roles[0].id});
+                  }} className="w-full bg-indigo-900/10 border border-indigo-500/30 rounded-2xl py-4 pr-12 pl-10 text-indigo-100 font-bold focus:border-indigo-500 outline-none appearance-none cursor-pointer">
+                    {Object.values(MCOS_ROLES).map(realm => (
+                      <option key={realm.id} value={realm.id} className="bg-slate-900 text-white">{realm.label}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* نظام اختيار الدور الدقيق بناءً على الطبقة */}
+                <div className="relative">
+                  <ShieldCheck className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
+                  <ChevronDown className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 pointer-events-none" />
+                  <select value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})} className="w-full bg-[#12121A] border border-white/10 rounded-2xl py-4 pr-12 pl-10 text-white focus:border-emerald-500 outline-none appearance-none cursor-pointer">
+                    {MCOS_ROLES[formData.realm as keyof typeof MCOS_ROLES].roles.map(r => (
+                      <option key={r.id} value={r.id} className="bg-slate-900">{r.label}</option>
+                    ))}
                   </select>
                 </div>
               </>
@@ -93,7 +112,7 @@ export default function AuthGateway() {
         </div>
       </div>
 
-      <div className="hidden lg:flex w-1/2 relative items-center justify-center p-12 overflow-hidden border-r border-white/5">
+      <div className="hidden lg:flex w-1/2 relative items-center justify-center p-12 overflow-hidden border-l border-white/5">
         <div className="absolute inset-0 bg-[#0A0A0F]">
           <img src={MCOS_ASSETS.workspace.dualScreen.src} className="w-full h-full object-cover opacity-20" alt="Workspace" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#05050A] via-[#05050A]/80 to-transparent"></div>
@@ -104,6 +123,10 @@ export default function AuthGateway() {
           <p className="text-slate-300 leading-relaxed font-medium">
             Monteerly OS ليس مجرد موقع توظيف، بل هو الإمبراطورية الرقمية التي تدير فيها أعمالك، تحمي أموالك بنظام العقود الذكية، وتضاعف إنتاجك بالمساعد الإخراجي.
           </p>
+          <div className="mt-6 flex flex-wrap gap-2">
+             <span className="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-3 py-1 rounded-full text-xs font-bold">43 تخصص سيادي</span>
+             <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full text-xs font-bold">حماية Escrow</span>
+          </div>
         </div>
       </div>
     </div>
