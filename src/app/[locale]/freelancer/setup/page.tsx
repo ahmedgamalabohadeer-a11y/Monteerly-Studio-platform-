@@ -33,7 +33,7 @@ export default function FreelancerSetupPage() {
             <h1 className="text-3xl font-black text-slate-50">أكمل إعداد ملفك الشخصي</h1>
           </header>
 
-          <form action={finalizeFreelancerOnboarding} className="space-y-8">
+          <form action={async (formData) => { "use server"; await finalizeFreelancerOnboarding(formData); }} className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-3">
                 <label className="text-sm font-black text-slate-50">الاسم المهني (الذي سيظهر في العقود)</label>

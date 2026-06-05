@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: { category: string,
   return { title, description };
 }
 
-export default function SEO LandingPage({ params }: { params: { category: string, location: string, locale: string } }) {
+export default function SEOLandingPage({ params }: { params: { category: string, location: string, locale: string } }) {
   const displayCategory = params.category.replace('-', ' ');
   const displayLocation = params.location.replace('-', ' ');
 

@@ -15,7 +15,7 @@ export default function AboutCompany() {
       
       {/* خلفية زخرفية */}
       <div className="absolute top-0 right-0 w-full h-full opacity-[0.02] pointer-events-none">
-        <img src={MCOS_ASSETS.hero.cyberGridPattern.src || ''} className="w-full h-full object-cover mix-blend-screen" />
+        <img src={MCOS_ASSETS.hero.banner.src || ''} className="w-full h-full object-cover mix-blend-screen" />
       </div>
 
       <div className="max-w-4xl mx-auto relative z-10">

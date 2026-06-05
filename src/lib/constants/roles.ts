@@ -110,3 +110,20 @@ export const MCOS_ROLES = {
     ]
   }
 };
+
+
+// قاموس الألوان للطبقات (تم إضافته جراحياً لدعم مكون المؤشر)
+export const LAYER_COLORS: Record<string, string> = {
+  foundation: 'bg-blue-600',
+  freelance_specialists: 'bg-indigo-600',
+  clients: 'bg-emerald-600',
+  growth: 'bg-purple-600',
+  market: 'bg-amber-600',
+  marketing: 'bg-rose-600',
+  finance: 'bg-emerald-600',
+  legal: 'bg-slate-600',
+  ai: 'bg-cyan-600',
+  management: 'bg-amber-600',
+  security: 'bg-red-600',
+  institutions: 'bg-indigo-600'
+};

@@ -47,7 +47,7 @@ export default async function HRPage() {
             <UserPlus className="text-blue-600 w-5 h-5" />
             <h3 className="font-semibold">إضافة كادر جديد</h3>
           </div>
-          <form action={addEmployee} className="space-y-4">
+          <form action={async (formData) => { "use server"; await addEmployee(formData); }} className="space-y-4">
             <input name="full_name" required type="text" placeholder="الاسم الكامل" className="w-full p-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
             <input name="position" required type="text" placeholder="المسمى الوظيفي" className="w-full p-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
             <input name="salary" required type="number" placeholder="الراتب" className="w-full p-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" />

@@ -11,7 +11,7 @@ export default function ProfessionalPricing() {
       target: 'للمستقلين الجدد (Free Tier)',
       desc: 'انضم للنخبة. ابدأ رحلتك في عالم الإنتاج بدون رسوم اشتراك.',
       features: ['مساحة تخزين سحابية (5GB)', 'عروض عمل غير محدودة', 'حماية عسكرية للحقوق (Escrow)'],
-      img: MCOS_ASSETS.pricing.rookieBg,
+      img: MCOS_ASSETS.workspace.laptop.src,
       color: 'emerald'
     },
     {
@@ -20,7 +20,7 @@ export default function ProfessionalPricing() {
       target: 'للمبدعين المستقلين (Creators)',
       desc: 'الأكثر شعبية. عمولة أقل (Revenue Share) وأدوات ذكاء اصطناعي متقدمة.',
       features: ['قبو الأصول السحابية (50GB)', 'المساعد الإخراجي (Co-Pilot)', 'أولوية في ترشيحات النظام', 'تخفيض نقاط رادار الاحتيال'],
-      img: MCOS_ASSETS.pricing.proBg,
+      img: MCOS_ASSETS.workspace.dualScreen.src,
       color: 'indigo',
       popular: true
     }

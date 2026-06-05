@@ -21,7 +21,7 @@ export default async function ContractsPage() {
             <FilePlus className="text-blue-600 w-5 h-5" />
             <h3 className="font-bold">تأسيس عقد جديد</h3>
           </div>
-          <form action={addContract} className="space-y-4">
+          <form action={async (formData) => { "use server"; await addContract(formData); }} className="space-y-4">
             <input name="title" required placeholder="عنوان العقد" className="w-full p-3 bg-slate-50 rounded-xl text-sm outline-none" />
             <select name="contract_type" className="w-full p-3 bg-slate-50 rounded-xl text-sm outline-none">
               <option value="employment">عقد توظيف</option>
@@ -40,7 +40,7 @@ export default async function ContractsPage() {
             <RefreshCcw className="text-orange-600 w-5 h-5" />
             <h3 className="font-bold">إصدار نسخة جديدة (Revision)</h3>
           </div>
-          <form action={addContractRevision} className="space-y-4">
+          <form action={async (formData) => { "use server"; await addContractRevision(formData); }} className="space-y-4">
             <select name="contract_id" required className="w-full p-3 bg-slate-950 rounded-xl text-sm outline-none border border-slate-200">
               <option value="">-- اختر العقد المراد تعديله --</option>
               {contracts?.map(c => (

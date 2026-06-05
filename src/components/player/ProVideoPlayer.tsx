@@ -9,6 +9,14 @@ export function ProVideoPlayer({ src }: { src?: string }) {
 
   const engineRef = useRef<VideoSyncEngine | null>(null);
 
+
+  const [playing, setPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(185); // Dummy duration for demo
+  const [volume, setVolume] = useState(0.8);
+  const [hoverTime, setHoverTime] = useState<number | null>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+
   // تفعيل محرك التزامن واستقبال الأحداث
   useEffect(() => {
     engineRef.current = new VideoSyncEngine('demo_project_id');
@@ -28,13 +36,6 @@ export function ProVideoPlayer({ src }: { src?: string }) {
       engineRef.current.broadcastState({ isPlaying: playing, currentTime });
     }
   }, [playing]);
-
-  const [playing, setPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(185); // Dummy duration for demo
-  const [volume, setVolume] = useState(0.8);
-  const [hoverTime, setHoverTime] = useState<number | null>(null);
-  const progressBarRef = useRef<HTMLDivElement>(null);
 
   // Frame Stepping Logic (24fps)
   const stepFrame = (direction: 1 | -1) => {

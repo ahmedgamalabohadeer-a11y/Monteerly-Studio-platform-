@@ -7,7 +7,7 @@ interface Marker {
   timecode: number;
 }
 
-export function VideoHeatmap({ jobId, duration, activeVersion = 1 }: { jobId: string; duration: number }) {
+export function VideoHeatmap({ jobId, duration, activeVersion = 1 }: { jobId: string; duration: number; activeVersion?: number }) {
   const [markers, setMarkers] = useState<Marker[]>([]);
 
   useEffect(() => {

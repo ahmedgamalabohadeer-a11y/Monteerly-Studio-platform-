@@ -8,87 +8,37 @@ export const SecureChat = () => {
   const [message, setMessage] = useState('');
   const [isBlocked, setIsBlocked] = useState(false);
   const [realMessages, setRealMessages] = useState<any[]>([]);
+  const [isSending, setIsSending] = useState(false);
   const engineRef = useRef<ChatEscrowEngine | null>(null);
+  const setSecurityAlert = useProjectStore((state) => state.setSecurityAlert);
 
   useEffect(() => {
-    engineRef.current = new ChatEscrowEngine('main_room'); // معرف الغرفة
+    engineRef.current = new ChatEscrowEngine('main_room');
     const channel = engineRef.current.enableRealtime((newMessage) => {
       setRealMessages((prev) => [...prev, newMessage]);
     });
-    
-  const [isSending, setIsSending] = useState(false);
-
-  const handleSecureSend = async () => {
-    if (!message.trim() || isBlocked) return;
-    setIsSending(true);
-
-    try {
-      // 1. الفحص الاستباقي عبر وكيل الذكاء الاصطناعي
-      const res = await fetch('/api/ai/gemini', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: message, type: 'security_audit' })
-      });
-
-      const data = await res.json();
-      
-      // تنظيف استجابة Gemini لاستخراج الـ JSON الصافي
-      const cleanJson = data.result.replace(/```json/g, '').replace(/```/g, '').trim();
-      const aiResult = JSON.parse(cleanJson);
-
-      if (aiResult.isBlocked) {
-        setIsBlocked(true);
-        setSecurityAlert(true);
-        console.warn("🛡️ AI Guardian Blocked Message:", aiResult.reason);
-        setIsSending(false);
-        return;
-      }
-
-      // 2. إذا كان النص آمناً، يتم بثه فوراً للطرف الآخر عبر الـ Engine
-      if (engineRef.current) {
-         // في بيئة الإنتاج: يتم الحفظ في Supabase أولاً
-         engineRef.current.enableRealtime({ content: message, sender: 'me' }); 
-      }
-      setMessage('');
-
-    } catch (error) {
-      console.error("AI Check Error:", error);
-    } finally {
-      setIsSending(false);
-    }
-  };
-
-  return () => engineRef.current?.cleanup();
+    return () => engineRef.current?.cleanup();
   }, []);
 
-  const setSecurityAlert = useProjectStore((state) => state.setSecurityAlert);
-  
-  // Regex للكشف عن الأرقام المصرية والسعودية والإيميلات
   const securityRegex = /(010|011|012|015|05|\+20|\+966)\d{8}|[a-zA-Z0-9._-]+@[a-z]+\.[a-z]+/g;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
     setMessage(text);
-
-    // منطق القبة الحديدية الفوري
     if (securityRegex.test(text)) {
       setIsBlocked(true);
-      setSecurityAlert(true); // تفعيل إنذار عام في النظام
+      setSecurityAlert(true);
     } else {
       setIsBlocked(false);
       setSecurityAlert(false);
     }
   };
 
-  
-  const [isSending, setIsSending] = useState(false);
-
   const handleSecureSend = async () => {
     if (!message.trim() || isBlocked) return;
     setIsSending(true);
 
     try {
-      // 1. الفحص الاستباقي عبر وكيل الذكاء الاصطناعي
       const res = await fetch('/api/ai/gemini', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -96,8 +46,6 @@ export const SecureChat = () => {
       });
 
       const data = await res.json();
-      
-      // تنظيف استجابة Gemini لاستخراج الـ JSON الصافي
       const cleanJson = data.result.replace(/```json/g, '').replace(/```/g, '').trim();
       const aiResult = JSON.parse(cleanJson);
 
@@ -109,10 +57,11 @@ export const SecureChat = () => {
         return;
       }
 
-      // 2. إذا كان النص آمناً، يتم بثه فوراً للطرف الآخر عبر الـ Engine
       if (engineRef.current) {
-         // في بيئة الإنتاج: يتم الحفظ في Supabase أولاً
-         engineRef.current.enableRealtime({ content: message, sender: 'me' }); 
+         setRealMessages((prev) => [...prev, { content: message, sender: 'me' }]);
+         if (typeof (engineRef.current as any).sendMessage === 'function') {
+             (engineRef.current as any).sendMessage({ content: message, sender: 'me' });
+         }
       }
       setMessage('');
 
@@ -125,7 +74,6 @@ export const SecureChat = () => {
 
   return (
     <div className="flex flex-col h-full bg-brand-surface border-r border-gray-700 w-80">
-      {/* Header */}
       <div className="p-4 border-b border-gray-700 flex justify-between items-center bg-brand-dark">
         <h3 className="font-bold text-white flex items-center gap-2">
           <ShieldCheck size={16} className="text-brand-success" />
@@ -134,12 +82,12 @@ export const SecureChat = () => {
         <span className="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">مشفر</span>
       </div>
 
-      {/* Realtime Messages Integration */}
-        {realMessages.map((msg, i) => (
-          <div key={i} className="flex gap-3 animate-in fade-in">
-            <div className="bg-brand-secondary/20 p-3 rounded-lg text-sm text-gray-200">{msg.content}</div>
-          </div>
-        ))}
+      {realMessages.map((msg, i) => (
+        <div key={i} className="flex gap-3 animate-in fade-in p-2">
+          <div className="bg-brand-secondary/20 p-3 rounded-lg text-sm text-gray-200">{msg.content}</div>
+        </div>
+      ))}
+
       <div className="flex-1 p-4 overflow-y-auto space-y-4">
         <div className="flex gap-3">
           <div className="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center text-xs text-white">AM</div>
@@ -147,8 +95,7 @@ export const SecureChat = () => {
             مرحباً، هل يمكن تعديل الدقيقة 01:20؟
           </div>
         </div>
-        
-        {/* System Alert Example */}
+
         {isBlocked && (
           <div className="bg-brand-alert/10 border border-brand-alert/50 p-3 rounded-lg flex gap-3 animate-pulse">
             <AlertTriangle className="text-brand-alert shrink-0" size={20} />
@@ -160,9 +107,7 @@ export const SecureChat = () => {
         )}
       </div>
 
-      {/* Input Area */}
       <div className="p-4 border-t border-gray-700 relative">
-        {/* Blur Overlay if Blocked */}
         {isBlocked && (
           <div className="absolute inset-0 bg-brand-dark/80 backdrop-blur-sm z-10 flex items-center justify-center text-center p-4">
             <div className="text-brand-alert font-bold text-sm">
@@ -183,7 +128,7 @@ export const SecureChat = () => {
             <button className="text-gray-400 hover:text-white transition-colors">
               <Paperclip size={18} />
             </button>
-            <button 
+            <button
               onClick={handleSecureSend} disabled={isBlocked || !message.trim() || isSending}
               className={`p-2 rounded-lg transition-colors ${isBlocked ? 'bg-gray-600 cursor-not-allowed' : 'bg-brand-secondary hover:bg-brand-primary text-white'}`}
             >
@@ -198,4 +143,3 @@ export const SecureChat = () => {
     </div>
   );
 };
-

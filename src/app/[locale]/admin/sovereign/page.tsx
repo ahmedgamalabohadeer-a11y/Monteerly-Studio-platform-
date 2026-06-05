@@ -53,7 +53,7 @@ export default function SovereignGodMode() {
         <div className="bg-rose-950/20 border border-rose-500/30 rounded-[2rem] overflow-hidden mb-8">
            <div className="p-6 border-b border-rose-500/20 flex items-center gap-2">
               <AlertOctagon className="w-5 h-5 text-rose-500" />
-              <h3 className="font-bold text-rose-400">رادار الاحتيال النشط (Fraud_Score > 15)</h3>
+              <h3 className="font-bold text-rose-400">رادار الاحتيال النشط (Fraud_Score &gt; 15)</h3>
            </div>
            <div className="p-6 space-y-4">
               {fraudAlerts.map(alert => (

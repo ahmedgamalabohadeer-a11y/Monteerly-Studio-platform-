@@ -40,3 +40,31 @@ export function auditTransaction(amount: number, type: string, category: string)
 
   return { isSuspicious: false, riskLevel: 'low' };
 }
+
+export type GuardianValidationResult = {
+  isValid: boolean;
+  error?: string;
+};
+
+export const Guardian = {
+  async validateText(text: string): Promise<GuardianValidationResult> {
+    const dangerousPatterns = [
+      /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+      /javascript:/gi,
+      /onerror\s*=/gi,
+      /onload\s*=/gi,
+      /data:text\/html/gi
+    ];
+
+    const isDangerous = dangerousPatterns.some((pattern) => pattern.test(text));
+
+    if (isDangerous) {
+      return {
+        isValid: false,
+        error: 'تم حظر الرسالة لاحتوائها على محتوى غير آمن.'
+      };
+    }
+
+    return { isValid: true };
+  }
+};
