@@ -1,4 +1,10 @@
-'use client'
+import os
+
+disputes_dir = "src/app/[locale]/disputes"
+file_path = os.path.join(disputes_dir, "page.tsx")
+os.makedirs(disputes_dir, exist_ok=True)
+
+content = r"""'use client'
 import React from 'react';
 import { ShieldAlert, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 
@@ -53,3 +59,8 @@ export default function DisputesPage() {
     </div>
   );
 }
+"""
+
+with open(file_path, "w", encoding="utf-8") as f:
+    f.write(content)
+print("✅ تم إنشاء وحدة إدارة النزاعات السيادية بنجاح!")

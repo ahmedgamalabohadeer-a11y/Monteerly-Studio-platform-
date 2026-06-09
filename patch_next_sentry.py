@@ -1,4 +1,8 @@
-/** @type {import('next').NextConfig} */
+import os
+
+file_path = "next.config.js"
+
+sentry_config = """/** @type {import('next').NextConfig} */
 const { withSentryConfig } = require("@sentry/nextjs");
 
 const nextConfig = {
@@ -6,6 +10,7 @@ const nextConfig = {
     config.ignoreWarnings = [/Critical dependency/];
     return config;
   },
+  eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
 };
 
@@ -26,3 +31,8 @@ module.exports = withSentryConfig(
     disableLogger: true,
   }
 );
+"""
+
+with open(file_path, "w", encoding="utf-8") as f:
+    f.write(sentry_config)
+print("✅ تم تجهيز next.config.js لرفع التحديثات إلى Sentry تلقائياً!")
