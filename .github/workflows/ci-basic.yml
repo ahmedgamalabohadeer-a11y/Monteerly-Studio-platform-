@@ -1,6 +1,10 @@
 name: CI Basic - Sovereign Pipeline
 
 on:
+
+env:
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+  NODE_OPTIONS: "--no-deprecation"
   push:
     branches: [ main, develop ]
   pull_request:
