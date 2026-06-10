@@ -6,10 +6,13 @@ on:
   pull_request:
     branches: [ main, develop ]
 
+env:
+  # هذا المتغير سيسكت تحذير Node 20 المزعج نهائياً
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   ci:
     runs-on: ubuntu-latest
-    # إضافة حد زمني أقصى 15 دقيقة لمنع استنزاف الرصيد
     timeout-minutes: 15
     steps:
       - name: Checkout
@@ -25,8 +28,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
+          # تم إزالة cache: pnpm مؤقتاً لتخطي خطأ الـ Workspace
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
