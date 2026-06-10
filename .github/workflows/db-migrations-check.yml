@@ -1,28 +1,32 @@
 name: DB Migrations Check
 
 on:
-
-env:
-  
-  
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
+    paths:
+      - 'supabase/migrations/**'
+      - 'supabase/config.toml'
+      - 'supabase/seed.sql'
 
 jobs:
   check-migrations:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Install Supabase CLI
-        run: npm install -g supabase
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Verify Migrations
-        run: |
-          # محاكاة تشغيل الهجرات في بيئة تجريبية
-          supabase db diff --local
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Start Supabase Local Database
+        run: supabase start
+
+      - name: Lint Database Migrations
+        run: supabase db lint
