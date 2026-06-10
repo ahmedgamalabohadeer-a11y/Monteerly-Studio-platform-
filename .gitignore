@@ -48,3 +48,17 @@ next-env.d.ts
 .env.local
 .env.*
 !.env.example
+
+# --- Temporary Automation & Patch Scripts ---
+create_*.py
+patch_*.py
+fix_*.py
+update_workflows.py
+deploy_ci_fix.py
+write_auth_page.py
+
+# --- Test Results & Cache ---
+test-results/
+playwright-report/
+.next/
+node_modules/
