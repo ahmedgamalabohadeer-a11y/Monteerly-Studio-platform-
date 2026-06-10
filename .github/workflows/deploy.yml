@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main ]
 
+# هذا المتغير سيجبر أدوات الطرف الثالث على العمل بصمت وتخطي التحذير
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
