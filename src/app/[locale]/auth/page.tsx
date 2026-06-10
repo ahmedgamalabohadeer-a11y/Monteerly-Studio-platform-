@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import { ShieldCheck, Mail, Lock, Loader2, LogIn, Briefcase, Chrome } from 'lucide-react';
+import { ShieldCheck, Mail, Lock, Loader2, LogIn, Briefcase, Globe } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { MCOS_ASSETS } from '@/lib/ui/assets';
@@ -57,7 +57,7 @@ export default function AuthGateway() {
           {msg.text && <div className="p-4 rounded-xl mb-4 bg-rose-500/10 text-rose-500 border border-rose-500/20">{msg.text}</div>}
           
           <button onClick={handleGoogleAuth} className="w-full bg-white text-black py-4 rounded-xl font-bold mb-4 flex justify-center items-center gap-2">
-            <Chrome size={20} /> المتابعة عبر Google
+            <Globe size={20} /> المتابعة عبر Google
           </button>
 
           <form onSubmit={handleEmailAuth} className="space-y-4">
