@@ -9,6 +9,8 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    # إضافة حد زمني أقصى 15 دقيقة لمنع استنزاف الرصيد
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
