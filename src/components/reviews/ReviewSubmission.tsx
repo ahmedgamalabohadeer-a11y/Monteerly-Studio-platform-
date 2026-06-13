@@ -51,7 +51,7 @@ export function ReviewSubmission({ freelancerName }: { freelancerName: string })
   );
 }
 
-function RatingCriteria({ label, value, onChange }: any) {
+function RatingCriteria({ label, value, onChange }: unknown) {
    return (
       <div className="flex justify-between items-center">
          <span className="font-bold text-sm">{label}</span>

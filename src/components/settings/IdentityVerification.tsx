@@ -56,7 +56,7 @@ export function IdentityVerification() {
   );
 }
 
-function UploadZone({ title }: any) {
+function UploadZone({ title }: unknown) {
     return (
         <div className="border border-border rounded-xl p-4 hover:border-primary cursor-pointer transition-colors bg-card">
             <div className="flex justify-between items-center mb-4">

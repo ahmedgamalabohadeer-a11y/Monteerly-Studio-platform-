@@ -46,7 +46,7 @@ export default function AuthGateway() {
         if (error) throw error;
         router.push('/ar/onboarding');
       }
-    } catch (e: any) { setMsg({ text: e.message, type: 'error' }); setLoading(false); }
+    } catch (e: unknown) { setMsg({ text: e.message, type: 'error' }); setLoading(false); }
   };
 
   return (

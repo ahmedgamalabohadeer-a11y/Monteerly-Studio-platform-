@@ -18,7 +18,7 @@ export function QCScopes() {
                    <div 
                      key={i} 
                      className="w-1 bg-green-500/50 rounded-t-sm transition-all duration-300"
-                     style={{ height: `${Math.random() * 80 + 20}%` }} 
+                     style={{ height: `${(i * 11) % 80 + 20}%` }} 
                    />
                 ))}
              </div>

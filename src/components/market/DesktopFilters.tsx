@@ -51,7 +51,7 @@ export function DesktopFilters() {
   );
 }
 
-function FilterSection({ title, children }: any) {
+function FilterSection({ title, children }: unknown) {
     return (
         <div className="mb-6">
             <button className="flex justify-between items-center w-full font-bold text-sm mb-3 text-muted-foreground hover:text-foreground">
@@ -64,7 +64,7 @@ function FilterSection({ title, children }: any) {
     )
 }
 
-function Checkbox({ label, count }: any) {
+function Checkbox({ label, count }: unknown) {
     return (
         <label className="flex items-center justify-between cursor-pointer group">
             <div className="flex items-center gap-2">

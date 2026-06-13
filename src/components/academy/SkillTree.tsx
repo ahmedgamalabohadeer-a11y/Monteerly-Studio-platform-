@@ -13,40 +13,38 @@ export function SkillTree() {
 
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-xl p-8 relative overflow-hidden">
-       {/* Header */}
-       <div className="flex justify-between items-end mb-12 relative z-10">
-          <div>
-             <h2 className="text-2xl font-bold text-white mb-1">مسار "محترف المونتاج"</h2>
-             <p className="text-slate-400 text-sm">أكمل المسار لتحصل على شارة التوثيق في السوق.</p>
-          </div>
-          <div className="text-right">
-             <p className="text-xs text-indigo-400 font-bold mb-1">XP الإجمالي</p>
-             <p className="text-3xl font-black text-white">1,250</p>
-          </div>
-       </div>
+      <div className="flex justify-between items-end mb-12 relative z-10">
+        <div>
+          <h2 className="text-2xl font-bold text-white mb-1">مسار &quot;محترف المونتاج&quot;</h2>
+          <p className="text-slate-400 text-sm">أكمل المسار لتحصل على شارة التوثيق في السوق.</p>
+        </div>
+        <div className="text-right">
+          <p className="text-xs text-indigo-400 font-bold mb-1">XP الإجمالي</p>
+          <p className="text-3xl font-black text-white">1,250</p>
+        </div>
+      </div>
 
-       {/* Tree Flow */}
-       <div className="relative z-10 space-y-6">
-          {levels.map((level, index) => (
-             <div key={level.id} className={`flex items-center gap-4 ${level.status === 'locked' ? 'opacity-50' : 'opacity-100'}`}>
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 border-2 ${
-                   level.status === 'completed' ? 'bg-indigo-600 border-indigo-600 text-white' : 
-                   level.status === 'active' ? 'bg-slate-800 border-indigo-500 text-indigo-400 animate-pulse' : 
-                   'bg-slate-800 border-slate-700 text-slate-500'
-                }`}>
-                   <level.icon size={20} />
-                </div>
-                <div className="flex-1 bg-slate-800/50 border border-slate-700 rounded-lg p-4 flex justify-between items-center">
-                   <div>
-                      <h4 className={`font-bold ${level.status === 'active' ? 'text-indigo-400' : 'text-white'}`}>{level.title}</h4>
-                      <p className="text-xs text-slate-400 mt-1">+{level.xp} XP</p>
-                   </div>
-                   {level.status === 'completed' && <p className="text-xs text-green-400 flex items-center gap-1 font-bold"><Check size={12}/> مكتمل</p>}
-                   {level.status === 'locked' && <Lock size={16} className="text-slate-500" />}
-                </div>
-             </div>
-          ))}
-       </div>
+      <div className="relative z-10 space-y-6">
+        {levels.map((level) => (
+          <div key={level.id} className={`flex items-center gap-4 ${level.status === 'locked' ? 'opacity-50' : 'opacity-100'}`}>
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 border-2 ${
+              level.status === 'completed' ? 'bg-indigo-600 border-indigo-600 text-white' :
+              level.status === 'active' ? 'bg-slate-800 border-indigo-500 text-indigo-400 animate-pulse' :
+              'bg-slate-800 border-slate-700 text-slate-500'
+            }`}>
+              <level.icon size={20} />
+            </div>
+            <div className="flex-1 bg-slate-800/50 border border-slate-700 rounded-lg p-4 flex justify-between items-center">
+              <div>
+                <h4 className={`font-bold ${level.status === 'active' ? 'text-indigo-400' : 'text-white'}`}>{level.title}</h4>
+                <p className="text-xs text-slate-400 mt-1">+{level.xp} XP</p>
+              </div>
+              {level.status === 'completed' && <p className="text-xs text-green-400 flex items-center gap-1 font-bold"><Check size={12}/> مكتمل</p>}
+              {level.status === 'locked' && <Lock size={16} className="text-slate-500" />}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

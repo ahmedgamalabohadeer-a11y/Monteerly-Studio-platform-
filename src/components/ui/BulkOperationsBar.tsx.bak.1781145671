@@ -1,0 +1,53 @@
+'use client';
+import React, { useState, useEffect } from 'react';
+import { Trash2, FolderOutput, Download, X, Share2 } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+
+interface Props {
+  selectedCount: number;
+  onClear: () => void;
+}
+
+export function BulkOperationsBar({ selectedCount, onClear }: Props) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(selectedCount > 0);
+  }, [selectedCount]);
+
+  if (!isVisible) return null;
+
+  return (
+    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 animate-in slide-in-from-bottom-10 fade-in duration-300">
+       <div className="bg-slate-900 text-white rounded-full shadow-2xl px-6 py-3 flex items-center gap-6 border border-slate-700">
+          <div className="flex items-center gap-3 border-r border-slate-700 pr-4">
+             <div className="bg-primary text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+                {selectedCount}
+             </div>
+             <span className="text-sm font-bold">ملفات محددة</span>
+             <button onClick={onClear} className="text-slate-400 hover:text-white"><X size={16} /></button>
+          </div>
+
+          <div className="flex items-center gap-2">
+             <ActionButton icon={Share2} label="مشاركة" />
+             <ActionButton icon={FolderOutput} label="نقل" />
+             <ActionButton icon={Download} label="تحميل" />
+             <div className="w-[1px] h-6 bg-slate-700 mx-1" />
+             <ActionButton icon={Trash2} label="حذف" isDestructive />
+          </div>
+       </div>
+    </div>
+  );
+}
+
+function ActionButton({ icon: Icon, label, isDestructive }: unknown) {
+    return (
+        <button 
+           className={`flex flex-col items-center gap-1 px-3 py-1 rounded-lg transition-colors ${isDestructive ? 'hover:bg-red-500/20 text-red-400 hover:text-red-300' : 'hover:bg-white/10 text-slate-200 hover:text-white'}`}
+        >
+           <Icon size={18} />
+           <span className="text-[10px] font-medium">{label}</span>
+        </button>
+    )
+}
+

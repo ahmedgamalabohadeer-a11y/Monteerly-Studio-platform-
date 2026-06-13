@@ -9,7 +9,6 @@ export function ProVideoPlayer({ src }: { src?: string }) {
 
   const engineRef = useRef<VideoSyncEngine | null>(null);
 
-
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(185); // Dummy duration for demo
@@ -45,7 +44,7 @@ export function ProVideoPlayer({ src }: { src?: string }) {
 
   // Simulate Playback
   useEffect(() => {
-    let interval: any;
+    let interval: unknown;
     if (playing) {
       interval = setInterval(() => {
         setCurrentTime(prev => (prev >= duration ? 0 : prev + 0.1));

@@ -59,7 +59,7 @@ export function InviteMemberModal({ isOpen, onClose }: Props) {
   );
 }
 
-function RoleBtn({ id, label, desc, current, set }: any) {
+function RoleBtn({ id, label, desc, current, set }: unknown) {
     const active = current === id;
     return (
         <button 

@@ -1,0 +1,44 @@
+// @ts-expect-error
+'use client';
+import React, { useState } from 'react';
+import {   Github } from 'lucide-react'; // Icons as placeholders
+import { Button } from '@/components/ui/Button';
+
+export function ConnectedAccounts() {
+  return (
+    <div className="space-y-6">
+       <h3 className="text-lg font-bold">الحسابات المرتبطة</h3>
+       <p className="text-sm text-muted-foreground -mt-4 mb-6">اربط حساباتك لتسهيل تسجيل الدخول وعرض أعمالك.</p>
+
+       <div className="space-y-4">
+          <AccountRow name="Google" connected={true} email="ahmed@gmail.com" />
+          <AccountRow name="Facebook" connected={false} />
+          <AccountRow name="Vimeo" connected={true} username="ahmed_editor" />
+       </div>
+    </div>
+  );
+}
+
+function AccountRow({ name, connected, email, username }: unknown) {
+   return (
+      <div className="flex items-center justify-between p-4 border border-border rounded-xl">
+         <div className="flex items-center gap-4">
+            <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center font-bold text-muted-foreground">
+               {name[0]}
+            </div>
+            <div>
+               <p className="font-bold text-sm">{name}</p>
+               {connected ? (
+                  <p className="text-xs text-emerald-600 font-medium">تم الربط كـ {email || username}</p>
+               ) : (
+                  <p className="text-xs text-muted-foreground">غير مرتبط</p>
+               )}
+            </div>
+         </div>
+         <Button size="sm" variant={connected ? 'outline' : 'secondary'}>
+            {connected ? 'إلغاء الربط' : 'ربط الحساب'}
+         </Button>
+      </div>
+   );
+}
+

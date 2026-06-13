@@ -44,7 +44,7 @@ export function FeedbackWidget() {
   );
 }
 
-function EmojiBtn({ icon: Icon, active, onClick }: any) {
+function EmojiBtn({ icon: Icon, active, onClick }: unknown) {
     return (
         <button 
            onClick={onClick}

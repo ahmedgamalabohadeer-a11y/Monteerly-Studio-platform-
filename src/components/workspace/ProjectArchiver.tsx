@@ -67,7 +67,7 @@ export function ProjectArchiver() {
     </div>
   );
 }
-function ExportOption({ id, title, size, icon: Icon, selected, onToggle }: any) {
+function ExportOption({ id, title, size, icon: Icon, selected, onToggle }: unknown) {
     return (
         <div 
            onClick={onToggle}

@@ -20,8 +20,8 @@ export function ServiceStatus() {
   );
 }
 
-function StatusRow({ label, icon: Icon, status, latency }: any) {
-    const colors: any = {
+function StatusRow({ label, icon: Icon, status, latency }: unknown) {
+    const colors: unknown = {
         operational: 'bg-emerald-500',
         busy: 'bg-yellow-500',
         degraded: 'bg-red-500'

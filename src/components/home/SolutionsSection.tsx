@@ -25,7 +25,7 @@ export function SolutionsSection() {
         
         {/* Features List */}
         <div className="space-y-8">
-          {solutions.features.map((item: any, i: number) => (
+          {solutions.features.map((item: unknown, i: number) => (
             <div key={i} className="flex gap-6 p-6 rounded-2xl bg-card border border-border hover:border-primary/50 transition-colors shadow-sm">
               <div className="w-20 h-20 relative flex-shrink-0 rounded-xl overflow-hidden bg-muted p-2">
                 <Image src={item.image} alt={item.title} fill className="object-contain p-2" />

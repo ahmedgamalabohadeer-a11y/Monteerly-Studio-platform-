@@ -49,7 +49,7 @@ export function ActiveSessions() {
   );
 }
 
-function SessionRow({ device, location, ip, date, isCurrent, icon: Icon }: any) {
+function SessionRow({ device, location, ip, date, isCurrent, icon: Icon }: unknown) {
    return (
       <div className="p-4 flex items-center justify-between hover:bg-muted/30 transition-colors">
          <div className="flex items-center gap-4">

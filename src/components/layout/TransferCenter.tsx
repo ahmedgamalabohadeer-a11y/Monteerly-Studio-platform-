@@ -31,7 +31,7 @@ export function TransferCenter() {
   );
 }
 
-function TransferItem({ name, size, progress, status }: any) {
+function TransferItem({ name, size, progress, status }: unknown) {
    return (
       <div className="p-3 bg-muted/20 border border-border rounded-lg group">
          <div className="flex justify-between items-start mb-2">

@@ -28,7 +28,7 @@ export function PlanComparison() {
   );
 }
 
-function Row({ label, free, pro, agency, highlight }: any) {
+function Row({ label, free, pro, agency, highlight }: unknown) {
    return (
       <tr className={`hover:bg-muted/50 transition-colors ${highlight ? 'bg-muted/10' : ''}`}>
          <td className="p-4 text-right font-medium text-sm">{label}</td>

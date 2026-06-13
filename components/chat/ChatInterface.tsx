@@ -1,14 +1,13 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Guardian } from '@/lib/guardian';
 import { Send, AlertTriangle, ShieldCheck, Image as ImageIcon, Loader2 } from 'lucide-react';
 
-  // Guardian Adapter (Added by Auto-Fix)
-  const validateMessage = async (text: string) => {
-    const result = await Guardian.validateText(text);
-    return result;
-  };
+const validateMessage = async (text: string) => {
+  const result = await Guardian.validateText(text);
+  return result;
+};
 
 type Message = {
   id: number;
@@ -21,31 +20,37 @@ type Message = {
 export default function ChatInterface() {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([
-    { id: 1, text: 'مرحباً، هل يمكنني رؤية صور للمنتج؟', sender: 'other' }
+    { id: 1, text: 'مرحباً، هل يمكنني رؤية صور للمنتج؟', sender: 'other' },
   ]);
   const [warning, setWarning] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleTyping = async (e: React.ChangeEvent<HTMLInputElement>) => { const text = e.target.value;
+  const handleTyping = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
     setInput(text);
+
     const check = await validateMessage(text);
-    if (!check.isValid) setWarning(check.error || 'محتوى مخالف');
-    else setWarning(null);
+    if (!check.isValid) {
+      setWarning(check.error || 'محتوى مخالف');
+    } else {
+      setWarning(null);
+    }
   };
 
   const handleSendText = async () => {
     if (!input.trim()) return;
+
     const check = await validateMessage(input);
     if (!check.isValid) {
       addBlockedMessage('🚫 تم حجب النص لمخالفتها السياسات.');
       return;
     }
+
     addMessage(input, 'me');
     setInput('');
   };
 
-  // دالة التعامل مع رفع الصور
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -65,37 +70,38 @@ export default function ChatInterface() {
 
       if (!data.safe) {
         addBlockedMessage(data.message);
-        setWarning('⛔ ' + data.message);
+        setWarning(`⛔ ${data.message}`);
       } else {
-        // محاكاة إرسال الصورة الآمنة
-        setMessages(prev => [...prev, { 
-          id: Date.now(), 
-          text: '📷 [صورة آمنة تم التحقق منها]', 
-          sender: 'me',
-          isImage: true 
-        }]);
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: Date.now(),
+            text: '📷 [صورة آمنة تم التحقق منها]',
+            sender: 'me',
+            isImage: true,
+          },
+        ]);
         setWarning(null);
       }
-    } catch (err) {
+    } catch {
       setWarning('❌ حدث خطأ أثناء الفحص');
     } finally {
       setIsAnalyzing(false);
-      // إعادة تعيين المدخل
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
   const addMessage = (text: string, sender: 'me' | 'other') => {
-    setMessages(prev => [...prev, { id: Date.now(), text, sender }]);
+    setMessages((prev) => [...prev, { id: Date.now(), text, sender }]);
   };
 
   const addBlockedMessage = (text: string) => {
-    setMessages(prev => [...prev, { id: Date.now(), text, sender: 'me', blocked: true }]);
+    setMessages((prev) => [...prev, { id: Date.now(), text, sender: 'me', blocked: true }]);
   };
 
   return (
     <div className="flex h-[600px] w-full max-w-md flex-col overflow-hidden rounded-2xl border bg-white shadow-xl">
-      <div className="bg-slate-900 p-4 text-white flex items-center gap-2">
+      <div className="flex items-center gap-2 bg-slate-900 p-4 text-white">
         <ShieldCheck size={20} className="text-green-400" />
         <div>
           <h2 className="font-bold">نظام الحارس الذكي</h2>
@@ -103,23 +109,26 @@ export default function ChatInterface() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
+      <div className="flex-1 space-y-4 overflow-y-auto bg-slate-50 p-4">
         {messages.map((msg) => (
           <div key={msg.id} className={`flex ${msg.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[85%] rounded-2xl px-4 py-3 ${
-              msg.blocked 
-                ? 'bg-red-50 text-red-600 border border-red-200 text-sm'
-                : msg.sender === 'me'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white text-slate-800 shadow-sm border'
-            }`}>
+            <div
+              className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+                msg.blocked
+                  ? 'border border-red-200 bg-red-50 text-sm text-red-600'
+                  : msg.sender === 'me'
+                    ? 'bg-blue-600 text-white'
+                    : 'border bg-white text-slate-800 shadow-sm'
+              }`}
+            >
               {msg.text}
             </div>
           </div>
         ))}
+
         {isAnalyzing && (
           <div className="flex justify-center py-2">
-            <div className="flex items-center gap-2 text-sm text-blue-600 bg-blue-50 px-3 py-1 rounded-full animate-pulse">
+            <div className="flex animate-pulse items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-sm text-blue-600">
               <Loader2 size={16} className="animate-spin" />
               جاري مسح الصورة ضوئياً...
             </div>
@@ -128,24 +137,25 @@ export default function ChatInterface() {
       </div>
 
       {warning && !isAnalyzing && (
-        <div className="flex items-center gap-2 bg-amber-50 px-4 py-2 text-sm text-amber-700 border-t border-amber-100">
+        <div className="flex items-center gap-2 border-t border-amber-100 bg-amber-50 px-4 py-2 text-sm text-amber-700">
           <AlertTriangle size={16} />
           <span>{warning}</span>
         </div>
       )}
 
-      <div className="border-t p-4 bg-white">
+      <div className="border-t bg-white p-4">
         <div className="flex gap-2">
-          {/* Hidden File Input */}
-          <input 
-            type="file" 
+          <input
+            type="file"
             ref={fileInputRef}
-            className="hidden" 
+            className="hidden"
             accept="image/*"
             onChange={handleImageUpload}
           />
-          
-          <button 
+
+          <button
+            type="button"
+            aria-label="رفع صورة"
             onClick={() => fileInputRef.current?.click()}
             disabled={isAnalyzing}
             className="flex items-center justify-center rounded-full bg-slate-100 p-3 text-slate-600 transition hover:bg-slate-200 disabled:opacity-50"
@@ -164,8 +174,10 @@ export default function ChatInterface() {
             }`}
             onKeyDown={(e) => e.key === 'Enter' && handleSendText()}
           />
-          
-          <button 
+
+          <button
+            type="button"
+            aria-label="إرسال الرسالة"
             onClick={handleSendText}
             disabled={!!warning || isAnalyzing}
             className="flex items-center justify-center rounded-full bg-blue-600 p-3 text-white transition hover:bg-blue-700 disabled:bg-slate-300"

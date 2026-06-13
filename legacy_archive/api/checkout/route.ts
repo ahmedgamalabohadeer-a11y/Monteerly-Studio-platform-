@@ -31,8 +31,9 @@ export async function POST(req: Request) {
     const paymobUrl = `https://egypt.paymob.com/api/acceptance/iframes/${process.env.PAYMOB_IFRAME_ID}?payment_token=${paymentToken}`;
     return NextResponse.json({ url: paymobUrl, orderId });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[Checkout API Error]:', error);
-    return NextResponse.json({ error: 'Payment Initialization Failed', details: error.message }, { status: 500 });
+    const details = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: 'Payment Initialization Failed', details }, { status: 500 });
   }
 }

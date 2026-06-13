@@ -1,0 +1,90 @@
+// @ts-expect-error
+'use client';
+import React, { useState } from 'react';
+import { Play, Pause, Scissors, RotateCcw, Save, Share2 } from 'lucide-react';
+import { useTouchGestures } from '@/hooks/ui/use-touch';
+import { motion } from 'framer-motion';
+
+export function TouchControls() {
+  const [scale, setScale] = useState(1);
+  const [time, setTime] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  // Use our custom gesture hook
+  const gestureRef = useTouchGestures((type, val) => {
+    if (type === 'swipeLeft') setTime(t => t - 5);
+    if (type === 'swipeRight') setTime(t => t + 5);
+    if (type === 'pinch' && val) setScale(val);
+    if (type === 'tap') setIsPlaying(p => !p);
+  });
+
+  return (
+    <div className="flex flex-col h-full bg-black text-white overflow-hidden">
+       {/* Viewport (The Video) */}
+       <div 
+         ref={gestureRef}
+         className="flex-1 bg-slate-900 relative flex items-center justify-center overflow-hidden touch-none"
+       >
+          <motion.div 
+             animate={{ scale: scale }}
+             className="relative w-full aspect-[9/16] md:aspect-video bg-black shadow-2xl"
+          >
+             <img src="/images/features/live.jpg" className="w-full h-full object-cover opacity-80" />
+             
+             {/* Play Icon Overlay */}
+             {!isPlaying && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                   <Play size={48} className="text-white/80" fill="white" />
+                </div>
+             )}
+          </motion.div>
+
+          {/* Gesture Hints */}
+          <div className="absolute top-4 left-0 w-full text-center pointer-events-none opacity-50 text-[10px]">
+             {scale > 1 ? 'Pinching...' : 'Tap to Play • Swipe to Seek'}
+          </div>
+       </div>
+
+       {/* Big Thumb Controls */}
+       <div className="h-48 bg-slate-950 border-t border-white/10 p-6 flex flex-col justify-between">
+          {/* Timeline Scrubber */}
+          <div className="w-full h-12 bg-slate-900 rounded-xl relative mb-4 overflow-hidden border border-white/5">
+             <div className="absolute inset-0 flex items-center justify-center text-xs text-slate-500 font-mono pointer-events-none">
+                00:00:{Math.abs(time).toString().padStart(2, '0')}
+             </div>
+             {/* Simulated Waveform */}
+             <div className="flex items-end h-full gap-1 opacity-30 px-2">
+                {Array.from({length: 40}).map((_, i) => (
+                   <div key={i} className="flex-1 bg-indigo-500 rounded-t-sm" style={{ height: `${Math.random() * 100}%` }} />
+                ))}
+             </div>
+             {/* Playhead */}
+             <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-white shadow-[0_0_10px_white]" />
+          </div>
+
+          {/* Action Buttons (Big Targets) */}
+          <div className="grid grid-cols-4 gap-4">
+             <button className="flex flex-col items-center justify-center gap-1 active:scale-95 transition-transform">
+                <div className="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-white"><Scissors size={20}/></div>
+                <span className="text-[10px] text-slate-400">Split</span>
+             </button>
+             <button className="flex flex-col items-center justify-center gap-1 active:scale-95 transition-transform">
+                <div className="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-indigo-900/50">
+                   {isPlaying ? <Pause size={20} fill="white"/> : <Play size={20} fill="white" className="ml-1"/>}
+                </div>
+                <span className="text-[10px] text-white font-bold">{isPlaying ? 'Pause' : 'Play'}</span>
+             </button>
+             <button className="flex flex-col items-center justify-center gap-1 active:scale-95 transition-transform">
+                <div className="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-white"><RotateCcw size={20}/></div>
+                <span className="text-[10px] text-slate-400">Undo</span>
+             </button>
+             <button className="flex flex-col items-center justify-center gap-1 active:scale-95 transition-transform">
+                <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white"><Share2 size={20}/></div>
+                <span className="text-[10px] text-slate-400">Export</span>
+             </button>
+          </div>
+       </div>
+    </div>
+  );
+}
+

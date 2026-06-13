@@ -56,7 +56,7 @@ export function EmailPreview() {
   );
 }
 
-function TemplateBtn({ label, active, onClick }: any) {
+function TemplateBtn({ label, active, onClick }: unknown) {
     return (
         <button 
            onClick={onClick}

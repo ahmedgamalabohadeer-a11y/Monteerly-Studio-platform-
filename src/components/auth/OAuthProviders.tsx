@@ -13,7 +13,7 @@ export function OAuthProviders() {
         options: { redirectTo: `${window.location.origin}/admin/dashboard` }
       });
       if (error) throw error;
-    } catch (err: any) {
+    } catch (err: unknown) {
       alert(`❌ فشل الاتصال: ${err.message}`);
       setLoading(null);
     }

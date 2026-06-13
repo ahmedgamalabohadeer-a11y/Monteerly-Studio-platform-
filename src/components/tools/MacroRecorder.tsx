@@ -9,7 +9,7 @@ export function MacroRecorder() {
   const [timer, setTimer] = useState(0);
 
   useEffect(() => {
-    let interval: any;
+    let interval: unknown;
     if (isRecording) {
       interval = setInterval(() => setTimer(t => t + 1), 1000);
     } else {

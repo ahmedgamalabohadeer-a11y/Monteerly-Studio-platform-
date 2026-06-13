@@ -1,121 +1,106 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase/client';
-import { DollarSign, TrendingUp, CreditCard, Activity } from 'lucide-react';
+'use client'
+import React from 'react';
+import { DollarSign, TrendingUp, Lock, Activity, ArrowUpRight, ArrowDownRight, FileText } from 'lucide-react';
 
+export default function FinanceDashboard() {
+  // بيانات مالية محاكية (للعرض والتحليل)
+  const metrics = {
+    totalEscrow: "124,500$",
+    netRevenue: "18,675$", // يمثل أرباح المنصة (EBITDA Proxy)
+    activeDisputesAmount: "1,650$",
+    growthRate: "+12.4%"
+  };
 
-interface Ledger {
-  id: string | number;
-  client_name: string;
-  total_amount: number | string;
-  paid_amount: number | string;
-  remaining_amount: number | string;
-  payment_status: 'pending' | 'completed' | string;
-}
-
-export default function FinancePage() {
-  const [ledgers, setLedgers] = useState<Ledger[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchLedgers = async () => {
-      const { data, error } = await supabase
-        .from('financial_ledgers')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (!error && data) {
-        setLedgers(data);
-      }
-      setLoading(false);
-    };
-
-    fetchLedgers();
-
-    // تحديث لحظي للبيانات المالية
-    const channel = supabase.channel('finance-channel')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'financial_ledgers' }, fetchLedgers)
-      .subscribe();
-
-    return () => { supabase.removeChannel(channel); };
-  }, []);
-
-  // حساب الإجماليات
-  const totalExpected = ledgers.reduce((acc, curr) => acc + Number(curr.total_amount), 0);
-  const totalPaid = ledgers.reduce((acc, curr) => acc + Number(curr.paid_amount), 0);
-  const totalRemaining = ledgers.reduce((acc, curr) => acc + Number(curr.remaining_amount), 0);
+  const auditLogs = [
+    { id: "AUD-847291-102", type: "تسوية نزاع", amount: "450$", entity: "أحمد جمال (مستقل)", date: "2026-06-09 14:30", status: "مكتمل" },
+    { id: "AUD-847290-055", type: "إيداع Escrow", amount: "2,500$", entity: "شركة الأفق (عميل)", date: "2026-06-09 11:15", status: "محتجز" },
+    { id: "AUD-847289-992", type: "سحب أرباح", amount: "1,200$", entity: "محمود حسن (مستقل)", date: "2026-06-08 09:45", status: "مكتمل" },
+    { id: "AUD-847288-411", type: "استقطاع عمولة", amount: "375$", entity: "رسوم منصة (MCOS)", date: "2026-06-08 09:45", status: "مكتمل" }
+  ];
 
   return (
-    <div className="min-h-screen bg-slate-950 p-8 text-white" dir="rtl">
-      <div className="max-w-6xl mx-auto">
-        <header className="mb-10 border-b border-white/10 pb-6">
-          <h1 className="text-4xl font-bold font-cairo flex items-center gap-4">
-            <DollarSign className="text-emerald-500 w-10 h-10" /> 
-            الوكيل المالي (CFO Agent)
-          </h1>
-          <p className="text-slate-400 mt-2 flex items-center gap-2">
-            <Activity size={16} className="text-green-500" />
-            تتبع التدفقات النقدية والمستحقات يتم لحظياً
-          </p>
+    <div className="min-h-screen bg-[#05050A] text-slate-50 p-8 font-sans" dir="rtl">
+        {/* Header */}
+        <header className="mb-10 border-b border-white/10 pb-6 flex justify-between items-end">
+            <div>
+                <h1 className="text-3xl font-black mb-2 flex items-center gap-3 text-emerald-500">
+                    <TrendingUp size={36} /> التدقيق المالي الموحد (Audit & EBITDA)
+                </h1>
+                <p className="text-slate-400 text-sm">مراقبة التدفقات النقدية، الأموال المحتجزة، وسجلات التدقيق المالي غير القابلة للتعديل.</p>
+            </div>
+            <button className="bg-emerald-500 text-black px-6 py-2 rounded-xl font-bold flex items-center gap-2 hover:bg-emerald-400 transition-all">
+                <FileText size={18} /> تصدير التقرير (PDF)
+            </button>
         </header>
 
-        {/* بطاقات المؤشرات المالية */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-            <div className="text-slate-400 mb-2 font-cairo text-sm">إجمالي العقود الموقعة</div>
-            <div className="text-3xl font-bold text-white flex items-center gap-2">
-              <TrendingUp className="text-blue-500" /> ${totalExpected.toLocaleString()}
+        {/* KPIs Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <div className="bg-[#0A0A0F] border border-white/5 p-6 rounded-3xl shadow-xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10"><Lock size={64} /></div>
+                <p className="text-slate-400 text-sm font-bold mb-2">إجمالي السيولة المحتجزة (Escrow)</p>
+                <h2 className="text-4xl font-black text-white">{metrics.totalEscrow}</h2>
+                <div className="mt-4 flex items-center gap-2 text-emerald-500 text-sm font-bold">
+                    <ArrowUpRight size={16} /> <span>أموال مؤمنة للمشاريع النشطة</span>
+                </div>
             </div>
-          </div>
-          <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-            <div className="text-slate-400 mb-2 font-cairo text-sm">المدفوعات المحصلة</div>
-            <div className="text-3xl font-bold text-emerald-500 flex items-center gap-2">
-              <CreditCard /> ${totalPaid.toLocaleString()}
+
+            <div className="bg-[#0A0A0F] border border-emerald-500/20 p-6 rounded-3xl shadow-xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 text-emerald-500 opacity-10"><DollarSign size={64} /></div>
+                <p className="text-emerald-400 text-sm font-bold mb-2">صافي إيرادات المنصة (Net Revenue)</p>
+                <h2 className="text-4xl font-black text-emerald-500">{metrics.netRevenue}</h2>
+                <div className="mt-4 flex items-center gap-2 text-emerald-400 text-sm font-bold">
+                    <Activity size={16} /> <span>{metrics.growthRate} مقارنة بالشهر السابق</span>
+                </div>
             </div>
-          </div>
-          <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-            <div className="text-slate-400 mb-2 font-cairo text-sm">المبالغ المستحقة (المتبقية)</div>
-            <div className="text-3xl font-bold text-amber-500 flex items-center gap-2">
-              <DollarSign /> ${totalRemaining.toLocaleString()}
+
+            <div className="bg-[#0A0A0F] border border-rose-500/20 p-6 rounded-3xl shadow-xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 text-rose-500 opacity-10"><Activity size={64} /></div>
+                <p className="text-rose-400 text-sm font-bold mb-2">أموال قيد النزاع (Disputed)</p>
+                <h2 className="text-4xl font-black text-rose-500">{metrics.activeDisputesAmount}</h2>
+                <div className="mt-4 flex items-center gap-2 text-rose-400 text-sm font-bold">
+                    <ArrowDownRight size={16} /> <span>تتطلب تدخلاً إدارياً</span>
+                </div>
             </div>
-          </div>
         </div>
 
-        {/* جدول السجلات المالية */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-          <table className="w-full text-right">
-            <thead className="bg-slate-950 text-slate-400 font-cairo text-sm">
-              <tr>
-                <th className="p-4 border-b border-slate-800">اسم العميل</th>
-                <th className="p-4 border-b border-slate-800">قيمة العقد</th>
-                <th className="p-4 border-b border-slate-800">المدفوع</th>
-                <th className="p-4 border-b border-slate-800">المتبقي</th>
-                <th className="p-4 border-b border-slate-800">الحالة</th>
-              </tr>
-            </thead>
-            <tbody className="text-sm">
-              {loading ? (
-                <tr><td colSpan={5} className="p-8 text-center text-slate-500">جاري تحميل البيانات المالية...</td></tr>
-              ) : ledgers.map(l => (
-                <tr key={l.id} className="hover:bg-slate-950/50 transition-colors border-b border-slate-800/50">
-                  <td className="p-4 font-bold text-white">{l.client_name}</td>
-                  <td className="p-4 text-blue-400">${Number(l.total_amount).toLocaleString()}</td>
-                  <td className="p-4 text-emerald-400">${Number(l.paid_amount).toLocaleString()}</td>
-                  <td className="p-4 text-amber-400">${Number(l.remaining_amount).toLocaleString()}</td>
-                  <td className="p-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                      l.payment_status === 'pending' ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' : 
-                      'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
-                    }`}>
-                      {l.payment_status === 'pending' ? 'مستحق' : 'مكتمل'}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {/* Audit Trail Table */}
+        <div className="bg-[#0A0A0F] border border-white/5 rounded-3xl shadow-xl overflow-hidden">
+            <div className="p-6 border-b border-white/5 flex justify-between items-center bg-[#0D0D14]">
+                <h3 className="text-xl font-black flex items-center gap-2">
+                    <Lock size={20} className="text-slate-400" /> سجل التدقيق المالي (Audit Trail)
+                </h3>
+            </div>
+            <div className="overflow-x-auto">
+                <table className="w-full text-right border-collapse">
+                    <thead>
+                        <tr className="bg-[#12121A] text-slate-400 text-sm border-b border-white/5">
+                            <th className="p-4 font-bold">معرف التدقيق (Audit ID)</th>
+                            <th className="p-4 font-bold">نوع الحركة</th>
+                            <th className="p-4 font-bold">المبلغ</th>
+                            <th className="p-4 font-bold">الجهة المعنية</th>
+                            <th className="p-4 font-bold">التاريخ والوقت</th>
+                            <th className="p-4 font-bold">الحالة</th>
+                        </tr>
+                    </thead>
+                    <tbody className="text-sm">
+                        {auditLogs.map((log, index) => (
+                            <tr key={index} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                                <td className="p-4 font-mono text-indigo-400 font-bold">{log.id}</td>
+                                <td className="p-4 text-slate-200">{log.type}</td>
+                                <td className="p-4 font-black">{log.amount}</td>
+                                <td className="p-4 text-slate-400">{log.entity}</td>
+                                <td className="p-4 text-slate-500 font-mono text-xs">{log.date}</td>
+                                <td className="p-4">
+                                    <span className={`px-3 py-1 rounded-full text-xs font-bold border ${log.status === 'مكتمل' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'}`}>
+                                        {log.status}
+                                    </span>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
-      </div>
     </div>
   );
 }

@@ -39,7 +39,7 @@ export class FinancialGuard {
   }
 
   // تسجيل محاولات الاختراق لإغلاق حساب العميل فوراً
-  private static async flagHackAttempt(reason: string, entityId: string, metadata: any = {}) {
+  private static async flagHackAttempt(reason: string, entityId: string, metadata: unknown = {}) {
     console.error(`🚨 FINANCIAL SECURITY ALERT: ${reason} on ${entityId}`);
     await logAuditEvent({
       actorIdentifier: 'SYSTEM_GUARD',

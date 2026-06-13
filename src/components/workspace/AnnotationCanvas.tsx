@@ -44,7 +44,7 @@ export function AnnotationCanvas() {
     </div>
   );
 }
-function ToolBtn({ icon: Icon, active, onClick, color }: any) {
+function ToolBtn({ icon: Icon, active, onClick, color }: unknown) {
     return (
         <button 
            onClick={onClick}
@@ -54,7 +54,7 @@ function ToolBtn({ icon: Icon, active, onClick, color }: any) {
         </button>
     )
 }
-function ColorDot({ color, active, onClick }: any) {
+function ColorDot({ color, active, onClick }: unknown) {
     return (
         <button 
            onClick={onClick}

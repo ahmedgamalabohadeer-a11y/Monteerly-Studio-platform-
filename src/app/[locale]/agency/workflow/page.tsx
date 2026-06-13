@@ -19,7 +19,7 @@ export default function AgencyWorkflow() {
         </header>
 
         <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl">
-          <h3 className="font-black text-xl mb-6">مسار: "إنتاج بودكاست أسبوعي"</h3>
+          <h3 className="font-black text-xl mb-6">مسار: &quot;إنتاج بودكاست أسبوعي&quot;</h3>
           
           <div className="flex flex-col md:flex-row items-center gap-4">
             {/* خطوة 1 */}

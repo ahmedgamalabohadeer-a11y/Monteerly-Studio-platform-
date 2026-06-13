@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-expect-error: legacy compatibility
 'use client';
 import React, { useState } from 'react';
 import {   Github } from 'lucide-react'; // Icons as placeholders
@@ -19,7 +19,7 @@ export function ConnectedAccounts() {
   );
 }
 
-function AccountRow({ name, connected, email, username }: any) {
+function AccountRow({ name, connected, email, username }: unknown) {
    return (
       <div className="flex items-center justify-between p-4 border border-border rounded-xl">
          <div className="flex items-center gap-4">

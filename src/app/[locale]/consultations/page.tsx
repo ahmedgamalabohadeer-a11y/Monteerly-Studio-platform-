@@ -1,5 +1,6 @@
 'use client'
 import React from 'react';
+import Image from 'next/image';
 import { Video, Calendar, Star, Clock } from 'lucide-react';
 
 export default function ConsultationsPage() {
@@ -22,7 +23,15 @@ export default function ConsultationsPage() {
           {experts.map((exp, i) => (
             <div key={i} className="bg-[#0A0A0F] border border-white/5 rounded-[2rem] p-8 hover:border-rose-500/50 transition-all group relative">
               <div className="absolute top-0 right-0 w-full h-full bg-rose-500/5 blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-              <img src={exp.img} className="w-24 h-24 rounded-full object-cover border-4 border-white/5 mb-6 shadow-xl" />
+              <div className="relative w-24 h-24 mb-6">
+                <Image
+                  src={exp.img}
+                  alt={`صورة ${exp.name}`}
+                  fill
+                  sizes="96px"
+                  className="rounded-full object-cover border-4 border-white/5 shadow-xl"
+                />
+              </div>
               <h3 className="text-2xl font-black mb-1">{exp.name}</h3>
               <p className="text-rose-400 font-bold text-sm mb-4">{exp.role}</p>
               <div className="flex items-center gap-4 mb-8">

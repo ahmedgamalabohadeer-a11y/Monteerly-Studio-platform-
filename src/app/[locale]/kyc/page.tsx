@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { ShieldAlert, Upload, CheckCircle2, UserCheck, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { MCOS_ASSETS } from '@/lib/ui/assets';
 
@@ -14,9 +15,15 @@ export default function KYCSecurityPortal() {
 
   return (
     <div className="min-h-screen bg-[#05050A] text-slate-50 flex items-center justify-center p-4 font-sans relative overflow-hidden" dir="rtl">
-      {/* خلفية سيبرانية */}
-      <img src={MCOS_ASSETS.security.digitalLock.src} className="absolute inset-0 w-full h-full object-cover opacity-[0.03] mix-blend-screen pointer-events-none" />
-      
+      <Image
+        src={MCOS_ASSETS.security.digitalLock.src}
+        alt=""
+        fill
+        sizes="100vw"
+        priority
+        className="absolute inset-0 w-full h-full object-cover opacity-[0.03] mix-blend-screen pointer-events-none"
+      />
+
       <div className="w-full max-w-2xl bg-[#0A0A0F]/90 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-[0_0_50px_rgba(0,0,0,0.5)] relative z-10">
         <div className="absolute top-0 left-0 w-full h-1.5 bg-[#12121A]">
           <div className="h-full bg-emerald-500 transition-all duration-700 shadow-[0_0_10px_rgba(16,185,129,0.5)]" style={{ width: `${(step / 3) * 100}%` }}></div>

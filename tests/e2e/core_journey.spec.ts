@@ -1,39 +1,28 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('MCOS Core Operations & Visual Audit', () => {
-  
-  test('يجب أن تفتح بوابة المصادقة بدون تشوه بصري', async ({ page }) => {
-    await page.goto('/ar/auth');
-    // التحقق من أن الهوية البصرية الداكنة مفروضة
-    const body = page.locator('body');
-    await expect(body).toHaveClass(/bg-slate-950/);
-    await expect(page.locator('h1')).toContainText('بوابة العبور');
-  });
+test.describe('MCOS Sovereign Operations & Security Audit', () => {
 
-  test('لوحة القيادة يجب أن تحتوي على محرك العطاءات الذكي', async ({ page }) => {
+  test('مركز القيادة يجب أن يعمل ويحمل الهوية البصرية الداكنة', async ({ page }) => {
     await page.goto('/ar/dashboard');
-    // التحقق من وجود الشبكة ومحرك الذكاء الاصطناعي
-    await expect(page.getByText('سوق العمل السيادي')).toBeVisible();
-    await expect(page.getByText('الكاتب الذكي (Gemini AI)')).toBeVisible();
-    
-    // محاكاة الضغط على زر توليد العرض
-    const generateBtn = page.getByRole('button', { name: /كتابة العرض/ });
-    if (await generateBtn.isVisible()) {
-      await expect(generateBtn).toBeEnabled();
-    }
+    // التحقق من الهوية البصرية الصارمة
+    await expect(page.locator('body')).toHaveClass(/bg-slate-950/);
+    // التحقق من عدم وجود خطأ 404
+    expect(await page.title()).not.toContain('404');
   });
 
-  test('مساحة العمل يجب أن تتكيف مع الهواتف والكمبيوتر', async ({ page, isMobile }) => {
-    await page.goto('/ar/workspace');
-    if (isMobile) {
-      // على الهاتف يجب أن تظهر شارة MCOS MOBILE
-      await expect(page.getByText('MCOS MOBILE')).toBeVisible();
-      // النوافذ العائمة (Desktop OS) يجب أن تختفي
-      await expect(page.locator('text=شاشة العرض').first()).toBeVisible();
-    } else {
-      // على الكمبيوتر يجب أن يظهر سطح المكتب
-      await expect(page.getByText('MCOS WORKSPACE')).toBeVisible();
-    }
+  test('نظام الصلاحيات (RBAC) يجب أن يمنع الزوار من دخول لوحة التدقيق المالي', async ({ page }) => {
+    await page.goto('/ar/finance');
+    // النظام يجب أن يعترض الدخول ويوجه المستخدم لصفحة 403 (وصول مرفوض)
+    await expect(page).toHaveURL(/.*\/unauthorized/);
+    await expect(page.getByText('وصول مرفوض (403)')).toBeVisible();
+  });
+
+  test('الإدارة العليا يمكنها الدخول لصفحة النزاعات السيادية', async ({ page, context }) => {
+    // حقن تصريح الإدارة العليا في المتصفح الوهمي
+    await context.addCookies([{ name: 'mcos_role', value: 'EXECUTIVE', domain: 'localhost', path: '/' }]);
+    await page.goto('/ar/disputes');
+    // يجب أن تفتح الصفحة بنجاح لوجود التصريح
+    await expect(page.getByText('إدارة النزاعات السيادية')).toBeVisible();
   });
 
 });

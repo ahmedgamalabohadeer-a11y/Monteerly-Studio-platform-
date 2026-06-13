@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { UploadCloud, FileVideo, ShieldCheck, Loader2, CheckCircle } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
-export default function CloudUploadZone({ orderId, clientId, ar }: any) {
+export default function CloudUploadZone({ orderId, clientId, ar }: unknown) {
   const [file, setFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'preparing' | 'uploading' | 'success' | 'error'>('idle');
   const [progress, setProgress] = useState(0);

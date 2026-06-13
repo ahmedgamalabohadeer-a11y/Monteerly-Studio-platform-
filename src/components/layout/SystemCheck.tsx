@@ -49,7 +49,7 @@ export function SystemCheck() {
   );
 }
 
-function CheckItem({ label, pass, warning }: any) {
+function CheckItem({ label, pass, warning }: unknown) {
     return (
         <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
             <span className="text-sm font-medium">{label}</span>

@@ -29,7 +29,7 @@ export function TeamChannels() {
   );
 }
 
-function ChannelItem({ name, icon: Icon = Hash, active }: any) {
+function ChannelItem({ name, icon: Icon = Hash, active }: unknown) {
     return (
         <button className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${active ? 'bg-primary/10 text-primary font-bold' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`}>
             <Icon size={16} />

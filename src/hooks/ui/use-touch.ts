@@ -1,1 +1,1 @@
-export const useTouchGestures = (callback?: (type: string, val: any) => void) => ({});
+export const useTouchGestures = (callback?: (type: string, val: unknown) => void) => ({});

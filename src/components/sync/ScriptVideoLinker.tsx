@@ -1,6 +1,7 @@
 'use client';
-import React, { useState, useRef } from 'react';
-import { Play, Pause, Link as LinkIcon, Type, Video } from 'lucide-react';
+import Image from 'next/image';
+import React, { useMemo, useState } from 'react';
+import { Play, Pause, Link as LinkIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export function ScriptVideoLinker() {
@@ -15,86 +16,106 @@ export function ScriptVideoLinker() {
     { id: 5, type: 'action', text: 'Ahmed slams the cup on the table.', time: '00:00:24' },
   ];
 
+  const waveformHeights = useMemo(
+    () => Array.from({ length: 60 }, (_, i) => 20 + ((i * 37) % 80)),
+    []
+  );
+
   const handleLineClick = (id: number, time: string) => {
     setActiveLine(id);
-    // In a real app, this would seek the video player to 'time'
     console.log(`Seeking video to ${time}`);
   };
 
   return (
-    <div className="flex h-[calc(100vh-140px)] gap-6 bg-black p-4 rounded-xl border border-white/10">
-       
-       {/* Left: The Script (Interactive) */}
-       <div className="w-1/2 bg-[#111] rounded-lg overflow-y-auto p-8 font-mono text-sm border-r border-white/10">
-          <div className="mb-6 flex justify-between items-center text-slate-500 text-xs uppercase tracking-widest">
-             <span>Interactive Script</span>
-             <span className="flex items-center gap-1 text-green-400"><LinkIcon size={12}/> Synced</span>
+    <div className="flex h-[calc(100vh-140px)] gap-6 rounded-xl border border-white/10 bg-black p-4">
+      <div className="w-1/2 overflow-y-auto rounded-lg border-r border-white/10 bg-[#111] p-8 font-mono text-sm">
+        <div className="mb-6 flex items-center justify-between text-xs uppercase tracking-widest text-slate-500">
+          <span>Interactive Script</span>
+          <span className="flex items-center gap-1 text-green-400">
+            <LinkIcon size={12} />
+            Synced
+          </span>
+        </div>
+
+        <div className="space-y-6">
+          {script.map((line) => (
+            <motion.div
+              key={line.id}
+              onClick={() => handleLineClick(line.id, line.time)}
+              initial={{ opacity: 0.5 }}
+              animate={{
+                opacity: activeLine === line.id ? 1 : 0.6,
+                x: activeLine === line.id ? 10 : 0,
+              }}
+              className={`cursor-pointer rounded border-l-2 p-2 transition-all ${
+                activeLine === line.id
+                  ? 'border-indigo-500 bg-white/5 text-white'
+                  : 'border-transparent hover:bg-white/5 hover:text-slate-300'
+              }`}
+            >
+              {line.type === 'scene' && (
+                <div className="mb-2 font-bold uppercase text-slate-200">{line.text}</div>
+              )}
+              {line.type === 'action' && <div className="text-slate-400">{line.text}</div>}
+              {line.type === 'dialogue' && (
+                <div className="mx-auto w-3/4 text-center">
+                  <div className="mb-1 font-bold text-slate-300">{line.text.split(':')[0]}</div>
+                  <div className="text-white">{line.text.split(':').slice(1).join(':').trim()}</div>
+                </div>
+              )}
+              <div className="mt-1 text-right font-mono text-[9px] text-slate-600">{line.time}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex w-1/2 flex-col gap-4">
+        <div className="group relative flex-1 overflow-hidden rounded-lg border border-white/10 bg-black">
+          <Image
+            src="/images/features/live.jpg"
+            alt="Script-linked video preview"
+            fill
+            sizes="50vw"
+            className="object-cover opacity-80"
+          />
+
+          <div className="absolute bottom-12 left-0 w-full px-8 text-center">
+            <span className="rounded-lg bg-black/70 px-4 py-2 text-lg font-bold text-white shadow-lg">
+              {script.find((l) => l.id === activeLine)?.text || '...'}
+            </span>
           </div>
 
-          <div className="space-y-6">
-             {script.map((line) => (
-                <motion.div 
-                  key={line.id}
-                  onClick={() => handleLineClick(line.id, line.time)}
-                  initial={{ opacity: 0.5 }}
-                  animate={{ opacity: activeLine === line.id ? 1 : 0.6, x: activeLine === line.id ? 10 : 0 }}
-                  className={`cursor-pointer transition-all p-2 rounded border-l-2 ${
-                     activeLine === line.id 
-                     ? 'border-indigo-500 bg-white/5 text-white' 
-                     : 'border-transparent hover:bg-white/5 hover:text-slate-300'
-                  }`}
-                >
-                   {line.type === 'scene' && <div className="font-bold uppercase text-slate-200 mb-2">{line.text}</div>}
-                   {line.type === 'action' && <div className="text-slate-400">{line.text}</div>}
-                   {line.type === 'dialogue' && (
-                      <div className="text-center w-3/4 mx-auto">
-                         <div className="font-bold text-slate-300 mb-1">{line.text.split(':')[0]}</div>
-                         <div className="text-white">"{line.text.split(':')[1]}"</div>
-                      </div>
-                   )}
-                   <div className="text-[9px] text-slate-600 mt-1 text-right font-mono">{line.time}</div>
-                </motion.div>
-             ))}
+          <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
+            <button
+              onClick={() => setIsPlaying(!isPlaying)}
+              className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur transition-transform hover:scale-110"
+            >
+              {isPlaying ? (
+                <Pause size={32} fill="white" />
+              ) : (
+                <Play size={32} fill="white" className="ml-1" />
+              )}
+            </button>
           </div>
-       </div>
+        </div>
 
-       {/* Right: The Video Player */}
-       <div className="w-1/2 flex flex-col gap-4">
-          <div className="flex-1 bg-black rounded-lg border border-white/10 relative overflow-hidden group">
-             <img src="/images/features/live.jpg" className="w-full h-full object-cover opacity-80" />
-             
-             {/* Text Overlay (Synced) */}
-             <div className="absolute bottom-12 left-0 w-full text-center px-8">
-                <span className="bg-black/70 text-white px-4 py-2 rounded-lg text-lg font-bold shadow-lg">
-                   {script.find(l => l.id === activeLine)?.text || "..."}
-                </span>
-             </div>
-
-             {/* Controls */}
-             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
-                <button 
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="w-16 h-16 bg-white/20 backdrop-blur rounded-full flex items-center justify-center hover:scale-110 transition-transform"
-                >
-                   {isPlaying ? <Pause size={32} fill="white"/> : <Play size={32} fill="white" className="ml-1"/>}
-                </button>
-             </div>
+        <div className="flex h-32 flex-col justify-center rounded-lg border border-white/5 bg-[#1a1a1a] p-4">
+          <div className="mb-2 text-xs text-slate-500">Waveform Match</div>
+          <div className="flex h-16 items-end gap-0.5 opacity-50">
+            {waveformHeights.map((height, i) => (
+              <div
+                key={i}
+                className={`flex-1 rounded-t-sm ${
+                  activeLine && i > activeLine * 5 && i < activeLine * 5 + 10
+                    ? 'bg-indigo-500'
+                    : 'bg-slate-600'
+                }`}
+                style={{ height: `${height}%` }}
+              />
+            ))}
           </div>
-
-          <div className="h-32 bg-[#1a1a1a] rounded-lg p-4 flex flex-col justify-center border border-white/5">
-             <div className="text-xs text-slate-500 mb-2">Waveform Match</div>
-             <div className="flex items-end gap-0.5 h-16 opacity-50">
-                {Array.from({length: 60}).map((_, i) => (
-                   <div 
-                     key={i} 
-                     className={`flex-1 rounded-t-sm ${activeLine && i > activeLine * 5 && i < activeLine * 5 + 10 ? 'bg-indigo-500' : 'bg-slate-600'}`}
-                     style={{ height: `${Math.random() * 100}%` }} 
-                   />
-                ))}
-             </div>
-          </div>
-       </div>
+        </div>
+      </div>
     </div>
   );
 }
-

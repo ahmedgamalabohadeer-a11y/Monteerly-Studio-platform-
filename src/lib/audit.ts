@@ -6,7 +6,7 @@ type AuditPayload = {
   action: string;
   module: 'hr' | 'finance' | 'contracts' | string;
   entityId?: string;
-  snapshot?: Record<string, any>;
+  snapshot?: Record<string, unknown>;
 };
 
 export async function logAuditEvent(payload: AuditPayload) {

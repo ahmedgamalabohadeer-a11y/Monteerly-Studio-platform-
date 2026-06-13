@@ -11,7 +11,7 @@ export function MarketplacePreview() {
         <p className="text-muted-foreground">{marketplace.subtitle}</p>
       </div>
       <div className="grid md:grid-cols-4 gap-6">
-        {marketplace.talents.map((talent: any, i: number) => (
+        {marketplace.talents.map((talent: unknown, i: number) => (
           <div key={i} className="group relative rounded-2xl overflow-hidden aspect-[3/4]">
             <Image src={talent.image} alt={talent.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-90" />

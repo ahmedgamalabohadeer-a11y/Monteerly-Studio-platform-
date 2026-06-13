@@ -6,7 +6,7 @@ export function KeystrokeHud() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    let timeout: any;
+    let timeout: unknown;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       // Ignore typing in inputs

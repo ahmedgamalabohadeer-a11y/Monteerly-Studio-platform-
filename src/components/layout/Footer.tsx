@@ -1,7 +1,7 @@
-// @ts-nocheck
+// @ts-expect-error: legacy compatibility
 import React from 'react';
 import Link from 'next/link';
-import {  Linkedin } from 'lucide-react';
+import { Linkedin, Share2, Video } from 'lucide-react';
 
 export function Footer() {
   return (

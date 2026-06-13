@@ -37,7 +37,7 @@ export function ProjectEmptyState() {
   );
 }
 
-function ActionCard({ icon: Icon, title, desc, primary }: any) {
+function ActionCard({ icon: Icon, title, desc, primary }: unknown) {
     return (
         <button className={`flex flex-col items-center p-6 rounded-xl border transition-all hover:scale-105 hover:shadow-lg group ${primary ? 'bg-primary text-white border-primary shadow-lg shadow-primary/25' : 'bg-card border-border hover:border-primary/50'}`}>
             <div className={`p-3 rounded-full mb-3 ${primary ? 'bg-white/20' : 'bg-muted group-hover:bg-primary/10 group-hover:text-primary'}`}>

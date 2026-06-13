@@ -42,7 +42,7 @@ export function MediaProperties() {
     </div>
   );
 }
-function Section({ title, children }: any) {
+function Section({ title, children }: unknown) {
     return (
         <div>
             <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">{title}</h4>
@@ -50,7 +50,7 @@ function Section({ title, children }: any) {
         </div>
     )
 }
-function MetaRow({ label, value, icon: Icon, highlight }: any) {
+function MetaRow({ label, value, icon: Icon, highlight }: unknown) {
     return (
         <div className="flex justify-between items-start text-sm group">
             <span className="text-muted-foreground flex items-center gap-2">

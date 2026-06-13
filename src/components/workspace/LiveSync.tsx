@@ -1,88 +1,94 @@
 'use client'
-import React, { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
-import { MousePointer2, Users } from 'lucide-react';
+import React, { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
+import { MousePointer2, Users } from 'lucide-react'
 
 interface CursorPosition {
-  x: number;
-  y: number;
-  user: string;
+  x: number
+  y: number
+  user: string
+}
+
+function createStableUserId() {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return `user_${crypto.randomUUID()}`
+  }
+
+  return 'user_local'
 }
 
 export default function LiveSync({ roomId }: { roomId: string }) {
-  const [cursors, setCursors] = useState<{ [key: string]: CursorPosition }>({});
-  const [onlineUsers, setOnlineUsers] = useState(1);
-  const myId = React.useMemo(() => `user_${Math.floor(Math.random() * 10000)}`, []);
+  const [cursors, setCursors] = useState<Record<string, CursorPosition>>({})
+  const [onlineUsers, setOnlineUsers] = useState(1)
+  const [myId] = useState<string>(() => createStableUserId())
 
   useEffect(() => {
-    // الاتصال بقناة Supabase Realtime
     const channel = supabase.channel(`workspace_${roomId}`, {
       config: {
         broadcast: { self: false },
         presence: { key: myId },
       },
-    });
+    })
 
     channel
       .on('broadcast', { event: 'cursor-move' }, (payload) => {
+        const nextCursor = payload.payload as CursorPosition
         setCursors((prev) => ({
           ...prev,
-          [payload.payload.user]: payload.payload,
-        }));
+          [nextCursor.user]: nextCursor,
+        }))
       })
       .on('presence', { event: 'sync' }, () => {
-        const state = channel.presenceState();
-        setOnlineUsers(Object.keys(state).length);
+        const state = channel.presenceState()
+        setOnlineUsers(Object.keys(state).length)
       })
-      .subscribe();
+      .subscribe()
 
-    // تتبع حركة الماوس وبثها
     const handleMouseMove = (e: MouseEvent) => {
-      const position = {
-        x: (e.clientX / window.innerWidth) * 100, // النسبة المئوية للتوافق مع الشاشات المختلفة
+      const position: CursorPosition = {
+        x: (e.clientX / window.innerWidth) * 100,
         y: (e.clientY / window.innerHeight) * 100,
         user: myId,
-      };
-      
-      // إرسال الإحداثيات بمعدل مدروس لتخفيف الضغط على الخوادم
+      }
+
       channel.send({
         type: 'broadcast',
         event: 'cursor-move',
         payload: position,
-      });
-    };
+      })
+    }
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove)
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      supabase.removeChannel(channel);
-    };
-  }, [roomId, myId]);
+      window.removeEventListener('mousemove', handleMouseMove)
+      supabase.removeChannel(channel)
+    }
+  }, [roomId, myId])
 
   return (
     <>
-      {/* مؤشر الحضور */}
       <div className="absolute bottom-4 right-4 bg-slate-900/80 backdrop-blur border border-white/10 px-4 py-2 rounded-full flex items-center gap-3 z-50 shadow-2xl">
         <div className="flex items-center gap-2">
           <span className="relative flex h-3 w-3">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500" />
           </span>
           <span className="text-xs font-bold text-slate-300">مزامنة حية نشطة</span>
         </div>
-        <div className="w-px h-4 bg-slate-700"></div>
+
+        <div className="w-px h-4 bg-slate-700" />
+
         <div className="flex items-center gap-1 text-indigo-400 text-xs font-black">
           <Users className="w-4 h-4" /> {onlineUsers}
         </div>
       </div>
 
-      {/* رسم مؤشرات الماوس للآخرين */}
       {Object.values(cursors).map((cursor) => (
         <div
           key={cursor.user}
           className="absolute z-50 pointer-events-none transition-all duration-75 ease-linear flex flex-col items-center"
-          style={{ left: `${cursor.x}vw`, top: `${cursor.y}vh` }}
+          style={{ left: `${cursor.x}%`, top: `${cursor.y}%` }}
         >
           <MousePointer2 className="w-5 h-5 text-rose-500 fill-rose-500/20 drop-shadow-lg" />
           <span className="bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full mt-1">
@@ -91,5 +97,5 @@ export default function LiveSync({ roomId }: { roomId: string }) {
         </div>
       ))}
     </>
-  );
+  )
 }

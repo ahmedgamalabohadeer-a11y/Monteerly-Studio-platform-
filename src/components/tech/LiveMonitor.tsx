@@ -42,7 +42,7 @@ export function LiveMonitor() {
              <div 
                key={i} 
                className="flex-1 bg-green-500/20 hover:bg-green-500/50 transition-colors rounded-t-sm"
-               style={{ height: `${Math.random() * 30 + 60}%` }}
+               style={{ height: `${(i * 7) % 30 + 60}%` }}
              />
           ))}
        </div>

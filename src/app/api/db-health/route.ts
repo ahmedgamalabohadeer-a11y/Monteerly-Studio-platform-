@@ -17,7 +17,7 @@ export async function GET() {
       testData: data 
     }, { status: 200 });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json({ 
       status: '❌ Connection Failed', 
       message: error.message 

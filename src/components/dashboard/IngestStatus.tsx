@@ -33,7 +33,7 @@ export function IngestStatus() {
   );
 }
 
-function StatusItem({ name, task, status, progress }: any) {
+function StatusItem({ name, task, status, progress }: unknown) {
     return (
         <div className="space-y-1">
             <div className="flex justify-between items-start">

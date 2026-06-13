@@ -53,7 +53,7 @@ export function ColorBlindFilter() {
   );
 }
 
-function FilterBtn({ label, value, active, onClick }: any) {
+function FilterBtn({ label, value, active, onClick }: unknown) {
     return (
         <button 
            onClick={() => onClick(value)}

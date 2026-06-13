@@ -2,14 +2,7 @@
 import React, { useState } from 'react';
 import { Mail, Smartphone } from 'lucide-react';
 
-export function NotificationPrefs() {
-  const [prefs, setPrefs] = useState({
-    email_projects: true,
-    email_marketing: false,
-    push_messages: true,
-  });
-
-  const Toggle = ({ checked, onChange }: any) => (
+const Toggle = ({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) => (
     <div 
       onClick={() => onChange(!checked)}
       className={`w-11 h-6 flex items-center rounded-full p-1 cursor-pointer transition-colors ${checked ? 'bg-primary' : 'bg-gray-300'}`}
@@ -17,6 +10,13 @@ export function NotificationPrefs() {
       <div className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out ${checked ? 'translate-x-5' : ''}`} />
     </div>
   );
+
+export function NotificationPrefs() {
+  const [prefs, setPrefs] = useState({
+    email_projects: true,
+    email_marketing: false,
+    push_messages: true,
+  });
 
   return (
     <div className="space-y-6">

@@ -3,14 +3,14 @@ import { supabase } from '@/lib/supabase';
 // نظام دمج يضيف التزامن اللحظي للدردشة ويربطها بالاستشارات المدفوعة
 export class ChatEscrowEngine {
   private roomId: string;
-  private channel: any;
+  private channel: unknown;
 
   constructor(roomId: string) {
     this.roomId = roomId;
   }
 
   // إضافة: تفعيل التزامن اللحظي دون المساس بواجهة المستخدم
-  public enableRealtime(onMessageReceived: (payload: any) => void) {
+  public enableRealtime(onMessageReceived: (payload: unknown) => void) {
     this.channel = supabase
       .channel(`room:${this.roomId}`)
       .on(

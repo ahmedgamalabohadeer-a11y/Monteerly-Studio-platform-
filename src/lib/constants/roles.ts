@@ -111,7 +111,6 @@ export const MCOS_ROLES = {
   }
 };
 
-
 // قاموس الألوان للطبقات (تم إضافته جراحياً لدعم مكون المؤشر)
 export const LAYER_COLORS: Record<string, string> = {
   foundation: 'bg-blue-600',

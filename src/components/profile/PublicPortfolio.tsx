@@ -66,7 +66,7 @@ export function PublicPortfolio() {
   );
 }
 
-function PortfolioItem({ image, title, category, views }: any) {
+function PortfolioItem({ image, title, category, views }: unknown) {
     return (
         <div className="group cursor-pointer">
             <div className="relative aspect-video rounded-xl overflow-hidden mb-3 bg-slate-200">

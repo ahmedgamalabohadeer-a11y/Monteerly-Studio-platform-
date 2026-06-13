@@ -1,5 +1,6 @@
 'use client'
 import React from 'react';
+import Image from 'next/image';
 import { BookOpen, ArrowLeft } from 'lucide-react';
 
 export default function BlogPage() {
@@ -22,7 +23,13 @@ export default function BlogPage() {
           {posts.map((post, i) => (
             <div key={i} className="bg-[#0A0A0F] border border-white/5 rounded-[2rem] overflow-hidden hover:border-emerald-500/30 transition-all group">
               <div className="h-64 overflow-hidden relative">
-                <img src={post.img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <Image
+                  src={post.img}
+                  alt={post.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                />
                 <div className="absolute top-4 right-4 bg-emerald-500 text-slate-900 px-3 py-1 rounded-full text-xs font-black">{post.category}</div>
               </div>
               <div className="p-8">

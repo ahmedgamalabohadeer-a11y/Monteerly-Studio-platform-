@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-expect-error: legacy compatibility
 'use client';
 import React, { useRef, useState } from 'react';
 import ReactPlayer from 'react-player';

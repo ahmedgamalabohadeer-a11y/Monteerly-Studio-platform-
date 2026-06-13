@@ -1,7 +1,7 @@
-// @ts-nocheck
+// @ts-expect-error: legacy compatibility
 'use client';
 import React, { useState } from 'react';
-import { Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 

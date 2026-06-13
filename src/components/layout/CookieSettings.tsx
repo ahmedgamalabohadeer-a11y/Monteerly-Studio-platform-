@@ -52,7 +52,7 @@ export function CookieSettingsModal({ isOpen, onClose }: Props) {
   );
 }
 
-function CookieGroup({ title, desc, required }: any) {
+function CookieGroup({ title, desc, required }: unknown) {
     const [enabled, setEnabled] = useState(required || false);
     
     return (

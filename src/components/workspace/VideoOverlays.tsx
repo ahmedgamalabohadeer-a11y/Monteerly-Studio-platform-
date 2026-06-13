@@ -47,7 +47,7 @@ export function VideoOverlays() {
     </div>
   );
 }
-function OverlayBtn({ icon: Icon, active, onClick, tooltip }: any) {
+function OverlayBtn({ icon: Icon, active, onClick, tooltip }: unknown) {
     return (
         <button 
            onClick={onClick}

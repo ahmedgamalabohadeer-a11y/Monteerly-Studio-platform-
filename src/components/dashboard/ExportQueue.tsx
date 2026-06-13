@@ -44,8 +44,8 @@ export function ExportQueue() {
   );
 }
 
-function QueueItem({ name, status, progress, format }: any) {
-    const statusIcons: any = {
+function QueueItem({ name, status, progress, format }: { name: string; status: string; progress: number; format: string }) {
+    const statusIcons: Record<string, JSX.Element> = {
         processing: <Loader2 size={14} className="animate-spin text-blue-500" />,
         queued: <div className="w-3.5 h-3.5 rounded-full border-2 border-slate-300" />,
         completed: <CheckCircle size={14} className="text-emerald-500" />,

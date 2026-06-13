@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-expect-error: legacy compatibility
 'use client';
 import React, { useState } from 'react';
 import { Shield, FileCheck, PenTool } from 'lucide-react';

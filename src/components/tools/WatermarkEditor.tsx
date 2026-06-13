@@ -30,7 +30,7 @@ export function WatermarkEditor() {
           <Input 
              label="نص العلامة المائية" 
              value={text} 
-             onChange={(e: any) => setText(e.target.value)}
+             onChange={(e: unknown) => setText(e.target.value)}
              icon={<Type size={16} />}
           />
           

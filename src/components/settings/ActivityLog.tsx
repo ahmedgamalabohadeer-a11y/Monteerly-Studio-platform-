@@ -43,7 +43,7 @@ export function ActivityLog() {
   );
 }
 
-function LogItem({ action, user, time, icon: Icon, color }: any) {
+function LogItem({ action, user, time, icon: Icon, color }: unknown) {
    return (
       <div className="p-4 flex items-center gap-4 text-sm hover:bg-muted/5 transition-colors">
          <Icon size={16} className={color} />

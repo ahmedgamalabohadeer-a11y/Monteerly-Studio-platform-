@@ -36,7 +36,7 @@ export function StorageAnalysis() {
   );
 }
 
-function StorageItem({ label, size, color, icon: Icon }: any) {
+function StorageItem({ label, size, color, icon: Icon }: unknown) {
     return (
         <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/30">
             <div className={`p-2 rounded-lg text-white ${color}`}>

@@ -49,7 +49,7 @@ export function CompareTable() {
   );
 }
 
-function Row({ label, c1, c2, c3 }: any) {
+function Row({ label, c1, c2, c3 }: unknown) {
    return (
       <tr className="hover:bg-muted/10">
          <td className="p-4 text-right font-medium text-sm text-muted-foreground">{label}</td>

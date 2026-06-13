@@ -24,7 +24,7 @@ export function TwoFactorSetup() {
                 {/* Mock QR Code Visual */}
                 <div className="w-48 h-48 bg-slate-900 grid grid-cols-6 grid-rows-6 gap-0.5 p-2">
                    {Array.from({ length: 36 }).map((_, i) => (
-                      <div key={i} className={`bg-white ${Math.random() > 0.5 ? 'opacity-100' : 'opacity-0'}`} />
+                      <div key={i} className={`bg-white ${i % 2 === 0 ? 'opacity-100' : 'opacity-0'}`} />
                    ))}
                 </div>
              </div>

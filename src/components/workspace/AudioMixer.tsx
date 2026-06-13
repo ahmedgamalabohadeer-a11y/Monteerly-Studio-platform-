@@ -16,7 +16,7 @@ export function AudioMixer() {
     </div>
   );
 }
-function Fader({ label, icon: Icon, value, onChange, color }: any) {
+function Fader({ label, icon: Icon, value, onChange, color }: unknown) {
     return (
         <div className="flex flex-col items-center gap-2 h-full group">
            <div className="relative flex-1 w-6 bg-muted rounded-full overflow-hidden flex flex-col justify-end border border-border">
@@ -32,7 +32,7 @@ function Fader({ label, icon: Icon, value, onChange, color }: any) {
                  value={value} 
                  onChange={(e) => onChange(Number(e.target.value))}
                  className="absolute inset-0 opacity-0 cursor-ns-resize"
-                 // @ts-ignore
+                 // @ts-expect-error: legacy compatibility
                  orient="vertical" 
               />
            </div>

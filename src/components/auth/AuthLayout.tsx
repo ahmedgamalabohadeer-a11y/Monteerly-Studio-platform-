@@ -1,4 +1,5 @@
 'use client';
+import Image from "next/image";
 import React from 'react';
 import { Star } from 'lucide-react';
 
@@ -20,8 +21,8 @@ export function AuthLayout({ children, title, subtitle }: { children: React.Reac
 
        {/* Right: Visuals (Hidden on Mobile) */}
        <div className="hidden lg:flex w-1/2 bg-slate-900 relative overflow-hidden items-center justify-center">
-          <div className="absolute inset-0">
-             <img src="/images/monteerly/monteerly_04_hero_header_marketing_banner.png" className="w-full h-full object-cover opacity-40 mix-blend-overlay" />
+          <div className="absolute inset-0 relative">
+             <Image src="/images/monteerly/monteerly_04_hero_header_marketing_banner.png" alt="Marketing Hero" fill className="object-cover opacity-40 mix-blend-overlay" />
              <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black/40" />
           </div>
           
@@ -30,11 +31,11 @@ export function AuthLayout({ children, title, subtitle }: { children: React.Reac
                 <Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" /><Star size={16} fill="currentColor" />
              </div>
              <p className="text-lg text-white font-medium leading-relaxed mb-6">
-                "غيّرت Monteerly طريقة عملنا بالكامل. اختفت فوضى الإيميلات، وأصبحت دورة المراجعة أسرع بـ 3 أضعاف. لا يمكننا العودة للوراء."
+                &quot;غيّرت Monteerly طريقة عملنا بالكامل. اختفت فوضى الإيميلات، وأصبحت دورة المراجعة أسرع بـ 3 أضعاف. لا يمكننا العودة للوراء.&quot;
              </p>
              <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-indigo-500 rounded-full overflow-hidden">
-                   <img src="/avatars/user.jpg" className="w-full h-full object-cover" />
+                   <Image src="/avatars/user.jpg" alt="User Avatar" width={48} height={48} className="w-full h-full object-cover" />
                 </div>
                 <div>
                    <div className="text-white font-bold">سارة العمري</div>

@@ -68,7 +68,7 @@ export function GlobalSearchResults() {
   );
 }
 
-function TabButton({ label, id, active, onClick }: any) {
+function TabButton({ label, id, active, onClick }: unknown) {
     return (
         <button 
            onClick={() => onClick(id)}
@@ -79,7 +79,7 @@ function TabButton({ label, id, active, onClick }: any) {
     )
 }
 
-function ResultItem({ icon: Icon, title, path, meta, type }: any) {
+function ResultItem({ icon: Icon, title, path, meta, type }: unknown) {
     return (
         <div className="flex items-start gap-4 p-4 bg-card border border-border rounded-xl hover:border-primary/50 hover:shadow-sm transition-all cursor-pointer group">
            <div className="p-3 bg-muted/50 rounded-lg group-hover:bg-primary/10 group-hover:text-primary transition-colors">

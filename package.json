@@ -6,7 +6,7 @@
     "dev": "next dev --webpack 2>&1 | grep --line-buffered -vE 'Watchpack Error|Router action dispatched|Fast Refresh'",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint src",
     "test": "echo 'No unit tests specified yet. Passing to unblock CI.'"
   },
   "dependencies": {

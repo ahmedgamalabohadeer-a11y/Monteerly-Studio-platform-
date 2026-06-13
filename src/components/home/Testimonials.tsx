@@ -6,7 +6,7 @@ import { Avatar } from '@/components/ui/Avatar';
 
 export function Testimonials() {
   // استخدام casting (any) لتجاوز خطأ TypeScript الصارم هنا
-  const content: any = useContent();
+  const content: unknown = useContent();
   
   // بيانات افتراضية في حالة عدم تحميل المحتوى
   const testimonials = content?.testimonials || {
@@ -38,7 +38,7 @@ export function Testimonials() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {testimonials.items.map((item: any) => (
+          {testimonials.items.map((item: unknown) => (
             <div key={item.id} className="bg-card p-8 rounded-2xl border border-border shadow-sm hover:shadow-md transition-all relative">
               <Quote className="absolute top-4 right-4 text-primary/10" size={40} />
               <div className="flex items-center gap-1 text-yellow-400 mb-4">

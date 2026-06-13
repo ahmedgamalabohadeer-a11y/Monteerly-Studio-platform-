@@ -12,7 +12,7 @@ export function AudioPlayer({ src, title, duration }: AudioProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   
   // محاكاة بصرية للموجات الصوتية (Mock Waveform Bars)
-  const bars = Array.from({ length: 40 }, () => Math.floor(Math.random() * 80) + 20);
+  const bars = Array.from({ length: 40 }, () => Math.floor((i * 9) % 80) + 20);
 
   return (
     <div className="bg-card border border-border rounded-xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">

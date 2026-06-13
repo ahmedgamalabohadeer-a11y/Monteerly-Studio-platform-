@@ -20,7 +20,7 @@ export function CustomDomain() {
        <div className="grid gap-6 max-w-xl">
           <div className="flex gap-2 items-end">
              <div className="flex-1">
-                <Input label="اسم النطاق" value={domain} onChange={(e: any) => setDomain(e.target.value)} placeholder="e.g. video.company.com" />
+                <Input label="اسم النطاق" value={domain} onChange={(e: unknown) => setDomain(e.target.value)} placeholder="e.g. video.company.com" />
              </div>
              <Button variant="primary">حفظ</Button>
           </div>

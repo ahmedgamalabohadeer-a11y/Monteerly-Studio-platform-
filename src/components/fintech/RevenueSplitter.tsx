@@ -4,14 +4,7 @@ import { PieChart, DollarSign, Percent, ShieldCheck } from 'lucide-react';
 import { RevenueEngine, SubscriptionTier, RevenueBreakdown } from '@/lib/finance/RevenueEngine';
 
 export default function RevenueSplitter({ amount, tier }: { amount: number, tier: SubscriptionTier }) {
-  const [breakdown, setBreakdown] = useState<RevenueBreakdown | null>(null);
-
-  useEffect(() => {
-    if (amount > 0) {
-      const result = RevenueEngine.calculateSplit(amount, tier);
-      setBreakdown(result);
-    }
-  }, [amount, tier]);
+  const breakdown = React.useMemo(() => (amount > 0 ? RevenueEngine.calculateSplit(amount, tier) : null), [amount, tier]);
 
   if (!breakdown) return null;
 

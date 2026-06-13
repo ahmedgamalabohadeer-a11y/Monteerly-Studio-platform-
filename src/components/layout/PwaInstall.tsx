@@ -8,7 +8,7 @@ export function PwaInstall() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const handler = (e: any) => {
+    const handler = (e: unknown) => {
       e.preventDefault();
       setDeferredPrompt(e);
       setShow(true);

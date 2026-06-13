@@ -46,7 +46,7 @@ export function WebhookLogs() {
   );
 }
 
-function LogItem({ status, event, url, time }: any) {
+function LogItem({ status, event, url, time }: unknown) {
     return (
         <tr className="hover:bg-muted/30">
             <td className="p-3">

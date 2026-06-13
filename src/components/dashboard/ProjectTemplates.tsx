@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-expect-error: legacy compatibility
 'use client';
 import React from 'react';
 import { Plus, Briefcase, Video } from 'lucide-react';
@@ -52,7 +52,7 @@ export function ProjectTemplates() {
   );
 }
 
-function TemplateCard({ icon: Icon, title, desc, color, isNew }: any) {
+function TemplateCard({ icon: Icon, title, desc, color, isNew }: unknown) {
     return (
         <div className={`p-4 border border-border rounded-xl cursor-pointer transition-all hover:-translate-y-1 hover:shadow-md flex flex-col justify-center items-center text-center h-32 relative group bg-card ${!isNew && 'hover:bg-muted/20'}`}>
             <div className={`p-3 rounded-full mb-2 transition-transform group-hover:scale-110 ${color}`}>

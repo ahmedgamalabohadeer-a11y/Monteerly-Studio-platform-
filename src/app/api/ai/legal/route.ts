@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ draft: text });
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json({ draft: `⚠️ حدث خطأ داخلي في خادم المنصة:\n${error.message}` });
   }
 }

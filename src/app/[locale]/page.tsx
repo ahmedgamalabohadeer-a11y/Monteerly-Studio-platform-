@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { 
-  PlayCircle, ShieldCheck, Zap, Users, ArrowLeft, MonitorPlay, 
+  ShieldCheck, Zap, Users, ArrowLeft, MonitorPlay, 
   Camera, Briefcase, Moon, Sun, Lock, CheckCircle2, Video
 } from 'lucide-react';
 import arDict from '@/messages/ar.json';
@@ -19,16 +19,9 @@ export default function UltimateLandingPage({ params }: { params: Promise<{ loca
   const t = isAr ? arDict : enDict;
   const router = useRouter();
   const pathname = usePathname();
-
-
-
-
-
-  const [mounted, setMounted] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
-    setMounted(true);
     document.documentElement.classList.toggle('dark', isDarkMode);
   }, [isDarkMode]);
 
@@ -43,12 +36,8 @@ export default function UltimateLandingPage({ params }: { params: Promise<{ loca
     editor: { id: 'editor', title: t.personas?.editor || 'المونتير', icon: <MonitorPlay className="w-4 h-4 md:w-5 md:h-5"/>, img: '/images/monteerly/monteerly_12_editor_red_shirt_timeline.png', desc: t.personas?.editor_desc || 'مساحة عمل احترافية' },
     photographer: { id: 'photographer', title: t.personas?.photographer || 'المصور', icon: <Camera className="w-4 h-4 md:w-5 md:h-5"/>, img: '/images/monteerly/monteerly_21_photographer_saudi_heritage_traditional.png', desc: t.personas?.photographer_desc || 'بيع حقوق لقطاتك الحصرية' },
     creator: { id: 'creator', title: t.personas?.creator || 'صانع المحتوى', icon: <Zap className="w-4 h-4 md:w-5 md:h-5"/>, img: '/images/monteerly/monteerly_15_creator_workspace_laptop_modern.png', desc: t.personas?.creator_desc || 'أدر مشاريعك بأمان تام' },
-    agency: { id: 'agency', title: t.personas?.agency || 'الوكالات', icon: <Briefcase className="w-4 h-4 md:w-5 md:h-5"/>, img: '/images/monteerly/monteerly_11_global_collaboration_grid_4up.png', desc: t.personas?.agency_desc || 'تحكم كامل في فريقك' },
-  };
+    agency: { id: 'agency', title: t.personas?.agency || 'الوكالات', icon: <Briefcase className="w-4 h-4 md:w-5 md:h-5"/>, img: '/images/monteerly/monteerly_11_global_collaboration_grid_4up.png', desc: t.personas?.agency_desc || 'تحكم كامل في فريقك' } };
   const activeData = personas[activePersona as keyof typeof personas];
-
-  if (!mounted) return <div className="min-h-screen bg-[#05050A]"></div>;
-
   return (
     <div className={`min-h-screen transition-colors duration-700 font-sans ${isDarkMode ? 'bg-[#05050A] text-slate-50' : 'bg-slate-50 text-slate-900'} selection:bg-indigo-500/30 overflow-x-hidden`} dir={isAr ? 'rtl' : 'ltr'}>
 

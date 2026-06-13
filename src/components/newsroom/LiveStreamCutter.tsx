@@ -33,7 +33,7 @@ export function LiveStreamCutter() {
                    <div className="w-full h-4 bg-slate-700 rounded-sm overflow-hidden flex gap-1">
                       {/* Fake Audio Waveform */}
                       {Array.from({length: 40}).map((_, i) => (
-                         <div key={i} className="w-1 bg-slate-500" style={{ height: `${Math.random() * 100}%` }} />
+                         <div key={i} className="w-1 bg-slate-500" style={{ height: `${(i * 23) % 100}%` }} />
                       ))}
                    </div>
                 </div>

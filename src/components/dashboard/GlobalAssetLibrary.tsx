@@ -28,8 +28,8 @@ export function GlobalAssetLibrary() {
   );
 }
 
-function AssetCard({ name, type, size }: any) {
-    const icons: any = { image: FileImage, video: FileVideo, audio: FileAudio };
+function AssetCard({ name, type, size }: unknown) {
+    const icons: unknown = { image: FileImage, video: FileVideo, audio: FileAudio };
     const Icon = icons[type] || FileImage;
 
     return (

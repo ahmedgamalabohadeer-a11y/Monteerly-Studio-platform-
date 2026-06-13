@@ -57,7 +57,7 @@ export function RtcDebugger() {
   );
 }
 
-function Metric({ icon: Icon, label, value }: any) {
+function Metric({ icon: Icon, label, value }: unknown) {
     return (
         <div className="flex flex-col items-center gap-1 text-slate-400">
            <Icon size={16} />

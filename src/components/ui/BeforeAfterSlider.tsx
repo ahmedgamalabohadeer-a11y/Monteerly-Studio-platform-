@@ -39,7 +39,7 @@ export function BeforeAfterSlider({ beforeImage, afterImage }: Props) {
           <div className="relative w-full h-full">
              {/* We use a trick here: Image must be absolute and full width relative to PARENT container, not this clipped div */}
              {/* Note: In production, you might need fixed dimensions or advanced CSS to prevent squishing. For simplicity: */}
-             <img src={beforeImage} alt="Before" className="absolute top-0 left-0 h-full max-w-none w-[100vw] sm:w-[500px] md:w-[800px] object-cover" style={{ width: containerRef.current?.offsetWidth }} />
+             <img src={beforeImage} alt="Before" className="absolute top-0 left-0 h-full max-w-none w-[100vw] sm:w-[500px] md:w-[800px] object-cover" style={{ width: '100%' }} />
           </div>
           <div className="absolute top-4 left-4 bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">Before</div>
        </div>

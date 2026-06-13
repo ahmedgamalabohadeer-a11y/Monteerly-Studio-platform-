@@ -25,7 +25,7 @@ export function KanbanBoard() {
   );
 }
 
-function KanbanColumn({ title, count, children, color }: any) {
+function KanbanColumn({ title, count, children, color }: unknown) {
     return (
         <div className={`min-w-[280px] w-80 rounded-xl p-4 flex flex-col gap-3 ${color}`}>
             <div className="flex justify-between items-center mb-2">
@@ -39,7 +39,7 @@ function KanbanColumn({ title, count, children, color }: any) {
     )
 }
 
-function KanbanItem({ title, client, tag, active }: any) {
+function KanbanItem({ title, client, tag, active }: unknown) {
     return (
         <div className={`bg-white dark:bg-slate-900 p-3 rounded-lg shadow-sm border cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow ${active ? 'border-indigo-500 ring-1 ring-indigo-500/20' : 'border-slate-200 dark:border-slate-700'}`}>
             <div className="flex justify-between items-start mb-2">

@@ -54,7 +54,7 @@ export function MeetingRoom() {
     </div>
   );
 }
-function ControlBtn({ icon: Icon, active = true, onClick, label, badge }: any) {
+function ControlBtn({ icon: Icon, active = true, onClick, label, badge }: unknown) {
     return (
         <button 
            onClick={onClick}

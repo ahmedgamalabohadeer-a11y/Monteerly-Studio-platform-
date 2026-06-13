@@ -41,7 +41,7 @@ export function CommentsSection() {
   );
 }
 
-function CommentItem({ user, time, text, likes, hasReply }: any) {
+function CommentItem({ user, time, text, likes, hasReply }: unknown) {
    return (
       <div className="flex gap-4">
          <Avatar fallback={user[0]} />

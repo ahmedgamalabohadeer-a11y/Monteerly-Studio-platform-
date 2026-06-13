@@ -30,7 +30,7 @@ export function ColorScopes() {
           {activeScope === 'waveform' && (
              <div className="w-full h-full flex items-end justify-between gap-[1px] opacity-80">
                 {Array.from({ length: 40 }).map((_, i) => (
-                   <div key={i} className="w-1 bg-green-500/50" style={{ height: `${Math.random() * 100}%` }} />
+                   <div key={i} className="w-1 bg-green-500/50" style={{ height: `${(i * 19) % 100}%` }} />
                 ))}
              </div>
           )}
@@ -53,7 +53,7 @@ export function ColorScopes() {
     </div>
   );
 }
-function ScopeTab({ icon: Icon, active, onClick, title }: any) {
+function ScopeTab({ icon: Icon, active, onClick, title }: unknown) {
     return (
         <button 
            onClick={onClick}

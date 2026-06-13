@@ -42,7 +42,7 @@ export function CreatorStats() {
   );
 }
 
-function MetricCard({ title, value, icon: Icon, color, bg, change }: any) {
+function MetricCard({ title, value, icon: Icon, color, bg, change }: { title: string; value: string | number; icon: React.ElementType; color: string; bg: string; change: number | string }) {
    return (
       <Card className="p-4 flex items-center gap-4">
          <div className={`p-3 rounded-xl ${bg} ${color}`}>
@@ -59,7 +59,7 @@ function MetricCard({ title, value, icon: Icon, color, bg, change }: any) {
    );
 }
 
-function TopGig({ title, views }: any) {
+function TopGig({ title, views }: unknown) {
    return (
       <div className="flex justify-between items-center text-sm border-b border-border pb-2 last:border-0">
          <span className="truncate max-w-[150px] font-medium">{title}</span>

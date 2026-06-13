@@ -8,7 +8,7 @@ export const redis = new Redis({
 })
 
 // دالة لإضافة مهمة رندر أو ذكاء اصطناعي للطابور
-export async function enqueueJob(jobType: string, payload: any) {
+export async function enqueueJob(jobType: string, payload: unknown) {
   const jobId = `job_${Date.now()}`;
   await redis.lpush('mcos_job_queue', JSON.stringify({ id: jobId, type: jobType, payload, status: 'pending' }));
   return jobId;

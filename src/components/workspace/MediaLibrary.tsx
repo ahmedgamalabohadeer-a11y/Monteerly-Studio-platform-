@@ -39,7 +39,7 @@ export function MediaLibrary() {
     </div>
   );
 }
-function FolderItem({ name, count }: any) {
+function FolderItem({ name, count }: unknown) {
    return (
       <div className="p-3 border border-border rounded-xl bg-muted/5 hover:bg-primary/5 hover:border-primary cursor-pointer transition-colors text-center">
          <Folder size={32} className="mx-auto text-yellow-500 mb-2" fill="currentColor" />
@@ -48,7 +48,7 @@ function FolderItem({ name, count }: any) {
       </div>
    );
 }
-function FileItem({ name, size, type, date }: any) {
+function FileItem({ name, size, type, date }: unknown) {
    return (
       <div className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/30 transition-colors group">
          <div className="flex items-center gap-3">

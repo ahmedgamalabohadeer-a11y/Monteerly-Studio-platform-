@@ -43,7 +43,7 @@ export function PerformanceDashboard() {
                    <motion.div 
                      key={i}
                      initial={{ height: '10%' }}
-                     animate={{ height: `${Math.random() * load + 10}%` }}
+                     animate={{ height: `${(i * 17) % 70 + 10}%` }}
                      transition={{ duration: 0.5 }}
                      className={`flex-1 rounded-t-sm ${load > 80 ? 'bg-red-500' : 'bg-indigo-500'}`}
                    />
@@ -76,7 +76,7 @@ export function PerformanceDashboard() {
                    <Cpu size={20} className="text-slate-400" />
                    <div className="text-[10px] font-mono text-slate-300">Node-{i+10}</div>
                    <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
-                      <div className="h-full bg-green-500" style={{ width: `${Math.random() * 80 + 20}%` }}></div>
+                      <div className="h-full bg-green-500" style={{ width: `${(i * 13) % 80 + 20}%` }}></div>
                    </div>
                 </motion.div>
              ))}

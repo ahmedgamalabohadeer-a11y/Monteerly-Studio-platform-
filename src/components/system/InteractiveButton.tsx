@@ -47,7 +47,7 @@ export function InteractiveButton({
   };
 
   return (
-    // @ts-ignore
+    // @ts-expect-error: legacy compatibility
     <motion.button
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.95 }}

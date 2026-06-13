@@ -34,7 +34,7 @@ export function Whiteboard() {
     </div>
   );
 }
-function ToolBtn({ icon: Icon, active, onClick, color }: any) {
+function ToolBtn({ icon: Icon, active, onClick, color }: unknown) {
     return (
         <button 
            onClick={onClick}

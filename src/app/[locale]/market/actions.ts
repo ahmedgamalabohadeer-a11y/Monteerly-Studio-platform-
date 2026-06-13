@@ -28,7 +28,7 @@ export async function createOrder(serviceId: string, freelancerId: string, price
     // 3. تفعيل الأتمتة القانونية (توليد العقد فوراً) - [F-007]
     await generateContract(order.id, clientId, freelancerId, price);
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Operation Error:', error.message);
     return { success: false, message: 'فشل إكمال الإجراءات المالية والقانونية' };
   }

@@ -29,8 +29,8 @@ export function ShotList() {
     </div>
   );
 }
-function ShotRow({ id, scene, type, status, notes }: any) {
-    const statusConfig: any = {
+function ShotRow({ id, scene, type, status, notes }: unknown) {
+    const statusConfig: unknown = {
         done: { color: 'bg-emerald-100 text-emerald-700', label: 'تم التصوير' },
         pending: { color: 'bg-yellow-100 text-yellow-700', label: 'مراجعة' },
         planned: { color: 'bg-slate-100 text-slate-700', label: 'مخطط' },

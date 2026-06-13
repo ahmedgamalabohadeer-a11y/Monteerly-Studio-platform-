@@ -22,7 +22,7 @@ export default function ElegantDashboard() {
         <div className="bg-amber-500/10 border border-amber-500/20 p-4 rounded-2xl mb-8 flex items-center justify-between">
             <div className="flex items-center gap-3 text-amber-500">
                <Activity className="animate-pulse" />
-               <span className="text-sm font-bold">تنبيه سيادي: لديك عقد "تصوير تراثي" ينتهي موعد تسليمه اليوم!</span>
+               <span className="text-sm font-bold">تنبيه سيادي: لديك عقد &quot;تصوير تراثي&quot; ينتهي موعد تسليمه اليوم!</span>
             </div>
             <Link href="/ar/dashboard/contracts" className="bg-amber-500 text-black px-4 py-1 rounded-lg text-xs font-black">
                معالجة العقد

@@ -47,7 +47,7 @@ export function DriveBrowser() {
        <h3 className="font-bold text-white mb-4">الملفات ({files.length})</h3>
        <div className={`grid gap-4 ${view === 'grid' ? 'grid-cols-2 md:grid-cols-4 lg:grid-cols-5' : 'grid-cols-1'}`}>
           {files.map((file, i) => (
-             // @ts-ignore
+             // @ts-expect-error: legacy compatibility
              <FileCard key={i} {...file} />
           ))}
        </div>

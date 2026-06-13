@@ -65,7 +65,7 @@ export function Header() {
   );
 }
 
-function LinkItem({ href, label }: any) {
+function LinkItem({ href, label }: unknown) {
    return (
       <a href={href} className="block w-full p-4 bg-muted/30 rounded-xl font-bold hover:bg-primary/10 hover:text-primary transition-colors">
          {label}

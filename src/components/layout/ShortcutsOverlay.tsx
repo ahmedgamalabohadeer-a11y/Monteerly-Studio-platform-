@@ -55,7 +55,7 @@ export function ShortcutsOverlay() {
   );
 }
 
-function ShortcutGroup({ title, children }: any) {
+function ShortcutGroup({ title, children }: unknown) {
     return (
         <div>
             <h3 className="font-bold text-muted-foreground mb-4 uppercase text-xs tracking-wider">{title}</h3>
@@ -64,7 +64,7 @@ function ShortcutGroup({ title, children }: any) {
     )
 }
 
-function ShortcutRow({ keys, desc }: any) {
+function ShortcutRow({ keys, desc }: unknown) {
     return (
         <div className="flex justify-between items-center">
             <span className="text-sm">{desc}</span>

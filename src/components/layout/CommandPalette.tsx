@@ -61,7 +61,7 @@ export function CommandPalette() {
   );
 }
 
-function MenuGroup({ title, children }: any) {
+function MenuGroup({ title, children }: unknown) {
     return (
         <div className="mb-2">
             <h4 className="px-3 py-2 text-xs font-bold text-muted-foreground">{title}</h4>
@@ -70,7 +70,7 @@ function MenuGroup({ title, children }: any) {
     )
 }
 
-function CommandItem({ icon: Icon, label, shortcut }: any) {
+function CommandItem({ icon: Icon, label, shortcut }: unknown) {
     return (
         <button className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors text-left group">
             <div className="flex items-center gap-3">

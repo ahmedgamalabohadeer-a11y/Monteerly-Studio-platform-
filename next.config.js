@@ -2,27 +2,36 @@
 const { withSentryConfig } = require("@sentry/nextjs");
 
 const nextConfig = {
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, dev }) => {
     config.ignoreWarnings = [/Critical dependency/];
+    
+    // إبقاء إعدادات بيئة التطوير التي تمنع الانهيار كما هي
+    if (dev) {
+      config.watchOptions = {
+        ignored: ['**/node_modules', '/data/**', '/system/**', '/storage/**', '/proc/**', '/sys/**', '/'],
+        poll: 1000,
+        aggregateTimeout: 300,
+      };
+      config.resolve = config.resolve || {};
+      config.resolve.roots = [process.cwd()];
+    }
     return config;
   },
-  typescript: { ignoreBuildErrors: true },
+  // تم تغييرها إلى false لتفعيل الأمان ومنع تسرب الأخطاء البرمجية
+  typescript: { ignoreBuildErrors: false },
 };
 
-// دمج Sentry مع الإعدادات السيادية
 module.exports = withSentryConfig(
   nextConfig,
   {
-    // كتم رسائل Sentry المزعجة في الـ Terminal
     silent: true,
     org: process.env.SENTRY_ORG,
     project: process.env.SENTRY_PROJECT,
   },
   {
-    // إعدادات الرفع التلقائي لخرائط الأكواد
     widenClientFileUpload: true,
     transpileClientSDK: true,
-    hideSourceMaps: true, // إخفاء الخرائط عن المستخدمين العاديين للأمان
+    hideSourceMaps: true,
     disableLogger: true,
   }
 );

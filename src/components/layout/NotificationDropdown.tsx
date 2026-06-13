@@ -47,7 +47,7 @@ export function NotificationDropdown() {
                    )}
                 </div>
                 <div className="p-2 border-t border-white/10 text-center bg-black/20">
-                   <a href="/notifications" className="text-xs text-slate-400 hover:text-white">عرض كل الإشعارات</a>
+                   <Link href="/notifications" className="text-xs text-slate-400 hover:text-white">عرض كل الإشعارات</Link>
                 </div>
              </div>
           </>

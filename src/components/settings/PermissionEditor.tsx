@@ -51,7 +51,7 @@ export function PermissionEditor({ isOpen, onClose, roleName }: Props) {
   );
 }
 
-function PermissionGroup({ title, children }: any) {
+function PermissionGroup({ title, children }: unknown) {
     return (
         <div className="space-y-3">
             <h4 className="font-bold text-sm text-muted-foreground bg-muted/30 p-2 rounded">{title}</h4>
@@ -60,7 +60,7 @@ function PermissionGroup({ title, children }: any) {
     )
 }
 
-function PermRow({ label, checked }: any) {
+function PermRow({ label, checked }: unknown) {
     return (
         <div className="flex items-center justify-between px-2">
             <span className="text-sm font-medium">{label}</span>

@@ -38,7 +38,7 @@ export function AiDubbing() {
           {/* Waveform Visualization Simulation */}
           <div className="flex items-center gap-1 h-full w-full px-4 opacity-50">
              {[...Array(40)].map((_, i) => (
-                <div key={i} className="flex-1 bg-indigo-500 rounded-full animate-pulse" style={{ height: `${Math.random() * 80 + 20}%`, animationDelay: `${i * 0.05}s` }} />
+                <div key={i} className="flex-1 bg-indigo-500 rounded-full animate-pulse" style={{ height: `${(i * 5) % 80 + 20}%`, animationDelay: `${i * 0.05}s` }} />
              ))}
           </div>
           

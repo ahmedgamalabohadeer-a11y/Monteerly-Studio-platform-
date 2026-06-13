@@ -47,7 +47,7 @@ export function ShortcutsModal() {
   );
 }
 
-function ShortcutGroup({ title, children }: any) {
+function ShortcutGroup({ title, children }: unknown) {
     return (
         <div>
             <h3 className="font-bold text-muted-foreground mb-4 border-b border-border pb-2">{title}</h3>

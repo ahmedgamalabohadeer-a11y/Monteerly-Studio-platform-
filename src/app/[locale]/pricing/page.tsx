@@ -1,6 +1,7 @@
 'use client'
-import React, { useState } from 'react';
-import { CheckCircle, ShieldCheck, Zap, CreditCard, DollarSign } from 'lucide-react';
+import React from 'react';
+import Image from 'next/image';
+import { CheckCircle, ShieldCheck, CreditCard, DollarSign } from 'lucide-react';
 import { MCOS_ASSETS } from '@/lib/ui/assets';
 
 export default function ProfessionalPricing() {
@@ -37,7 +38,7 @@ export default function ProfessionalPricing() {
           <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed font-medium text-slate-400 mb-8">
             نحن نقتطع العمولة من أرباحك فقط، لن ندفعك للاشتراكات الوهمية والأدوات المبعثرة.
           </p>
-          
+
           <div className="flex flex-wrap justify-center gap-4">
              <span className="bg-[#12121A] border border-white/10 px-4 py-2 rounded-full text-xs font-bold text-slate-300 flex items-center gap-2"><CreditCard className="w-4 h-4 text-blue-400"/> Paymob (محلي والدول العربية)</span>
              <span className="bg-[#12121A] border border-white/10 px-4 py-2 rounded-full text-xs font-bold text-slate-300 flex items-center gap-2"><DollarSign className="w-4 h-4 text-blue-500"/> PayPal (للعملاء الدوليين)</span>
@@ -54,7 +55,13 @@ export default function ProfessionalPricing() {
               )}
               <div className="h-48 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0F] to-transparent z-10 opacity-90"></div>
-                <img src={plan.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <Image
+                  src={plan.img}
+                  alt={plan.name}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover group-hover:scale-110 transition-transform duration-700"
+                />
                 <div className="absolute bottom-6 right-6 z-20">
                   <h3 className="text-3xl font-black text-white drop-shadow-lg">{plan.name}</h3>
                   <p className={`text-${plan.color}-400 font-bold text-sm mt-1 drop-shadow-md`}>{plan.target}</p>

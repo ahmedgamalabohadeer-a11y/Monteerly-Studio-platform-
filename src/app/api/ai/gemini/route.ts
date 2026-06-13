@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     
     return NextResponse.json({ result: generatedText }, { status: 200 });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Gemini API Error:", error);
     return NextResponse.json({ error: error.message || 'فشل الاتصال بمحرك الذكاء الاصطناعي' }, { status: 500 });
   }

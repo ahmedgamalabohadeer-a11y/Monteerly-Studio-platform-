@@ -57,7 +57,7 @@ export function AuditLog() {
   );
 }
 
-function LogRow({ user, event, details, ip, date, isRisk }: any) {
+function LogRow({ user, event, details, ip, date, isRisk }: unknown) {
     return (
         <tr className="hover:bg-muted/30 transition-colors">
             <td className="p-4 font-bold">{user}</td>

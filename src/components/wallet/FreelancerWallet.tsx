@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { getWalletBalances, requestWithdrawal } from '@/app/[locale]/wallet/actions';
 import { Wallet, ShieldCheck, ArrowDownToLine, Activity, AlertCircle, Loader2 } from 'lucide-react';
 
-export default function FreelancerWallet({ ar }: { ar: any }) {
+export default function FreelancerWallet({ ar }: { ar: unknown }) {
   const [balances, setBalances] = useState({ escrowed: 0, liquidity: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [isWithdrawing, setIsWithdrawing] = useState(false);

@@ -58,7 +58,7 @@ export function RenderFarmMonitor() {
   );
 }
 
-function JobRow({ project, file, format, status, time, progress }: any) {
+function JobRow({ project, file, format, status, time, progress }: unknown) {
     return (
         <tr className="group hover:bg-muted/20">
             <td className="p-4 font-bold">{project}</td>

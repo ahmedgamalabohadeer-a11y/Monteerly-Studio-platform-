@@ -57,7 +57,7 @@ export function PricingTable() {
   );
 }
 
-function PlanCard({ title, price, desc, features, missing, isPopular }: any) {
+function PlanCard({ title, price, desc, features, missing, isPopular }: unknown) {
     return (
         <div className={`relative p-8 bg-card border rounded-2xl flex flex-col ${isPopular ? 'border-primary shadow-2xl scale-105 z-10' : 'border-border shadow-sm'}`}>
             {isPopular && <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-3"><Badge variant="primary">الأكثر طلباً</Badge></div>}

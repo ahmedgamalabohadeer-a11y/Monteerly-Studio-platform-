@@ -39,7 +39,7 @@ export async function resolveDispute(formData: FormData) {
 
     revalidatePath('/[locale]/executive');
     return { success: true, message: 'تم تنفيذ القرار وإشعار الأطراف المعنية بنجاح.' };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Dispute Resolution Error:', error);
     return { success: false, message: error.message || 'حدث خطأ أثناء حل النزاع' };
   }

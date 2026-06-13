@@ -31,7 +31,7 @@ export function CreateJobForm() {
       alert('✅ تم إنشاء المشروع بنجاح! سيتم توجيهك الآن لتأمين الدفعة في الضمان (Escrow).');
       window.location.href = `/studio/${data.id}`;
       
-    } catch (err: any) {
+    } catch (err: unknown) {
       alert(`❌ خطأ: ${err.message}`);
     } finally {
       setLoading(false);

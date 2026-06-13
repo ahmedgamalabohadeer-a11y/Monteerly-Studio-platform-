@@ -26,13 +26,13 @@ export function BitrateCalculator() {
              label="المدة (ثانية)" 
              type="number" 
              value={duration}
-             onChange={(e: any) => setDuration(Number(e.target.value))}
+             onChange={(e: unknown) => setDuration(Number(e.target.value))}
           />
           <Input 
              label="معدل البيانات (Mbps)" 
              type="number" 
              value={bitrate}
-             onChange={(e: any) => setBitrate(Number(e.target.value))}
+             onChange={(e: unknown) => setBitrate(Number(e.target.value))}
           />
 
           <div className="bg-slate-900 text-white p-4 rounded-xl text-center mt-4 border border-slate-700">

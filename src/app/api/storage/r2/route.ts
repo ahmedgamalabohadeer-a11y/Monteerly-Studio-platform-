@@ -34,7 +34,7 @@ export async function POST(req: Request) {
         finalFileUrl: `${process.env.R2_PUBLIC_DOMAIN || 'https://pub-domain.r2.dev'}/${secureKey}`,
         secureKey 
       }, { status: 200 });
-    } catch (error: any) {
+    } catch { // Error deliberately ignored
       return NextResponse.json({ error: 'فشل في توليد بوابة الرفع.' }, { status: 500 });
     }
   }); // هنا يمكن إضافة ['editor', 'agency'] إذا أردنا قصر الرفع عليهم فقط

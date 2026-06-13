@@ -32,7 +32,6 @@ export default function DynamicStudioPage({ params }: { params: { projectId: str
 
   const currentVideoUrl = versions.find(v => v.id === activeVersion)?.url || displayUrl;
 
-
   
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50 flex font-sans" dir="rtl">

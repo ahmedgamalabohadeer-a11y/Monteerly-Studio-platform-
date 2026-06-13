@@ -2,14 +2,14 @@ import { supabase } from '@/lib/supabase';
 
 export class VideoSyncEngine {
   private projectId: string;
-  private channel: any;
+  private channel: unknown;
 
   constructor(projectId: string) {
     this.projectId = projectId;
   }
 
   // تفعيل التزامن اللحظي لحالة مشغل الفيديو (Play/Pause/Seek)
-  public enableSync(onSyncEvent: (payload: any) => void) {
+  public enableSync(onSyncEvent: (payload: unknown) => void) {
     this.channel = supabase
       .channel(`video_room:${this.projectId}`)
       .on('broadcast', { event: 'player_state' }, (payload) => onSyncEvent(payload.payload))

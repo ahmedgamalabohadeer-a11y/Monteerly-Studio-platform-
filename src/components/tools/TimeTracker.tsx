@@ -8,7 +8,7 @@ export function TimeTracker() {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-    let interval: any;
+    let interval: unknown;
     if (isActive) {
       interval = setInterval(() => setSeconds(s => s + 1), 1000);
     } else if (!isActive && seconds !== 0) {

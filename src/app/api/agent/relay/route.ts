@@ -4,8 +4,8 @@ import { NextResponse } from 'next/server';
 const AGENT_SECRET_KEY = process.env.MCOS_AGENT_SECRET || 'mcos_super_secret_agent_key_v5';
 
 // طابور مهام مؤقت في الذاكرة (للمحاكاة السريعة، سيتم نقله لـ Supabase للإنتاج)
-let taskQueue: any[] = [];
-let taskResults: any[] = [];
+const taskQueue: Record<string, unknown>[] = [];
+const taskResults: Record<string, unknown>[] = [];
 
 // [Termux -> Vercel] جلب المهام أو تسليم النتائج
 export async function POST(req: Request) {
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ error: 'Invalid Action' }, { status: 400 });
 
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Relay Error' }, { status: 500 });
   }
 }

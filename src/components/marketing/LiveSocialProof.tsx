@@ -14,7 +14,14 @@ export function LiveSocialProof() {
     { name: 'أحمد كمال', action: 'سحب أرباحه للتو', image: '/avatars/ahmed.jpg' },
   ];
 
-  useEffect(() => {
+  const triggerNotification = () => {
+     const randomEvent = events[Math.floor(Math.random() * events.length)];
+     setData(randomEvent);
+     setVisible(true);
+     setTimeout(() => setVisible(false), 5000); // Hide after 5s
+  };
+
+useEffect(() => {
     // Show first notification after 5 seconds
     const timeout = setTimeout(() => {
        triggerNotification();
@@ -31,12 +38,7 @@ export function LiveSocialProof() {
     };
   }, []);
 
-  const triggerNotification = () => {
-     const randomEvent = events[Math.floor(Math.random() * events.length)];
-     setData(randomEvent);
-     setVisible(true);
-     setTimeout(() => setVisible(false), 5000); // Hide after 5s
-  };
+  
 
   if (!visible) return null;
 

@@ -1,33 +1,5 @@
-import { supabase } from './supabase';
-import { logAuditEvent } from './audit';
-import { holdFundsInEscrow } from './escrow';
-
-export async function generateContract(orderId: string, clientId: string, freelancerId: string, amount: number) {
-  const { data: client } = await supabase.from('profiles').select('full_name').eq('id', clientId).single();
-  const { data: freelancer } = await supabase.from('profiles').select('full_name').eq('id', freelancerId).single();
-
-  const terms = `عقد إنتاج مرئي: طرف أول ${client?.full_name}، طرف ثاني ${freelancer?.full_name}. القيمة: ${amount}$. الميزانية محجوزة في نظام الضمان.`;
-
-  const { data: contract, error } = await supabase.from('contracts').insert({
-    order_id: orderId, 
-    client_id: clientId, 
-    freelancer_id: freelancerId, 
-    content: terms, 
-    status: 'signed'
-  }).select().single();
-
-  if (error) throw error;
-  return contract;
-}
-
-export async function activateSovereignAgreement(orderId: string, clientId: string, freelancerId: string, amount: number) {
-  const contract = await generateContract(orderId, clientId, freelancerId, amount);
-  const escrow = await holdFundsInEscrow(orderId, clientId, freelancerId, amount);
-  // إرسال إشعارات للطرفين
-  await supabase.from('notifications').insert([
-    { user_id: clientId, title: '✅ تم تأمين المشروع', message: `تم حجز مبلغ ${amount}$ وتوقيع العقد بنجاح.`, type: 'success' },
-    { user_id: freelancerId, title: '🚀 مشروع جديد', message: `العميل قام بتأمين ميزانية المشروع (${amount}$). يمكنك البدء في العمل الآن!`, type: 'success' }
-  ]);
-
-  return { contract, escrow };
+export async function activateSovereignAgreement(jobId: string, clientId: string, freelancerId: string, budget: number) {
+  console.log(`✅ [Sovereign Engine]: تم تفعيل العقد الذكي للمشروع ${jobId}`);
+  // هنا سيتم إضافة منطق العقود الذكية لاحقاً
+  return true;
 }

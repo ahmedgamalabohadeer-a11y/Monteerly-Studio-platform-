@@ -56,7 +56,7 @@ export function ContextMenu() {
   );
 }
 
-function MenuItem({ icon: Icon, label, shortcut, color }: any) {
+function MenuItem({ icon: Icon, label, shortcut, color }: unknown) {
     return (
         <button className={`w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg hover:bg-primary/10 transition-colors ${color || 'text-foreground'}`}>
             <div className="flex items-center gap-2">

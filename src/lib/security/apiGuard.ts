@@ -3,7 +3,7 @@ import { supabase } from '@/lib/supabase';
 
 export async function withAuthGuard(
   req: Request,
-  handler: (req: Request, user: any) => Promise<NextResponse>,
+  handler: (req: Request, user: unknown) => Promise<NextResponse>,
   requiredRole?: string[]
 ) {
   try {

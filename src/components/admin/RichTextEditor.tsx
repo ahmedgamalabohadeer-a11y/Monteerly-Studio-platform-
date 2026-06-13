@@ -27,7 +27,7 @@ export function RichTextEditor() {
   );
 }
 
-function ToolbarBtn({ icon: Icon, active = false }: any) {
+function ToolbarBtn({ icon: Icon, active = false }: unknown) {
    return (
       <button className={`p-2 rounded hover:bg-muted ${active ? 'bg-muted text-primary' : 'text-muted-foreground'}`}>
          <Icon size={18} />
