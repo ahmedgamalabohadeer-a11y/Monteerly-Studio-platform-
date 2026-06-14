@@ -1,56 +1,68 @@
 'use client'
 import React, { useState } from 'react';
-import { ShieldAlert, CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { Gavel, CheckCircle, Undo2, Loader2, FileText } from 'lucide-react';
+import { resolveDispute } from '@/app/[locale]/disputes/dispute-actions';
 
 export default function DisputeList({ initialDisputes }: { initialDisputes: any[] }) {
   const [disputes, setDisputes] = useState(initialDisputes);
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
-  const handleResolution = async (disputeId: string, decision: 'freelancer' | 'client') => {
-    if (!confirm('هل أنت متأكد من هذا القرار السيادي؟')) return;
-    setLoadingId(disputeId);
-    try {
-      const res = await fetch('/api/disputes/resolve', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ disputeId, decision, adminId: 'ADMIN_MASTER' })
-      });
-      const data = await res.json();
-      if (data.success) {
-        setDisputes(prev => prev.filter(d => d.id !== disputeId));
-      } else {
-        alert('❌ فشل التنفيذ: ' + data.error);
-      }
-    } finally {
-      setLoadingId(null);
+  const handleResolution = async (id: string, contractId: string, type: 'release_to_freelancer' | 'refund_to_client') => {
+    const isConfirm = confirm(type === 'release_to_freelancer' ? 'تحذير: سيتم تحرير الأموال للمبدع وإغلاق النزاع. هل أنت متأكد؟' : 'تحذير: سيتم إلغاء العقد وإرجاع الأموال للعميل. هل أنت متأكد؟');
+    if (!isConfirm) return;
+
+    setLoadingId(id);
+    const res = await resolveDispute(id, contractId, type, `تم الحل بواسطة الإدارة: ${type}`);
+    if (res.success) {
+      setDisputes(disputes.filter(d => d.id !== id));
+      alert('تم تنفيذ القرار السيادي وتحديث السجلات المالية بنجاح.');
+    } else {
+      alert('فشل التنفيذ. تأكد من الصلاحيات.');
     }
+    setLoadingId(null);
   };
 
-  if (disputes.length === 0) return (
-    <div className="bg-[#0A0A0F] border border-emerald-500/20 p-10 rounded-3xl text-center shadow-xl">
-      <CheckCircle size={48} className="text-emerald-500 mx-auto mb-4" />
-      <h2 className="text-2xl font-black text-emerald-400">النظام مستقر</h2>
-      <p className="text-slate-400 mt-2">لا توجد نزاعات معلقة.</p>
-    </div>
-  );
+  if (disputes.length === 0) {
+    return (
+      <div className="bg-[#0A0A0F] border border-emerald-500/20 p-12 rounded-[2rem] text-center">
+        <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4 opacity-50" />
+        <h2 className="text-xl font-bold text-emerald-400">لا توجد نزاعات نشطة</h2>
+        <p className="text-slate-500 mt-2">جميع العقود والمشاريع تسير بشكل سليم ومستقر.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
-      {disputes.map(d => (
-        <div key={d.id} className="bg-[#0A0A0F] border border-white/5 p-6 rounded-3xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-xl">
+      {disputes.map((dispute) => (
+        <div key={dispute.id} className="bg-[#0A0A0F] border border-rose-500/30 p-6 md:p-8 rounded-[2rem] shadow-[0_0_30px_rgba(225,29,72,0.05)] flex flex-col md:flex-row justify-between items-start md:items-center gap-6 transition-all hover:border-rose-500/50">
           <div className="flex-1">
-             <div className="flex items-center gap-3 mb-2">
-                <span className="bg-rose-500/10 text-rose-500 px-3 py-1 rounded-full text-xs font-bold border border-rose-500/20">{d.id}</span>
-                <h3 className="font-black text-xl">{d.contract}</h3>
-             </div>
-             <p className="text-amber-400 text-sm font-bold mt-2">السبب: {d.reason}</p>
+            <div className="flex items-center gap-3 mb-2">
+              <span className="bg-rose-500/10 text-rose-400 px-3 py-1 rounded-full text-xs font-black border border-rose-500/20">
+                قضية رقم: {dispute.id.substring(0,8)}
+              </span>
+              <span className="text-slate-400 text-sm flex items-center gap-1"><FileText className="w-4 h-4"/> عقد: {dispute.contract_id?.substring(0,8) || 'غير محدد'}</span>
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">سبب النزاع: {dispute.reason}</h3>
+            <p className="text-sm text-slate-400">الحالة: <span className="text-amber-400 font-bold">{dispute.status}</span></p>
           </div>
-          <div className="flex gap-2">
-            <button onClick={() => handleResolution(d.id, 'freelancer')} disabled={loadingId === d.id} className="bg-emerald-500/10 text-emerald-500 px-4 py-2 rounded-xl text-sm font-bold border border-emerald-500/20 hover:bg-emerald-500 hover:text-black">
-              {loadingId === d.id ? <Loader2 className="animate-spin" size={16}/> : 'لصالح المبدع'}
+
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto border-t md:border-t-0 md:border-r border-white/10 pt-4 md:pt-0 md:pr-6">
+            <button 
+              onClick={() => handleResolution(dispute.id, dispute.contract_id, 'release_to_freelancer')}
+              disabled={loadingId === dispute.id}
+              className="flex items-center justify-center gap-2 bg-emerald-600/10 hover:bg-emerald-600 text-emerald-500 hover:text-white border border-emerald-500/30 px-6 py-3 rounded-xl font-bold transition-all"
+            >
+              {loadingId === dispute.id ? <Loader2 className="w-5 h-5 animate-spin" /> : <Gavel className="w-5 h-5" />}
+              الحكم للمبدع (تحرير الأموال)
             </button>
-            <button onClick={() => handleResolution(d.id, 'client')} disabled={loadingId === d.id} className="bg-rose-500/10 text-rose-500 px-4 py-2 rounded-xl text-sm font-bold border border-rose-500/20 hover:bg-rose-500 hover:text-black">
-              إعادة للعميل
+            <button 
+              onClick={() => handleResolution(dispute.id, dispute.contract_id, 'refund_to_client')}
+              disabled={loadingId === dispute.id}
+              className="flex items-center justify-center gap-2 bg-slate-800 hover:bg-rose-600 text-slate-300 hover:text-white border border-slate-700 hover:border-rose-500 px-6 py-3 rounded-xl font-bold transition-all"
+            >
+              {loadingId === dispute.id ? <Loader2 className="w-5 h-5 animate-spin" /> : <Undo2 className="w-5 h-5" />}
+              الحكم للعميل (إلغاء ورد الأموال)
             </button>
           </div>
         </div>

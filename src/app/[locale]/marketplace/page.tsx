@@ -1,95 +1,75 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
-import { Briefcase, Search } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Briefcase } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { MarketFilters } from '@/components/marketplace/MarketFilters';
+import { TalentCard } from '@/components/marketplace/TalentCard';
+import Link from 'next/link';
 
 type Freelancer = {
   id: string;
   email: string | null;
+  full_name: string | null;
   role: string | null;
+  kyc_status: string | null;
 };
 
 export default function MarketplacePage() {
   const [freelancers, setFreelancers] = useState<Freelancer[]>([]);
   const [loading, setLoading] = useState(true);
-  const [query, setQuery] = useState('');
-  const [error, setError] = useState('');
 
   useEffect(() => {
     async function fetchTalent() {
-      setLoading(true);
-      setError('');
-
       const { data, error } = await supabase
-        .from('users')
-        .select('id, email, role')
+        .from('profiles')
+        .select('id, email, full_name, role, kyc_status')
         .eq('role', 'freelancer')
-        .limit(10);
+        .limit(12);
 
-      if (error) {
-        setError('تعذر تحميل بيانات المبدعين من قاعدة البيانات.');
-        setFreelancers([]);
-        setLoading(false);
-        return;
+      if (!error && data) {
+        setFreelancers(data as Freelancer[]);
       }
-
-      setFreelancers((data ?? []) as Freelancer[]);
       setLoading(false);
     }
-
     fetchTalent();
   }, []);
-
-  const filteredFreelancers = useMemo(() => {
-    const normalized = query.trim().toLowerCase();
-
-    if (!normalized) {
-      return freelancers;
-    }
-
-    return freelancers.filter((freelancer) =>
-      [freelancer.email ?? '', freelancer.role ?? '']
-        .some((value) => value.toLowerCase().includes(normalized))
-    );
-  }, [freelancers, query]);
 
   return (
     <div className="min-h-screen bg-[#05050A] p-8 font-sans text-slate-50" dir="rtl">
       <div className="mx-auto max-w-7xl">
-        <h1 className="mb-8 flex items-center gap-3 text-4xl font-black">
-          <Briefcase className="text-indigo-500" />
-          سوق النُخب الإبداعية (مربوط بـ Supabase)
-        </h1>
+        <header className="mb-10 text-center md:text-right flex flex-col md:flex-row justify-between items-center gap-6">
+           <div>
+              <h1 className="flex items-center gap-3 text-4xl font-black mb-3">
+                 <Briefcase className="text-indigo-500" /> سوق النُخب الإبداعية
+              </h1>
+              <p className="text-slate-400">تصفح أفضل المواهب، راجع أعمالهم، وابدأ التعاقد السيادي المحمي عبر Escrow.</p>
+           </div>
+        </header>
 
-        <div className="mb-8 flex items-center gap-4 rounded-2xl border border-white/10 bg-[#0A0A0F] p-4">
-          <Search className="text-slate-400" />
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="ابحث في قاعدة بيانات النخب..."
-            className="w-full bg-transparent outline-none"
-          />
-        </div>
+        <MarketFilters />
 
         {loading ? (
-          <p>جاري تحميل النخب من قاعدة البيانات...</p>
-        ) : error ? (
-          <div className="rounded-2xl border border-rose-500/20 bg-rose-500/10 p-4 text-rose-300">
-            {error}
-          </div>
-        ) : filteredFreelancers.length === 0 ? (
-          <div className="rounded-2xl border border-white/10 bg-[#0A0A0F] p-6 text-slate-400">
-            لا توجد نتائج مطابقة حالياً.
+          <div className="flex items-center justify-center py-20 text-indigo-500">جاري تحميل النخب السيادية...</div>
+        ) : freelancers.length === 0 ? (
+          <div className="rounded-[2rem] border-2 border-dashed border-white/10 bg-[#0A0A0F] p-12 text-center text-slate-400">
+            لم يتم العثور على مبدعين في قاعدة البيانات حالياً.
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {filteredFreelancers.map((freelancer) => (
-              <div key={freelancer.id} className="rounded-[2rem] border border-white/5 bg-[#0A0A0F] p-6">
-                <h3 className="text-lg font-black">{freelancer.email || 'بريد غير متوفر'}</h3>
-                <p className="text-sm text-indigo-400">{freelancer.role || 'Role غير متوفر'}</p>
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {freelancers.map((freelancer) => (
+              <Link href={`/ar/marketplace/profile/${freelancer.id}`} key={freelancer.id}>
+                 <TalentCard 
+                   name={freelancer.full_name || freelancer.email?.split('@')[0] || 'مبدع'}
+                   role="مخرج ومونتير" // يمكن جلبها ديناميكياً لاحقاً
+                   rating={5.0}
+                   reviews={0}
+                   rate="$25"
+                   skills={['Premiere', 'After Effects', 'Color Grading']}
+                   image="https://images.unsplash.com/photo-1600861194942-f883de0dfe96?q=80&w=500&auto=format&fit=crop"
+                   verified={freelancer.kyc_status === 'approved'}
+                 />
+              </Link>
             ))}
           </div>
         )}

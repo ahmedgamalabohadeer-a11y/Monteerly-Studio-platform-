@@ -1,7 +1,14 @@
 import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabase';
 
 export async function POST(req: Request) {
   try {
+    // 1. جدار الحماية (Auth Guard)
+    const { data: auth } = await supabase.auth.getUser();
+    if (!auth?.user) {
+      return NextResponse.json({ draft: '❌ خطأ: غير مصرح بالوصول. يرجى تسجيل الدخول.' });
+    }
+
     const { type, clientName, value, date } = await req.json();
     const apiKey = process.env.GEMINI_API_KEY;
 
@@ -18,7 +25,7 @@ export async function POST(req: Request) {
 تاريخ التسليم المتوقع: ${date}.
 شروط الصياغة:
 1. استخدم لغة قانونية صارمة ودقيقة.
-2. قسم العقد إلى بنود مرقمة (التمهيد، النطاق، القيمة، الملكية الفكرية، الشرط الجزائي، الاختصاص القضائي).
+2. قسم العقد إلى بنود مرقمة.
 3. لا تكتب مقدمات ترحيبية، أعد نص العقد فقط ليكون جاهزاً للطباعة والتوقيع.`;
 
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
@@ -31,19 +38,13 @@ export async function POST(req: Request) {
     });
 
     const data = await response.json();
-
-    // تشخيص الأخطاء بشفافية تامة وعرضها على واجهة المنصة
     if (!response.ok) {
-       return NextResponse.json({ draft: `⚠️ رفض محرك جوجل (Gemini) تنفيذ الطلب.\n\nالسبب الفعلي من الخادم:\n${data.error?.message || JSON.stringify(data)}\n\nيرجى مراجعة صلاحية مفتاح API أو قيود الحساب.` });
+       return NextResponse.json({ draft: `⚠️ رفض محرك جوجل (Gemini) تنفيذ الطلب.\n\nالسبب:\n${data.error?.message || JSON.stringify(data)}` });
     }
 
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) {
-       return NextResponse.json({ draft: `⚠️ استجاب المحرك بنجاح ولكنه لم يُعد أي نص.\n\nالتفاصيل التقنية:\n${JSON.stringify(data)}` });
-    }
-
-    return NextResponse.json({ draft: text });
-  } catch (error: unknown) {
+    return NextResponse.json({ draft: text || '⚠️ استجاب المحرك بنجاح ولكنه لم يُعد أي نص.' });
+  } catch (error: any) {
     return NextResponse.json({ draft: `⚠️ حدث خطأ داخلي في خادم المنصة:\n${error.message}` });
   }
 }

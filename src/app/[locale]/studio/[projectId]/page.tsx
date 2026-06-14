@@ -1,26 +1,26 @@
 'use client'
-import React from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import { useEffect, useState } from 'react';
-
-import { MonitorPlay, Settings, Layers, Cpu } from 'lucide-react';
+import { Cpu } from 'lucide-react';
 import ReviewPlayer from '@/components/workspace/ReviewPlayer';
 
-export default function DynamicStudioPage({ params }: { params: { projectId: string } }) {
+export default function DynamicStudioPage({ params }: { params: Promise<{ projectId: string }> }) {
+  // فك تغليف الـ Promise الخاص بـ params (توافقاً مع تحديثات Next.js)
+  const { projectId } = use(params);
+
   // Mock Data للمشروع الديناميكي
   const mockVideoUrl = "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_5MB.mp4";
   const [realVideoUrl, setRealVideoUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProjectVideo = async () => {
-      // في بيئة الإنتاج: استبدل هذا باستعلام حقيقي لجدول jobs أو الملفات المرفوعة
-      const { data, error } = await supabase.from('jobs').select('snapshot').eq('id', params.projectId).single();
+      const { data, error } = await supabase.from('jobs').select('snapshot').eq('id', projectId).single();
       if (data?.snapshot?.videoUrl) {
         setRealVideoUrl(data.snapshot.videoUrl);
       }
     };
     fetchProjectVideo();
-  }, [params.projectId]);
+  }, [projectId]);
 
   const displayUrl = realVideoUrl || mockVideoUrl;
 
@@ -32,7 +32,6 @@ export default function DynamicStudioPage({ params }: { params: { projectId: str
 
   const currentVideoUrl = versions.find(v => v.id === activeVersion)?.url || displayUrl;
 
-  
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50 flex font-sans" dir="rtl">
       {/* Sidebar: AI Tools */}
@@ -57,7 +56,7 @@ export default function DynamicStudioPage({ params }: { params: { projectId: str
       <main className="flex-1 p-8 overflow-y-auto">
         <header className="flex justify-between items-center mb-8 bg-slate-900/50 p-6 rounded-3xl border border-white/5">
           <div>
-            <h1 className="text-2xl font-black text-white">مشروع: {params.projectId}</h1>
+            <h1 className="text-2xl font-black text-white">مشروع: {projectId}</h1>
             <p className="text-slate-400 text-sm">مزامنة سحابية نشطة عبر R2 Storage</p>
           </div>
           <div className="flex bg-slate-950 border border-white/10 rounded-full p-1 mr-4">
@@ -81,7 +80,7 @@ export default function DynamicStudioPage({ params }: { params: { projectId: str
         </header>
 
         {/* Video Player Component */}
-        <ReviewPlayer url={currentVideoUrl} activeVersion={activeVersion} orderId={params.projectId} ar={{ system: { loading: 'تحميل...' }, legal: { vault: 'مشفر' } }} />
+        <ReviewPlayer url={currentVideoUrl} activeVersion={activeVersion} orderId={projectId} ar={{ system: { loading: 'تحميل...' }, legal: { vault: 'مشفر' } }} />
       </main>
     </div>
   );
