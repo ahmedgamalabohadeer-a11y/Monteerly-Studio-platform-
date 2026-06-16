@@ -3,7 +3,6 @@ import { supabase } from '@/lib/supabase';
 
 export async function POST(req: Request) {
   try {
-    // 1. جدار الحماية (Auth Guard)
     const { data: auth } = await supabase.auth.getUser();
     if (!auth?.user) {
       return NextResponse.json({ draft: '❌ خطأ: غير مصرح بالوصول. يرجى تسجيل الدخول.' });
@@ -39,12 +38,13 @@ export async function POST(req: Request) {
 
     const data = await response.json();
     if (!response.ok) {
-       return NextResponse.json({ draft: `⚠️ رفض محرك جوجل (Gemini) تنفيذ الطلب.\n\nالسبب:\n${data.error?.message || JSON.stringify(data)}` });
+      return NextResponse.json({ draft: `⚠️ رفض محرك جوجل (Gemini) تنفيذ الطلب.\n\nالسبب:\n${data.error?.message || JSON.stringify(data)}` });
     }
 
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
     return NextResponse.json({ draft: text || '⚠️ استجاب المحرك بنجاح ولكنه لم يُعد أي نص.' });
-  } catch (error: any) {
-    return NextResponse.json({ draft: `⚠️ حدث خطأ داخلي في خادم المنصة:\n${error.message}` });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'خطأ غير معروف';
+    return NextResponse.json({ draft: `⚠️ حدث خطأ داخلي في خادم المنصة:\n${message}` });
   }
 }

@@ -3,7 +3,13 @@ import React, { useState } from 'react';
 import { CheckCircle, XCircle, FileImage, Loader2, ShieldCheck } from 'lucide-react';
 import { reviewKYCRequest } from '@/app/[locale]/admin/kyc/admin-kyc-actions';
 
-export default function KYCReviewTable({ requests }: { requests: any[] }) {
+type KYCRequest = {
+  id: string;
+  document_id: string;
+  kyc_submitted_at: string;
+};
+
+export default function KYCReviewTable({ requests }: { requests: KYCRequest[] }) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
   const handleDecision = async (userId: string, decision: 'approved' | 'rejected') => {
@@ -11,12 +17,12 @@ export default function KYCReviewTable({ requests }: { requests: any[] }) {
     if (!isConfirm) return;
 
     setLoadingId(userId);
-    const notes = prompt("اكتب ملاحظة إدارية (اختياري، لحفظها في سجل التدقيق):", `تم المراجعة يدوياً: ${decision}`);
-    
+    const notes = prompt('اكتب ملاحظة إدارية (اختياري، لحفظها في سجل التدقيق):', `تم المراجعة يدوياً: ${decision}`);
+
     const res = await reviewKYCRequest(userId, decision, notes || '');
     if (res.success) {
       alert('تم تنفيذ القرار وتحديث حالة المستخدم بنجاح.');
-      window.location.reload(); // تحديث سريع للواجهة
+      window.location.reload();
     } else {
       alert('فشل تنفيذ القرار.');
     }
@@ -56,14 +62,14 @@ export default function KYCReviewTable({ requests }: { requests: any[] }) {
               </td>
               <td className="p-6">
                 <div className="flex justify-center gap-3">
-                  <button 
+                  <button
                     onClick={() => handleDecision(req.id, 'approved')}
                     disabled={loadingId === req.id}
                     className="flex items-center gap-2 bg-emerald-500/10 hover:bg-emerald-500 text-emerald-400 hover:text-white px-4 py-2 rounded-lg font-bold transition-all border border-emerald-500/20"
                   >
                     {loadingId === req.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />} اعتماد
                   </button>
-                  <button 
+                  <button
                     onClick={() => handleDecision(req.id, 'rejected')}
                     disabled={loadingId === req.id}
                     className="flex items-center gap-2 bg-rose-500/10 hover:bg-rose-600 text-rose-400 hover:text-white px-4 py-2 rounded-lg font-bold transition-all border border-rose-500/20"
