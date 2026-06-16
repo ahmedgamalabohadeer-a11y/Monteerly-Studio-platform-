@@ -1,42 +1,36 @@
 'use client';
-import { use } from 'react';
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { PlayCircle, Lock, CheckCircle, Clock, Award, Share2 } from 'lucide-react';
+import { PlayCircle, Lock, Clock, Award, Share2 } from 'lucide-react';
 
-// محاكاة بيانات دورة واحدة
 const COURSE_DETAILS = {
-  title: "إتقان أدوبي بريمير من الصفر للاحتراف",
-  description: "دورة شاملة تأخذك من واجهة البرنامج وحتى تصدير مشاريع احترافية. ستتعلم التقطيع، التزامن الصوتي، التحريكات البسيطة، وتصحيح الألوان الأساسي.",
-  instructor: "أحمد سامي",
+  title: 'إتقان أدوبي بريمير من الصفر للاحتراف',
+  description: 'دورة شاملة تأخذك من واجهة البرنامج وحتى تصدير مشاريع احترافية. ستتعلم التقطيع، التزامن الصوتي، التحريكات البسيطة، وتصحيح الألوان الأساسي.',
+  instructor: 'أحمد سامي',
   modules: [
     {
-      title: "القسم الأول: الأساسيات والواجهة",
+      title: 'القسم الأول: الأساسيات والواجهة',
       lessons: [
-        { title: "مقدمة الدورة وتحميل الملفات", time: "10:00", type: "open" },
-        { title: "شرح واجهة البرنامج Workspace", time: "15:30", type: "open" },
-        { title: "إعدادات السيكونس الصحيحة", time: "12:00", type: "locked" }
+        { title: 'مقدمة الدورة وتحميل الملفات', time: '10:00', type: 'open' },
+        { title: 'شرح واجهة البرنامج Workspace', time: '15:30', type: 'open' },
+        { title: 'إعدادات السيكونس الصحيحة', time: '12:00', type: 'locked' }
       ]
     },
     {
-      title: "القسم الثاني: أدوات التحرير",
+      title: 'القسم الثاني: أدوات التحرير',
       lessons: [
-        { title: "القطع والدمج (Cut & Trim)", time: "20:00", type: "locked" },
-        { title: "اختصارات الكيبورد للسرعة", time: "08:45", type: "locked" }
+        { title: 'القطع والدمج (Cut & Trim)', time: '20:00', type: 'locked' },
+        { title: 'اختصارات الكيبورد للسرعة', time: '08:45', type: 'locked' }
       ]
     }
   ]
 };
 
-export default function CourseDetailPage({ params }: { params: Promise<{ courseId: string }> }) {
+export default function CourseDetailPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-white pb-20">
-      
-      {/* 1. Header Section */}
       <div className="bg-slate-900 border-b border-slate-800 pt-24 pb-12 px-6">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10">
-          
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 text-indigo-400 mb-4 text-sm font-bold">
               <span>الأكاديمية</span>
@@ -49,10 +43,10 @@ export default function CourseDetailPage({ params }: { params: Promise<{ courseI
             <p className="text-slate-400 text-lg mb-8 leading-relaxed">
               {COURSE_DETAILS.description}
             </p>
-            
+
             <div className="flex flex-wrap gap-6 text-sm">
               <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-full bg-slate-950" /> {/* Avatar Placeholder */}
+                <div className="w-10 h-10 rounded-full bg-slate-950" />
                 <div>
                   <div className="text-slate-400 text-xs">المدرب</div>
                   <div className="font-bold">{COURSE_DETAILS.instructor}</div>
@@ -75,7 +69,6 @@ export default function CourseDetailPage({ params }: { params: Promise<{ courseI
             </div>
           </div>
 
-          {/* بطاقة الاشتراك العائمة */}
           <div className="relative">
             <div className="bg-slate-950 border border-slate-700 rounded-2xl p-6 shadow-2xl lg:absolute lg:top-0 lg:left-0 lg:w-full">
               <div className="aspect-video bg-indigo-900 rounded-xl mb-6 flex items-center justify-center relative group cursor-pointer overflow-hidden">
@@ -83,7 +76,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ courseI
                 <PlayCircle className="w-16 h-16 text-white opacity-90 group-hover:scale-110 transition-transform" />
                 <span className="absolute bottom-4 text-sm font-bold">مشاهدة المقدمة</span>
               </div>
-              
+
               <div className="text-3xl font-bold mb-2">مجاناً</div>
               <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-xl font-bold mb-4 transition-all hover:scale-[1.02]">
                 ابدأ التعلم الآن
@@ -94,15 +87,13 @@ export default function CourseDetailPage({ params }: { params: Promise<{ courseI
               </button>
             </div>
           </div>
-
         </div>
       </div>
 
-      {/* 2. Course Content (Syllabus) */}
       <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2 space-y-8">
           <h2 className="text-2xl font-bold">محتوى الدورة</h2>
-          
+
           <div className="space-y-4">
             {COURSE_DETAILS.modules.map((module, i) => (
               <div key={i} className="border border-slate-800 rounded-xl overflow-hidden bg-slate-900/50">
@@ -130,7 +121,6 @@ export default function CourseDetailPage({ params }: { params: Promise<{ courseI
           </div>
         </div>
       </div>
-
     </div>
   );
 }

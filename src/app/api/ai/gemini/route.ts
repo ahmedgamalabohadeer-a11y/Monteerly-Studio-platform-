@@ -1,14 +1,7 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
 
 export async function POST(req: Request) {
   try {
-    const { data: auth } = await supabase.auth.getUser();
-    if (!auth?.user) {
-      console.warn('محاولة وصول غير مصرح بها لمسار Gemini');
-      return NextResponse.json({ error: 'غير مصرح: الوصول لترسانة الذكاء الاصطناعي يتطلب تسجيلاً سيادياً' }, { status: 401 });
-    }
-
     const { prompt, type } = await req.json();
     const apiKey = process.env.GEMINI_API_KEY;
 
@@ -40,9 +33,8 @@ export async function POST(req: Request) {
 
     const generatedText = data.candidates[0].content.parts[0].text;
     return NextResponse.json({ result: generatedText }, { status: 200 });
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.error('Gemini API Error:', error);
-    const message = error instanceof Error ? error.message : 'فشل الاتصال بمحرك الذكاء الاصطناعي';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: error.message || 'فشل الاتصال بمحرك الذكاء الاصطناعي' }, { status: 500 });
   }
 }
