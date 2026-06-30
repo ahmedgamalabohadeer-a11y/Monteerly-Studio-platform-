@@ -19,19 +19,24 @@ export function RichTextEditor() {
        </div>
 
        {/* Text Area */}
-       <textarea 
-         className="w-full h-96 p-4 bg-transparent outline-none resize-none font-serif text-lg leading-relaxed" 
+       <textarea
+         className="w-full h-96 p-4 bg-transparent outline-none resize-none font-serif text-lg leading-relaxed"
          placeholder="ابدأ كتابة مقالك هنا..."
        />
     </div>
   );
 }
 
-function ToolbarBtn({ icon: Icon, active = false }: unknown) {
+// تعريف الواجهة النمطية للمكون مع دعم تمرير الأيقونات
+interface ToolbarBtnProps {
+  icon: React.ElementType;
+  active?: boolean;
+}
+
+function ToolbarBtn({ icon: Icon, active = false }: ToolbarBtnProps) {
    return (
       <button className={`p-2 rounded hover:bg-muted ${active ? 'bg-muted text-primary' : 'text-muted-foreground'}`}>
          <Icon size={18} />
       </button>
    );
 }
-

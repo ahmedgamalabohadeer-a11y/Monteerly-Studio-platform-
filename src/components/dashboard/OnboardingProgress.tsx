@@ -33,7 +33,14 @@ export function OnboardingProgress() {
   );
 }
 
-function Step({ label, completed, active }: unknown) {
+// تعريف الواجهة النمطية مع جعل الخصائص المنطقية اختيارية
+interface StepProps {
+  label: string;
+  completed?: boolean;
+  active?: boolean;
+}
+
+function Step({ label, completed = false, active = false }: StepProps) {
    return (
       <div className={`flex items-center justify-between p-2 rounded-lg ${active ? 'bg-background shadow-sm border border-border' : ''}`}>
          <div className="flex items-center gap-3">
@@ -50,4 +57,3 @@ function Step({ label, completed, active }: unknown) {
       </div>
    );
 }
-

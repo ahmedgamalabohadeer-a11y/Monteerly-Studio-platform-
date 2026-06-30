@@ -8,7 +8,7 @@ export function CreatorStats() {
   return (
     <div className="space-y-6">
        <h2 className="text-xl font-bold font-heading">أداء حسابك (آخر 30 يوم)</h2>
-       
+
        {/* Key Metrics */}
        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <MetricCard title="مشاهدات الملف" value="1,240" icon={Eye} color="text-blue-500" bg="bg-blue-50" change="+12%" />
@@ -21,9 +21,9 @@ export function CreatorStats() {
        <div className="grid md:grid-cols-3 gap-6">
           <Card className="md:col-span-2 p-6">
              <h3 className="font-bold mb-6 text-sm text-muted-foreground">زيارات الملف الشخصي</h3>
-             <SimpleChart 
-                data={[120, 150, 180, 140, 200, 240, 300]} 
-                labels={['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']} 
+             <SimpleChart
+                data={[120, 150, 180, 140, 200, 240, 300]}
+                labels={['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']}
                 height={250}
                 color="#3b82f6"
              />
@@ -59,7 +59,13 @@ function MetricCard({ title, value, icon: Icon, color, bg, change }: { title: st
    );
 }
 
-function TopGig({ title, views }: unknown) {
+// تعريف الواجهة النمطية الصارمة لمكون TopGig
+interface TopGigProps {
+  title: string;
+  views: string | number;
+}
+
+function TopGig({ title, views }: TopGigProps) {
    return (
       <div className="flex justify-between items-center text-sm border-b border-border pb-2 last:border-0">
          <span className="truncate max-w-[150px] font-medium">{title}</span>
@@ -67,4 +73,3 @@ function TopGig({ title, views }: unknown) {
       </div>
    );
 }
-

@@ -12,7 +12,6 @@ export async function createOrder(serviceId: string, freelancerId: string, price
 
   const clientId = userData.user.id;
 
-  // 1. إنشاء الطلب في قاعدة البيانات
   const { data: order, error: orderError } = await supabase.from('orders').insert({
     client_id: clientId,
     service_id: serviceId,
@@ -22,15 +21,12 @@ export async function createOrder(serviceId: string, freelancerId: string, price
   if (orderError) return { success: false, message: 'حدث خطأ أثناء إنشاء الطلب' };
 
   try {
-    // 2. تفعيل الضمان المالي (Escrow)
     await holdFundsInEscrow(order.id, clientId, freelancerId, price);
-
-    // 3. تفعيل الأتمتة القانونية (توليد العقد فوراً) - [F-007]
     await generateContract(order.id, clientId, freelancerId, price);
-
   } catch (error: unknown) {
-    console.error('Operation Error:', error.message);
-    return { success: false, message: 'فشل إكمال الإجراءات المالية والقانونية' };
+    const message = error instanceof Error ? error.message : 'فشل إكمال الإجراءات المالية والقانونية';
+    console.error('Operation Error:', message);
+    return { success: false, message };
   }
 
   await logAuditEvent({

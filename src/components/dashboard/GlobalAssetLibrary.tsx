@@ -28,8 +28,16 @@ export function GlobalAssetLibrary() {
   );
 }
 
-function AssetCard({ name, type, size }: unknown) {
-    const icons: unknown = { image: FileImage, video: FileVideo, audio: FileAudio };
+// تعريف الواجهة النمطية الصارمة للمكون
+interface AssetCardProps {
+  name: string;
+  type: string;
+  size: string;
+}
+
+function AssetCard({ name, type, size }: AssetCardProps) {
+    // تعريف نوع الكائن ليقبل نصوصاً كمفاتيح ومكونات React كقيم
+    const icons: Record<string, React.ElementType> = { image: FileImage, video: FileVideo, audio: FileAudio };
     const Icon = icons[type] || FileImage;
 
     return (
@@ -39,7 +47,7 @@ function AssetCard({ name, type, size }: unknown) {
            </div>
            <h4 className="font-bold text-sm truncate mb-1">{name}</h4>
            <p className="text-xs text-muted-foreground">{size}</p>
-           
+
            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
               <button className="p-1 bg-white shadow rounded hover:text-primary"><Download size={14} /></button>
               <button className="p-1 bg-white shadow rounded hover:text-primary"><MoreVertical size={14} /></button>
@@ -47,4 +55,3 @@ function AssetCard({ name, type, size }: unknown) {
         </div>
     )
 }
-

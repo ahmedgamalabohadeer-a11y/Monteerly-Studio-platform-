@@ -32,11 +32,17 @@ export async function POST(req: Request) {
       throw new Error('قيمة مبلغ الضمان مفقودة.');
     }
 
+    // التحويل الصارم لنوع البيانات إلى رقم
+    const numericAmount = Number(amount);
+    if (isNaN(numericAmount)) {
+      throw new Error('قيمة مبلغ الضمان يجب أن تكون رقماً صحيحاً.');
+    }
+
     const data = await resend.emails.send({
       from: 'Monteerly Studio <notifications@monteerly.com>',
       to: [to_email],
       subject: `تأكيد إيداع الضمان لمشروع ${projectId} 🛡️`,
-      react: EscrowNotification({ clientName, projectId, amount }),
+      react: EscrowNotification({ clientName, projectId, amount: numericAmount }),
     });
 
     return NextResponse.json(data, { status: 200 });

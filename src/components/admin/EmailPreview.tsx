@@ -25,7 +25,7 @@ export function EmailPreview() {
              <div className="bg-slate-900 p-6 text-center">
                 <div className="text-white font-bold text-xl">Monteerly</div>
              </div>
-             
+
              {/* Email Body */}
              <div className="p-8 text-slate-800 space-y-6">
                 {template === 'welcome' && (
@@ -56,9 +56,16 @@ export function EmailPreview() {
   );
 }
 
-function TemplateBtn({ label, active, onClick }: unknown) {
+// تعريف الواجهة النمطية الصارمة للمكون
+interface TemplateBtnProps {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}
+
+function TemplateBtn({ label, active, onClick }: TemplateBtnProps) {
     return (
-        <button 
+        <button
            onClick={onClick}
            className={`w-full text-left px-3 py-2 rounded text-sm transition-colors ${active ? 'bg-primary text-white' : 'hover:bg-muted text-muted-foreground'}`}
         >
@@ -66,4 +73,3 @@ function TemplateBtn({ label, active, onClick }: unknown) {
         </button>
     )
 }
-

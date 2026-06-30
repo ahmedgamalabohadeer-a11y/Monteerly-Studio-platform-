@@ -2,6 +2,16 @@
 import React from 'react';
 import { Server, Database, Cloud, Activity } from 'lucide-react';
 
+
+type StatusKind = 'operational' | 'busy' | 'degraded';
+
+type StatusRowProps = {
+  label: string;
+  icon: React.ComponentType<{ className?: string; size?: number }>;
+  status: StatusKind;
+  latency: string;
+};
+
 export function ServiceStatus() {
   return (
     <div className="bg-card border border-border rounded-xl p-4 w-72">
@@ -20,14 +30,14 @@ export function ServiceStatus() {
   );
 }
 
-function StatusRow({ label, icon: Icon, status, latency }: unknown) {
-    const colors: unknown = {
-        operational: 'bg-emerald-500',
-        busy: 'bg-yellow-500',
-        degraded: 'bg-red-500'
-    };
+function StatusRow({ label, icon: Icon, status, latency }: StatusRowProps) {
+  const colors: Record<StatusKind, string> = {
+    operational: 'bg-emerald-500',
+    busy: 'bg-amber-500',
+    degraded: 'bg-rose-500'
+  }
 
-    return (
+return (
         <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2">
                <Icon size={14} className="text-muted-foreground" />

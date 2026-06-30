@@ -8,14 +8,14 @@
       },
       "components": {
         "src/components/finance/BalanceCard.tsx": "ready",
-        "src/components/finance/InvoiceBuilder.tsx": "missing",
+        "src/components/finance/InvoiceBuilder.tsx": "ready",
         "src/components/fintech/RevenueSplitter.tsx": "ready"
       }
     },
     "Sovereign_Workspace_Layer": {
       "routes": {
         "src/app/[locale]/workspace/page.tsx": "ready",
-        "src/app/[locale]/studio/[projectId]/page.tsx": "missing"
+        "src/app/[locale]/studio/[projectId]/page.tsx": "ready"
       },
       "components": {
         "src/components/workspace/ReviewPlayer.tsx": "ready",
@@ -38,7 +38,7 @@
     },
     "AI_and_Automation_Layer": {
       "routes": {
-        "src/app/[locale]/ai-studio/page.tsx": "missing"
+        "src/app/[locale]/ai-studio/page.tsx": "ready"
       },
       "components": {
         "src/components/ai/ScriptGenerator.tsx": "ready",
@@ -50,7 +50,7 @@
     "Marketplace_and_Community": {
       "routes": {
         "src/app/[locale]/marketplace/page.tsx": "ready",
-        "src/app/[locale]/community/page.tsx": "missing"
+        "src/app/[locale]/community/page.tsx": "ready"
       },
       "components": {
         "src/components/market/AiMatcher.tsx": "ready",

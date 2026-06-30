@@ -25,7 +25,15 @@ export function KanbanBoard() {
   );
 }
 
-function KanbanColumn({ title, count, children, color }: unknown) {
+// تعريف واجهة العمود
+interface KanbanColumnProps {
+  title: string;
+  count: number;
+  children: React.ReactNode;
+  color: string;
+}
+
+function KanbanColumn({ title, count, children, color }: KanbanColumnProps) {
     return (
         <div className={`min-w-[280px] w-80 rounded-xl p-4 flex flex-col gap-3 ${color}`}>
             <div className="flex justify-between items-center mb-2">
@@ -39,7 +47,15 @@ function KanbanColumn({ title, count, children, color }: unknown) {
     )
 }
 
-function KanbanItem({ title, client, tag, active }: unknown) {
+// تعريف واجهة العنصر
+interface KanbanItemProps {
+  title: string;
+  client: string;
+  tag: string;
+  active?: boolean;
+}
+
+function KanbanItem({ title, client, tag, active = false }: KanbanItemProps) {
     return (
         <div className={`bg-white dark:bg-slate-900 p-3 rounded-lg shadow-sm border cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow ${active ? 'border-indigo-500 ring-1 ring-indigo-500/20' : 'border-slate-200 dark:border-slate-700'}`}>
             <div className="flex justify-between items-start mb-2">

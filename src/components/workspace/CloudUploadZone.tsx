@@ -3,7 +3,18 @@ import React, { useState, useRef } from 'react';
 import { UploadCloud, FileVideo, ShieldCheck, Loader2, CheckCircle } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
-export default function CloudUploadZone({ orderId, clientId, ar }: unknown) {
+// 1. تعريف واجهة البيانات الصارمة
+interface CloudUploadZoneProps {
+  orderId: string;
+  clientId: string;
+  ar: {
+    system: { gpu_alloc: string };
+    legal: { vault: string };
+  };
+}
+
+// 2. تطبيق الواجهة على المكون
+export default function CloudUploadZone({ orderId, clientId, ar }: CloudUploadZoneProps) {
   const [file, setFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'preparing' | 'uploading' | 'success' | 'error'>('idle');
   const [progress, setProgress] = useState(0);
@@ -20,12 +31,11 @@ export default function CloudUploadZone({ orderId, clientId, ar }: unknown) {
     setUploadStatus('preparing');
 
     try {
-      // 1. طلب تصريح الرفع (Presigned URL) من السيرفر الخاص بنا
       const { data: { session } } = await supabase.auth.getSession();
-      
+
       const presignRes = await fetch('/api/storage/r2', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${session?.access_token || 'demo-token'}`
         },
@@ -41,8 +51,6 @@ export default function CloudUploadZone({ orderId, clientId, ar }: unknown) {
 
       setUploadStatus('uploading');
 
-      // 2. الرفع المباشر (Direct Upload) إلى Cloudflare R2
-      // نستخدم XMLHttpRequest لمتابعة نسبة التقدم بدقة للملفات الكبيرة
       const xhr = new XMLHttpRequest();
       xhr.open('PUT', uploadUrl, true);
       xhr.setRequestHeader('Content-Type', file.type);
@@ -57,7 +65,6 @@ export default function CloudUploadZone({ orderId, clientId, ar }: unknown) {
       xhr.onload = () => {
         if (xhr.status === 200) {
           setUploadStatus('success');
-          // هنا يمكن إرسال finalFileUrl لقاعدة البيانات لحفظ رابط الفيديو النهائي
           console.log("File successfully uploaded to:", finalFileUrl);
         } else {
           throw new Error('فشل الرفع إلى السحابة');
@@ -84,7 +91,7 @@ export default function CloudUploadZone({ orderId, clientId, ar }: unknown) {
       <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileSelect} accept="video/*" />
 
       {uploadStatus === 'idle' || uploadStatus === 'error' ? (
-        <div 
+        <div
           onClick={() => fileInputRef.current?.click()}
           className="border-2 border-dashed border-slate-700 rounded-2xl p-10 hover:border-emerald-500 cursor-pointer transition-colors"
         >
@@ -109,7 +116,7 @@ export default function CloudUploadZone({ orderId, clientId, ar }: unknown) {
       )}
 
       {file && uploadStatus !== 'uploading' && uploadStatus !== 'success' && (
-        <button 
+        <button
           onClick={startSecureUpload}
           className="w-full mt-6 bg-emerald-600 hover:bg-emerald-500 text-white py-4 rounded-xl font-black flex items-center justify-center gap-2 transition-all"
         >

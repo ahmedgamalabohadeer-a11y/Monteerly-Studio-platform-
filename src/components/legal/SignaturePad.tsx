@@ -2,7 +2,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 
 interface SignaturePadProps {
-  onSign: () => void;
+  onSign: (dataUrl: string) => void;
   disabled?: boolean;
 }
 
@@ -11,7 +11,6 @@ export function SignaturePad({ onSign, disabled = false }: SignaturePadProps) {
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasSignature, setHasSignature] = useState(false);
 
-  // ضبط أبعاد اللوحة برمجياً لتناسب شاشات الهواتف
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
@@ -19,15 +18,14 @@ export function SignaturePad({ onSign, disabled = false }: SignaturePadProps) {
       canvas.height = canvas.offsetHeight;
       const ctx = canvas.getContext('2d');
       if (ctx) {
-        ctx.strokeStyle = '#ffffff'; // لون حبر التوقيع (أبيض)
-        ctx.lineWidth = 3; // سمك القلم
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 3;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
       }
     }
   }, []);
 
-  // بدء التوقيع (للمس والماوس)
   const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
     if (disabled) return;
     const canvas = canvasRef.current;
@@ -45,7 +43,6 @@ export function SignaturePad({ onSign, disabled = false }: SignaturePadProps) {
     setHasSignature(true);
   };
 
-  // حركة القلم
   const draw = (e: React.MouseEvent | React.TouchEvent) => {
     if (!isDrawing || disabled) return;
     const canvas = canvasRef.current;
@@ -61,12 +58,10 @@ export function SignaturePad({ onSign, disabled = false }: SignaturePadProps) {
     ctx.stroke();
   };
 
-  // إيقاف التوقيع
   const stopDrawing = () => {
     setIsDrawing(false);
   };
 
-  // مسح اللوحة
   const clear = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -76,9 +71,16 @@ export function SignaturePad({ onSign, disabled = false }: SignaturePadProps) {
     setHasSignature(false);
   };
 
+  const handleSaveSignature = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    // تحويل التوقيع إلى صورة Base64 وإرسالها للصفحة الأم
+    const dataUrl = canvas.toDataURL('image/png');
+    onSign(dataUrl);
+  };
+
   return (
     <div className="space-y-4">
-      {/* لوحة الرسم */}
       <canvas
         ref={canvasRef}
         onMouseDown={startDrawing}
@@ -92,8 +94,6 @@ export function SignaturePad({ onSign, disabled = false }: SignaturePadProps) {
           disabled ? 'opacity-50 pointer-events-none' : ''
         }`}
       />
-      
-      {/* أزرار التحكم */}
       <div className="flex gap-3">
         <button
           onClick={clear}
@@ -103,9 +103,9 @@ export function SignaturePad({ onSign, disabled = false }: SignaturePadProps) {
           مسح التوقيع
         </button>
         <button
-          onClick={onSign}
+          onClick={handleSaveSignature}
           disabled={disabled || !hasSignature}
-          className="flex-1 px-4 py-2 text-sm font-bold text-white bg-brand-success hover:bg-green-600 rounded-lg transition-colors disabled:opacity-50"
+          className="flex-1 px-4 py-2 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors disabled:opacity-50"
         >
           اعتماد التوقيع وحفظ العقد
         </button>

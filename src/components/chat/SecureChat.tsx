@@ -27,7 +27,9 @@ export const SecureChat = () => {
   useEffect(() => {
     engineRef.current = new ChatEscrowEngine('main_room');
 
-    engineRef.current.enableRealtime((newMessage: RealtimeMessage) => {
+    // تصحيح التوافق النمطي هنا: استقبال unknown ثم التحويل داخلياً
+    engineRef.current.enableRealtime((payload: unknown) => {
+      const newMessage = payload as RealtimeMessage;
       setRealMessages((prev) => [...prev, newMessage]);
     });
 

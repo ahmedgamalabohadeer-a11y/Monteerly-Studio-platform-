@@ -1,0 +1,1 @@
+/home/ahmed/projects/Monteerly-Studio-platform-/.docs/monteerly_unified_executive_document.md

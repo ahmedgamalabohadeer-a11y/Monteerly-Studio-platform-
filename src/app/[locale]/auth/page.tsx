@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import { ShieldCheck, Mail, Lock, Loader2, Globe, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Mail, Lock, Loader2, Globe, ArrowRight, Bug } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
@@ -9,6 +9,7 @@ export default function AuthGateway() {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState({ text: '', type: '' });
+  const [debugInfo, setDebugInfo] = useState('');
   const [formData, setFormData] = useState({ email: '', password: '', role: 'freelancer', acceptTerms: false });
 
   const roles = [
@@ -19,42 +20,119 @@ export default function AuthGateway() {
 
   const handleGoogleAuth = async () => {
     setLoading(true);
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: `${window.location.origin}/ar/onboarding` }
-    });
+    setMsg({ text: '', type: '' });
+    setDebugInfo('');
+
+    try {
+      if (!supabase?.auth) {
+        throw new Error('Supabase client غير مهيأ بشكل صحيح.');
+      }
+
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: `${window.location.origin}/ar/onboarding` }
+      });
+
+      if (error) throw error;
+    } catch (e: unknown) {
+      const err = e as { message?: string; status?: number; code?: string };
+      setMsg({ text: err?.message || 'فشل تسجيل الدخول عبر Google', type: 'error' });
+      setDebugInfo(JSON.stringify({
+        source: 'google-oauth',
+        message: err?.message || null,
+        status: err?.status || null,
+        code: err?.code || null,
+        origin: typeof window !== 'undefined' ? window.location.origin : null
+      }, null, 2));
+      setLoading(false);
+    }
   };
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMsg({ text: '', type: '' });
+    setDebugInfo('');
 
     try {
+      if (!supabase?.auth) {
+        throw new Error('Supabase client غير مهيأ بشكل صحيح.');
+      }
+
+      if (!formData.email || !formData.password) {
+        throw new Error('يرجى إدخال البريد الإلكتروني وكلمة المرور.');
+      }
+
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({ email: formData.email, password: formData.password });
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: formData.email,
+          password: formData.password
+        });
+
         if (error) throw error;
+
+        setDebugInfo(JSON.stringify({
+          source: 'email-login',
+          success: true,
+          userId: data?.user?.id || null,
+          email: data?.user?.email || null,
+          session: !!data?.session
+        }, null, 2));
+
+        setLoading(false);
         router.push('/ar/dashboard');
       } else {
-        if (!formData.acceptTerms) throw new Error('يجب الموافقة على الشروط السيادية.');
-        const { error } = await supabase.auth.signUp({
+        if (!formData.acceptTerms) {
+          throw new Error('يجب الموافقة على الشروط السيادية.');
+        }
+
+        const { data, error } = await supabase.auth.signUp({
           email: formData.email,
           password: formData.password,
           options: { data: { role: formData.role } }
         });
+
         if (error) throw error;
+
+        setMsg({
+          text: data?.session
+            ? 'تم إنشاء الحساب وتسجيل الدخول بنجاح.'
+            : 'تم إنشاء الحساب. تحقق من بريدك الإلكتروني لتأكيد الحساب.',
+          type: 'success'
+        });
+
+        setDebugInfo(JSON.stringify({
+          source: 'email-signup',
+          success: true,
+          userId: data?.user?.id || null,
+          email: data?.user?.email || null,
+          session: !!data?.session,
+          role: formData.role
+        }, null, 2));
+
+        setLoading(false);
         router.push('/ar/onboarding');
       }
     } catch (e: unknown) {
-      const message = e instanceof Error ? e.message : 'حدث خطأ غير متوقع';
-      setMsg({ text: message, type: 'error' });
+      const err = e as { message?: string; status?: number; code?: string; name?: string };
+      setMsg({ text: err?.message || 'حدث خطأ غير متوقع', type: 'error' });
+      setDebugInfo(JSON.stringify({
+        source: isLogin ? 'email-login' : 'email-signup',
+        success: false,
+        message: err?.message || null,
+        status: err?.status || null,
+        code: err?.code || null,
+        name: err?.name || null,
+        email: formData.email || null,
+        hasPassword: !!formData.password,
+        origin: typeof window !== 'undefined' ? window.location.origin : null
+      }, null, 2));
       setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-[#05050A] flex font-sans text-slate-50" dir="rtl">
-
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 z-10 relative">
         <button onClick={() => router.push('/ar')} className="absolute top-8 right-8 text-slate-400 hover:text-white flex items-center gap-2 transition-colors">
           <ArrowRight className="w-4 h-4" /> العودة
@@ -68,13 +146,32 @@ export default function AuthGateway() {
           </div>
 
           {msg.text && (
-            <div className="p-4 rounded-xl mb-6 bg-rose-500/10 text-rose-500 border border-rose-500/20 text-sm font-bold flex items-center gap-2 animate-in fade-in">
+            <div className={`p-4 rounded-xl mb-6 border text-sm font-bold flex items-center gap-2 animate-in fade-in ${
+              msg.type === 'success'
+                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
+            }`}>
               <Lock className="w-4 h-4" /> {msg.text}
             </div>
           )}
 
-          <button onClick={handleGoogleAuth} className="w-full bg-white text-black py-4 rounded-xl font-bold mb-6 flex justify-center items-center gap-2 hover:bg-slate-200 transition-colors">
-            <Globe size={18} /> المتابعة عبر جوجل (Google)
+          {debugInfo && (
+            <div className="p-4 rounded-xl mb-6 bg-slate-900 border border-white/10 text-xs text-slate-300">
+              <div className="flex items-center gap-2 mb-2 text-amber-400 font-bold">
+                <Bug className="w-4 h-4" />
+                Debug Info
+              </div>
+              <pre className="whitespace-pre-wrap break-words overflow-x-auto">{debugInfo}</pre>
+            </div>
+          )}
+
+          <button
+            onClick={handleGoogleAuth}
+            disabled={loading}
+            className="w-full bg-white text-black py-4 rounded-xl font-bold mb-6 flex justify-center items-center gap-2 hover:bg-slate-200 disabled:opacity-60 transition-colors"
+          >
+            {loading ? <Loader2 className="animate-spin w-5 h-5" /> : <Globe size={18} />}
+            المتابعة عبر جوجل (Google)
           </button>
 
           <div className="relative flex items-center justify-center mb-6">
@@ -86,7 +183,11 @@ export default function AuthGateway() {
             {!isLogin && (
               <div>
                 <label className="block text-xs font-bold text-slate-400 mb-2">الدور التشغيلي (Role)</label>
-                <select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className="w-full bg-[#12121A] border border-white/10 p-4 rounded-xl text-white outline-none focus:border-indigo-500 transition-colors appearance-none cursor-pointer">
+                <select
+                  value={formData.role}
+                  onChange={e => setFormData({ ...formData, role: e.target.value })}
+                  className="w-full bg-[#12121A] border border-white/10 p-4 rounded-xl text-white outline-none focus:border-indigo-500 transition-colors appearance-none cursor-pointer"
+                >
                   {roles.map(r => <option key={r.id} value={r.id}>{r.label}</option>)}
                 </select>
               </div>
@@ -94,29 +195,53 @@ export default function AuthGateway() {
 
             <div className="relative">
               <Mail className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5" />
-              <input required type="email" placeholder="البريد الإلكتروني" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full bg-[#12121A] border border-white/10 p-4 pr-12 rounded-xl text-white outline-none focus:border-indigo-500 transition-colors placeholder:text-slate-600" />
+              <input
+                required
+                type="email"
+                placeholder="البريد الإلكتروني"
+                value={formData.email}
+                onChange={e => setFormData({ ...formData, email: e.target.value })}
+                className="w-full bg-[#12121A] border border-white/10 p-4 pr-12 rounded-xl text-white outline-none focus:border-indigo-500 transition-colors placeholder:text-slate-600"
+              />
             </div>
 
             <div className="relative">
               <Lock className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 w-5 h-5" />
-              <input required type="password" placeholder="كلمة المرور المشفرة" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} className="w-full bg-[#12121A] border border-white/10 p-4 pr-12 rounded-xl text-white outline-none focus:border-indigo-500 transition-colors placeholder:text-slate-600" />
+              <input
+                required
+                type="password"
+                placeholder="كلمة المرور المشفرة"
+                value={formData.password}
+                onChange={e => setFormData({ ...formData, password: e.target.value })}
+                className="w-full bg-[#12121A] border border-white/10 p-4 pr-12 rounded-xl text-white outline-none focus:border-indigo-500 transition-colors placeholder:text-slate-600"
+              />
             </div>
 
             {!isLogin && (
               <label className="flex items-center gap-3 text-sm text-slate-400 mt-4 cursor-pointer">
-                <input type="checkbox" required checked={formData.acceptTerms} onChange={e => setFormData({ ...formData, acceptTerms: e.target.checked })} className="w-4 h-4 rounded border-white/10 bg-[#12121A] accent-indigo-500" />
+                <input
+                  type="checkbox"
+                  required
+                  checked={formData.acceptTerms}
+                  onChange={e => setFormData({ ...formData, acceptTerms: e.target.checked })}
+                  className="w-4 h-4 rounded border-white/10 bg-[#12121A] accent-indigo-500"
+                />
                 <span>أوافق على بروتوكولات الحماية (Escrow) وسياسة الخصوصية.</span>
               </label>
             )}
 
-            <button disabled={loading} type="submit" className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-[#12121A] disabled:text-slate-500 text-white py-4 rounded-xl font-black flex justify-center items-center gap-2 transition-all mt-4">
+            <button
+              disabled={loading}
+              type="submit"
+              className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-[#12121A] disabled:text-slate-500 text-white py-4 rounded-xl font-black flex justify-center items-center gap-2 transition-all mt-4"
+            >
               {loading ? <Loader2 className="animate-spin w-5 h-5" /> : (isLogin ? 'تأمين الاتصال والدخول' : 'تأسيس الهوية السيادية')}
             </button>
           </form>
 
           <div className="mt-8 text-center text-sm text-slate-400">
             {isLogin ? 'لست جزءاً من النخبة بعد؟' : 'تمتلك هوية مسبقاً؟'}
-            <button onClick={() => { setIsLogin(!isLogin); setMsg({ text: '', type: '' }) }} className="text-indigo-400 font-bold mr-2 hover:text-indigo-300">
+            <button onClick={() => { setIsLogin(!isLogin); setMsg({ text: '', type: '' }); setDebugInfo(''); }} className="text-indigo-400 font-bold mr-2 hover:text-indigo-300">
               {isLogin ? 'أسس هويتك الآن' : 'ادخل للمنصة'}
             </button>
           </div>
@@ -149,7 +274,6 @@ export default function AuthGateway() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }

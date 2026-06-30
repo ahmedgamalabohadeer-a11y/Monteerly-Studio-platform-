@@ -1,6 +1,16 @@
 'use client';
 import React from 'react';
-import { Cpu, Clock, CheckCircle, Loader2, AlertOctagon } from 'lucide-react';
+import { Cpu, Clock, CheckCircle, Loader2 } from 'lucide-react';
+
+
+type JobRowProps = {
+  project: string;
+  file: string;
+  format: string;
+  status: 'processing' | 'queued' | 'completed';
+  time: string;
+  progress?: number;
+};
 
 export function RenderFarmMonitor() {
   return (
@@ -58,7 +68,7 @@ export function RenderFarmMonitor() {
   );
 }
 
-function JobRow({ project, file, format, status, time, progress }: unknown) {
+function JobRow({ project, file, format, status, time, progress = 0 }: JobRowProps) {
     return (
         <tr className="group hover:bg-muted/20">
             <td className="p-4 font-bold">{project}</td>

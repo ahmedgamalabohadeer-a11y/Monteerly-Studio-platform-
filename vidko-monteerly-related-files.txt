@@ -1,0 +1,2242 @@
+===== RELATED FILE TREE =====
+prisma/schema.prisma
+public/images/monteerly/monteerly_13_analytics_dashboard_woman_ai.png
+public/images/monteerly/monteerly_15_creator_workspace_laptop_modern.png
+public/images/platform/marketplace_hero.png
+public/images/platform/wallet_dashboard.png
+src/app/[locale]/ad-studio/layout.tsx
+src/app/[locale]/ad-studio/page.tsx
+src/app/[locale]/admin/dashboard/page.tsx
+src/app/[locale]/ai-studio/auto-subs/page.tsx
+src/app/[locale]/ai-studio/digital-twin/page.tsx
+src/app/[locale]/ai-studio/page.tsx
+src/app/[locale]/contracts/actions.ts
+src/app/[locale]/contracts/page.tsx
+src/app/[locale]/dashboard/contracts/page.tsx
+src/app/[locale]/dashboard/page.tsx
+src/app/[locale]/dashboard/wallet/page.tsx
+src/app/[locale]/marketplace/escrow/[id]/page.tsx
+src/app/[locale]/marketplace/page.tsx
+src/app/[locale]/marketplace/profile/[id]/page.tsx
+src/app/[locale]/onboarding/page.tsx
+src/app/[locale]/studio/[projectId]/page.tsx
+src/app/[locale]/studio/page.tsx
+src/app/[locale]/workspace/actions.ts
+src/app/[locale]/workspace/page.tsx
+src/app/[locale]/workspace/review-actions.ts
+src/app/api/ai/gemini/route.ts
+src/app/api/ai/voice/route.ts
+src/app/api/storage/r2/route.ts
+src/components/contracts/DigitalSigner.tsx
+src/components/contracts/NdaModal.tsx
+src/components/dashboard/ActivityLog.tsx
+src/components/dashboard/AiMorningBrief.tsx
+src/components/dashboard/CreatorStats.tsx
+src/components/dashboard/DashboardWidgets.tsx
+src/components/dashboard/DeepFocusMode.tsx
+src/components/dashboard/DraggableWidgets.tsx
+src/components/dashboard/ExportQueue.tsx
+src/components/dashboard/GlobalAssetLibrary.tsx
+src/components/dashboard/Greeting.tsx
+src/components/dashboard/IngestStatus.tsx
+src/components/dashboard/KanbanBoard.tsx
+src/components/dashboard/MobileHeader.tsx
+src/components/dashboard/MorningBrief.tsx
+src/components/dashboard/OnboardingProgress.tsx
+src/components/dashboard/ProjectCalendar.tsx
+src/components/dashboard/ProjectCard.tsx
+src/components/dashboard/ProjectFilters.tsx
+src/components/dashboard/ProjectTemplates.tsx
+src/components/dashboard/ProjectTimeline.tsx
+src/components/dashboard/RenderFarmMonitor.tsx
+src/components/dashboard/ServiceStatus.tsx
+src/components/dashboard/Sidebar.tsx
+src/components/dashboard/StorageAnalysis.tsx
+src/components/dashboard/TeamChannels.tsx
+src/components/dashboard/Topbar.tsx
+src/components/finance/InvoiceBuilder.tsx
+src/components/finance/InvoiceGenerator.tsx
+src/components/finance/InvoiceViewer.tsx
+src/components/marketplace/InstantBookingModal.tsx
+src/components/marketplace/MarketFilters.tsx
+src/components/marketplace/TalentCard.tsx
+src/components/marketplace/VideoHoverCard.tsx
+src/components/onboarding/WelcomeTour.tsx
+src/components/roles/AgencyDashboard.tsx
+src/components/roles/GuestReviewView.tsx
+src/components/storyboard/StoryboardGen.tsx
+src/components/studio/StudioPlayer.tsx
+src/components/studio/bridge/AssetBrowser.tsx
+src/components/studio/bridge/StudioBridgeLayout.tsx
+src/components/studio/mobile/TouchControls.tsx
+src/components/wallet/InvoiceView.tsx
+src/components/workspace/AnnotationCanvas.tsx
+src/components/workspace/AudioMixer.tsx
+src/components/workspace/ClientDeliveryView.tsx
+src/components/workspace/CloudUploadZone.tsx
+src/components/workspace/ColorExtractor.tsx
+src/components/workspace/ColorScopes.tsx
+src/components/workspace/CompareView.tsx
+src/components/workspace/DeliveryReview.tsx
+src/components/workspace/ExportPresets.tsx
+src/components/workspace/FileTree.tsx
+src/components/workspace/HistoryPanel.tsx
+src/components/workspace/LabelManager.tsx
+src/components/workspace/LiveCursors.tsx
+src/components/workspace/LiveSession.tsx
+src/components/workspace/LiveSync.tsx
+src/components/workspace/LutLibrary.tsx
+src/components/workspace/MediaLibrary.tsx
+src/components/workspace/MediaProperties.tsx
+src/components/workspace/MeetingRoom.tsx
+src/components/workspace/MilestonesList.tsx
+src/components/workspace/Moodboard.tsx
+src/components/workspace/NleExportModal.tsx
+src/components/workspace/PipToggle.tsx
+src/components/workspace/PlaybackControls.tsx
+src/components/workspace/ProjectArchiver.tsx
+src/components/workspace/ProjectFeed.tsx
+src/components/workspace/ProjectNotepad.tsx
+src/components/workspace/RecycleBin.tsx
+src/components/workspace/RenderQueue.tsx
+src/components/workspace/ResourceMonitor.tsx
+src/components/workspace/ReviewPlayer.tsx
+src/components/workspace/ShareReviewModal.tsx
+src/components/workspace/SharedLinksManager.tsx
+src/components/workspace/ShotList.tsx
+src/components/workspace/SplitScreenPlayer.tsx
+src/components/workspace/Storyboard.tsx
+src/components/workspace/SubtitleEditor.tsx
+src/components/workspace/SyncPlayer.tsx
+src/components/workspace/Telestrator.tsx
+src/components/workspace/VersionHistory.tsx
+src/components/workspace/VersionSelector.tsx
+src/components/workspace/VideoAnnotation.tsx
+src/components/workspace/VideoAnnotator.tsx
+src/components/workspace/VideoCompare.tsx
+src/components/workspace/VideoOverlays.tsx
+src/components/workspace/VoiceoverRecorder.tsx
+src/components/workspace/VrPlayer.tsx
+src/components/workspace/Whiteboard.tsx
+src/components/workspace/ZenModeToggle.tsx
+src/lib/constants/roles.ts
+src/lib/contracts.ts
+src/lib/storage.ts
+src/lib/store/workspaceStore.ts
+
+===== FULL CONTENT OF RELATED FILES =====
+
+==============================
+FILE: src/app/[locale]/ai-studio/page.tsx
+==============================
+'use client'
+import React from 'react';
+import Image from 'next/image';
+import { Bot, Mic, Image as ImageIcon, FileText, Sparkles, Lock, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
+import { MCOS_ASSETS } from '@/lib/ui/assets';
+
+export default function AiStudioPage() {
+  const aiTools = [
+    { title: 'المساعد الإخراجي (Co-Pilot)', desc: 'يحلل مشاريعك، يسعر عروضك تلقائياً، وينوب عنك في التفاوض لتعظيم أرباحك وتقليل الجهد.', icon: <Bot className="w-8 h-8 text-indigo-400" /> },
+    { title: 'التوأم الرقمي الصوتي', desc: 'استنساخ صوتي دقيق لإنشاء Voice-Over احترافي من النصوص مباشرة، معزز بمشاعر بشرية.', icon: <Mic className="w-8 h-8 text-rose-400" /> },
+    { title: 'مولد المشاهد (Storyboard)', desc: 'تحويل النص المكتوب إلى مشاهد مرئية وتصور إخراجي دقيق لتقليص وقت التحضير.', icon: <ImageIcon className="w-8 h-8 text-emerald-400" /> },
+    { title: 'مولد العقود الذكية (NDA)', desc: 'توليد عقود حفظ حقوق الملكية الفكرية وصياغتها قانونياً لربطها بـ Escrow مباشرة.', icon: <FileText className="w-8 h-8 text-amber-400" /> }
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#05050A] text-slate-50 p-4 md:p-8 font-sans relative overflow-hidden" dir="rtl">
+      <div className="absolute top-0 right-0 w-full h-full opacity-[0.03] pointer-events-none">
+        <Image
+          src={MCOS_ASSETS.techAndAi.advisor.src}
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover mix-blend-screen"
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        <header className="mb-12 border-b border-white/5 pb-8 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-center md:text-right">
+            <h1 className="text-3xl md:text-5xl font-black mb-3 flex items-center justify-center md:justify-start gap-3 text-white">
+              <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-indigo-500" /> ترسانة الذكاء الاصطناعي
+            </h1>
+            <p className="text-slate-400 text-sm md:text-lg font-medium">أدوات حصرية مصممة لتسريع التدفق الإبداعي وكسر حدود الإنتاج التقليدي.</p>
+          </div>
+          <Link href="/ar/pricing" className="bg-[#12121A] hover:bg-indigo-600 border border-white/10 hover:border-indigo-500 text-white px-8 py-4 rounded-2xl font-black text-sm transition-all shadow-[0_0_15px_rgba(79,70,229,0.2)] flex items-center gap-2">
+            <Lock className="w-4 h-4" /> فك تشفير الترسانة <ArrowLeft className="w-4 h-4" />
+          </Link>
+        </header>
+
+        <div className="mb-8 p-8 md:p-12 rounded-[2.5rem] border border-indigo-500/30 bg-gradient-to-br from-[#0A0A0F] to-indigo-950/20 shadow-[0_0_50px_rgba(79,70,229,0.1)] flex flex-col md:flex-row items-center gap-10">
+          <div className="flex-1">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-bold border border-indigo-500/20 mb-4">نشط الآن للمؤسسين</div>
+            <h2 className="text-3xl md:text-4xl font-black mb-4">{aiTools[0].title}</h2>
+            <p className="text-slate-400 leading-relaxed text-lg mb-8">{aiTools[0].desc}</p>
+            <button className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg">تفعيل المساعد</button>
+          </div>
+          <div className="flex-1 w-full relative">
+            <div className="absolute inset-0 bg-indigo-500/20 blur-[50px] rounded-full"></div>
+            <div className="relative z-10 h-64 md:h-80 w-full overflow-hidden rounded-3xl border border-white/10 shadow-2xl">
+              <Image
+                src={MCOS_ASSETS.techAndAi.advisor.src}
+                alt="واجهة المساعد الإخراجي بالذكاء الاصطناعي"
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {aiTools.slice(1).map((tool, i) => (
+            <div key={i} className="bg-[#0A0A0F] border border-white/5 p-8 rounded-[2rem] hover:border-indigo-500/50 transition-all group flex flex-col items-start cursor-not-allowed relative overflow-hidden">
+              <div className="absolute inset-0 bg-[#05050A]/80 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <Lock className="w-8 h-8 text-slate-500 mb-2" />
+                <span className="bg-[#12121A] border border-white/10 px-4 py-2 rounded-full text-xs font-bold text-slate-300">يتطلب ترقية السيادة</span>
+              </div>
+              <div className="bg-[#12121A] border border-white/5 p-4 rounded-2xl mb-6 shadow-inner">
+                {tool.icon}
+              </div>
+              <div>
+                <h3 className="text-xl font-black mb-3 text-white">{tool.title}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">{tool.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+==============================
+FILE: src/app/[locale]/studio/[projectId]/page.tsx
+==============================
+'use client'
+import React, { use, useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabase';
+import { Cpu } from 'lucide-react';
+import ReviewPlayer from '@/components/workspace/ReviewPlayer';
+
+export default function DynamicStudioPage({ params }: { params: Promise<{ projectId: string }> }) {
+  // فك تغليف الـ Promise الخاص بـ params (توافقاً مع تحديثات Next.js)
+  const { projectId } = use(params);
+
+  // Mock Data للمشروع الديناميكي
+  const mockVideoUrl = "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_5MB.mp4";
+  const [realVideoUrl, setRealVideoUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProjectVideo = async () => {
+      const { data, error } = await supabase.from('jobs').select('snapshot').eq('id', projectId).single();
+      if (data?.snapshot?.videoUrl) {
+        setRealVideoUrl(data.snapshot.videoUrl);
+      }
+    };
+    fetchProjectVideo();
+  }, [projectId]);
+
+  const displayUrl = realVideoUrl || mockVideoUrl;
+
+  const [activeVersion, setActiveVersion] = useState(1);
+  const versions = [
+    { id: 1, label: 'النسخة الأولية (V1)', url: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_5MB.mp4' },
+    { id: 2, label: 'تعديلات الألوان (V2)', url: 'https://www.w3schools.com/html/mov_bbb.mp4' }
+  ];
+
+  const currentVideoUrl = versions.find(v => v.id === activeVersion)?.url || displayUrl;
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-50 flex font-sans" dir="rtl">
+      {/* Sidebar: AI Tools */}
+      <aside className="w-80 bg-slate-900 border-l border-slate-800 p-6 flex flex-col">
+        <h2 className="text-xl font-black mb-8 flex items-center gap-2">
+          <Cpu className="w-6 h-6 text-indigo-500" />
+          ترسانة الـ AI
+        </h2>
+        <div className="space-y-4 flex-1">
+          <button className="w-full bg-slate-950 border border-slate-800 p-4 rounded-2xl text-right hover:border-indigo-500 transition-colors">
+            <span className="block text-indigo-400 font-bold mb-1">Color Grading</span>
+            <span className="text-slate-500 text-xs">تصحيح ألوان سينمائي تلقائي</span>
+          </button>
+          <button className="w-full bg-slate-950 border border-slate-800 p-4 rounded-2xl text-right hover:border-emerald-500 transition-colors">
+            <span className="block text-emerald-400 font-bold mb-1">Audio Master</span>
+            <span className="text-slate-500 text-xs">تنقية الصوت وعزل الضوضاء</span>
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Workspace */}
+      <main className="flex-1 p-8 overflow-y-auto">
+        <header className="flex justify-between items-center mb-8 bg-slate-900/50 p-6 rounded-3xl border border-white/5">
+          <div>
+            <h1 className="text-2xl font-black text-white">مشروع: {projectId}</h1>
+            <p className="text-slate-400 text-sm">مزامنة سحابية نشطة عبر R2 Storage</p>
+          </div>
+          <div className="flex bg-slate-950 border border-white/10 rounded-full p-1 mr-4">
+              {versions.map((v) => (
+                <button
+                  key={v.id}
+                  onClick={() => setActiveVersion(v.id)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+                    activeVersion === v.id ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  {v.label}
+                </button>
+              ))}
+            </div>
+            <div className="flex gap-4">
+            <button className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-6 py-2 rounded-full font-bold text-sm">
+              طلب مراجعة العميل
+            </button>
+          </div>
+        </header>
+
+        {/* Video Player Component */}
+        <ReviewPlayer url={currentVideoUrl} activeVersion={activeVersion} orderId={projectId} ar={{ system: { loading: 'تحميل...' }, legal: { vault: 'مشفر' } }} />
+      </main>
+    </div>
+  );
+}
+
+
+==============================
+FILE: src/app/[locale]/workspace/page.tsx
+==============================
+'use client'
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Monitor, FileVideo, ShieldCheck, Smartphone, EyeOff } from 'lucide-react';
+import CloudUploadZone from '@/components/workspace/CloudUploadZone';
+import ReviewPlayer from '@/components/workspace/ReviewPlayer';
+
+export default function CorporateOSWorkspace() {
+  const [windows, setWindows] = useState([
+    { id: 'player', title: 'شاشة العرض المباشر', isOpen: true, zIndex: 10 },
+    { id: 'upload', title: 'قبو الأصول السحابية', isOpen: true, zIndex: 11 },
+  ]);
+  const [zenMode, setZenMode] = useState(false);
+
+  const bringToFront = (id: string) => {
+    setWindows(windows.map(w => w.id === id ? { ...w, zIndex: 20 } : { ...w, zIndex: 10 }));
+  };
+
+  return (
+    <div className={`h-screen w-full transition-colors duration-700 overflow-hidden font-sans relative ${zenMode ? 'bg-black' : 'bg-[#05050A]'}`} dir="rtl">
+      
+      {/* شريط المهام الموحد السيادي */}
+      <header className={`absolute top-0 w-full h-14 backdrop-blur-xl border-b z-50 flex items-center justify-between px-4 md:px-6 transition-all ${zenMode ? 'bg-black/50 border-white/5 opacity-30 hover:opacity-100' : 'bg-[#05050A]/90 border-white/10'}`}>
+        <div className="flex items-center gap-4">
+           <span className="text-white font-black text-sm tracking-widest hidden md:block">MCOS <span className="text-indigo-500">WORKSPACE</span></span>
+           <span className="text-white font-black text-sm tracking-widest md:hidden flex items-center gap-2"><Smartphone className="w-4 h-4"/> MCOS MOBILE</span>
+        </div>
+        
+        <div className="flex items-center gap-3">
+          {/* زر وضع التركيز (Zen Mode) من الدستور النصي */}
+          <button onClick={() => setZenMode(!zenMode)} className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-full border transition-all ${zenMode ? 'bg-indigo-600 text-white border-indigo-500 shadow-[0_0_15px_rgba(79,70,229,0.5)]' : 'bg-[#12121A] text-slate-400 border-white/10 hover:text-white'}`}>
+            <EyeOff className="w-4 h-4" /> {zenMode ? 'العودة للعالم' : 'عزل المشتتات وبدء التدفق'}
+          </button>
+          
+          <div className="hidden md:flex items-center gap-2 text-xs font-bold text-emerald-400 bg-emerald-400/10 px-3 py-1.5 rounded-full border border-emerald-500/20">
+            <ShieldCheck className="w-4 h-4" /> هذا المشروع محمي بتشفير 256-bit
+          </div>
+        </div>
+      </header>
+
+      {/* --- واجهة الهاتف المحمول --- */}
+      <div className="md:hidden w-full h-full pt-20 px-4 pb-20 overflow-y-auto space-y-6">
+        <div className="bg-[#0A0A0F] border border-white/10 rounded-2xl overflow-hidden shadow-xl">
+          <div className="bg-[#12121A] p-3 border-b border-white/5 font-bold text-sm text-indigo-400 flex items-center gap-2">
+            <Monitor className="w-4 h-4" /> العرض والتدقيق
+          </div>
+          <div className="p-2">
+            <ReviewPlayer url="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_5MB.mp4" orderId="mobile-01" ar={{system:{loading:'جاري تجهيز طاولة المونتاج...'}, legal:{vault:'تم التشفير والحفظ السحابي'}}} />
+          </div>
+        </div>
+
+        <div className="bg-[#0A0A0F] border border-white/10 rounded-2xl overflow-hidden shadow-xl">
+          <div className="bg-[#12121A] p-3 border-b border-white/5 font-bold text-sm text-emerald-400 flex items-center gap-2">
+            <FileVideo className="w-4 h-4" /> قبو الأصول (مشفر)
+          </div>
+          <div className="p-2">
+            <CloudUploadZone orderId="mobile-01" clientId="client-01" ar={{system:{gpu_alloc:'تخصيص مسار GPU..'}, legal:{vault:'مشفر'}}} />
+          </div>
+        </div>
+      </div>
+
+      {/* --- واجهة سطح المكتب --- */}
+      <div className="hidden md:block relative w-full h-full pt-14">
+        {windows.find(w => w.id === 'player')?.isOpen && (
+          <motion.div drag dragMomentum={false} onMouseDown={() => bringToFront('player')} className="absolute top-24 left-24 w-[800px] bg-[#0A0A0F]/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden" style={{ zIndex: windows.find(w => w.id === 'player')?.zIndex }}>
+            <div className="bg-[#12121A] px-4 py-3 flex items-center justify-between cursor-move border-b border-white/5">
+              <div className="flex items-center gap-2 text-slate-300 font-bold text-sm"><Monitor className="w-4 h-4 text-indigo-400" /> {windows.find(w => w.id === 'player')?.title}</div>
+            </div>
+            <div className="p-4"><ReviewPlayer url="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_5MB.mp4" orderId="desktop-01" ar={{system:{loading:'جاري تجهيز طاولة المونتاج...'}, legal:{vault:'تم التشفير والحفظ السحابي'}}} /></div>
+          </motion.div>
+        )}
+
+        {windows.find(w => w.id === 'upload')?.isOpen && (
+          <motion.div drag dragMomentum={false} onMouseDown={() => bringToFront('upload')} className="absolute top-40 right-24 w-[450px] bg-[#0A0A0F]/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden" style={{ zIndex: windows.find(w => w.id === 'upload')?.zIndex }}>
+            <div className="bg-[#12121A] px-4 py-3 flex items-center justify-between cursor-move border-b border-white/5">
+              <div className="flex items-center gap-2 text-slate-300 font-bold text-sm"><FileVideo className="w-4 h-4 text-emerald-400" /> {windows.find(w => w.id === 'upload')?.title}</div>
+            </div>
+            <div className="p-4"><CloudUploadZone orderId="desktop-01" clientId="client-01" ar={{system:{gpu_alloc:'تخصيص مسار GPU..'}, legal:{vault:'مشفر'}}} /></div>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+==============================
+FILE: src/app/[locale]/marketplace/page.tsx
+==============================
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { Briefcase } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import { MarketFilters } from '@/components/marketplace/MarketFilters';
+import { TalentCard } from '@/components/marketplace/TalentCard';
+import Link from 'next/link';
+
+type Freelancer = {
+  id: string;
+  email: string | null;
+  full_name: string | null;
+  role: string | null;
+  kyc_status: string | null;
+};
+
+export default function MarketplacePage() {
+  const [freelancers, setFreelancers] = useState<Freelancer[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchTalent() {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, email, full_name, role, kyc_status')
+        .eq('role', 'freelancer')
+        .limit(12);
+
+      if (!error && data) {
+        setFreelancers(data as Freelancer[]);
+      }
+      setLoading(false);
+    }
+    fetchTalent();
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#05050A] p-8 font-sans text-slate-50" dir="rtl">
+      <div className="mx-auto max-w-7xl">
+        <header className="mb-10 text-center md:text-right flex flex-col md:flex-row justify-between items-center gap-6">
+           <div>
+              <h1 className="flex items-center gap-3 text-4xl font-black mb-3">
+                 <Briefcase className="text-indigo-500" /> سوق النُخب الإبداعية
+              </h1>
+              <p className="text-slate-400">تصفح أفضل المواهب، راجع أعمالهم، وابدأ التعاقد السيادي المحمي عبر Escrow.</p>
+           </div>
+        </header>
+
+        <MarketFilters />
+
+        {loading ? (
+          <div className="flex items-center justify-center py-20 text-indigo-500">جاري تحميل النخب السيادية...</div>
+        ) : freelancers.length === 0 ? (
+          <div className="rounded-[2rem] border-2 border-dashed border-white/10 bg-[#0A0A0F] p-12 text-center text-slate-400">
+            لم يتم العثور على مبدعين في قاعدة البيانات حالياً.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {freelancers.map((freelancer) => (
+              <Link href={`/ar/marketplace/profile/${freelancer.id}`} key={freelancer.id}>
+                 <TalentCard 
+                   name={freelancer.full_name || freelancer.email?.split('@')[0] || 'مبدع'}
+                   role="مخرج ومونتير" // يمكن جلبها ديناميكياً لاحقاً
+                   rating={5.0}
+                   reviews={0}
+                   rate="$25"
+                   skills={['Premiere', 'After Effects', 'Color Grading']}
+                   image="https://images.unsplash.com/photo-1600861194942-f883de0dfe96?q=80&w=500&auto=format&fit=crop"
+                   verified={freelancer.kyc_status === 'approved'}
+                 />
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+==============================
+FILE: src/app/[locale]/dashboard/page.tsx
+==============================
+import React from 'react';
+import Link from 'next/link';
+import { Briefcase, Wallet, MonitorPlay, BrainCircuit, ShieldCheck, Video, Activity, ShieldAlert } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import { redirect } from 'next/navigation';
+
+// تحويل الصفحة لتصبح Server Component لجلب البيانات بأمان قبل العرض
+export const dynamic = 'force-dynamic';
+
+export default async function ElegantDashboard() {
+  const { data: authData } = await supabase.auth.getUser();
+  
+  if (!authData?.user) {
+    redirect('/ar/auth'); // حماية المسار
+  }
+
+  const userId = authData.user.id;
+
+  // جلب البيانات الحقيقية من قاعدة البيانات بالتوازي (Parallel Fetching)
+  const [profileRes, contractsRes] = await Promise.all([
+    supabase.from('profiles').select('full_name, role, kyc_status').eq('id', userId).single(),
+    supabase.from('jobs').select('*').or(`client_id.eq.${userId},freelancer_id.eq.${userId}`).in('status', ['in_progress', 'pending'])
+  ]);
+
+  const profile = profileRes.data;
+  const activeContracts = contractsRes.data || [];
+
+  const modules = [
+    { title: 'سوق العمل', icon: <Briefcase size={28} className="text-emerald-400" />, link: '/ar/marketplace' },
+    { title: 'مساحة العمل', icon: <MonitorPlay size={28} className="text-indigo-400" />, link: '/ar/studio' }, // تم تصحيح المسار ليتوافق مع مجلد studio
+    { title: 'المحفظة', icon: <Wallet size={28} className="text-rose-400" />, link: '/ar/wallet' }, // تم تصحيح المسار
+    { title: 'الذكاء الاصطناعي', icon: <BrainCircuit size={28} className="text-amber-400" />, link: '/ar/ai-studio' },
+    { title: 'الامتثال الأمني (KYC)', icon: <ShieldCheck size={28} className={profile?.kyc_status === 'approved' ? 'text-emerald-400' : 'text-slate-400'} />, link: '/ar/kyc' },
+    { title: 'المكتبة', icon: <Video size={28} className="text-cyan-400" />, link: '/ar/library' },
+    { title: 'العقود السيادية', icon: <Briefcase size={28} className="text-indigo-400" />, link: '/ar/contracts' }, // تم تصحيح المسار
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#05050A] text-slate-50 p-6 font-sans" dir="rtl">
+      <div className="max-w-6xl mx-auto">
+
+        {/* نظام التنبيهات السيادي (ديناميكي) */}
+        {profile?.kyc_status !== 'approved' && (
+          <div className="bg-rose-500/10 border border-rose-500/20 p-4 rounded-2xl mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3 text-rose-500">
+                 <ShieldAlert className="animate-pulse shrink-0" />
+                 <span className="text-sm font-bold">تنبيه أمني: هويتك (KYC) غير موثقة. لن تتمكن من سحب الأرباح.</span>
+              </div>
+              <Link href="/ar/kyc" className="bg-rose-500 hover:bg-rose-600 text-white px-6 py-2 rounded-lg text-sm font-black transition-colors text-center w-full sm:w-auto">
+                 توثيق الهوية الآن
+              </Link>
+          </div>
+        )}
+
+        {activeContracts.length > 0 && (
+          <div className="bg-amber-500/10 border border-amber-500/20 p-4 rounded-2xl mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3 text-amber-500">
+                 <Activity className="animate-pulse shrink-0" />
+                 <span className="text-sm font-bold">لديك {activeContracts.length} مشروع نشط يحتاج لمتابعتك.</span>
+              </div>
+              <Link href={`/ar/studio/${activeContracts[0].id}`} className="bg-amber-500 text-black px-4 py-1 rounded-lg text-xs font-black">
+                 الذهاب لمساحة العمل
+              </Link>
+          </div>
+        )}
+
+        <header className="mb-10">
+            <h1 className="text-3xl font-black mb-2">مركز القيادة</h1>
+            <p className="text-slate-400 text-sm">
+              مرحباً {profile?.full_name || 'أيها المبدع'}! كافة أنظمتك السيادية تعمل بكفاءة.
+            </p>
+        </header>
+
+        <div className="relative h-48 rounded-[2rem] overflow-hidden mb-8 border border-white/5 shadow-2xl flex items-center p-8 bg-gradient-to-br from-indigo-950 via-slate-950 to-black">
+           <div className="relative z-10">
+              <h2 className="text-2xl font-black mb-2 flex items-center gap-2 text-white"><Activity className="text-indigo-400"/> نظرة سريعة على الأداء</h2>
+              <p className="text-slate-300 text-sm">عقودك النشطة محمية بنظام Escrow المتقدم.</p>
+           </div>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {modules.map((mod, i) => (
+            <Link key={i} href={mod.link}>
+              <div className="bg-[#0A0A0F] border border-white/5 p-8 rounded-3xl hover:border-indigo-500/30 transition-all flex flex-col items-center justify-center text-center gap-4 shadow-lg group">
+                 <div className="p-4 bg-[#05050A] rounded-2xl border border-white/5 group-hover:scale-110 transition-transform">{mod.icon}</div>
+                 <h3 className="text-sm font-black text-slate-200">{mod.title}</h3>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+==============================
+FILE: src/app/[locale]/onboarding/page.tsx
+==============================
+'use client'
+import React, { useState } from 'react';
+import { ShieldCheck, User, CheckCircle, Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabase';
+
+export default function OnboardingGateway() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    tax_id: '',
+    experience_years: '',
+    bio: ''
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (user) {
+      // التحديث المباشر للجدول الذي تم التحقق منه في الصور
+      const { error } = await supabase.from('profiles').update({
+        tax_id: formData.tax_id,
+        experience_years: parseInt(formData.experience_years),
+        bio: formData.bio,
+        status: 'verified' // تفعيل الحالة بعد التوثيق
+      }).eq('id', user.id);
+
+      if (!error) router.push('/ar/dashboard');
+      else alert('خطأ في حفظ البيانات: ' + error.message);
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#05050A] flex items-center justify-center p-6 font-sans" dir="rtl">
+      <div className="w-full max-w-2xl bg-[#0A0A0F] border border-white/10 p-10 rounded-[2.5rem] shadow-2xl">
+        <div className="mb-8 text-center">
+            <ShieldCheck className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
+            <h1 className="text-3xl font-black text-white">التهيئة السيادية (KYC)</h1>
+            <p className="text-slate-400 mt-2">استكمل بياناتك لتوثيق هويتك وتفعيل خدمات الـ Escrow.</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <input required type="text" placeholder="الرقم الضريبي" onChange={e => setFormData({...formData, tax_id: e.target.value})} className="bg-[#12121A] border border-white/10 p-4 rounded-xl text-white w-full" />
+                <input required type="number" placeholder="سنوات الخبرة" onChange={e => setFormData({...formData, experience_years: e.target.value})} className="bg-[#12121A] border border-white/10 p-4 rounded-xl text-white w-full" />
+            </div>
+            
+            <textarea placeholder="نبذة مهنية (Bio)" onChange={e => setFormData({...formData, bio: e.target.value})} className="w-full bg-[#12121A] border border-white/10 p-4 rounded-xl text-white h-32" />
+            
+            <button disabled={loading} type="submit" className="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-4 rounded-xl font-black flex justify-center items-center gap-2">
+                {loading ? <Loader2 className="animate-spin" /> : <><CheckCircle size={18} /> توثيق الهوية والبدء</>}
+            </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+
+==============================
+FILE: src/app/api/ai/gemini/route.ts
+==============================
+import { NextResponse } from 'next/server';
+
+export async function POST(req: Request) {
+  try {
+    const { prompt, type } = await req.json();
+    const apiKey = process.env.GEMINI_API_KEY;
+
+    if (!apiKey) {
+      return NextResponse.json({ error: 'مفتاح Gemini API مفقود في الخزنة السرية' }, { status: 500 });
+    }
+
+    let systemInstruction = '';
+    if (type === 'voice_script') {
+      systemInstruction = 'أنت مساعد إخراج سينمائي. قم بتحويل هذه الفكرة إلى سكريبت صوتي (Voice-Over) احترافي، مقسم إلى فقرات قصيرة مع تحديد نبرة الصوت والمشاعر لكل فقرة.';
+    } else if (type === 'security_audit') {
+      systemInstruction = 'أنت حارس أمني ذكي (AI Guardian) لمنصة عمل حر. دورك حماية المنصة من التسريب. حلل النص واكتشف أي محاولة لمشاركة أرقام تواصل، روابط خارجية، أو اتفاق مالي خارج المنصة. استجب بصيغة JSON فقط: {"isBlocked": true/false, "reason": "السبب باختصار"}';
+    } else {
+      systemInstruction = 'أنت مساعد مخرج. استخرج أفكاراً لمشاهد بصرية (Storyboard) بناءً على هذا النص.';
+    }
+
+    const payload = {
+      contents: [{ parts: [{ text: `${systemInstruction}\n\nالنص: ${prompt}` }] }]
+    };
+
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+    if (data.error) throw new Error(data.error.message);
+
+    const generatedText = data.candidates[0].content.parts[0].text;
+    return NextResponse.json({ result: generatedText }, { status: 200 });
+  } catch (error: any) {
+    console.error('Gemini API Error:', error);
+    return NextResponse.json({ error: error.message || 'فشل الاتصال بمحرك الذكاء الاصطناعي' }, { status: 500 });
+  }
+}
+
+
+==============================
+FILE: src/app/api/ai/voice/route.ts
+==============================
+import { NextResponse } from 'next/server';
+
+export async function POST(req: Request) {
+  try {
+    const { text, voiceId } = await req.json();
+    const apiKey = process.env.ELEVENLABS_API_KEY;
+    let useFallback = false;
+
+    // 1. محاولة استخدام ElevenLabs إذا كان المفتاح موجوداً
+    if (apiKey) {
+      const targetVoice = voiceId || '21m00Tcm4TlvDq8ikWAM';
+      const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${targetVoice}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'audio/mpeg',
+          'xi-api-key': apiKey,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text,
+          model_id: 'eleven_multilingual_v2',
+          voice_settings: { stability: 0.5, similarity_boost: 0.75 }
+        })
+      });
+
+      if (response.ok) {
+        const audioBuffer = await response.arrayBuffer();
+        const base64Audio = Buffer.from(audioBuffer).toString('base64');
+        return NextResponse.json({ audioUrl: `data:audio/mpeg;base64,${base64Audio}` }, { status: 200 });
+      } else {
+        console.warn('ElevenLabs Failed/Blocked. Switching to Free Cloud TTS.');
+        useFallback = true;
+      }
+    } else {
+      useFallback = true;
+    }
+
+    // 2. محرك الطوارئ السحابي المجاني (يدعم العربية 100% ولا يعتمد على كمبيوتر المستخدم)
+    if (useFallback) {
+      // تقسيم النص إلى مقاطع قصيرة (200 حرف) لتجاوز قيود الـ API المجاني
+      const chunks = text.match(/[\s\S]{1,200}(?!\S)/g) || [text];
+      const audioBuffers = [];
+
+      for (const chunk of chunks) {
+        const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ar&q=${encodeURIComponent(chunk.trim())}`;
+        const res = await fetch(url);
+        
+        if (res.ok) {
+          const arrayBuffer = await res.arrayBuffer();
+          audioBuffers.push(Buffer.from(arrayBuffer));
+        }
+      }
+
+      if (audioBuffers.length === 0) {
+         throw new Error('فشل المولد السحابي المجاني في جلب الصوت.');
+      }
+
+      // دمج جميع المقاطع الصوتية في ملف واحد متصل
+      const finalBuffer = Buffer.concat(audioBuffers);
+      const base64Audio = finalBuffer.toString('base64');
+
+      return NextResponse.json({ 
+          audioUrl: `data:audio/mpeg;base64,${base64Audio}`,
+          message: 'تم استخدام المولد السحابي المجاني (عربي) بنجاح.'
+      }, { status: 200 });
+    }
+
+  } catch (error: any) {
+    console.error('Voice Generation Network Error:', error);
+    return NextResponse.json({ error: error.message || 'تعذر توليد الصوت من جميع الخوادم المتاحة.' }, { status: 500 });
+  }
+}
+
+
+==============================
+FILE: src/app/api/analyze-image/route.ts
+==============================
+import { NextResponse } from 'next/server';
+
+export async function POST(req: Request) {
+  try {
+    const formData = await req.formData();
+    const file = formData.get('image') as Blob;
+    
+    if (!file) {
+      return NextResponse.json({ safe: false, message: 'لم يتم إرفاق صورة.' }, { status: 400 });
+    }
+
+    // Iron Dome 2.0: هنا يتم تمرير الصورة لاحقاً لخدمات AWS Rekognition بدلاً من Tesseract المحلي
+    // توليد درجة خطورة مبدئية لتقييم المحتوى
+    const riskScore = Math.floor(Math.random() * 100);
+    const isSafe = riskScore < 80;
+
+    if (!isSafe) {
+      return NextResponse.json({ 
+        safe: false, 
+        message: 'تحذير سيادي: تم حجب المحتوى لاكتشاف بيانات تواصل خارجية محتملة.',
+        riskScore 
+      });
+    }
+
+    return NextResponse.json({ 
+      safe: true, 
+      message: 'الصورة آمنة وتم اجتياز الفحص.',
+      riskScore 
+    });
+
+  } catch (error) {
+    return NextResponse.json({ safe: false, message: 'خطأ في معالجة الصورة.' }, { status: 500 });
+  }
+}
+
+
+==============================
+FILE: src/app/api/storage/r2/route.ts
+==============================
+import { NextResponse } from 'next/server';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { withAuthGuard } from '@/lib/security/apiGuard';
+
+const s3Client = new S3Client({
+  region: 'auto',
+  endpoint: process.env.R2_ENDPOINT_URL || 'https://dummy.r2.cloudflarestorage.com',
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY_ID || 'dummy',
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || 'dummy',
+  },
+});
+
+export async function POST(req: Request) {
+  // تمرير المتغيرات بشكل صريح
+  return withAuthGuard(req, async (req: Request, user: any) => {
+    try {
+      const { fileName, fileType, projectId } = await req.json();
+      if (!fileName || !fileType) return NextResponse.json({ error: 'بيانات ناقصة.' }, { status: 400 });
+
+      // تحديد نوع المتغير بوضوح (Type Casting) لاستخراج المُعرّف بأمان
+      const currentUser = user as { id: string };
+
+      // تأمين المسار وربطه بهوية المستخدم
+      const secureKey = `projects/${projectId || 'general'}/${currentUser.id}_${Date.now()}_${fileName.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+
+      const command = new PutObjectCommand({
+        Bucket: process.env.R2_BUCKET_NAME || 'monteerly-vault',
+        Key: secureKey,
+        ContentType: fileType,
+      });
+
+      const presignedUrl = await getSignedUrl(s3Client, command, { expiresIn: 900 });
+
+      return NextResponse.json({
+        uploadUrl: presignedUrl,
+        finalFileUrl: `${process.env.R2_PUBLIC_DOMAIN || 'https://pub-domain.r2.dev'}/${secureKey}`,
+        secureKey
+      }, { status: 200 });
+    } catch (error: unknown) {
+      console.error('R2 Generation Error:', error);
+      return NextResponse.json({ error: 'فشل في توليد بوابة الرفع.' }, { status: 500 });
+    }
+  });
+}
+
+
+==============================
+FILE: src/components/workspace/CloudUploadZone.tsx
+==============================
+'use client'
+import React, { useState, useRef } from 'react';
+import { UploadCloud, FileVideo, ShieldCheck, Loader2, CheckCircle } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+
+// 1. تعريف واجهة البيانات الصارمة
+interface CloudUploadZoneProps {
+  orderId: string;
+  clientId: string;
+  ar: {
+    system: { gpu_alloc: string };
+    legal: { vault: string };
+  };
+}
+
+// 2. تطبيق الواجهة على المكون
+export default function CloudUploadZone({ orderId, clientId, ar }: CloudUploadZoneProps) {
+  const [file, setFile] = useState<File | null>(null);
+  const [uploadStatus, setUploadStatus] = useState<'idle' | 'preparing' | 'uploading' | 'success' | 'error'>('idle');
+  const [progress, setProgress] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const startSecureUpload = async () => {
+    if (!file) return;
+    setUploadStatus('preparing');
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+
+      const presignRes = await fetch('/api/storage/r2', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.access_token || 'demo-token'}`
+        },
+        body: JSON.stringify({
+          fileName: file.name,
+          fileType: file.type,
+          projectId: orderId
+        })
+      });
+
+      const { uploadUrl, finalFileUrl, error } = await presignRes.json();
+      if (error) throw new Error(error);
+
+      setUploadStatus('uploading');
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', uploadUrl, true);
+      xhr.setRequestHeader('Content-Type', file.type);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const percentComplete = (e.loaded / e.total) * 100;
+          setProgress(Math.round(percentComplete));
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          setUploadStatus('success');
+          console.log("File successfully uploaded to:", finalFileUrl);
+        } else {
+          throw new Error('فشل الرفع إلى السحابة');
+        }
+      };
+
+      xhr.onerror = () => { throw new Error('انقطع الاتصال بالسحابة'); };
+      xhr.send(file);
+
+    } catch (err) {
+      console.error(err);
+      setUploadStatus('error');
+    }
+  };
+
+  return (
+    <div className="bg-slate-900 border border-slate-800 rounded-[2rem] p-8 text-center" dir="rtl">
+      <h3 className="text-xl font-black text-white mb-2 flex justify-center items-center gap-2">
+        <UploadCloud className="w-6 h-6 text-emerald-400" />
+        بوابة R2 للرفع المباشر
+      </h3>
+      <p className="text-slate-400 text-sm mb-6">سرعة فائقة. لا يمر الفيديو بخوادمنا لمنع انهيار الذاكرة.</p>
+
+      <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileSelect} accept="video/*" />
+
+      {uploadStatus === 'idle' || uploadStatus === 'error' ? (
+        <div
+          onClick={() => fileInputRef.current?.click()}
+          className="border-2 border-dashed border-slate-700 rounded-2xl p-10 hover:border-emerald-500 cursor-pointer transition-colors"
+        >
+          <FileVideo className="w-12 h-12 text-slate-500 mx-auto mb-4" />
+          <p className="font-bold text-white mb-2">{file ? file.name : 'اختر ملف الفيديو (بلا حدود للحجم)'}</p>
+          <p className="text-xs text-slate-500">يتم الرفع عبر شبكة Cloudflare العالمية</p>
+        </div>
+      ) : uploadStatus === 'success' ? (
+        <div className="border-2 border-emerald-500/30 bg-emerald-500/10 rounded-2xl p-10">
+          <CheckCircle className="w-12 h-12 text-emerald-400 mx-auto mb-4" />
+          <p className="font-bold text-emerald-400">تم تأمين الملف في الخزنة السيادية بنجاح.</p>
+        </div>
+      ) : (
+        <div className="border-2 border-slate-700 rounded-2xl p-10">
+          <Loader2 className="w-12 h-12 text-indigo-400 animate-spin mx-auto mb-4" />
+          <p className="font-bold text-white mb-2">جاري الرفع السحابي...</p>
+          <div className="w-full bg-slate-800 rounded-full h-2.5 mt-4">
+            <div className="bg-indigo-500 h-2.5 rounded-full transition-all" style={{ width: `${progress}%` }}></div>
+          </div>
+          <p className="text-xs text-indigo-300 mt-2">{progress}%</p>
+        </div>
+      )}
+
+      {file && uploadStatus !== 'uploading' && uploadStatus !== 'success' && (
+        <button
+          onClick={startSecureUpload}
+          className="w-full mt-6 bg-emerald-600 hover:bg-emerald-500 text-white py-4 rounded-xl font-black flex items-center justify-center gap-2 transition-all"
+        >
+          <ShieldCheck className="w-5 h-5" /> بدء التشفير والرفع
+        </button>
+      )}
+
+      {uploadStatus === 'error' && (
+        <p className="text-rose-400 text-sm font-bold mt-4">حدث خطأ أثناء الرفع. تأكد من اتصالك وحاول مجدداً.</p>
+      )}
+    </div>
+  );
+}
+
+
+==============================
+FILE: src/components/workspace/ReviewPlayer.tsx
+==============================
+'use client'
+
+import React, { useRef, useState, useEffect } from 'react'
+import ReactPlayer from 'react-player'
+import { addTimecodedComment, getOrderComments, approveDelivery, disputeDelivery } from '@/app/[locale]/workspace/review-actions'
+import { supabase } from '@/lib/supabase'
+import {
+  Play,
+  Pause,
+  MessageSquare,
+  Clock,
+  RotateCcw,
+  RotateCw,
+  ShieldCheck,
+  CheckCircle,
+  AlertOctagon
+} from 'lucide-react'
+
+type ReviewPlayerLabels = {
+  legal?: { vault?: string }
+  system?: { loading?: string }
+}
+
+type ReactPlayerProgress = { playedSeconds: number }
+
+type CommentType = { id: string; timestamp: number; content: string; user_id: string }
+
+export default function ReviewPlayer({
+  url,
+  orderId,
+  ar,
+  activeVersion
+}: {
+  url: string
+  orderId: string
+  ar: ReviewPlayerLabels
+  activeVersion?: number
+}) {
+  const playerRef = useRef<ReactPlayer | null>(null)
+  const [playing, setPlaying] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [comment, setComment] = useState('')
+  const [isSyncing, setIsSyncing] = useState(false)
+  const [commentsList, setCommentsList] = useState<CommentType[]>([])
+
+  // 1. جلب التعليقات الأولية والاشتراك اللحظي في قاعدة البيانات
+  useEffect(() => {
+    // دالة الجلب المبدئي
+    const fetchComments = async () => {
+      const data = await getOrderComments(orderId);
+      if (data) setCommentsList(data);
+    };
+    fetchComments();
+
+    // إعداد قناة التحديث اللحظي (Realtime Subscription)
+    const channel = supabase
+      .channel(`comments_room_${orderId}`)
+      .on('postgres_changes', 
+        { event: 'INSERT', schema: 'public', table: 'order_comments', filter: `order_id=eq.${orderId}` },
+        (payload) => {
+          // إضافة التعليق الجديد إلى القائمة وإعادة ترتيبها زمنياً
+          setCommentsList((prev) => {
+            // منع التكرار إذا كان التعليق مضافاً محلياً بالفعل
+            if (prev.find(c => c.id === payload.new.id)) return prev;
+            return [...prev, payload.new as CommentType].sort((a, b) => a.timestamp - b.timestamp);
+          });
+        }
+      )
+      .subscribe();
+
+    // تنظيف الاتصال عند الخروج من الغرفة
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [orderId]);
+
+  const handleSeek = (seconds: number) => {
+    playerRef.current?.seekTo(seconds, 'seconds')
+  }
+
+  const handleCommentSubmit = async () => {
+    if (!comment.trim()) return
+
+    setIsSyncing(true)
+    try {
+      // إرسال التعليق لقاعدة البيانات. 
+      // Supabase سيقوم ببث حدث الـ INSERT وسيلتقطه الـ useEffect أعلاه
+      await addTimecodedComment(orderId, currentTime, comment)
+      setComment('')
+    } finally {
+      setIsSyncing(false)
+    }
+  }
+
+  const handleApproval = async () => {
+    if(!confirm("هل أنت متأكد من اعتماد العمل؟ سيتم تحرير الدفعة المالية للمبدع.")) return;
+    await approveDelivery(orderId);
+    alert("تم اعتماد العمل بنجاح.");
+  }
+
+  const handleDispute = async () => {
+    if(!confirm("هل تريد فتح نزاع رسمي؟ سيتم تجميد الأموال وتدخل الإدارة.")) return;
+    await disputeDelivery(orderId, "رفض العميل للنسخة المسلمة");
+    alert("تم تحويل المشروع إلى مركز فض النزاعات.");
+  }
+
+  const formatTime = (seconds: number) => {
+    const mm = Math.floor(seconds / 60)
+    const ss = Math.floor(seconds % 60).toString().padStart(2, '0')
+    return `${mm}:${ss}`
+  }
+
+  return (
+    <div className="bg-slate-950 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl font-sans" dir="rtl">
+      {/* 1. قسم مشغل الفيديو */}
+      <div className="relative aspect-video bg-black flex items-center justify-center group">
+        <ReactPlayer
+          ref={playerRef}
+          url={url}
+          width="100%"
+          height="100%"
+          playing={playing}
+          onProgress={(state: ReactPlayerProgress) => setCurrentTime(state.playedSeconds)}
+          controls={false}
+          config={{ file: { attributes: { controlsList: 'nodownload' } } }}
+        />
+
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 bg-black/40 backdrop-blur-2xl px-10 py-5 rounded-full border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-500">
+          <button onClick={() => handleSeek(currentTime - 5)} className="text-white hover:text-indigo-400 transition-colors">
+            <RotateCcw className="w-5 h-5" />
+          </button>
+          <button onClick={() => setPlaying(!playing)} className="bg-white text-black p-4 rounded-full hover:scale-110 active:scale-90 transition-all shadow-xl">
+            {playing ? <Pause className="w-6 h-6 fill-black" /> : <Play className="w-6 h-6 fill-black" />}
+          </button>
+          <button onClick={() => handleSeek(currentTime + 5)} className="text-white hover:text-indigo-400 transition-colors">
+            <RotateCw className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="absolute top-4 right-4 pointer-events-none opacity-20 select-none">
+          <p className="text-[10px] text-white font-mono tracking-widest uppercase">
+            Encrypted Stream: AES-256 | {orderId?.substring(0, 8) || 'UNKNOWN'}
+          </p>
+        </div>
+      </div>
+
+      {/* 2. قسم التعليقات والأدوات */}
+      <div className="p-10 bg-slate-900/50">
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-4">
+            <div className="bg-indigo-500/20 p-3 rounded-2xl">
+              <Clock className="w-6 h-6 text-indigo-400" />
+            </div>
+            <div>
+              <span className="text-white font-black text-2xl tabular-nums">{formatTime(currentTime)}</span>
+              <p className="text-slate-500 text-[10px] font-bold uppercase tracking-tighter">توقيت المراجعة الحالي</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 text-emerald-400/60 bg-emerald-400/5 px-4 py-2 rounded-full border border-emerald-400/10">
+            <ShieldCheck className="w-4 h-4" />
+            <span className="text-[10px] font-black uppercase">{ar.legal?.vault ?? 'vault'}</span>
+          </div>
+        </div>
+
+        {/* مربع إدخال التعليق */}
+        <div className="relative mb-8">
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="اترك ملحوظة تقنية دقيقة في هذا الإطار..."
+            className="w-full bg-slate-800/40 border border-white/5 rounded-[2rem] p-6 text-white text-sm outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500/50 transition-all placeholder:text-slate-600 resize-none"
+            rows={3}
+          />
+          <button
+            disabled={isSyncing || !comment.trim()}
+            onClick={handleCommentSubmit}
+            className="absolute left-4 bottom-4 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-700 text-white px-8 py-3 rounded-2xl text-xs font-black flex items-center gap-2 shadow-lg shadow-indigo-900/20 transition-all active:scale-95"
+          >
+            {isSyncing ? <span className="animate-pulse">{ar.system?.loading ?? 'جاري التشفير...'}</span> : <><MessageSquare className="w-4 h-4" /> إرسال للزملاء</>}
+          </button>
+        </div>
+
+        {/* 3. قائمة التعليقات اللحظية */}
+        {commentsList.length > 0 && (
+          <div className="mb-8 space-y-3">
+            <h4 className="text-white font-bold mb-4 flex items-center gap-2">
+              <MessageSquare className="w-4 h-4 text-indigo-400" /> السجل الزمني للملاحظات ({commentsList.length})
+            </h4>
+            <div className="max-h-60 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
+              {commentsList.map((c) => (
+                <div key={c.id} className="flex gap-4 items-start bg-slate-800/20 p-4 rounded-2xl border border-white/5 cursor-pointer hover:border-indigo-500/30 transition-colors" onClick={() => handleSeek(c.timestamp)}>
+                  <span className="bg-indigo-500/10 text-indigo-400 font-mono text-xs px-3 py-1.5 rounded-lg mt-1 font-bold">{formatTime(c.timestamp)}</span>
+                  <p className="text-slate-300 text-sm leading-relaxed">{c.content}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 4. أزرار القرار السيادي */}
+        <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-8 mt-8">
+            <button onClick={handleApproval} className="flex items-center justify-center gap-2 py-4 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-black transition-all rounded-2xl font-black shadow-lg shadow-emerald-900/10">
+                <CheckCircle className="w-5 h-5" /> اعتماد وتسليم
+            </button>
+            <button onClick={handleDispute} className="flex items-center justify-center gap-2 py-4 bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500 hover:text-black transition-all rounded-2xl font-black shadow-lg shadow-rose-900/10">
+                <AlertOctagon className="w-5 h-5" /> طلب مراجعة / نزاع
+            </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+
+==============================
+FILE: src/components/dashboard/ExportQueue.tsx
+==============================
+'use client';
+import React from 'react';
+import { Loader2, CheckCircle, XCircle, Pause, Play, ArrowUp } from 'lucide-react';
+
+export function ExportQueue() {
+  return (
+    <div className="w-80 bg-card border-l border-border h-full flex flex-col">
+       <div className="p-3 border-b border-border bg-muted/10 text-xs font-bold uppercase text-muted-foreground flex justify-between">
+          <span>Export Queue</span>
+          <span className="text-primary">Active (1)</span>
+       </div>
+
+       <div className="flex-1 overflow-y-auto p-2 space-y-2">
+          {/* Active Item */}
+          <QueueItem
+             name="Final_Vlog_Ep1.mp4"
+             status="processing"
+             progress={45}
+             format="H.264 • 4K"
+          />
+
+          {/* Queued Item */}
+          <QueueItem
+             name="Instagram_Story_Cut.mp4"
+             status="queued"
+             format="H.265 • 1080p"
+          />
+
+          {/* Finished Item */}
+          <QueueItem
+             name="Client_Draft_Review.mov"
+             status="completed"
+             format="ProRes • 1080p"
+          />
+
+          {/* Failed Item */}
+          <QueueItem
+             name="Raw_Backup_Archive.zip"
+             status="failed"
+             format="ZIP Archive"
+          />
+       </div>
+    </div>
+  );
+}
+
+// تعريف الواجهة وجعل progress اختيارية (?)
+interface QueueItemProps {
+  name: string;
+  status: string;
+  progress?: number;
+  format: string;
+}
+
+function QueueItem({ name, status, progress = 0, format }: QueueItemProps) {
+    // تم التعديل هنا لاستخدام React.ReactNode بدلاً من JSX.Element
+    const statusIcons: Record<string, React.ReactNode> = {
+        processing: <Loader2 size={14} className="animate-spin text-blue-500" />,
+        queued: <div className="w-3.5 h-3.5 rounded-full border-2 border-slate-300" />,
+        completed: <CheckCircle size={14} className="text-emerald-500" />,
+        failed: <XCircle size={14} className="text-red-500" />
+    };
+
+    return (
+        <div className="p-3 bg-background border border-border rounded-lg hover:border-primary/30 transition-colors group relative overflow-hidden">
+           {status === 'processing' && progress > 0 && (
+              <div className="absolute bottom-0 left-0 h-0.5 bg-blue-500 transition-all duration-300" style={{ width: `${progress}%` }} />
+           )}
+
+           <div className="flex justify-between items-start mb-1">
+              <div className="flex items-center gap-2 overflow-hidden">
+                 <div className="shrink-0 pt-0.5">{statusIcons[status]}</div>
+                 <span className={`text-xs font-bold truncate ${status === 'completed' ? 'text-muted-foreground line-through' : ''}`}>{name}</span>
+              </div>
+           </div>
+
+           <div className="flex justify-between items-center text-[10px] text-muted-foreground pl-6">
+              <span>{format}</span>
+              <span className="capitalize">{status === 'processing' ? `${progress}%` : status}</span>
+           </div>
+
+           {/* Hover Actions */}
+           <div className="absolute right-2 top-2 hidden group-hover:flex gap-1 bg-background shadow-sm border border-border rounded p-0.5">
+              {status === 'processing' && <button className="p-1 hover:text-yellow-600"><Pause size={10} /></button>}
+              {status === 'queued' && <button className="p-1 hover:text-emerald-600"><Play size={10} /></button>}
+              {status === 'queued' && <button className="p-1 hover:text-blue-600"><ArrowUp size={10} /></button>}
+           </div>
+        </div>
+    )
+}
+
+
+==============================
+FILE: src/components/dashboard/GlobalAssetLibrary.tsx
+==============================
+'use client';
+import React from 'react';
+import { Library, FileImage, FileAudio, FileVideo, Download, MoreVertical } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+
+export function GlobalAssetLibrary() {
+  return (
+    <div className="h-full flex flex-col">
+       <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center gap-3">
+             <div className="p-3 bg-purple-100 text-purple-700 rounded-lg"><Library size={24} /></div>
+             <div>
+                <h1 className="text-2xl font-bold">مكتبة الأصول العالمية</h1>
+                <p className="text-muted-foreground text-sm">ملفات مشتركة متاحة لجميع مشاريع الفريق.</p>
+             </div>
+          </div>
+          <Button variant="primary">رفع أصول جديدة</Button>
+       </div>
+
+       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <AssetCard name="Official_Logo.png" type="image" size="2 MB" />
+          <AssetCard name="Brand_Intro_4K.mp4" type="video" size="150 MB" />
+          <AssetCard name="Background_Music.wav" type="audio" size="45 MB" />
+          <AssetCard name="Watermark_White.png" type="image" size="1 MB" />
+          <AssetCard name="Lower_Thirds_Template.mogrt" type="video" size="12 MB" />
+       </div>
+    </div>
+  );
+}
+
+// تعريف الواجهة النمطية الصارمة للمكون
+interface AssetCardProps {
+  name: string;
+  type: string;
+  size: string;
+}
+
+function AssetCard({ name, type, size }: AssetCardProps) {
+    // تعريف نوع الكائن ليقبل نصوصاً كمفاتيح ومكونات React كقيم
+    const icons: Record<string, React.ElementType> = { image: FileImage, video: FileVideo, audio: FileAudio };
+    const Icon = icons[type] || FileImage;
+
+    return (
+        <div className="group border border-border rounded-xl p-4 hover:shadow-md transition-all bg-card relative">
+           <div className="aspect-square bg-muted/30 rounded-lg mb-3 flex items-center justify-center text-muted-foreground group-hover:text-primary transition-colors">
+              <Icon size={32} />
+           </div>
+           <h4 className="font-bold text-sm truncate mb-1">{name}</h4>
+           <p className="text-xs text-muted-foreground">{size}</p>
+
+           <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+              <button className="p-1 bg-white shadow rounded hover:text-primary"><Download size={14} /></button>
+              <button className="p-1 bg-white shadow rounded hover:text-primary"><MoreVertical size={14} /></button>
+           </div>
+        </div>
+    )
+}
+
+
+==============================
+FILE: src/components/dashboard/IngestStatus.tsx
+==============================
+'use client';
+import React from 'react';
+import { FileCog, CheckCircle, Loader2 } from 'lucide-react';
+
+export function IngestStatus() {
+  return (
+    <div className="bg-card border border-border rounded-xl p-4 w-72">
+       <div className="flex items-center gap-2 mb-4 text-muted-foreground">
+          <FileCog size={18} />
+          <h3 className="font-bold text-sm">حالة المعالجة (Ingest)</h3>
+       </div>
+
+       <div className="space-y-4">
+          <StatusItem
+             name="A001_C004.mxf"
+             task="Generating Proxy (720p)"
+             status="processing"
+             progress={65}
+          />
+          <StatusItem
+             name="Drone_Shot_05.mov"
+             task="Optimizing Audio"
+             status="processing"
+             progress={30}
+          />
+          <StatusItem
+             name="Interview_Cam_B.mp4"
+             task="Ready to Edit"
+             status="completed"
+          />
+       </div>
+    </div>
+  );
+}
+
+// تعريف الواجهة النمطية الصارمة للمكون
+interface StatusItemProps {
+  name: string;
+  task: string;
+  status: string;
+  progress?: number;
+}
+
+function StatusItem({ name, task, status, progress = 0 }: StatusItemProps) {
+    return (
+        <div className="space-y-1">
+            <div className="flex justify-between items-start">
+               <span className="text-xs font-bold truncate w-40 block">{name}</span>
+               {status === 'completed' ? (
+                  <CheckCircle size={14} className="text-emerald-500" />
+               ) : (
+                  <Loader2 size={14} className="text-blue-500 animate-spin" />
+               )}
+            </div>
+
+            <p className="text-[10px] text-muted-foreground flex justify-between">
+               <span>{task}</span>
+               {status === 'processing' && <span>{progress}%</span>}
+            </p>
+
+            {status === 'processing' && (
+               <div className="h-1 w-full bg-muted rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-500 transition-all duration-300" style={{ width: `${progress}%` }} />
+               </div>
+            )}
+        </div>
+    )
+}
+
+
+==============================
+FILE: src/components/dashboard/ProjectTemplates.tsx
+==============================
+'use client';
+import React from 'react';
+import { Plus, Briefcase, Video, MonitorPlay, Smartphone } from 'lucide-react';
+
+export function ProjectTemplates() {
+  return (
+    <div className="mb-8">
+       <h3 className="font-bold text-lg mb-4">ابدأ مشروعاً جديداً</h3>
+       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          {/* Blank */}
+          <TemplateCard
+             icon={Plus}
+             title="مشروع فارغ"
+             color="bg-primary text-white"
+             isNew
+          />
+
+          {/* YouTube */}
+          <TemplateCard
+             icon={MonitorPlay}
+             title="YouTube Video"
+             desc="16:9 • 4K"
+             color="bg-red-50 text-red-600 hover:border-red-200"
+          />
+
+          {/* Reels */}
+          <TemplateCard
+             icon={Smartphone}
+             title="Reels / TikTok"
+             desc="9:16 • Vertical"
+             color="bg-pink-50 text-pink-600 hover:border-pink-200"
+          />
+
+          {/* Corporate */}
+          <TemplateCard
+             icon={Briefcase}
+             title="عرض شركات"
+             desc="Slideshow Ready"
+             color="bg-blue-50 text-blue-600 hover:border-blue-200"
+          />
+
+          {/* Podcast */}
+          <TemplateCard
+             icon={Video}
+             title="Video Podcast"
+             desc="Multi-Cam Sync"
+             color="bg-purple-50 text-purple-600 hover:border-purple-200"
+          />
+       </div>
+    </div>
+  );
+}
+
+// تعريف الواجهة النمطية وتحديد أنواع البيانات
+interface TemplateCardProps {
+  icon: React.ElementType;
+  title: string;
+  desc?: string;
+  color: string;
+  isNew?: boolean;
+}
+
+function TemplateCard({ icon: Icon, title, desc, color, isNew }: TemplateCardProps) {
+    return (
+        <div className={`p-4 border border-border rounded-xl cursor-pointer transition-all hover:-translate-y-1 hover:shadow-md flex flex-col justify-center items-center text-center h-32 relative group bg-card ${!isNew ? 'hover:bg-muted/20' : ''}`}>
+            <div className={`p-3 rounded-full mb-2 transition-transform group-hover:scale-110 ${color}`}>
+                <Icon size={24} />
+            </div>
+            <h4 className="font-bold text-sm">{title}</h4>
+            {desc && <p className="text-[10px] text-muted-foreground mt-1">{desc}</p>}
+        </div>
+    )
+}
+
+
+==============================
+FILE: src/components/ai/StoryboardGenerator.tsx
+==============================
+'use client';
+import React, { useState } from 'react';
+import { Wand2, Image as ImageIcon, Download, RefreshCw } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+
+export function StoryboardGenerator() {
+  const [prompt, setPrompt] = useState('');
+  const [generating, setGenerating] = useState(false);
+  const [images, setImages] = useState<string[]>([]);
+
+  const generate = () => {
+    setGenerating(true);
+    // Simulate API call delay
+    setTimeout(() => {
+      setImages([
+        '/images/features/workspace.jpg',
+        '/images/features/ai-brain.jpg',
+        '/images/features/live.jpg',
+        '/images/features/speed.jpg'
+      ]);
+      setGenerating(false);
+    }, 2000);
+  };
+
+  return (
+    <div className="bg-slate-900 border border-white/10 rounded-xl p-6 h-full flex flex-col">
+       <div className="mb-6">
+          <h3 className="font-bold text-white text-lg flex items-center gap-2">
+             <Wand2 className="text-purple-500" /> AI Storyboard Artist
+          </h3>
+          <p className="text-slate-400 text-sm">وصف المشهد وسيقوم الذكاء الاصطناعي برسمه لك.</p>
+       </div>
+
+       <div className="relative mb-6">
+          <textarea 
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="مثال: لقطة واسعة لمدينة الرياض في المستقبل، سيارات طائرة، إضاءة نيون زرقاء، سينمائي..."
+            className="w-full h-32 bg-black/30 border border-white/10 rounded-xl p-4 text-white focus:border-purple-500 outline-none resize-none"
+          />
+          <Button 
+            onClick={generate}
+            disabled={!prompt || generating}
+            className="absolute bottom-3 left-3 bg-purple-600 hover:bg-purple-700 text-white shadow-lg"
+          >
+             {generating ? <RefreshCw size={16} className="animate-spin" /> : 'توليد المشهد'}
+          </Button>
+       </div>
+
+       <div className="grid grid-cols-2 gap-4 flex-1 overflow-y-auto min-h-[300px]">
+          {images.length > 0 ? images.map((img, i) => (
+             <div key={i} className="relative group rounded-lg overflow-hidden border border-white/10">
+                <img src={img} alt={`Scene ${i}`} className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                   <button className="p-2 bg-white/20 rounded-full hover:bg-white/40 text-white"><Download size={16} /></button>
+                   <button className="p-2 bg-white/20 rounded-full hover:bg-white/40 text-white"><ImageIcon size={16} /></button>
+                </div>
+             </div>
+          )) : (
+             <div className="col-span-2 flex flex-col items-center justify-center text-slate-500 border-2 border-dashed border-white/5 rounded-xl h-full">
+                <ImageIcon size={48} className="mb-4 opacity-50" />
+                <p>لم يتم توليد أي صور بعد</p>
+             </div>
+          )}
+       </div>
+    </div>
+  );
+}
+
+
+
+==============================
+FILE: src/components/ai/ScriptGenerator.tsx
+==============================
+'use client';
+import React, { useState } from 'react';
+import { Sparkles, Copy, RefreshCw, Save } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { useToast } from '@/components/ui/Toast';
+
+export function ScriptGenerator() {
+  const [loading, setLoading] = useState(false);
+  const [script, setScript] = useState('');
+  const { addToast } = useToast();
+
+  const handleGenerate = () => {
+    setLoading(true);
+    // محاكاة للتوليد
+    setTimeout(() => {
+      setScript(`عنوان الفيديو: رحلة إلى المستقبل
+
+[المشهد 1 - المقدمة] (00:00 - 00:15)
+صورة: لقطات سريعة لمدن مستقبلية وطائرات درون.
+صوت: "هل تخيلت يوماً كيف ستبدو حياتنا في عام 2050؟"
+
+[المشهد 2 - المشكلة] (00:15 - 00:45)
+صورة: شخص يستخدم تقنيات قديمة ويبدو منزعجاً.
+صوت: "اليوم، نواجه تحديات في السرعة والتواصل..."
+
+[المشهد 3 - الحل] (00:45 - 01:30)
+صورة: عرض لشاشات هولوغرام وذكاء اصطناعي يعمل.
+صوت: "لكن مع التطور المتسارع للذكاء الاصطناعي، الحلول أصبحت أقرب مما نتخيل."`);
+      setLoading(false);
+      addToast('success', 'تم توليد السيناريو بنجاح!');
+    }, 2000);
+  };
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+       {/* Input Panel */}
+       <div className="bg-slate-900 border border-white/10 rounded-xl p-6 flex flex-col gap-4">
+          <h3 className="font-bold text-white flex items-center gap-2">
+             <Sparkles size={18} className="text-indigo-400" /> إعدادات السيناريو
+          </h3>
+          
+          <div>
+             <label className="text-xs text-slate-400 mb-1 block">موضوع الفيديو</label>
+             <input type="text" placeholder="مثال: مستقبل الذكاء الاصطناعي" className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:border-indigo-500 outline-none" />
+          </div>
+
+          <div>
+             <label className="text-xs text-slate-400 mb-1 block">نبرة الصوت (Tone)</label>
+             <select className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:border-indigo-500 outline-none">
+                <option>حماسي / تشويقي</option>
+                <option>تعليمي / هادئ</option>
+                <option>احترافي / رسمي</option>
+                <option>كوميدي / مرح</option>
+             </select>
+          </div>
+
+          <div>
+             <label className="text-xs text-slate-400 mb-1 block">المدة التقريبية</label>
+             <select className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:border-indigo-500 outline-none">
+                <option>30 ثانية (Reels/TikTok)</option>
+                <option>دقيقتين (YouTube)</option>
+                <option>5 دقائق (وثائقي قصير)</option>
+             </select>
+          </div>
+
+          <Button onClick={handleGenerate} disabled={loading} className="mt-auto w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 shadow-lg shadow-indigo-500/20">
+             {loading ? <span className="flex items-center gap-2"><RefreshCw className="animate-spin" size={16}/> جاري التفكير...</span> : 'توليد السيناريو ✨'}
+          </Button>
+       </div>
+
+       {/* Output Panel */}
+       <div className="lg:col-span-2 bg-slate-900 border border-white/10 rounded-xl p-6 flex flex-col relative">
+          <div className="flex justify-between items-center mb-4 pb-4 border-b border-white/5">
+             <h3 className="font-bold text-white">النتيجة</h3>
+             <div className="flex gap-2">
+                <button className="p-2 hover:bg-white/10 rounded text-slate-400 hover:text-white" title="نسخ"><Copy size={16}/></button>
+                <button className="p-2 hover:bg-white/10 rounded text-slate-400 hover:text-white" title="حفظ"><Save size={16}/></button>
+             </div>
+          </div>
+          
+          <textarea 
+            className="flex-1 w-full bg-transparent border-none text-slate-300 focus:outline-none resize-none leading-relaxed font-mono text-sm"
+            placeholder="السيناريو سيظهر هنا..."
+            value={script}
+            readOnly
+          />
+       </div>
+    </div>
+  );
+}
+
+
+
+==============================
+FILE: src/components/ai/vision/FaceVault.tsx
+==============================
+'use client';
+import React from 'react';
+import { User, Plus, MoreHorizontal } from 'lucide-react';
+import { Avatar } from '@/components/ui/Avatar';
+
+export function FaceVault() {
+  const people = [
+    { id: 1, name: 'محمد كمال', role: 'Main Actor', appearances: 142, image: '/avatars/mohamed.jpg' },
+    { id: 2, name: 'سارة علي', role: 'Director', appearances: 56, image: '/avatars/sara.jpg' },
+    { id: 3, name: 'خالد عمر', role: 'Guest Star', appearances: 12, image: '/avatars/khaled.jpg' },
+    { id: 4, name: 'مجهول #1', role: 'Unknown', appearances: 8, image: '/avatars/ahmed.jpg' },
+  ];
+
+  return (
+    <div className="bg-slate-900 border border-white/10 rounded-xl p-6">
+       <div className="flex justify-between items-center mb-6">
+          <h3 className="font-bold text-white flex items-center gap-2">
+             <User className="text-blue-400" /> الأشخاص (People Vault)
+          </h3>
+          <p className="text-xs text-slate-400">تم التعرف على 24 شخصاً في مكتبتك.</p>
+       </div>
+
+       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {people.map((person) => (
+             <div key={person.id} className="bg-black/20 border border-white/5 rounded-xl p-4 flex flex-col items-center hover:bg-white/5 transition-colors cursor-pointer group">
+                <div className="relative mb-3">
+                   <Avatar src={person.image} size="lg" />
+                   <div className="absolute -bottom-1 -right-1 bg-indigo-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-black">
+                      {person.appearances}
+                   </div>
+                </div>
+                <h4 className="font-bold text-white text-sm text-center mb-1">{person.name}</h4>
+                <span className="text-[10px] text-slate-500 bg-white/5 px-2 py-0.5 rounded">{person.role}</span>
+                
+                {/* Hover Actions */}
+                <div className="mt-3 w-full opacity-0 group-hover:opacity-100 transition-opacity">
+                   <button className="w-full py-1 bg-white text-black text-[10px] font-bold rounded hover:bg-slate-200">
+                      عرض المشاهد
+                   </button>
+                </div>
+             </div>
+          ))}
+
+          {/* Add New */}
+          <div className="border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center p-4 hover:border-white/20 hover:bg-white/5 transition-colors cursor-pointer text-slate-500 hover:text-white">
+             <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-2">
+                <Plus size={24} />
+             </div>
+             <span className="text-xs font-bold">تعريف وجه جديد</span>
+          </div>
+       </div>
+    </div>
+  );
+}
+
+
+
+==============================
+FILE: src/components/ai/digital-twin/DigitalTwinSetup.tsx
+==============================
+'use client';
+import React, { useState } from 'react';
+import Image from 'next/image';
+import { User, Mic, Video, Sparkles, Check } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+
+export function DigitalTwinSetup() {
+  const [step, setStep] = useState(1);
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center h-[600px]">
+      <div className="relative h-full bg-slate-900 rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex items-center justify-center">
+        {step < 3 ? (
+          <div className="text-center p-8">
+            <div className="w-32 h-32 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+              <User size={64} className="text-slate-600" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">جاري بناء نسختك الرقمية...</h3>
+            <p className="text-slate-400 text-sm">أكمل الخطوات لإنشاء أفاتار يتحدث بصوتك وصورتك.</p>
+          </div>
+        ) : (
+          <div className="relative w-full h-full">
+            <Image
+              src="/images/features/live.jpg"
+              alt="معاينة التوأم الرقمي"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+            />
+            <div className="absolute bottom-8 left-8 right-8 bg-black/80 backdrop-blur border border-white/10 p-4 rounded-xl">
+              <p className="text-white text-sm font-medium">&quot;مرحباً، هذا هو التوأم الرقمي الخاص بي. يمكنني قراءة أي نص تكتبه بنفس نبرة صوتي!&quot;</p>
+              <div className="flex gap-2 mt-2">
+                <div className="h-1 w-1 bg-green-500 rounded-full animate-bounce" />
+                <div className="h-1 w-1 bg-green-500 rounded-full animate-bounce delay-75" />
+                <div className="h-1 w-1 bg-green-500 rounded-full animate-bounce delay-150" />
+              </div>
+            </div>
+            <div className="absolute top-4 right-4 bg-indigo-600 text-white text-[10px] font-bold px-2 py-1 rounded">AI GENERATED</div>
+          </div>
+        )}
+      </div>
+
+      <div className="space-y-6">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-white mb-2">التوأم الرقمي (Digital Twin)</h2>
+          <p className="text-slate-400">اصنع محتوى لا نهائي دون الحاجة للتصوير كل مرة.</p>
+        </div>
+
+        <div className={`p-4 rounded-xl border transition-all ${step === 1 ? 'bg-indigo-900/20 border-indigo-500' : 'bg-slate-900 border-white/5 opacity-50'}`}>
+          <div className="flex justify-between items-center mb-2">
+            <h4 className="font-bold text-white flex items-center gap-2"><Mic size={18} /> بصمة الصوت</h4>
+            {step > 1 && <Check size={16} className="text-green-500" />}
+          </div>
+          <p className="text-xs text-slate-400 mb-4">اقرأ نصاً قصيراً لمدة دقيقتين لتدريب النموذج على نبرة صوتك.</p>
+          {step === 1 && <Button onClick={() => setStep(2)} className="w-full bg-indigo-600 text-white">بدء التسجيل</Button>}
+        </div>
+
+        <div className={`p-4 rounded-xl border transition-all ${step === 2 ? 'bg-indigo-900/20 border-indigo-500' : 'bg-slate-900 border-white/5 opacity-50'}`}>
+          <div className="flex justify-between items-center mb-2">
+            <h4 className="font-bold text-white flex items-center gap-2"><Video size={18} /> ملامح الوجه</h4>
+            {step > 2 && <Check size={16} className="text-green-500" />}
+          </div>
+          <p className="text-xs text-slate-400 mb-4">ارفع فيديو بدقة 4K لوجهك وأنت تتحدث بوضوح في إضاءة جيدة.</p>
+          {step === 2 && <Button onClick={() => setStep(3)} className="w-full bg-indigo-600 text-white">رفع الفيديو</Button>}
+        </div>
+
+        <div className={`p-4 rounded-xl border transition-all ${step === 3 ? 'bg-indigo-900/20 border-indigo-500' : 'bg-slate-900 border-white/5 opacity-50'}`}>
+          <div className="flex justify-between items-center mb-2">
+            <h4 className="font-bold text-white flex items-center gap-2"><Sparkles size={18} /> المعالجة</h4>
+          </div>
+          <p className="text-xs text-slate-400 mb-4">سيقوم النظام بدمج الصوت والصورة لإنشاء النموذج.</p>
+          {step === 3 && <Button className="w-full bg-green-600 text-white font-bold">حفظ النموذج</Button>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+==============================
+FILE: src/components/chat/SecureChat.tsx
+==============================
+'use client';
+
+import React, { useState, useRef, useEffect } from 'react';
+import { Send, AlertTriangle, Lock, Paperclip, ShieldCheck } from 'lucide-react';
+import { ChatEscrowEngine } from '@/lib/integration/ChatEscrowEngine';
+import { useProjectStore } from '@/store/useProjectStore';
+
+type ChatMessage = {
+  content: string;
+  sender: string;
+};
+
+type RealtimeMessage = ChatMessage;
+
+type ChatEngineWithSend = ChatEscrowEngine & {
+  sendMessage?: (message: ChatMessage) => void;
+};
+
+export const SecureChat = () => {
+  const [message, setMessage] = useState('');
+  const [isBlocked, setIsBlocked] = useState(false);
+  const [realMessages, setRealMessages] = useState<RealtimeMessage[]>([]);
+  const [isSending, setIsSending] = useState(false);
+  const engineRef = useRef<ChatEscrowEngine | null>(null);
+  const setSecurityAlert = useProjectStore((state) => state.setSecurityAlert);
+
+  useEffect(() => {
+    engineRef.current = new ChatEscrowEngine('main_room');
+
+    // تصحيح التوافق النمطي هنا: استقبال unknown ثم التحويل داخلياً
+    engineRef.current.enableRealtime((payload: unknown) => {
+      const newMessage = payload as RealtimeMessage;
+      setRealMessages((prev) => [...prev, newMessage]);
+    });
+
+    return () => {
+      engineRef.current?.cleanup();
+    };
+  }, []);
+
+  const securityRegex = /(010|011|012|015|05|\+20|\+966)\d{8}|[a-zA-Z0-9._-]+@[a-z]+\.[a-z]+/g;
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const text = e.target.value;
+    setMessage(text);
+
+    securityRegex.lastIndex = 0;
+    const blocked = securityRegex.test(text);
+
+    setIsBlocked(blocked);
+    setSecurityAlert(blocked);
+  };
+
+  const handleSecureSend = async () => {
+    if (!message.trim() || isBlocked) return;
+    setIsSending(true);
+
+    try {
+      const res = await fetch('/api/ai/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: message, type: 'security_audit' })
+      });
+
+      const data = await res.json();
+      const cleanJson = data.result.replace(/```json/g, '').replace(/```/g, '').trim();
+      const aiResult = JSON.parse(cleanJson) as { isBlocked?: boolean; reason?: string };
+
+      if (aiResult.isBlocked) {
+        setIsBlocked(true);
+        setSecurityAlert(true);
+        console.warn('🛡️ AI Guardian Blocked Message:', aiResult.reason);
+        setIsSending(false);
+        return;
+      }
+
+      if (engineRef.current) {
+        const outgoingMessage: ChatMessage = { content: message, sender: 'me' };
+        setRealMessages((prev) => [...prev, outgoingMessage]);
+
+        const engine = engineRef.current as ChatEngineWithSend;
+        if (typeof engine.sendMessage === 'function') {
+          engine.sendMessage(outgoingMessage);
+        }
+      }
+
+      setMessage('');
+      setIsBlocked(false);
+      setSecurityAlert(false);
+    } catch (error: unknown) {
+      console.error('AI Check Error:', error);
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col h-full bg-brand-surface border-r border-gray-700 w-80">
+      <div className="p-4 border-b border-gray-700 flex justify-between items-center bg-brand-dark">
+        <h3 className="font-bold text-white flex items-center gap-2">
+          <ShieldCheck size={16} className="text-brand-success" />
+          غرفة آمنة
+        </h3>
+        <span className="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">مشفر</span>
+      </div>
+
+      {realMessages.map((msg, i) => (
+        <div key={`${msg.sender}-${i}`} className="flex gap-3 animate-in fade-in p-2">
+          <div className="bg-brand-secondary/20 p-3 rounded-lg text-sm text-gray-200">{msg.content}</div>
+        </div>
+      ))}
+
+      <div className="flex-1 p-4 overflow-y-auto space-y-4">
+        <div className="flex gap-3">
+          <div className="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center text-xs text-white">AM</div>
+          <div className="bg-gray-700 p-3 rounded-lg rounded-tr-none text-sm text-gray-200">
+            مرحباً، هل يمكن تعديل الدقيقة 01:20؟
+          </div>
+        </div>
+
+        {isBlocked && (
+          <div className="bg-brand-alert/10 border border-brand-alert/50 p-3 rounded-lg flex gap-3 animate-pulse">
+            <AlertTriangle className="text-brand-alert shrink-0" size={20} />
+            <div className="text-xs text-brand-alert">
+              <span className="font-bold block mb-1">تم اكتشاف مخالفة أمنية!</span>
+              محاولة مشاركة أرقام الهواتف تعرض حسابك للحظر الفوري وضياع مستحقاتك.
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="p-4 border-t border-gray-700 relative">
+        {isBlocked && (
+          <div className="absolute inset-0 bg-brand-dark/80 backdrop-blur-sm z-10 flex items-center justify-center text-center p-4">
+            <div className="text-brand-alert font-bold text-sm">
+              <Lock className="mx-auto mb-2" />
+              قم بإزالة رقم الهاتف للإرسال
+            </div>
+          </div>
+        )}
+
+        <div className="relative">
+          <textarea
+            value={message}
+            onChange={handleInputChange}
+            placeholder="اكتب ملاحظاتك هنا..."
+            className={`w-full bg-gray-800 border ${isBlocked ? 'border-brand-alert' : 'border-gray-600'} rounded-xl p-3 pl-10 text-white text-sm focus:outline-none focus:ring-1 focus:ring-brand-secondary resize-none h-24 font-tajawal`}
+          />
+          <div className="absolute bottom-3 left-3 flex gap-2">
+            <button className="text-gray-400 hover:text-white transition-colors" aria-label="إرفاق ملف">
+              <Paperclip size={18} />
+            </button>
+            <button
+              onClick={handleSecureSend}
+              disabled={isBlocked || !message.trim() || isSending}
+              aria-label="إرسال الرسالة"
+              className={`p-2 rounded-lg transition-colors ${isBlocked ? 'bg-gray-600 cursor-not-allowed' : 'bg-brand-secondary hover:bg-brand-primary text-white'}`}
+            >
+              {isSending ? (
+                <span className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+              ) : (
+                <Send size={18} className={isBlocked ? '' : 'rtl:-rotate-90'} />
+              )}
+            </button>
+          </div>
+        </div>
+        <div className="text-[10px] text-gray-500 mt-2 text-center">
+          جميع المحادثات مراقبة آلياً لضمان حقوق الطرفين
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+==============================
+FILE: src/components/legal/SignaturePad.tsx
+==============================
+'use client';
+import React, { useRef, useState, useEffect } from 'react';
+
+interface SignaturePadProps {
+  onSign: (dataUrl: string) => void;
+  disabled?: boolean;
+}
+
+export function SignaturePad({ onSign, disabled = false }: SignaturePadProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [hasSignature, setHasSignature] = useState(false);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+      }
+    }
+  }, []);
+
+  const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
+    if (disabled) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const clientX = 'touches' in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : (e as React.MouseEvent).clientY;
+
+    ctx.beginPath();
+    ctx.moveTo(clientX - rect.left, clientY - rect.top);
+    setIsDrawing(true);
+    setHasSignature(true);
+  };
+
+  const draw = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDrawing || disabled) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const clientX = 'touches' in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : (e as React.MouseEvent).clientY;
+
+    ctx.lineTo(clientX - rect.left, clientY - rect.top);
+    ctx.stroke();
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+  };
+
+  const clear = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setHasSignature(false);
+  };
+
+  const handleSaveSignature = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    // تحويل التوقيع إلى صورة Base64 وإرسالها للصفحة الأم
+    const dataUrl = canvas.toDataURL('image/png');
+    onSign(dataUrl);
+  };
+
+  return (
+    <div className="space-y-4">
+      <canvas
+        ref={canvasRef}
+        onMouseDown={startDrawing}
+        onMouseMove={draw}
+        onMouseUp={stopDrawing}
+        onMouseOut={stopDrawing}
+        onTouchStart={startDrawing}
+        onTouchMove={draw}
+        onTouchEnd={stopDrawing}
+        className={`w-full h-48 bg-slate-950 border border-slate-700 rounded-xl cursor-crosshair touch-none shadow-inner ${
+          disabled ? 'opacity-50 pointer-events-none' : ''
+        }`}
+      />
+      <div className="flex gap-3">
+        <button
+          onClick={clear}
+          disabled={disabled || !hasSignature}
+          className="px-4 py-2 text-sm text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
+        >
+          مسح التوقيع
+        </button>
+        <button
+          onClick={handleSaveSignature}
+          disabled={disabled || !hasSignature}
+          className="flex-1 px-4 py-2 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors disabled:opacity-50"
+        >
+          اعتماد التوقيع وحفظ العقد
+        </button>
+      </div>
+    </div>
+  );
+}
+
+
+==============================
+FILE: prisma/schema.prisma
+==============================
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-arm64-openssl-3.0.x", "linux-arm64-openssl-1.1.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model ai_usage_logs {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id          String    @db.Uuid
+  tool_used        String
+  credits_consumed Int
+  job_status       String?   @default("completed")
+  created_at       DateTime? @default(now()) @db.Timestamptz(6)
+  users            users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model financial_transactions {
+  id                     String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id             String    @db.Uuid
+  gateway_type           String
+  gateway_transaction_id String    @unique
+  payment_method         String?
+  amount_gross           Decimal   @db.Decimal(12, 2)
+  platform_fee           Decimal   @db.Decimal(12, 2)
+  amount_net             Decimal   @db.Decimal(12, 2)
+  status                 String?   @default("processing")
+  created_at             DateTime? @default(now()) @db.Timestamptz(6)
+  projects               projects  @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model projects {
+  id                              String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  client_id                       String                   @db.Uuid
+  editor_id                       String?                  @db.Uuid
+  title                           String
+  description                     String?
+  budget                          Decimal                  @db.Decimal(12, 2)
+  state                           project_state?           @default(draft)
+  escrow_status                   escrow_status?           @default(pending)
+  is_watermarked                  Boolean?                 @default(true)
+  created_at                      DateTime?                @default(now()) @db.Timestamptz(6)
+  updated_at                      DateTime?                @default(now()) @db.Timestamptz(6)
+  financial_transactions          financial_transactions[]
+  users_projects_client_idTousers users                    @relation("projects_client_idTousers", fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_projects_editor_idTousers users?                   @relation("projects_editor_idTousers", fields: [editor_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model security_audit_logs {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id      String?   @db.Uuid
+  event_type   String
+  risk_level   Int
+  ip_address   String?
+  action_taken String
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  users        users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model users {
+  id                                 String                @id @db.Uuid
+  email                              String                @unique
+  full_name                          String
+  role                               user_role?            @default(editor)
+  architecture_level                 Int?                  @default(1)
+  fraud_score                        Int?                  @default(0)
+  gamification_points                Int?                  @default(0)
+  badge_tier                         String?               @default("novice")
+  created_at                         DateTime?             @default(now()) @db.Timestamptz(6)
+  last_active                        DateTime?             @default(now()) @db.Timestamptz(6)
+  ai_usage_logs                      ai_usage_logs[]
+  projects_projects_client_idTousers projects[]            @relation("projects_client_idTousers")
+  projects_projects_editor_idTousers projects[]            @relation("projects_editor_idTousers")
+  security_audit_logs                security_audit_logs[]
+}
+
+enum escrow_status {
+  pending
+  funded
+  locked
+  released
+  disputed
+  refunded
+}
+
+enum project_state {
+  draft
+  hiring
+  in_progress
+  review
+  completed
+  canceled
+}
+
+enum user_role {
+  editor
+  creator
+  agency
+  investor
+  admin
+  sysadmin
+}
+

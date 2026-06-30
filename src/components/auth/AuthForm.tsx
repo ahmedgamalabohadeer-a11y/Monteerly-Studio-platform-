@@ -1,4 +1,3 @@
-// @ts-expect-error: legacy compatibility
 'use client';
 import React, { useState } from 'react';
 import { Mail, Lock, User, ArrowRight, Globe } from 'lucide-react';
@@ -12,13 +11,13 @@ export function AuthForm() {
     <div className="w-full max-w-md mx-auto bg-card border border-border rounded-2xl p-8 shadow-xl">
        {/* Tabs */}
        <div className="flex bg-muted p-1 rounded-xl mb-8">
-          <button 
+          <button
              onClick={() => setMode('login')}
              className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'login' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground'}`}
           >
              تسجيل دخول
           </button>
-          <button 
+          <button
              onClick={() => setMode('register')}
              className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'register' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground'}`}
           >
@@ -33,10 +32,10 @@ export function AuthForm() {
                 <Input icon={<User size={18} />} placeholder="الاسم الكامل" />
              </div>
           )}
-          
+
           <Input icon={<Mail size={18} />} type="email" placeholder="البريد الإلكتروني" />
           <Input icon={<Lock size={18} />} type="password" placeholder="كلمة المرور" />
-          
+
           {mode === 'login' && (
              <div className="text-right">
                 <a href="#" className="text-xs text-primary hover:underline">نسيت كلمة المرور؟</a>
@@ -56,10 +55,9 @@ export function AuthForm() {
           </div>
           <div className="grid grid-cols-2 gap-3 mt-4">
              <Button variant="outline" className="w-full">Google</Button>
-             <Button variant="outline" className="w-full" icon={<Globe size={16} />}>Github</Button>
+             <Button variant="outline" className="w-full" icon={<Globe size={16} />} >Github</Button>
           </div>
        </div>
     </div>
   );
 }
-

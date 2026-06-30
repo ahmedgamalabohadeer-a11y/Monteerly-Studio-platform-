@@ -1,0 +1,1554 @@
+
+==============================
+FILE: src/app/[locale]/marketplace/page.tsx
+==============================
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { Briefcase } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import { MarketFilters } from '@/components/marketplace/MarketFilters';
+import { TalentCard } from '@/components/marketplace/TalentCard';
+import Link from 'next/link';
+
+type Freelancer = {
+  id: string;
+  email: string | null;
+  full_name: string | null;
+  role: string | null;
+  kyc_status: string | null;
+};
+
+export default function MarketplacePage() {
+  const [freelancers, setFreelancers] = useState<Freelancer[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchTalent() {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, email, full_name, role, kyc_status')
+        .eq('role', 'freelancer')
+        .limit(12);
+
+      if (!error && data) {
+        setFreelancers(data as Freelancer[]);
+      }
+      setLoading(false);
+    }
+    fetchTalent();
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#05050A] p-8 font-sans text-slate-50" dir="rtl">
+      <div className="mx-auto max-w-7xl">
+        <header className="mb-10 text-center md:text-right flex flex-col md:flex-row justify-between items-center gap-6">
+           <div>
+              <h1 className="flex items-center gap-3 text-4xl font-black mb-3">
+                 <Briefcase className="text-indigo-500" /> سوق النُخب الإبداعية
+              </h1>
+              <p className="text-slate-400">تصفح أفضل المواهب، راجع أعمالهم، وابدأ التعاقد السيادي المحمي عبر Escrow.</p>
+           </div>
+        </header>
+
+        <MarketFilters />
+
+        {loading ? (
+          <div className="flex items-center justify-center py-20 text-indigo-500">جاري تحميل النخب السيادية...</div>
+        ) : freelancers.length === 0 ? (
+          <div className="rounded-[2rem] border-2 border-dashed border-white/10 bg-[#0A0A0F] p-12 text-center text-slate-400">
+            لم يتم العثور على مبدعين في قاعدة البيانات حالياً.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {freelancers.map((freelancer) => (
+              <Link href={`/ar/marketplace/profile/${freelancer.id}`} key={freelancer.id}>
+                 <TalentCard 
+                   name={freelancer.full_name || freelancer.email?.split('@')[0] || 'مبدع'}
+                   role="مخرج ومونتير" // يمكن جلبها ديناميكياً لاحقاً
+                   rating={5.0}
+                   reviews={0}
+                   rate="$25"
+                   skills={['Premiere', 'After Effects', 'Color Grading']}
+                   image="https://images.unsplash.com/photo-1600861194942-f883de0dfe96?q=80&w=500&auto=format&fit=crop"
+                   verified={freelancer.kyc_status === 'approved'}
+                 />
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+==============================
+FILE: src/app/[locale]/dashboard/page.tsx
+==============================
+import React from 'react';
+import Link from 'next/link';
+import { Briefcase, Wallet, MonitorPlay, BrainCircuit, ShieldCheck, Video, Activity, ShieldAlert } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import { redirect } from 'next/navigation';
+
+// تحويل الصفحة لتصبح Server Component لجلب البيانات بأمان قبل العرض
+export const dynamic = 'force-dynamic';
+
+export default async function ElegantDashboard() {
+  const { data: authData } = await supabase.auth.getUser();
+  
+  if (!authData?.user) {
+    redirect('/ar/auth'); // حماية المسار
+  }
+
+  const userId = authData.user.id;
+
+  // جلب البيانات الحقيقية من قاعدة البيانات بالتوازي (Parallel Fetching)
+  const [profileRes, contractsRes] = await Promise.all([
+    supabase.from('profiles').select('full_name, role, kyc_status').eq('id', userId).single(),
+    supabase.from('jobs').select('*').or(`client_id.eq.${userId},freelancer_id.eq.${userId}`).in('status', ['in_progress', 'pending'])
+  ]);
+
+  const profile = profileRes.data;
+  const activeContracts = contractsRes.data || [];
+
+  const modules = [
+    { title: 'سوق العمل', icon: <Briefcase size={28} className="text-emerald-400" />, link: '/ar/marketplace' },
+    { title: 'مساحة العمل', icon: <MonitorPlay size={28} className="text-indigo-400" />, link: '/ar/studio' }, // تم تصحيح المسار ليتوافق مع مجلد studio
+    { title: 'المحفظة', icon: <Wallet size={28} className="text-rose-400" />, link: '/ar/wallet' }, // تم تصحيح المسار
+    { title: 'الذكاء الاصطناعي', icon: <BrainCircuit size={28} className="text-amber-400" />, link: '/ar/ai-studio' },
+    { title: 'الامتثال الأمني (KYC)', icon: <ShieldCheck size={28} className={profile?.kyc_status === 'approved' ? 'text-emerald-400' : 'text-slate-400'} />, link: '/ar/kyc' },
+    { title: 'المكتبة', icon: <Video size={28} className="text-cyan-400" />, link: '/ar/library' },
+    { title: 'العقود السيادية', icon: <Briefcase size={28} className="text-indigo-400" />, link: '/ar/contracts' }, // تم تصحيح المسار
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#05050A] text-slate-50 p-6 font-sans" dir="rtl">
+      <div className="max-w-6xl mx-auto">
+
+        {/* نظام التنبيهات السيادي (ديناميكي) */}
+        {profile?.kyc_status !== 'approved' && (
+          <div className="bg-rose-500/10 border border-rose-500/20 p-4 rounded-2xl mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3 text-rose-500">
+                 <ShieldAlert className="animate-pulse shrink-0" />
+                 <span className="text-sm font-bold">تنبيه أمني: هويتك (KYC) غير موثقة. لن تتمكن من سحب الأرباح.</span>
+              </div>
+              <Link href="/ar/kyc" className="bg-rose-500 hover:bg-rose-600 text-white px-6 py-2 rounded-lg text-sm font-black transition-colors text-center w-full sm:w-auto">
+                 توثيق الهوية الآن
+              </Link>
+          </div>
+        )}
+
+        {activeContracts.length > 0 && (
+          <div className="bg-amber-500/10 border border-amber-500/20 p-4 rounded-2xl mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3 text-amber-500">
+                 <Activity className="animate-pulse shrink-0" />
+                 <span className="text-sm font-bold">لديك {activeContracts.length} مشروع نشط يحتاج لمتابعتك.</span>
+              </div>
+              <Link href={`/ar/studio/${activeContracts[0].id}`} className="bg-amber-500 text-black px-4 py-1 rounded-lg text-xs font-black">
+                 الذهاب لمساحة العمل
+              </Link>
+          </div>
+        )}
+
+        <header className="mb-10">
+            <h1 className="text-3xl font-black mb-2">مركز القيادة</h1>
+            <p className="text-slate-400 text-sm">
+              مرحباً {profile?.full_name || 'أيها المبدع'}! كافة أنظمتك السيادية تعمل بكفاءة.
+            </p>
+        </header>
+
+        <div className="relative h-48 rounded-[2rem] overflow-hidden mb-8 border border-white/5 shadow-2xl flex items-center p-8 bg-gradient-to-br from-indigo-950 via-slate-950 to-black">
+           <div className="relative z-10">
+              <h2 className="text-2xl font-black mb-2 flex items-center gap-2 text-white"><Activity className="text-indigo-400"/> نظرة سريعة على الأداء</h2>
+              <p className="text-slate-300 text-sm">عقودك النشطة محمية بنظام Escrow المتقدم.</p>
+           </div>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {modules.map((mod, i) => (
+            <Link key={i} href={mod.link}>
+              <div className="bg-[#0A0A0F] border border-white/5 p-8 rounded-3xl hover:border-indigo-500/30 transition-all flex flex-col items-center justify-center text-center gap-4 shadow-lg group">
+                 <div className="p-4 bg-[#05050A] rounded-2xl border border-white/5 group-hover:scale-110 transition-transform">{mod.icon}</div>
+                 <h3 className="text-sm font-black text-slate-200">{mod.title}</h3>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+==============================
+FILE: src/app/[locale]/onboarding/page.tsx
+==============================
+'use client'
+import React, { useState } from 'react';
+import { ShieldCheck, User, CheckCircle, Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabase';
+
+export default function OnboardingGateway() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    tax_id: '',
+    experience_years: '',
+    bio: ''
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (user) {
+      // التحديث المباشر للجدول الذي تم التحقق منه في الصور
+      const { error } = await supabase.from('profiles').update({
+        tax_id: formData.tax_id,
+        experience_years: parseInt(formData.experience_years),
+        bio: formData.bio,
+        status: 'verified' // تفعيل الحالة بعد التوثيق
+      }).eq('id', user.id);
+
+      if (!error) router.push('/ar/dashboard');
+      else alert('خطأ في حفظ البيانات: ' + error.message);
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#05050A] flex items-center justify-center p-6 font-sans" dir="rtl">
+      <div className="w-full max-w-2xl bg-[#0A0A0F] border border-white/10 p-10 rounded-[2.5rem] shadow-2xl">
+        <div className="mb-8 text-center">
+            <ShieldCheck className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
+            <h1 className="text-3xl font-black text-white">التهيئة السيادية (KYC)</h1>
+            <p className="text-slate-400 mt-2">استكمل بياناتك لتوثيق هويتك وتفعيل خدمات الـ Escrow.</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <input required type="text" placeholder="الرقم الضريبي" onChange={e => setFormData({...formData, tax_id: e.target.value})} className="bg-[#12121A] border border-white/10 p-4 rounded-xl text-white w-full" />
+                <input required type="number" placeholder="سنوات الخبرة" onChange={e => setFormData({...formData, experience_years: e.target.value})} className="bg-[#12121A] border border-white/10 p-4 rounded-xl text-white w-full" />
+            </div>
+            
+            <textarea placeholder="نبذة مهنية (Bio)" onChange={e => setFormData({...formData, bio: e.target.value})} className="w-full bg-[#12121A] border border-white/10 p-4 rounded-xl text-white h-32" />
+            
+            <button disabled={loading} type="submit" className="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-4 rounded-xl font-black flex justify-center items-center gap-2">
+                {loading ? <Loader2 className="animate-spin" /> : <><CheckCircle size={18} /> توثيق الهوية والبدء</>}
+            </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+
+==============================
+FILE: src/components/workspace/ReviewPlayer.tsx
+==============================
+'use client'
+
+import React, { useRef, useState, useEffect } from 'react'
+import ReactPlayer from 'react-player'
+import { addTimecodedComment, getOrderComments, approveDelivery, disputeDelivery } from '@/app/[locale]/workspace/review-actions'
+import { supabase } from '@/lib/supabase'
+import {
+  Play,
+  Pause,
+  MessageSquare,
+  Clock,
+  RotateCcw,
+  RotateCw,
+  ShieldCheck,
+  CheckCircle,
+  AlertOctagon
+} from 'lucide-react'
+
+type ReviewPlayerLabels = {
+  legal?: { vault?: string }
+  system?: { loading?: string }
+}
+
+type ReactPlayerProgress = { playedSeconds: number }
+
+type CommentType = { id: string; timestamp: number; content: string; user_id: string }
+
+export default function ReviewPlayer({
+  url,
+  orderId,
+  ar,
+  activeVersion
+}: {
+  url: string
+  orderId: string
+  ar: ReviewPlayerLabels
+  activeVersion?: number
+}) {
+  const playerRef = useRef<ReactPlayer | null>(null)
+  const [playing, setPlaying] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [comment, setComment] = useState('')
+  const [isSyncing, setIsSyncing] = useState(false)
+  const [commentsList, setCommentsList] = useState<CommentType[]>([])
+
+  // 1. جلب التعليقات الأولية والاشتراك اللحظي في قاعدة البيانات
+  useEffect(() => {
+    // دالة الجلب المبدئي
+    const fetchComments = async () => {
+      const data = await getOrderComments(orderId);
+      if (data) setCommentsList(data);
+    };
+    fetchComments();
+
+    // إعداد قناة التحديث اللحظي (Realtime Subscription)
+    const channel = supabase
+      .channel(`comments_room_${orderId}`)
+      .on('postgres_changes', 
+        { event: 'INSERT', schema: 'public', table: 'order_comments', filter: `order_id=eq.${orderId}` },
+        (payload) => {
+          // إضافة التعليق الجديد إلى القائمة وإعادة ترتيبها زمنياً
+          setCommentsList((prev) => {
+            // منع التكرار إذا كان التعليق مضافاً محلياً بالفعل
+            if (prev.find(c => c.id === payload.new.id)) return prev;
+            return [...prev, payload.new as CommentType].sort((a, b) => a.timestamp - b.timestamp);
+          });
+        }
+      )
+      .subscribe();
+
+    // تنظيف الاتصال عند الخروج من الغرفة
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [orderId]);
+
+  const handleSeek = (seconds: number) => {
+    playerRef.current?.seekTo(seconds, 'seconds')
+  }
+
+  const handleCommentSubmit = async () => {
+    if (!comment.trim()) return
+
+    setIsSyncing(true)
+    try {
+      // إرسال التعليق لقاعدة البيانات. 
+      // Supabase سيقوم ببث حدث الـ INSERT وسيلتقطه الـ useEffect أعلاه
+      await addTimecodedComment(orderId, currentTime, comment)
+      setComment('')
+    } finally {
+      setIsSyncing(false)
+    }
+  }
+
+  const handleApproval = async () => {
+    if(!confirm("هل أنت متأكد من اعتماد العمل؟ سيتم تحرير الدفعة المالية للمبدع.")) return;
+    await approveDelivery(orderId);
+    alert("تم اعتماد العمل بنجاح.");
+  }
+
+  const handleDispute = async () => {
+    if(!confirm("هل تريد فتح نزاع رسمي؟ سيتم تجميد الأموال وتدخل الإدارة.")) return;
+    await disputeDelivery(orderId, "رفض العميل للنسخة المسلمة");
+    alert("تم تحويل المشروع إلى مركز فض النزاعات.");
+  }
+
+  const formatTime = (seconds: number) => {
+    const mm = Math.floor(seconds / 60)
+    const ss = Math.floor(seconds % 60).toString().padStart(2, '0')
+    return `${mm}:${ss}`
+  }
+
+  return (
+    <div className="bg-slate-950 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl font-sans" dir="rtl">
+      {/* 1. قسم مشغل الفيديو */}
+      <div className="relative aspect-video bg-black flex items-center justify-center group">
+        <ReactPlayer
+          ref={playerRef}
+          url={url}
+          width="100%"
+          height="100%"
+          playing={playing}
+          onProgress={(state: ReactPlayerProgress) => setCurrentTime(state.playedSeconds)}
+          controls={false}
+          config={{ file: { attributes: { controlsList: 'nodownload' } } }}
+        />
+
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 bg-black/40 backdrop-blur-2xl px-10 py-5 rounded-full border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-500">
+          <button onClick={() => handleSeek(currentTime - 5)} className="text-white hover:text-indigo-400 transition-colors">
+            <RotateCcw className="w-5 h-5" />
+          </button>
+          <button onClick={() => setPlaying(!playing)} className="bg-white text-black p-4 rounded-full hover:scale-110 active:scale-90 transition-all shadow-xl">
+            {playing ? <Pause className="w-6 h-6 fill-black" /> : <Play className="w-6 h-6 fill-black" />}
+          </button>
+          <button onClick={() => handleSeek(currentTime + 5)} className="text-white hover:text-indigo-400 transition-colors">
+            <RotateCw className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="absolute top-4 right-4 pointer-events-none opacity-20 select-none">
+          <p className="text-[10px] text-white font-mono tracking-widest uppercase">
+            Encrypted Stream: AES-256 | {orderId?.substring(0, 8) || 'UNKNOWN'}
+          </p>
+        </div>
+      </div>
+
+      {/* 2. قسم التعليقات والأدوات */}
+      <div className="p-10 bg-slate-900/50">
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-4">
+            <div className="bg-indigo-500/20 p-3 rounded-2xl">
+              <Clock className="w-6 h-6 text-indigo-400" />
+            </div>
+            <div>
+              <span className="text-white font-black text-2xl tabular-nums">{formatTime(currentTime)}</span>
+              <p className="text-slate-500 text-[10px] font-bold uppercase tracking-tighter">توقيت المراجعة الحالي</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 text-emerald-400/60 bg-emerald-400/5 px-4 py-2 rounded-full border border-emerald-400/10">
+            <ShieldCheck className="w-4 h-4" />
+            <span className="text-[10px] font-black uppercase">{ar.legal?.vault ?? 'vault'}</span>
+          </div>
+        </div>
+
+        {/* مربع إدخال التعليق */}
+        <div className="relative mb-8">
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="اترك ملحوظة تقنية دقيقة في هذا الإطار..."
+            className="w-full bg-slate-800/40 border border-white/5 rounded-[2rem] p-6 text-white text-sm outline-none focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500/50 transition-all placeholder:text-slate-600 resize-none"
+            rows={3}
+          />
+          <button
+            disabled={isSyncing || !comment.trim()}
+            onClick={handleCommentSubmit}
+            className="absolute left-4 bottom-4 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-700 text-white px-8 py-3 rounded-2xl text-xs font-black flex items-center gap-2 shadow-lg shadow-indigo-900/20 transition-all active:scale-95"
+          >
+            {isSyncing ? <span className="animate-pulse">{ar.system?.loading ?? 'جاري التشفير...'}</span> : <><MessageSquare className="w-4 h-4" /> إرسال للزملاء</>}
+          </button>
+        </div>
+
+        {/* 3. قائمة التعليقات اللحظية */}
+        {commentsList.length > 0 && (
+          <div className="mb-8 space-y-3">
+            <h4 className="text-white font-bold mb-4 flex items-center gap-2">
+              <MessageSquare className="w-4 h-4 text-indigo-400" /> السجل الزمني للملاحظات ({commentsList.length})
+            </h4>
+            <div className="max-h-60 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
+              {commentsList.map((c) => (
+                <div key={c.id} className="flex gap-4 items-start bg-slate-800/20 p-4 rounded-2xl border border-white/5 cursor-pointer hover:border-indigo-500/30 transition-colors" onClick={() => handleSeek(c.timestamp)}>
+                  <span className="bg-indigo-500/10 text-indigo-400 font-mono text-xs px-3 py-1.5 rounded-lg mt-1 font-bold">{formatTime(c.timestamp)}</span>
+                  <p className="text-slate-300 text-sm leading-relaxed">{c.content}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 4. أزرار القرار السيادي */}
+        <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-8 mt-8">
+            <button onClick={handleApproval} className="flex items-center justify-center gap-2 py-4 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-black transition-all rounded-2xl font-black shadow-lg shadow-emerald-900/10">
+                <CheckCircle className="w-5 h-5" /> اعتماد وتسليم
+            </button>
+            <button onClick={handleDispute} className="flex items-center justify-center gap-2 py-4 bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500 hover:text-black transition-all rounded-2xl font-black shadow-lg shadow-rose-900/10">
+                <AlertOctagon className="w-5 h-5" /> طلب مراجعة / نزاع
+            </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+
+==============================
+FILE: src/components/ai/StoryboardGenerator.tsx
+==============================
+'use client';
+import React, { useState } from 'react';
+import { Wand2, Image as ImageIcon, Download, RefreshCw } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+
+export function StoryboardGenerator() {
+  const [prompt, setPrompt] = useState('');
+  const [generating, setGenerating] = useState(false);
+  const [images, setImages] = useState<string[]>([]);
+
+  const generate = () => {
+    setGenerating(true);
+    // Simulate API call delay
+    setTimeout(() => {
+      setImages([
+        '/images/features/workspace.jpg',
+        '/images/features/ai-brain.jpg',
+        '/images/features/live.jpg',
+        '/images/features/speed.jpg'
+      ]);
+      setGenerating(false);
+    }, 2000);
+  };
+
+  return (
+    <div className="bg-slate-900 border border-white/10 rounded-xl p-6 h-full flex flex-col">
+       <div className="mb-6">
+          <h3 className="font-bold text-white text-lg flex items-center gap-2">
+             <Wand2 className="text-purple-500" /> AI Storyboard Artist
+          </h3>
+          <p className="text-slate-400 text-sm">وصف المشهد وسيقوم الذكاء الاصطناعي برسمه لك.</p>
+       </div>
+
+       <div className="relative mb-6">
+          <textarea 
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder="مثال: لقطة واسعة لمدينة الرياض في المستقبل، سيارات طائرة، إضاءة نيون زرقاء، سينمائي..."
+            className="w-full h-32 bg-black/30 border border-white/10 rounded-xl p-4 text-white focus:border-purple-500 outline-none resize-none"
+          />
+          <Button 
+            onClick={generate}
+            disabled={!prompt || generating}
+            className="absolute bottom-3 left-3 bg-purple-600 hover:bg-purple-700 text-white shadow-lg"
+          >
+             {generating ? <RefreshCw size={16} className="animate-spin" /> : 'توليد المشهد'}
+          </Button>
+       </div>
+
+       <div className="grid grid-cols-2 gap-4 flex-1 overflow-y-auto min-h-[300px]">
+          {images.length > 0 ? images.map((img, i) => (
+             <div key={i} className="relative group rounded-lg overflow-hidden border border-white/10">
+                <img src={img} alt={`Scene ${i}`} className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                   <button className="p-2 bg-white/20 rounded-full hover:bg-white/40 text-white"><Download size={16} /></button>
+                   <button className="p-2 bg-white/20 rounded-full hover:bg-white/40 text-white"><ImageIcon size={16} /></button>
+                </div>
+             </div>
+          )) : (
+             <div className="col-span-2 flex flex-col items-center justify-center text-slate-500 border-2 border-dashed border-white/5 rounded-xl h-full">
+                <ImageIcon size={48} className="mb-4 opacity-50" />
+                <p>لم يتم توليد أي صور بعد</p>
+             </div>
+          )}
+       </div>
+    </div>
+  );
+}
+
+
+
+==============================
+FILE: src/components/ai/ScriptGenerator.tsx
+==============================
+'use client';
+import React, { useState } from 'react';
+import { Sparkles, Copy, RefreshCw, Save } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { useToast } from '@/components/ui/Toast';
+
+export function ScriptGenerator() {
+  const [loading, setLoading] = useState(false);
+  const [script, setScript] = useState('');
+  const { addToast } = useToast();
+
+  const handleGenerate = () => {
+    setLoading(true);
+    // محاكاة للتوليد
+    setTimeout(() => {
+      setScript(`عنوان الفيديو: رحلة إلى المستقبل
+
+[المشهد 1 - المقدمة] (00:00 - 00:15)
+صورة: لقطات سريعة لمدن مستقبلية وطائرات درون.
+صوت: "هل تخيلت يوماً كيف ستبدو حياتنا في عام 2050؟"
+
+[المشهد 2 - المشكلة] (00:15 - 00:45)
+صورة: شخص يستخدم تقنيات قديمة ويبدو منزعجاً.
+صوت: "اليوم، نواجه تحديات في السرعة والتواصل..."
+
+[المشهد 3 - الحل] (00:45 - 01:30)
+صورة: عرض لشاشات هولوغرام وذكاء اصطناعي يعمل.
+صوت: "لكن مع التطور المتسارع للذكاء الاصطناعي، الحلول أصبحت أقرب مما نتخيل."`);
+      setLoading(false);
+      addToast('success', 'تم توليد السيناريو بنجاح!');
+    }, 2000);
+  };
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+       {/* Input Panel */}
+       <div className="bg-slate-900 border border-white/10 rounded-xl p-6 flex flex-col gap-4">
+          <h3 className="font-bold text-white flex items-center gap-2">
+             <Sparkles size={18} className="text-indigo-400" /> إعدادات السيناريو
+          </h3>
+          
+          <div>
+             <label className="text-xs text-slate-400 mb-1 block">موضوع الفيديو</label>
+             <input type="text" placeholder="مثال: مستقبل الذكاء الاصطناعي" className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:border-indigo-500 outline-none" />
+          </div>
+
+          <div>
+             <label className="text-xs text-slate-400 mb-1 block">نبرة الصوت (Tone)</label>
+             <select className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:border-indigo-500 outline-none">
+                <option>حماسي / تشويقي</option>
+                <option>تعليمي / هادئ</option>
+                <option>احترافي / رسمي</option>
+                <option>كوميدي / مرح</option>
+             </select>
+          </div>
+
+          <div>
+             <label className="text-xs text-slate-400 mb-1 block">المدة التقريبية</label>
+             <select className="w-full bg-black/30 border border-white/10 rounded-lg p-3 text-white focus:border-indigo-500 outline-none">
+                <option>30 ثانية (Reels/TikTok)</option>
+                <option>دقيقتين (YouTube)</option>
+                <option>5 دقائق (وثائقي قصير)</option>
+             </select>
+          </div>
+
+          <Button onClick={handleGenerate} disabled={loading} className="mt-auto w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 shadow-lg shadow-indigo-500/20">
+             {loading ? <span className="flex items-center gap-2"><RefreshCw className="animate-spin" size={16}/> جاري التفكير...</span> : 'توليد السيناريو ✨'}
+          </Button>
+       </div>
+
+       {/* Output Panel */}
+       <div className="lg:col-span-2 bg-slate-900 border border-white/10 rounded-xl p-6 flex flex-col relative">
+          <div className="flex justify-between items-center mb-4 pb-4 border-b border-white/5">
+             <h3 className="font-bold text-white">النتيجة</h3>
+             <div className="flex gap-2">
+                <button className="p-2 hover:bg-white/10 rounded text-slate-400 hover:text-white" title="نسخ"><Copy size={16}/></button>
+                <button className="p-2 hover:bg-white/10 rounded text-slate-400 hover:text-white" title="حفظ"><Save size={16}/></button>
+             </div>
+          </div>
+          
+          <textarea 
+            className="flex-1 w-full bg-transparent border-none text-slate-300 focus:outline-none resize-none leading-relaxed font-mono text-sm"
+            placeholder="السيناريو سيظهر هنا..."
+            value={script}
+            readOnly
+          />
+       </div>
+    </div>
+  );
+}
+
+
+
+==============================
+FILE: src/components/ai/digital-twin/DigitalTwinSetup.tsx
+==============================
+'use client';
+import React, { useState } from 'react';
+import Image from 'next/image';
+import { User, Mic, Video, Sparkles, Check } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+
+export function DigitalTwinSetup() {
+  const [step, setStep] = useState(1);
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center h-[600px]">
+      <div className="relative h-full bg-slate-900 rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex items-center justify-center">
+        {step < 3 ? (
+          <div className="text-center p-8">
+            <div className="w-32 h-32 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+              <User size={64} className="text-slate-600" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">جاري بناء نسختك الرقمية...</h3>
+            <p className="text-slate-400 text-sm">أكمل الخطوات لإنشاء أفاتار يتحدث بصوتك وصورتك.</p>
+          </div>
+        ) : (
+          <div className="relative w-full h-full">
+            <Image
+              src="/images/features/live.jpg"
+              alt="معاينة التوأم الرقمي"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+            />
+            <div className="absolute bottom-8 left-8 right-8 bg-black/80 backdrop-blur border border-white/10 p-4 rounded-xl">
+              <p className="text-white text-sm font-medium">&quot;مرحباً، هذا هو التوأم الرقمي الخاص بي. يمكنني قراءة أي نص تكتبه بنفس نبرة صوتي!&quot;</p>
+              <div className="flex gap-2 mt-2">
+                <div className="h-1 w-1 bg-green-500 rounded-full animate-bounce" />
+                <div className="h-1 w-1 bg-green-500 rounded-full animate-bounce delay-75" />
+                <div className="h-1 w-1 bg-green-500 rounded-full animate-bounce delay-150" />
+              </div>
+            </div>
+            <div className="absolute top-4 right-4 bg-indigo-600 text-white text-[10px] font-bold px-2 py-1 rounded">AI GENERATED</div>
+          </div>
+        )}
+      </div>
+
+      <div className="space-y-6">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-white mb-2">التوأم الرقمي (Digital Twin)</h2>
+          <p className="text-slate-400">اصنع محتوى لا نهائي دون الحاجة للتصوير كل مرة.</p>
+        </div>
+
+        <div className={`p-4 rounded-xl border transition-all ${step === 1 ? 'bg-indigo-900/20 border-indigo-500' : 'bg-slate-900 border-white/5 opacity-50'}`}>
+          <div className="flex justify-between items-center mb-2">
+            <h4 className="font-bold text-white flex items-center gap-2"><Mic size={18} /> بصمة الصوت</h4>
+            {step > 1 && <Check size={16} className="text-green-500" />}
+          </div>
+          <p className="text-xs text-slate-400 mb-4">اقرأ نصاً قصيراً لمدة دقيقتين لتدريب النموذج على نبرة صوتك.</p>
+          {step === 1 && <Button onClick={() => setStep(2)} className="w-full bg-indigo-600 text-white">بدء التسجيل</Button>}
+        </div>
+
+        <div className={`p-4 rounded-xl border transition-all ${step === 2 ? 'bg-indigo-900/20 border-indigo-500' : 'bg-slate-900 border-white/5 opacity-50'}`}>
+          <div className="flex justify-between items-center mb-2">
+            <h4 className="font-bold text-white flex items-center gap-2"><Video size={18} /> ملامح الوجه</h4>
+            {step > 2 && <Check size={16} className="text-green-500" />}
+          </div>
+          <p className="text-xs text-slate-400 mb-4">ارفع فيديو بدقة 4K لوجهك وأنت تتحدث بوضوح في إضاءة جيدة.</p>
+          {step === 2 && <Button onClick={() => setStep(3)} className="w-full bg-indigo-600 text-white">رفع الفيديو</Button>}
+        </div>
+
+        <div className={`p-4 rounded-xl border transition-all ${step === 3 ? 'bg-indigo-900/20 border-indigo-500' : 'bg-slate-900 border-white/5 opacity-50'}`}>
+          <div className="flex justify-between items-center mb-2">
+            <h4 className="font-bold text-white flex items-center gap-2"><Sparkles size={18} /> المعالجة</h4>
+          </div>
+          <p className="text-xs text-slate-400 mb-4">سيقوم النظام بدمج الصوت والصورة لإنشاء النموذج.</p>
+          {step === 3 && <Button className="w-full bg-green-600 text-white font-bold">حفظ النموذج</Button>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+==============================
+FILE: src/components/ai/vision/FaceVault.tsx
+==============================
+'use client';
+import React from 'react';
+import { User, Plus, MoreHorizontal } from 'lucide-react';
+import { Avatar } from '@/components/ui/Avatar';
+
+export function FaceVault() {
+  const people = [
+    { id: 1, name: 'محمد كمال', role: 'Main Actor', appearances: 142, image: '/avatars/mohamed.jpg' },
+    { id: 2, name: 'سارة علي', role: 'Director', appearances: 56, image: '/avatars/sara.jpg' },
+    { id: 3, name: 'خالد عمر', role: 'Guest Star', appearances: 12, image: '/avatars/khaled.jpg' },
+    { id: 4, name: 'مجهول #1', role: 'Unknown', appearances: 8, image: '/avatars/ahmed.jpg' },
+  ];
+
+  return (
+    <div className="bg-slate-900 border border-white/10 rounded-xl p-6">
+       <div className="flex justify-between items-center mb-6">
+          <h3 className="font-bold text-white flex items-center gap-2">
+             <User className="text-blue-400" /> الأشخاص (People Vault)
+          </h3>
+          <p className="text-xs text-slate-400">تم التعرف على 24 شخصاً في مكتبتك.</p>
+       </div>
+
+       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {people.map((person) => (
+             <div key={person.id} className="bg-black/20 border border-white/5 rounded-xl p-4 flex flex-col items-center hover:bg-white/5 transition-colors cursor-pointer group">
+                <div className="relative mb-3">
+                   <Avatar src={person.image} size="lg" />
+                   <div className="absolute -bottom-1 -right-1 bg-indigo-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border border-black">
+                      {person.appearances}
+                   </div>
+                </div>
+                <h4 className="font-bold text-white text-sm text-center mb-1">{person.name}</h4>
+                <span className="text-[10px] text-slate-500 bg-white/5 px-2 py-0.5 rounded">{person.role}</span>
+                
+                {/* Hover Actions */}
+                <div className="mt-3 w-full opacity-0 group-hover:opacity-100 transition-opacity">
+                   <button className="w-full py-1 bg-white text-black text-[10px] font-bold rounded hover:bg-slate-200">
+                      عرض المشاهد
+                   </button>
+                </div>
+             </div>
+          ))}
+
+          {/* Add New */}
+          <div className="border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center p-4 hover:border-white/20 hover:bg-white/5 transition-colors cursor-pointer text-slate-500 hover:text-white">
+             <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-2">
+                <Plus size={24} />
+             </div>
+             <span className="text-xs font-bold">تعريف وجه جديد</span>
+          </div>
+       </div>
+    </div>
+  );
+}
+
+
+
+==============================
+FILE: src/components/dashboard/IngestStatus.tsx
+==============================
+'use client';
+import React from 'react';
+import { FileCog, CheckCircle, Loader2 } from 'lucide-react';
+
+export function IngestStatus() {
+  return (
+    <div className="bg-card border border-border rounded-xl p-4 w-72">
+       <div className="flex items-center gap-2 mb-4 text-muted-foreground">
+          <FileCog size={18} />
+          <h3 className="font-bold text-sm">حالة المعالجة (Ingest)</h3>
+       </div>
+
+       <div className="space-y-4">
+          <StatusItem
+             name="A001_C004.mxf"
+             task="Generating Proxy (720p)"
+             status="processing"
+             progress={65}
+          />
+          <StatusItem
+             name="Drone_Shot_05.mov"
+             task="Optimizing Audio"
+             status="processing"
+             progress={30}
+          />
+          <StatusItem
+             name="Interview_Cam_B.mp4"
+             task="Ready to Edit"
+             status="completed"
+          />
+       </div>
+    </div>
+  );
+}
+
+// تعريف الواجهة النمطية الصارمة للمكون
+interface StatusItemProps {
+  name: string;
+  task: string;
+  status: string;
+  progress?: number;
+}
+
+function StatusItem({ name, task, status, progress = 0 }: StatusItemProps) {
+    return (
+        <div className="space-y-1">
+            <div className="flex justify-between items-start">
+               <span className="text-xs font-bold truncate w-40 block">{name}</span>
+               {status === 'completed' ? (
+                  <CheckCircle size={14} className="text-emerald-500" />
+               ) : (
+                  <Loader2 size={14} className="text-blue-500 animate-spin" />
+               )}
+            </div>
+
+            <p className="text-[10px] text-muted-foreground flex justify-between">
+               <span>{task}</span>
+               {status === 'processing' && <span>{progress}%</span>}
+            </p>
+
+            {status === 'processing' && (
+               <div className="h-1 w-full bg-muted rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-500 transition-all duration-300" style={{ width: `${progress}%` }} />
+               </div>
+            )}
+        </div>
+    )
+}
+
+
+==============================
+FILE: src/components/dashboard/GlobalAssetLibrary.tsx
+==============================
+'use client';
+import React from 'react';
+import { Library, FileImage, FileAudio, FileVideo, Download, MoreVertical } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+
+export function GlobalAssetLibrary() {
+  return (
+    <div className="h-full flex flex-col">
+       <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center gap-3">
+             <div className="p-3 bg-purple-100 text-purple-700 rounded-lg"><Library size={24} /></div>
+             <div>
+                <h1 className="text-2xl font-bold">مكتبة الأصول العالمية</h1>
+                <p className="text-muted-foreground text-sm">ملفات مشتركة متاحة لجميع مشاريع الفريق.</p>
+             </div>
+          </div>
+          <Button variant="primary">رفع أصول جديدة</Button>
+       </div>
+
+       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <AssetCard name="Official_Logo.png" type="image" size="2 MB" />
+          <AssetCard name="Brand_Intro_4K.mp4" type="video" size="150 MB" />
+          <AssetCard name="Background_Music.wav" type="audio" size="45 MB" />
+          <AssetCard name="Watermark_White.png" type="image" size="1 MB" />
+          <AssetCard name="Lower_Thirds_Template.mogrt" type="video" size="12 MB" />
+       </div>
+    </div>
+  );
+}
+
+// تعريف الواجهة النمطية الصارمة للمكون
+interface AssetCardProps {
+  name: string;
+  type: string;
+  size: string;
+}
+
+function AssetCard({ name, type, size }: AssetCardProps) {
+    // تعريف نوع الكائن ليقبل نصوصاً كمفاتيح ومكونات React كقيم
+    const icons: Record<string, React.ElementType> = { image: FileImage, video: FileVideo, audio: FileAudio };
+    const Icon = icons[type] || FileImage;
+
+    return (
+        <div className="group border border-border rounded-xl p-4 hover:shadow-md transition-all bg-card relative">
+           <div className="aspect-square bg-muted/30 rounded-lg mb-3 flex items-center justify-center text-muted-foreground group-hover:text-primary transition-colors">
+              <Icon size={32} />
+           </div>
+           <h4 className="font-bold text-sm truncate mb-1">{name}</h4>
+           <p className="text-xs text-muted-foreground">{size}</p>
+
+           <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+              <button className="p-1 bg-white shadow rounded hover:text-primary"><Download size={14} /></button>
+              <button className="p-1 bg-white shadow rounded hover:text-primary"><MoreVertical size={14} /></button>
+           </div>
+        </div>
+    )
+}
+
+
+==============================
+FILE: src/components/dashboard/ProjectTemplates.tsx
+==============================
+'use client';
+import React from 'react';
+import { Plus, Briefcase, Video, MonitorPlay, Smartphone } from 'lucide-react';
+
+export function ProjectTemplates() {
+  return (
+    <div className="mb-8">
+       <h3 className="font-bold text-lg mb-4">ابدأ مشروعاً جديداً</h3>
+       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          {/* Blank */}
+          <TemplateCard
+             icon={Plus}
+             title="مشروع فارغ"
+             color="bg-primary text-white"
+             isNew
+          />
+
+          {/* YouTube */}
+          <TemplateCard
+             icon={MonitorPlay}
+             title="YouTube Video"
+             desc="16:9 • 4K"
+             color="bg-red-50 text-red-600 hover:border-red-200"
+          />
+
+          {/* Reels */}
+          <TemplateCard
+             icon={Smartphone}
+             title="Reels / TikTok"
+             desc="9:16 • Vertical"
+             color="bg-pink-50 text-pink-600 hover:border-pink-200"
+          />
+
+          {/* Corporate */}
+          <TemplateCard
+             icon={Briefcase}
+             title="عرض شركات"
+             desc="Slideshow Ready"
+             color="bg-blue-50 text-blue-600 hover:border-blue-200"
+          />
+
+          {/* Podcast */}
+          <TemplateCard
+             icon={Video}
+             title="Video Podcast"
+             desc="Multi-Cam Sync"
+             color="bg-purple-50 text-purple-600 hover:border-purple-200"
+          />
+       </div>
+    </div>
+  );
+}
+
+// تعريف الواجهة النمطية وتحديد أنواع البيانات
+interface TemplateCardProps {
+  icon: React.ElementType;
+  title: string;
+  desc?: string;
+  color: string;
+  isNew?: boolean;
+}
+
+function TemplateCard({ icon: Icon, title, desc, color, isNew }: TemplateCardProps) {
+    return (
+        <div className={`p-4 border border-border rounded-xl cursor-pointer transition-all hover:-translate-y-1 hover:shadow-md flex flex-col justify-center items-center text-center h-32 relative group bg-card ${!isNew ? 'hover:bg-muted/20' : ''}`}>
+            <div className={`p-3 rounded-full mb-2 transition-transform group-hover:scale-110 ${color}`}>
+                <Icon size={24} />
+            </div>
+            <h4 className="font-bold text-sm">{title}</h4>
+            {desc && <p className="text-[10px] text-muted-foreground mt-1">{desc}</p>}
+        </div>
+    )
+}
+
+
+==============================
+FILE: src/components/dashboard/ExportQueue.tsx
+==============================
+'use client';
+import React from 'react';
+import { Loader2, CheckCircle, XCircle, Pause, Play, ArrowUp } from 'lucide-react';
+
+export function ExportQueue() {
+  return (
+    <div className="w-80 bg-card border-l border-border h-full flex flex-col">
+       <div className="p-3 border-b border-border bg-muted/10 text-xs font-bold uppercase text-muted-foreground flex justify-between">
+          <span>Export Queue</span>
+          <span className="text-primary">Active (1)</span>
+       </div>
+
+       <div className="flex-1 overflow-y-auto p-2 space-y-2">
+          {/* Active Item */}
+          <QueueItem
+             name="Final_Vlog_Ep1.mp4"
+             status="processing"
+             progress={45}
+             format="H.264 • 4K"
+          />
+
+          {/* Queued Item */}
+          <QueueItem
+             name="Instagram_Story_Cut.mp4"
+             status="queued"
+             format="H.265 • 1080p"
+          />
+
+          {/* Finished Item */}
+          <QueueItem
+             name="Client_Draft_Review.mov"
+             status="completed"
+             format="ProRes • 1080p"
+          />
+
+          {/* Failed Item */}
+          <QueueItem
+             name="Raw_Backup_Archive.zip"
+             status="failed"
+             format="ZIP Archive"
+          />
+       </div>
+    </div>
+  );
+}
+
+// تعريف الواجهة وجعل progress اختيارية (?)
+interface QueueItemProps {
+  name: string;
+  status: string;
+  progress?: number;
+  format: string;
+}
+
+function QueueItem({ name, status, progress = 0, format }: QueueItemProps) {
+    // تم التعديل هنا لاستخدام React.ReactNode بدلاً من JSX.Element
+    const statusIcons: Record<string, React.ReactNode> = {
+        processing: <Loader2 size={14} className="animate-spin text-blue-500" />,
+        queued: <div className="w-3.5 h-3.5 rounded-full border-2 border-slate-300" />,
+        completed: <CheckCircle size={14} className="text-emerald-500" />,
+        failed: <XCircle size={14} className="text-red-500" />
+    };
+
+    return (
+        <div className="p-3 bg-background border border-border rounded-lg hover:border-primary/30 transition-colors group relative overflow-hidden">
+           {status === 'processing' && progress > 0 && (
+              <div className="absolute bottom-0 left-0 h-0.5 bg-blue-500 transition-all duration-300" style={{ width: `${progress}%` }} />
+           )}
+
+           <div className="flex justify-between items-start mb-1">
+              <div className="flex items-center gap-2 overflow-hidden">
+                 <div className="shrink-0 pt-0.5">{statusIcons[status]}</div>
+                 <span className={`text-xs font-bold truncate ${status === 'completed' ? 'text-muted-foreground line-through' : ''}`}>{name}</span>
+              </div>
+           </div>
+
+           <div className="flex justify-between items-center text-[10px] text-muted-foreground pl-6">
+              <span>{format}</span>
+              <span className="capitalize">{status === 'processing' ? `${progress}%` : status}</span>
+           </div>
+
+           {/* Hover Actions */}
+           <div className="absolute right-2 top-2 hidden group-hover:flex gap-1 bg-background shadow-sm border border-border rounded p-0.5">
+              {status === 'processing' && <button className="p-1 hover:text-yellow-600"><Pause size={10} /></button>}
+              {status === 'queued' && <button className="p-1 hover:text-emerald-600"><Play size={10} /></button>}
+              {status === 'queued' && <button className="p-1 hover:text-blue-600"><ArrowUp size={10} /></button>}
+           </div>
+        </div>
+    )
+}
+
+
+==============================
+FILE: src/components/studio/StudioPlayer.tsx
+==============================
+// @ts-expect-error: legacy compatibility
+'use client';
+import React, { useRef, useState } from 'react';
+import ReactPlayer from 'react-player';
+import { Play, Pause, SkipBack, SkipForward, Maximize, PenTool } from 'lucide-react';
+import { useProjectStore } from '@/store/useProjectStore';
+
+export const StudioPlayer = () => {
+  const playerRef = useRef<ReactPlayer>(null);
+  const { isPlaying, setIsPlaying, setCurrentTime, currentTime } = useProjectStore();
+  const [drawMode, setDrawMode] = useState(false);
+
+  const handlePlayPause = () => setIsPlaying(!isPlaying);
+
+  const handleProgress = (state: { playedSeconds: number }) => {
+    if (!isPlaying) return; // منع التحديث العشوائي
+    setCurrentTime(state.playedSeconds);
+  };
+
+  // محاكاة التنقل بالفريم (نفترض 30fps)
+  const stepFrame = (frames: number) => {
+    const current = playerRef.current?.getCurrentTime() || 0;
+    const newTime = current + (frames / 30);
+    playerRef.current?.seekTo(newTime, 'seconds');
+    setCurrentTime(newTime);
+  };
+
+  return (
+    <div className="flex flex-col h-full bg-black relative group">
+      {/* Video Area */}
+      <div className="flex-1 relative bg-black flex items-center justify-center overflow-hidden">
+        <ReactPlayer
+          ref={playerRef}
+          url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" // Placeholder Video
+          width="100%"
+          height="100%"
+          playing={isPlaying}
+          onProgress={handleProgress}
+          controls={false} // Custom controls only
+        />
+        
+        {/* Drawing Canvas Overlay (Placeholder functionality) */}
+        {drawMode && (
+          <div className="absolute inset-0 z-20 cursor-crosshair border-4 border-brand-alert/50 pointer-events-none">
+            <div className="absolute top-4 right-4 bg-brand-alert text-white text-xs px-3 py-1 rounded-full">
+              وضع الرسم نشط
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Custom Controls Bar */}
+      <div className="h-16 bg-brand-dark border-t border-gray-800 flex items-center px-6 gap-6 z-30">
+        <button 
+          onClick={handlePlayPause}
+          className="w-10 h-10 rounded-full bg-brand-secondary text-white flex items-center justify-center hover:scale-110 transition-transform"
+        >
+          {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" className="ml-1" />}
+        </button>
+
+        <div className="flex items-center gap-2 border-l border-r border-gray-700 px-4 mx-2">
+          <button onClick={() => stepFrame(-1)} className="text-gray-400 hover:text-white p-2" title="إطار للخلف">
+            <SkipBack size={18} />
+          </button>
+          <span className="font-mono text-brand-secondary text-lg font-bold min-w-[80px] text-center">
+            {new Date(currentTime * 1000).toISOString().substr(14, 5)}
+            <span className="text-xs text-gray-500 ml-1">:{Math.floor((currentTime % 1) * 30)}f</span>
+          </span>
+          <button onClick={() => stepFrame(1)} className="text-gray-400 hover:text-white p-2" title="إطار للأمام">
+            <SkipForward size={18} />
+          </button>
+        </div>
+
+        {/* Tools */}
+        <div className="flex-1 flex justify-center gap-4">
+          <button 
+            onClick={() => setDrawMode(!drawMode)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${drawMode ? 'bg-brand-alert text-white' : 'hover:bg-gray-800 text-gray-300'}`}
+          >
+            <PenTool size={16} />
+            <span className="text-sm">رسم</span>
+          </button>
+        </div>
+
+        <button className="text-gray-400 hover:text-white">
+          <Maximize size={20} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+
+
+==============================
+FILE: src/lib/storage.ts
+==============================
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { supabase } from './supabase';
+
+// إعداد عميل S3 لـ Cloudflare R2
+const s3Client = new S3Client({
+  region: 'auto',
+  endpoint: process.env.CLOUDFLARE_R2_ENDPOINT,
+  credentials: {
+    accessKeyId: process.env.CLOUDFLARE_R2_ACCESS_KEY_ID || '',
+    secretAccessKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY || '',
+  },
+});
+
+/**
+ * 1. رفع الملفات الخفيفة إلى Supabase (صور، عقود)
+ */
+export async function uploadLightFile(file: File, bucket: 'avatars' | 'documents', path: string) {
+  const { data, error } = await supabase.storage.from(bucket).upload(path, file, {
+    upsert: true,
+  });
+  if (error) throw error;
+  return supabase.storage.from(bucket).getPublicUrl(path).data.publicUrl;
+}
+
+/**
+ * 2. محرك الفيديوهات الثقيلة - Cloudflare R2
+ * توليد رابط رفع مباشر (Presigned URL) صالح لمدة 15 دقيقة
+ */
+export async function getR2UploadUrl(fileName: string, fileType: string) {
+  const bucketName = process.env.CLOUDFLARE_R2_BUCKET_NAME;
+  
+  if (!bucketName || !process.env.CLOUDFLARE_R2_ENDPOINT) {
+    throw new Error('فشل إعدادات Cloudflare R2: المتغيرات مفقودة.');
+  }
+
+  const command = new PutObjectCommand({
+    Bucket: bucketName,
+    Key: fileName,
+    ContentType: fileType,
+  });
+
+  // توليد الرابط الموقع (صالح لمدة 900 ثانية)
+  const uploadUrl = await getSignedUrl(s3Client, command, { expiresIn: 900 });
+  
+  // الرابط العام للملف بعد الرفع (عبر Custom Domain)
+  const publicUrl = `${process.env.CLOUDFLARE_R2_PUBLIC_DOMAIN}/${fileName}`;
+
+  return { uploadUrl, publicUrl };
+}
+
+
+==============================
+FILE: src/lib/contracts.ts
+==============================
+export async function activateSovereignAgreement(jobId: string, clientId: string, freelancerId: string, budget: number) {
+  console.log(`✅ [Sovereign Engine]: تم تفعيل العقد الذكي للمشروع ${jobId}`);
+  return true;
+}
+
+export async function generateContract(orderId: string, clientId: string, freelancerId: string, price: number) {
+  console.log(`📜 [Contract Engine]: توليد العقد الذكي للمشروع ${orderId}`);
+  return true;
+}
+
+
+==============================
+FILE: src/lib/constants/roles.ts
+==============================
+// src/lib/constants/roles.ts
+
+// إيميل الإدارة العليا (God Mode)
+export const SOVEREIGN_EMAIL = 'monteerlystudio26@gmail.com';
+export const SOVEREIGN_TITLE = 'الوضع السيادي (Super Admin)';
+
+// قاموس الأدوار السيادية الـ 43 مقسمة إلى 11 طبقة
+export const MCOS_ROLES = {
+  foundation: {
+    id: 'foundation', label: 'الأساس (الإنتاج الأساسي)', color: 'blue',
+    roles: [
+      { id: 'video_editor', label: 'مونتير فيديو' },
+      { id: 'motion_designer', label: 'مصمم موشن جرافيك' },
+      { id: 'sound_engineer', label: 'مهندس صوت' },
+      { id: 'colorist', label: 'ملون سينمائي (Colorist)' }
+    ]
+  },
+  freelance_specialists: {
+    id: 'freelance_specialists', label: 'التخصصات المستقلة', color: 'indigo',
+    roles: [
+      { id: 'animator_3d', label: 'رسام تحريك 3D' },
+      { id: 'vfx_artist', label: 'مؤثرات بصرية (VFX)' },
+      { id: 'subtitler', label: 'مترجم ومفرغ نصوص' },
+      { id: 'thumbnail_designer', label: 'مصمم صور مصغرة' }
+    ]
+  },
+  clients: {
+    id: 'clients', label: 'العملاء (الطلب)', color: 'emerald',
+    roles: [
+      { id: 'content_creator', label: 'صانع محتوى' },
+      { id: 'film_director', label: 'مخرج أفلام' },
+      { id: 'marketing_agency', label: 'وكالة تسويق' },
+      { id: 'business_owner', label: 'صاحب شركة' }
+    ]
+  },
+  growth: {
+    id: 'growth', label: 'النمو والإنتاج المتقدم', color: 'purple',
+    roles: [
+      { id: 'creative_director', label: 'مخرج إبداعي' },
+      { id: 'youtube_strategist', label: 'خبير إستراتيجيات يوتيوب' },
+      { id: 'social_media_manager', label: 'مدير منصات التواصل' }
+    ]
+  },
+  market: {
+    id: 'market', label: 'السوق والمبيعات', color: 'amber',
+    roles: [
+      { id: 'asset_seller', label: 'بائع أصول (Assets)' },
+      { id: 'buyer', label: 'مشتري' }
+    ]
+  },
+  marketing: {
+    id: 'marketing', label: 'التسويق والنمو', color: 'rose',
+    roles: [
+      { id: 'marketing_manager', label: 'مدير تسويق' },
+      { id: 'seo_specialist', label: 'أخصائي SEO' },
+      { id: 'partnerships_manager', label: 'مدير شراكات' },
+      { id: 'community_manager', label: 'مدير مجتمع' }
+    ]
+  },
+  finance: {
+    id: 'finance', label: 'المالية والأعمال', color: 'emerald',
+    roles: [
+      { id: 'accountant', label: 'محاسب' },
+      { id: 'revenue_manager', label: 'مدير إيرادات' },
+      { id: 'sales_manager', label: 'مدير مبيعات' },
+      { id: 'subscriptions_manager', label: 'مدير اشتراكات' }
+    ]
+  },
+  legal: {
+    id: 'legal', label: 'القانون والحوكمة', color: 'slate',
+    roles: [
+      { id: 'legal_advisor', label: 'مستشار قانوني' },
+      { id: 'ip_manager', label: 'مسؤول حقوق ملكية' },
+      { id: 'contracts_manager', label: 'مدير عقود' }
+    ]
+  },
+  ai: {
+    id: 'ai', label: 'الذكاء الاصطناعي', color: 'cyan',
+    roles: [
+      { id: 'ai_trainer', label: 'مدرب AI' },
+      { id: 'ai_ux_designer', label: 'مصمم تجربة AI' },
+      { id: 'ai_qa', label: 'مراقب جودة AI' }
+    ]
+  },
+  management: {
+    id: 'management', label: 'الإدارة العليا', color: 'amber',
+    roles: [
+      { id: 'product_manager', label: 'مدير منتج' },
+      { id: 'operations_manager', label: 'مدير عمليات' },
+      { id: 'ux_director', label: 'مدير تجربة المستخدم' }
+    ]
+  },
+  security: {
+    id: 'security', label: 'الأمان والرقابة', color: 'red',
+    roles: [
+      { id: 'security_officer', label: 'مسؤول أمن' },
+      { id: 'data_protection_officer', label: 'مسؤول حماية بيانات' },
+      { id: 'internal_auditor', label: 'مدقق داخلي' }
+    ]
+  },
+  institutions: {
+    id: 'institutions', label: 'المؤسسات والوكالات', color: 'indigo',
+    roles: [
+      { id: 'agency_owner', label: 'صاحب وكالة' },
+      { id: 'project_manager', label: 'مدير مشاريع' },
+      { id: 'talent_agent', label: 'وكيل مواهب' },
+      { id: 'hr_manager', label: 'مدير موارد بشرية' },
+      { id: 'production_company', label: 'شركة إنتاج' },
+      { id: 'educational_institution', label: 'مؤسسة تعليمية' }
+    ]
+  }
+};
+
+// قاموس الألوان للطبقات (تم إضافته جراحياً لدعم مكون المؤشر)
+export const LAYER_COLORS: Record<string, string> = {
+  foundation: 'bg-blue-600',
+  freelance_specialists: 'bg-indigo-600',
+  clients: 'bg-emerald-600',
+  growth: 'bg-purple-600',
+  market: 'bg-amber-600',
+  marketing: 'bg-rose-600',
+  finance: 'bg-emerald-600',
+  legal: 'bg-slate-600',
+  ai: 'bg-cyan-600',
+  management: 'bg-amber-600',
+  security: 'bg-red-600',
+  institutions: 'bg-indigo-600'
+};
+
+
+==============================
+FILE: src/lib/store/workspaceStore.ts
+==============================
+import { create } from 'zustand';
+
+export const useStore = create((set) => ({
+  open: true,
+  toggle: () => set((s: unknown) => ({ open: !s.open }))
+}));
+
+
+==============================
+FILE: src/app/[locale]/workspace/actions.ts
+==============================
+'use server'
+
+import { supabase } from '@/lib/supabase';
+import { getR2UploadUrl } from '@/lib/storage';
+import { logAuditEvent } from '@/lib/audit';
+import { revalidatePath } from 'next/cache';
+
+/**
+ * الحصول على تذكرة رفع (Presigned URL) لرفع الفيديو مباشرة لـ R2
+ */
+export async function getUploadTicket(orderId: string, fileName: string, fileType: string) {
+  const { data: user } = await supabase.auth.getUser();
+  if (!user?.user) throw new Error('غير مصرح لك');
+
+  // إنشاء مسار فريد للملف: orders/ID/timestamp_filename
+  const path = `orders/${orderId}/${Date.now()}_${fileName}`;
+  
+  const ticket = await getR2UploadUrl(path, fileType);
+
+  await logAuditEvent({
+    actorIdentifier: `freelancer:${user.user.id}`,
+    action: 'requested_upload_ticket',
+    module: 'storage',
+    entityId: orderId
+  });
+
+  return { uploadUrl: ticket.uploadUrl, publicUrl: ticket.publicUrl, path };
+}
+
+/**
+ * تحديث الطلب برابط التسليم النهائي بعد نجاح الرفع
+ */
+export async function finalizeDelivery(orderId: string, publicUrl: string, notes: string) {
+  const { data: user } = await supabase.auth.getUser();
+  if (!user?.user) throw new Error('غير مصرح لك');
+
+  const { error } = await supabase.from('orders').update({
+    status: 'review_pending',
+    delivery_url: publicUrl,
+    delivery_notes: notes,
+    delivered_at: new Date().toISOString()
+  }).eq('id', orderId);
+
+  if (error) throw error;
+
+  revalidatePath('/[locale]/workspace');
+  return { success: true };
+}
+
+
+==============================
+FILE: src/app/[locale]/workspace/review-actions.ts
+==============================
+'use server'
+
+import { supabase } from '@/lib/supabase';
+import { revalidatePath } from 'next/cache';
+import { logAuditEvent } from '@/lib/audit';
+
+/**
+ * إضافة تعليق زمني مرتبط بلحظة محددة في الفيديو
+ */
+export async function addTimecodedComment(orderId: string, timestamp: number, content: string) {
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth?.user) throw new Error('غير مصرح لك بالوصول');
+
+  const { error } = await supabase.from('order_comments').insert({
+    order_id: orderId,
+    user_id: auth.user.id,
+    content: content,
+    timestamp: Math.floor(timestamp),
+    is_internal: false
+  });
+
+  if (error) throw error;
+
+  await logAuditEvent({
+    actorIdentifier: `user:${auth.user.id}`,
+    action: 'added_timecoded_comment',
+    module: 'workspace',
+    entityId: orderId,
+    snapshot: { timestamp, contentLength: content.length }
+  });
+
+  revalidatePath('/[locale]/workspace');
+  return { success: true };
+}
+
+/**
+ * جلب جميع التعليقات الخاصة بالمشروع
+ */
+export async function getOrderComments(orderId: string) {
+  const { data, error } = await supabase
+    .from('order_comments')
+    .select('*')
+    .eq('order_id', orderId)
+    .order('timestamp', { ascending: true });
+
+  if (error) return [];
+  return data;
+}
+
+/**
+ * اعتماد العمل وتحرير الضمان المالي
+ */
+export async function approveDelivery(orderId: string) {
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth?.user) throw new Error('غير مصرح لك بالوصول');
+
+  // 1. تحديث حالة الطلب
+  await supabase.from('orders').update({ status: 'completed' }).eq('id', orderId);
+  
+  // 2. تسجيل الحدث
+  await logAuditEvent({
+    actorIdentifier: `user:${auth.user.id}`,
+    action: 'approved_delivery',
+    module: 'workspace',
+    entityId: orderId,
+    snapshot: { status: 'completed' }
+  });
+
+  revalidatePath('/[locale]/workspace');
+  return { success: true };
+}
+
+/**
+ * رفض العمل وتحويله لمركز النزاعات
+ */
+export async function disputeDelivery(orderId: string, reason: string) {
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth?.user) throw new Error('غير مصرح لك بالوصول');
+
+  // 1. إدراج النزاع في جدول النزاعات
+  await supabase.from('disputes').insert({
+    contract_id: orderId, // بافتراض أن orderId هو نفسه رقم العقد
+    reason: reason,
+    status: 'pending'
+  });
+
+  // 2. تحديث حالة الطلب
+  await supabase.from('orders').update({ status: 'disputed' }).eq('id', orderId);
+
+  await logAuditEvent({
+    actorIdentifier: `user:${auth.user.id}`,
+    action: 'opened_dispute',
+    module: 'workspace',
+    entityId: orderId,
+    snapshot: { reason }
+  });
+
+  revalidatePath('/[locale]/workspace');
+  return { success: true };
+}
+

@@ -11,29 +11,37 @@ export function IngestStatus() {
        </div>
 
        <div className="space-y-4">
-          <StatusItem 
-             name="A001_C004.mxf" 
-             task="Generating Proxy (720p)" 
-             status="processing" 
-             progress={65} 
+          <StatusItem
+             name="A001_C004.mxf"
+             task="Generating Proxy (720p)"
+             status="processing"
+             progress={65}
           />
-          <StatusItem 
-             name="Drone_Shot_05.mov" 
-             task="Optimizing Audio" 
-             status="processing" 
-             progress={30} 
+          <StatusItem
+             name="Drone_Shot_05.mov"
+             task="Optimizing Audio"
+             status="processing"
+             progress={30}
           />
-          <StatusItem 
-             name="Interview_Cam_B.mp4" 
-             task="Ready to Edit" 
-             status="completed" 
+          <StatusItem
+             name="Interview_Cam_B.mp4"
+             task="Ready to Edit"
+             status="completed"
           />
        </div>
     </div>
   );
 }
 
-function StatusItem({ name, task, status, progress }: unknown) {
+// تعريف الواجهة النمطية الصارمة للمكون
+interface StatusItemProps {
+  name: string;
+  task: string;
+  status: string;
+  progress?: number;
+}
+
+function StatusItem({ name, task, status, progress = 0 }: StatusItemProps) {
     return (
         <div className="space-y-1">
             <div className="flex justify-between items-start">
@@ -44,7 +52,7 @@ function StatusItem({ name, task, status, progress }: unknown) {
                   <Loader2 size={14} className="text-blue-500 animate-spin" />
                )}
             </div>
-            
+
             <p className="text-[10px] text-muted-foreground flex justify-between">
                <span>{task}</span>
                {status === 'processing' && <span>{progress}%</span>}
@@ -58,4 +66,3 @@ function StatusItem({ name, task, status, progress }: unknown) {
         </div>
     )
 }
-

@@ -1,0 +1,43 @@
+'use client';
+import React from 'react';
+import { Server, Database, Cloud, Activity } from 'lucide-react';
+
+export function ServiceStatus() {
+  return (
+    <div className="bg-card border border-border rounded-xl p-4 w-72">
+       <div className="flex items-center gap-2 mb-4 border-b border-border pb-2">
+          <Activity size={18} className="text-primary" />
+          <h3 className="font-bold text-sm">حالة النظام (System Health)</h3>
+       </div>
+
+       <div className="space-y-3">
+          <StatusRow label="API Gateway" icon={Server} status="operational" latency="24ms" />
+          <StatusRow label="Render Farm" icon={Cloud} status="busy" latency="85%" />
+          <StatusRow label="Database (SQL)" icon={Database} status="operational" latency="12ms" />
+          <StatusRow label="Object Storage" icon={Server} status="degraded" latency="150ms" />
+       </div>
+    </div>
+  );
+}
+
+function StatusRow({ label, icon: Icon, status, latency }: unknown) {
+    const colors: unknown = {
+        operational: 'bg-emerald-500',
+        busy: 'bg-yellow-500',
+        degraded: 'bg-red-500'
+    };
+
+    return (
+        <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center gap-2">
+               <Icon size={14} className="text-muted-foreground" />
+               <span>{label}</span>
+            </div>
+            <div className="flex items-center gap-2">
+               <span className="text-[10px] text-muted-foreground font-mono">{latency}</span>
+               <div className={`w-2.5 h-2.5 rounded-full ${colors[status]} ${status === 'busy' ? 'animate-pulse' : ''}`} title={status} />
+            </div>
+        </div>
+    )
+}
+

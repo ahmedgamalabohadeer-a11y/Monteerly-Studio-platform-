@@ -14,7 +14,9 @@ export function OAuthProviders() {
       });
       if (error) throw error;
     } catch (err: unknown) {
-      alert(`❌ فشل الاتصال: ${err.message}`);
+      // استخراج رسالة الخطأ بشكل آمن
+      const errorMessage = err instanceof Error ? err.message : 'حدث خطأ غير معروف أثناء الاتصال';
+      alert(`❌ فشل الاتصال: ${errorMessage}`);
       setLoading(null);
     }
   };
