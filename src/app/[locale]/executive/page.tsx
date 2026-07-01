@@ -206,9 +206,7 @@ export default async function Page() {
           <div className="grid gap-6 xl:grid-cols-[1.45fr_0.85fr]">
             <div className="space-y-6">
               <div className="flex flex-wrap items-center gap-3">
-                <div
-                  className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-black ${statusClasses}`}
-                >
+                <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-black ${statusClasses}`}>
                   <span className={`h-2.5 w-2.5 rounded-full ${statusDotClasses}`} />
                   {brainManifest?.status || 'unknown'}
                 </div>
@@ -341,22 +339,10 @@ export default async function Page() {
             </div>
 
             <div className="space-y-4">
-              <InfoCard
-                label="المصدر المرجعي الأساسي"
-                value={brainManifest?.canonical_source || '—'}
-              />
-              <InfoCard
-                label="ملف الدستور التنفيذي"
-                value={brainManifest?.constitution_path || '—'}
-              />
-              <InfoCard
-                label="ملف حالة التنفيذ"
-                value={brainManifest?.execution_state_path || '—'}
-              />
-              <InfoCard
-                label="مسار سكربت البناء"
-                value={brainManifest?.script_path || '—'}
-              />
+              <InfoCard label="المصدر المرجعي الأساسي" value={brainManifest?.canonical_source || '—'} />
+              <InfoCard label="ملف الدستور التنفيذي" value={brainManifest?.constitution_path || '—'} />
+              <InfoCard label="ملف حالة التنفيذ" value={brainManifest?.execution_state_path || '—'} />
+              <InfoCard label="مسار سكربت البناء" value={brainManifest?.script_path || '—'} />
             </div>
           </div>
 
@@ -378,15 +364,9 @@ export default async function Page() {
                 tone={brainManifest?.status === 'fresh' ? 'green' : 'amber'}
               />
               <MetricCard label="إصدار المولد" value={brainManifest?.generator_version || '—'} />
-              <MetricCard
-                label="آخر فحص"
-                value={brainManifest?.last_checked_at || brainManifest?.generated_at || '—'}
-              />
+              <MetricCard label="آخر فحص" value={brainManifest?.last_checked_at || brainManifest?.generated_at || '—'} />
               <MetricCard label="آخر إعادة بناء" value={brainManifest?.last_rebuilt_at || '—'} />
-              <MetricCard
-                label="Found / Missing"
-                value={`${brainManifest?.found_count ?? 0} / ${brainManifest?.missing_count ?? 0}`}
-              />
+              <MetricCard label="Found / Missing" value={`${brainManifest?.found_count ?? 0} / ${brainManifest?.missing_count ?? 0}`} />
               <MetricCard
                 label="هل يلزم Rebuild"
                 value={String(brainManifest?.needs_rebuild)}
@@ -459,18 +439,9 @@ export default async function Page() {
             </div>
 
             <div className="space-y-4">
-              <HashCard
-                label="Canonical Source SHA256"
-                fullValue={brainManifest?.canonical_source_sha256 || '—'}
-              />
-              <HashCard
-                label="System State SHA256"
-                fullValue={brainManifest?.system_state_sha256 || '—'}
-              />
-              <HashCard
-                label="Script SHA256"
-                fullValue={brainManifest?.script_sha256 || '—'}
-              />
+              <HashCard label="Canonical Source SHA256" fullValue={brainManifest?.canonical_source_sha256 || '—'} />
+              <HashCard label="System State SHA256" fullValue={brainManifest?.system_state_sha256 || '—'} />
+              <HashCard label="Script SHA256" fullValue={brainManifest?.script_sha256 || '—'} />
             </div>
           </div>
         </section>

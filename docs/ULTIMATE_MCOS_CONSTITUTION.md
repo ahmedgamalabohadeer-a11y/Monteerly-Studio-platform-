@@ -244,3 +244,795 @@ Monteerly OS هو نظام تشغيل إبداعي سيادي لإدارة دو�
 1. **Sprint A:** بناء وتوليد جميع مكونات `Sovereign_Workspace_Layer` لضمان تشغيل الاستوديو.
 2. **Sprint B:** ربط `Financial_and_Escrow_Layer` مع بوابات الدفع والمنطق المالي.
 3. **Sprint C:** تفعيل خوارزمية `Marketplace_DNA_Match` في سوق العمل.
+
+## Global Frontend Constitution
+
+### Purpose
+Monteerly is not a generic SaaS dashboard. It is a sovereign operating system for creative production, protected collaboration, approvals, rights, execution, and executive visibility across the entire platform.
+
+The frontend must therefore communicate:
+- operational gravity
+- cultural taste
+- creative authority
+- secure runtime trust
+- premium editorial control
+
+Every page, section, component, panel, modal, and navigation layer must feel like it belongs to one unified system identity.
+
+---
+
+### Core Interface Problem
+The interface solves a high-trust operational problem for:
+- freelancers
+- creative professionals
+- production teams
+- agencies
+- clients
+- decision-makers
+- platform operators
+
+Users must feel that Monteerly is:
+- secure
+- deliberate
+- premium
+- operationally intelligent
+- visually distinctive
+- impossible to confuse with a template SaaS product
+
+---
+
+### Tonal Commitment
+The official Monteerly frontend tone is:
+
+**Luxury Editorial Executive**
+
+This tone is mandatory across the platform unless a page has an explicitly approved specialized mode.
+
+This means:
+- not playful
+- not cute
+- not casual startup
+- not generic enterprise dashboard
+- not neon cyberpunk
+- not loud marketing SaaS
+- not default template minimalism
+
+The interface should feel like:
+- a high-end media control room
+- a sovereign creative command layer
+- a premium editorial operating surface
+- a confidential executive system for production intelligence
+
+---
+
+### Memorability Principle
+The one thing users must remember most is:
+
+**Monteerly feels like a sovereign executive environment, not just another software product.**
+
+Every visual decision must reinforce this memory.
+
+---
+
+### Global Layout Law
+The global layout must act as an ambient system frame, not a marketing banner container.
+
+Rules:
+- The top global bar must be calm, thin, dark, and operational.
+- It may communicate secure runtime state, encryption status, or system context.
+- It must never visually overpower the actual page title.
+- It must never look like a promotional strip, alert ad, or launch ribbon.
+- Loud saturated bars such as bright indigo, bright blue, or banner-like announcement strips are forbidden in the global shell.
+
+The layout should create:
+- atmosphere
+- trust
+- continuity
+- platform-wide identity
+
+The layout should not create:
+- noise
+- urgency theater
+- visual shouting
+- duplicated page hierarchy
+
+---
+
+### Identity Atmosphere
+Monteerly’s default atmospheric identity across the platform is:
+
+- dark sovereign surfaces
+- restrained cyan / emerald / steel accents
+- subtle executive illumination
+- layered depth
+- low-noise premium contrast
+- editorial spacing
+- infrastructural calm
+
+The visual world should imply:
+- encryption
+- governance
+- creative seriousness
+- protected execution
+- intelligent systems
+
+---
+
+### Typography Constitution
+Typography must feel authored, intentional, and premium.
+
+Mandatory rules:
+- Use a characterful display font paired with a refined body font.
+- Typography must feel culturally aware and visually authored.
+- Arabic typography must feel elegant, strong, and premium.
+- English/supporting latin typography must feel modern and precise.
+- Display typography must be reserved for moments of hierarchy, not sprayed everywhere.
+- Body typography must maximize readability without becoming generic.
+
+Forbidden fonts and directions:
+- Inter
+- Roboto
+- Arial
+- Space Grotesk
+- generic system font stacks as primary identity
+- overused “AI startup” type combinations
+
+Typography should communicate:
+- authority
+- clarity
+- editorial intent
+- premium restraint
+
+---
+
+### Color Constitution
+Monteerly must commit to one dominant world, not a scattered palette.
+
+Approved direction:
+- predominantly dark surfaces
+- highly controlled contrast
+- restrained accent usage
+- cyan / emerald / ice / muted steel as operational signal colors
+- occasional amber only for warnings, review attention, or system caution
+
+Color must be used as:
+- hierarchy
+- meaning
+- operational state
+- selective emphasis
+
+Color must never be used as:
+- decoration without meaning
+- evenly distributed rainbow balance
+- generic SaaS friendliness
+- purple-on-white cliché
+- startup gradient filler
+
+Forbidden:
+- bright indigo marketing bars in the global shell
+- generic purple gradients on light backgrounds
+- evenly distributed accent colors across all UI regions
+- decorative color with no semantic purpose
+
+---
+
+### Motion Constitution
+Motion must be intentional, sparse, memorable, and hierarchical.
+
+Rules:
+- Prioritize page-load reveals and structural transitions over excessive hover gimmicks.
+- Motion should communicate system confidence, not novelty.
+- Main transitions should feel smooth, deliberate, and premium.
+- High-level sections may reveal with stagger, fade, clip, or elevation transitions.
+- Hover effects should remain subtle and secondary.
+- Motion must never turn the platform into a toy-like interface.
+
+Priority order:
+1. page entry
+2. section reveal
+3. modal/sheet transitions
+4. navigation state changes
+5. micro-hover details
+
+Forbidden:
+- excessive bouncing
+- playful hover spam
+- random pulsing elements
+- decorative motion with no hierarchy
+- flashy animation in executive surfaces
+
+---
+
+### Composition Constitution
+The layout system must avoid generic centered SaaS stacking.
+
+Approved principles:
+- asymmetry where useful
+- controlled negative space
+- layered depth
+- long-form editorial rhythm
+- diagonal or offset visual movement when appropriate
+- mixed density: quiet zones + information zones
+- page-specific composition logic
+
+Forbidden:
+- endless centered hero + centered paragraph + centered button
+- default card grids repeated mechanically
+- equal-width feature cards with no hierarchy
+- obvious AI-template composition
+- cookie-cutter dashboard symmetry everywhere
+
+Every page must have at least one clear compositional idea.
+
+---
+
+### Surface and Texture Constitution
+Flat, empty, generic backgrounds are not acceptable unless explicitly justified.
+
+Approved tools:
+- radial light bloom
+- subtle grid textures
+- layered overlays
+- low-opacity structural patterns
+- gradient atmosphere with restraint
+- cinematic depth
+- soft glass or blur only when purposeful
+- premium border glow used minimally
+
+Textures must support the system identity without becoming decorative clutter.
+
+Forbidden:
+- empty flat backgrounds with no atmosphere
+- decorative blobs with no meaning
+- random glows
+- noisy fake futuristic visuals
+- copy-paste “AI generated landing page” effects
+
+---
+
+### Component Law
+Components must feel like parts of one sovereign operating environment.
+
+All major components must express:
+- purpose
+- state
+- hierarchy
+- confidence
+- system continuity
+
+Component rules:
+- cards must not feel generic or starter-template based
+- panels should carry executive depth and premium borders
+- modals should feel infrastructural, not pop-marketing
+- badges should communicate state, not decoration
+- chips, tabs, and pills should be compact and precise
+- tables should feel like intelligence surfaces
+- forms should feel secure and intentional
+- empty states must still feel premium and system-native
+
+Forbidden:
+- colored icon circles as lazy visual filler
+- thick left-border cards in SaaS style
+- inflated rounded blobs everywhere
+- pastel callout components
+- inconsistent panel treatments between pages
+
+---
+
+### Shell vs Page Hierarchy
+The platform shell must never compete with the page content.
+
+Rules:
+- global shell = ambient identity
+- page header = functional identity
+- section header = local narrative
+- cards/panels = operational detail
+
+Therefore:
+- the global shell must stay visually quieter than page heroes and executive headers
+- page titles must remain the strongest hierarchy point inside any route
+- no global strip should look louder than the current page
+- executive pages must feel composed, not interrupted by shell chrome
+
+---
+
+### Executive Surface Law
+Pages related to:
+- executive
+- governance
+- runtime
+- admin
+- financial control
+- legal review
+- production intelligence
+
+must use a stricter and calmer visual discipline than promotional pages.
+
+These pages should feel:
+- verified
+- monitored
+- serious
+- high-trust
+- system-native
+
+They must not feel:
+- campaign-like
+- startup-like
+- cheerful product-marketing pages
+- overloaded with decorative effects
+
+---
+
+### Marketplace and Public Pages
+Public and marketplace-facing pages may be more expressive than internal executive surfaces, but they must still remain inside the Monteerly identity system.
+
+That means:
+- still premium
+- still authored
+- still dark or tonally coherent
+- still distinctive
+- still non-generic
+
+Marketing pages may expand drama, but may not violate the constitutional rules of typography, palette discipline, or compositional originality.
+
+---
+
+### Accessibility and Professionalism Law
+Distinctive design must never break clarity.
+
+Required:
+- readable text contrast
+- clear hierarchy
+- semantic structure
+- mobile-safe density
+- keyboard-safe interaction
+- readable Arabic and English typography
+- touch-safe targets
+- consistent spacing logic
+
+Bold identity is required.
+Chaos is forbidden.
+
+---
+
+### Anti-Template Law
+Nothing in Monteerly should be easily mistaken for:
+- a default Tailwind template
+- a generic startup landing page
+- a dashboard starter kit
+- an AI-generated hero section
+- a clone of linear-style SaaS without contextual identity
+
+Before approving any page or component, the review question must be:
+
+**Could this belong to any random startup?**
+If the answer is yes, the design is not ready.
+
+---
+
+### Global Prohibitions
+Never use:
+- Inter, Roboto, Arial, Space Grotesk, or generic system fonts as the main brand identity
+- purple gradients on white
+- loud announcement banners in the app shell
+- generic centered stacks by default
+- repetitive three-column SaaS cards
+- decorative icon circles as filler
+- safe rainbow palettes
+- over-rounded starter-kit UI
+- flat generic backgrounds
+- motion without hierarchy
+- page shells that visually overpower the route content
+
+---
+
+### Global Approval Standard
+Every new page, section, or component added to Monteerly must pass these checks:
+
+1. Does it feel sovereign, premium, and authored?
+2. Does it match the luxury editorial executive tone?
+3. Does it avoid generic SaaS patterns?
+4. Does the shell remain quieter than the page?
+5. Is color used semantically, not decoratively?
+6. Is the typography distinctive and intentional?
+7. Does the composition contain a real visual idea?
+8. Does it feel native to Monteerly specifically?
+9. Would a user remember this environment after leaving it?
+10. Would this still feel premium if stripped of logos?
+
+If any answer is no, the implementation must be revised before approval.
+
+## Global Frontend Constitution
+
+### Insertion Intent
+This section is a constitutional design authority layer for the entire Monteerly platform.
+It governs all pages, route shells, shared layouts, visual systems, structural hierarchy, and cross-page frontend behavior.
+
+It must be treated as a binding reference for:
+- public pages
+- dashboard pages
+- executive pages
+- admin pages
+- marketplace pages
+- workspace pages
+- onboarding flows
+- internal tools
+- global shells
+- route-level layouts
+- reusable design primitives
+
+### Purpose
+Monteerly is not a generic SaaS dashboard.
+It is a sovereign operating system for creative production, protected collaboration, approvals, rights, execution, and executive visibility across the platform.
+
+The frontend must therefore communicate:
+- operational gravity
+- cultural taste
+- creative authority
+- secure runtime trust
+- premium editorial control
+
+Every page, section, component, panel, modal, and navigation layer must feel like it belongs to one unified system identity.
+
+### Core Interface Problem
+The interface solves a high-trust operational problem for:
+- freelancers
+- creative professionals
+- production teams
+- agencies
+- clients
+- decision-makers
+- operators
+
+Users must feel that Monteerly is:
+- secure
+- deliberate
+- premium
+- operationally intelligent
+- visually distinctive
+- impossible to confuse with a template SaaS product
+
+### Tonal Commitment
+The official Monteerly frontend tone is:
+
+**Luxury Editorial Executive**
+
+This tone is mandatory across the platform unless a page has an explicitly approved specialized mode.
+
+This means:
+- not playful
+- not cute
+- not casual startup
+- not generic enterprise dashboard
+- not neon cyberpunk
+- not loud marketing SaaS
+- not default template minimalism
+
+The interface should feel like:
+- a high-end media control room
+- a sovereign creative command layer
+- a premium editorial operating surface
+- a confidential executive system for production intelligence
+
+### Memorability Principle
+The one thing users must remember most is:
+
+**Monteerly feels like a sovereign executive environment, not just another software product.**
+
+Every visual decision must reinforce this memory.
+
+### Global Layout Law
+The global layout must act as an ambient system frame, not a marketing banner container.
+
+Rules:
+- The top global bar must be calm, thin, dark, and operational.
+- It may communicate secure runtime state, encryption status, or system context.
+- It must never visually overpower the actual page title.
+- It must never look like a promotional strip, alert ad, or launch ribbon.
+- Loud saturated bars such as bright indigo, bright blue, or banner-like announcement strips are forbidden in the global shell.
+
+The layout should create:
+- atmosphere
+- trust
+- continuity
+- platform-wide identity
+
+The layout should not create:
+- noise
+- urgency theater
+- visual shouting
+- duplicated page hierarchy
+
+### Identity Atmosphere
+Monteerly’s default atmospheric identity across the platform is:
+- dark sovereign surfaces
+- restrained cyan / emerald / steel accents
+- subtle executive illumination
+- layered depth
+- low-noise premium contrast
+- editorial spacing
+- infrastructural calm
+
+The visual world should imply:
+- encryption
+- governance
+- creative seriousness
+- protected execution
+- intelligent systems
+
+### Typography Constitution
+Typography must feel authored, intentional, and premium.
+
+Mandatory rules:
+- Use a characterful display font paired with a refined body font.
+- Typography must feel culturally aware and visually authored.
+- Arabic typography must feel elegant, strong, and premium.
+- English/supporting latin typography must feel modern and precise.
+- Display typography must be reserved for moments of hierarchy, not sprayed everywhere.
+- Body typography must maximize readability without becoming generic.
+
+Forbidden fonts and directions:
+- Inter
+- Roboto
+- Arial
+- Space Grotesk
+- generic system font stacks as primary identity
+- overused AI-startup type combinations
+
+Typography should communicate:
+- authority
+- clarity
+- editorial intent
+- premium restraint
+
+### Color Constitution
+Monteerly must commit to one dominant world, not a scattered palette.
+
+Approved direction:
+- predominantly dark surfaces
+- highly controlled contrast
+- restrained accent usage
+- cyan / emerald / ice / muted steel as operational signal colors
+- occasional amber only for warnings, review attention, or system caution
+
+Color must be used as:
+- hierarchy
+- meaning
+- operational state
+- selective emphasis
+
+Color must never be used as:
+- decoration without meaning
+- evenly distributed rainbow balance
+- generic SaaS friendliness
+- purple-on-white cliché
+- startup gradient filler
+
+Forbidden:
+- bright indigo marketing bars in the global shell
+- generic purple gradients on light backgrounds
+- evenly distributed accent colors across all UI regions
+- decorative color with no semantic purpose
+
+### Motion Constitution
+Motion must be intentional, sparse, memorable, and hierarchical.
+
+Rules:
+- Prioritize page-load reveals and structural transitions over excessive hover gimmicks.
+- Motion should communicate system confidence, not novelty.
+- Main transitions should feel smooth, deliberate, and premium.
+- High-level sections may reveal with stagger, fade, clip, or elevation transitions.
+- Hover effects should remain subtle and secondary.
+- Motion must never turn the platform into a toy-like interface.
+
+Priority order:
+1. page entry
+2. section reveal
+3. modal and sheet transitions
+4. navigation state changes
+5. micro-hover details
+
+Forbidden:
+- excessive bouncing
+- playful hover spam
+- random pulsing elements
+- decorative motion with no hierarchy
+- flashy animation in executive surfaces
+
+### Composition Constitution
+The layout system must avoid generic centered SaaS stacking.
+
+Approved principles:
+- asymmetry where useful
+- controlled negative space
+- layered depth
+- long-form editorial rhythm
+- diagonal or offset visual movement when appropriate
+- mixed density between quiet zones and information zones
+- page-specific composition logic
+
+Forbidden:
+- endless centered hero + centered paragraph + centered button
+- default card grids repeated mechanically
+- equal-width feature cards with no hierarchy
+- obvious AI-template composition
+- cookie-cutter dashboard symmetry everywhere
+
+Every page must have at least one clear compositional idea.
+
+### Surface and Texture Constitution
+Flat, empty, generic backgrounds are not acceptable unless explicitly justified.
+
+Approved tools:
+- radial light bloom
+- subtle grid textures
+- layered overlays
+- low-opacity structural patterns
+- gradient atmosphere with restraint
+- cinematic depth
+- soft glass or blur only when purposeful
+- premium border glow used minimally
+
+Textures must support the system identity without becoming decorative clutter.
+
+Forbidden:
+- empty flat backgrounds with no atmosphere
+- decorative blobs with no meaning
+- random glows
+- noisy fake futuristic visuals
+- copy-paste AI-generated landing page effects
+
+### Component Law
+Components must feel like parts of one sovereign operating environment.
+
+All major components must express:
+- purpose
+- state
+- hierarchy
+- confidence
+- system continuity
+
+Component rules:
+- cards must not feel generic or starter-template based
+- panels should carry executive depth and premium borders
+- modals should feel infrastructural, not pop-marketing
+- badges should communicate state, not decoration
+- chips, tabs, and pills should be compact and precise
+- tables should feel like intelligence surfaces
+- forms should feel secure and intentional
+- empty states must still feel premium and system-native
+
+Forbidden:
+- colored icon circles as lazy visual filler
+- thick left-border cards in SaaS style
+- inflated rounded blobs everywhere
+- pastel callout components
+- inconsistent panel treatments between pages
+
+### Shell vs Page Hierarchy
+The platform shell must never compete with the page content.
+
+Rules:
+- global shell = ambient identity
+- page header = functional identity
+- section header = local narrative
+- cards and panels = operational detail
+
+Therefore:
+- the global shell must stay visually quieter than page heroes and executive headers
+- page titles must remain the strongest hierarchy point inside any route
+- no global strip should look louder than the current page
+- executive pages must feel composed, not interrupted by shell chrome
+
+### Executive Surface Law
+Pages related to:
+- executive
+- governance
+- runtime
+- admin
+- financial control
+- legal review
+- production intelligence
+
+must use a stricter and calmer visual discipline than promotional pages.
+
+These pages should feel:
+- verified
+- monitored
+- serious
+- high-trust
+- system-native
+
+They must not feel:
+- campaign-like
+- startup-like
+- cheerful product-marketing pages
+- overloaded with decorative effects
+
+### Marketplace and Public Pages
+Public and marketplace-facing pages may be more expressive than internal executive surfaces, but they must still remain inside the Monteerly identity system.
+
+That means:
+- still premium
+- still authored
+- still dark or tonally coherent
+- still distinctive
+- still non-generic
+
+Marketing pages may expand drama, but may not violate the constitutional rules of typography, palette discipline, or compositional originality.
+
+### Accessibility and Professionalism Law
+Distinctive design must never break clarity.
+
+Required:
+- readable text contrast
+- clear hierarchy
+- semantic structure
+- mobile-safe density
+- keyboard-safe interaction
+- readable Arabic and English typography
+- touch-safe targets
+- consistent spacing logic
+
+Bold identity is required.
+Chaos is forbidden.
+
+### Anti-Template Law
+Nothing in Monteerly should be easily mistaken for:
+- a default Tailwind template
+- a generic startup landing page
+- a dashboard starter kit
+- an AI-generated hero section
+- a clone of linear-style SaaS without contextual identity
+
+Before approving any page or component, the review question must be:
+
+**Could this belong to any random startup?**
+
+If the answer is yes, the design is not ready.
+
+## Layout Enforcement Rules
+
+### Canonical File Targets
+The primary constitutional enforcement targets are:
+- `src/app/[locale]/layout.tsx`
+- any nested route-level `layout.tsx` files
+- dashboard shell layouts
+- executive shell layouts
+- admin shell layouts
+- marketplace shell layouts
+- onboarding shell layouts
+
+### Enforcement Priority
+`src/app/[locale]/layout.tsx` is the first and highest-priority frontend enforcement layer for:
+- platform atmosphere
+- shell hierarchy
+- runtime framing
+- language-aware direction
+- cross-page visual consistency
+
+### Mandatory Rules
+All global and nested layouts must:
+- preserve the calm sovereign shell
+- avoid loud announcement-banner behavior
+- keep the shell visually quieter than the route content
+- maintain dark premium atmospheric identity by default
+- support Arabic RTL and English/LTR correctly
+- avoid generic SaaS shell chrome
+- reinforce Monteerly as a secure executive environment
+
+### Forbidden Layout Behaviors
+Layouts must not:
+- use bright indigo announcement strips
+- use launch-banner aesthetics
+- compete with page-level hero sections
+- flatten the system into generic dashboard chrome
+- impose loud visual branding on every route
+- break shell-vs-page hierarchy
+
+### Review Condition
+No layout change is approved unless it preserves:
+- Global Frontend Constitution
+- Shell vs Page Hierarchy
+- Anti-Template Law
+- Monteerly sovereign executive identity
