@@ -5,25 +5,62 @@ import { withAuthGuard } from '@/lib/security/apiGuard';
 
 const s3Client = new S3Client({
   region: 'auto',
-  endpoint: process.env.R2_ENDPOINT_URL || 'https://dummy.r2.cloudflarestorage.com',
+  endpoint:
+    process.env.R2_ENDPOINT_URL ||
+    'https://dummy.r2.cloudflarestorage.com',
   credentials: {
     accessKeyId: process.env.R2_ACCESS_KEY_ID || 'dummy',
     secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || 'dummy',
   },
 });
 
+type AuthenticatedUser = {
+  id: string;
+};
+
+type R2UploadRequest = {
+  fileName: string;
+  fileType: string;
+  projectId?: string;
+};
+
 export async function POST(req: Request) {
-  // تمرير المتغيرات بشكل صريح
-  return withAuthGuard(req, async (req: Request, user: any) => {
+  return withAuthGuard(req, async (request: Request, user: unknown) => {
     try {
-      const { fileName, fileType, projectId } = await req.json();
-      if (!fileName || !fileType) return NextResponse.json({ error: 'بيانات ناقصة.' }, { status: 400 });
+      const body = (await request.json()) as Partial<R2UploadRequest>;
+      const fileName = body.fileName;
+      const fileType = body.fileType;
+      const projectId = body.projectId;
 
-      // تحديد نوع المتغير بوضوح (Type Casting) لاستخراج المُعرّف بأمان
-      const currentUser = user as { id: string };
+      if (
+        typeof fileName !== 'string' ||
+        typeof fileType !== 'string' ||
+        !fileName.trim() ||
+        !fileType.trim()
+      ) {
+        return NextResponse.json(
+          { error: 'بيانات ناقصة.' },
+          { status: 400 }
+        );
+      }
 
-      // تأمين المسار وربطه بهوية المستخدم
-      const secureKey = `projects/${projectId || 'general'}/${currentUser.id}_${Date.now()}_${fileName.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+      const currentUser = user as AuthenticatedUser;
+
+      if (!currentUser?.id) {
+        return NextResponse.json(
+          { error: 'بيانات المستخدم غير صالحة.' },
+          { status: 401 }
+        );
+      }
+
+      const safeProjectId =
+        typeof projectId === 'string' && projectId.trim()
+          ? projectId.trim()
+          : 'general';
+
+      const sanitizedFileName = fileName.replace(/[^a-zA-Z0-9.-]/g, '_');
+
+      const secureKey = `projects/${safeProjectId}/${currentUser.id}_${Date.now()}_${sanitizedFileName}`;
 
       const command = new PutObjectCommand({
         Bucket: process.env.R2_BUCKET_NAME || 'monteerly-vault',
@@ -31,16 +68,27 @@ export async function POST(req: Request) {
         ContentType: fileType,
       });
 
-      const presignedUrl = await getSignedUrl(s3Client, command, { expiresIn: 900 });
+      const presignedUrl = await getSignedUrl(s3Client, command, {
+        expiresIn: 900,
+      });
 
-      return NextResponse.json({
-        uploadUrl: presignedUrl,
-        finalFileUrl: `${process.env.R2_PUBLIC_DOMAIN || 'https://pub-domain.r2.dev'}/${secureKey}`,
-        secureKey
-      }, { status: 200 });
+      return NextResponse.json(
+        {
+          uploadUrl: presignedUrl,
+          finalFileUrl: `${
+            process.env.R2_PUBLIC_DOMAIN || 'https://pub-domain.r2.dev'
+          }/${secureKey}`,
+          secureKey,
+        },
+        { status: 200 }
+      );
     } catch (error: unknown) {
       console.error('R2 Generation Error:', error);
-      return NextResponse.json({ error: 'فشل في توليد بوابة الرفع.' }, { status: 500 });
+
+      return NextResponse.json(
+        { error: 'فشل في توليد بوابة الرفع.' },
+        { status: 500 }
+      );
     }
   });
 }

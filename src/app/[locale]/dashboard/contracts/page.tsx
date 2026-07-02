@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { Briefcase, Clock, CheckCircle2 } from 'lucide-react';
+import { Briefcase, Clock } from 'lucide-react';
 
 export default function ContractsPage() {
   const activeContracts = [
@@ -11,7 +11,7 @@ export default function ContractsPage() {
   return (
     <div className="min-h-screen bg-[#05050A] text-slate-50 p-8" dir="rtl">
         <h1 className="text-3xl font-black mb-8 flex items-center gap-3"><Briefcase className="text-indigo-500" /> العقود النشطة</h1>
-        
+
         <div className="space-y-4">
             {activeContracts.map(c => (
                 <div key={c.id} className="bg-[#0A0A0F] border border-white/5 p-6 rounded-2xl flex justify-between items-center">

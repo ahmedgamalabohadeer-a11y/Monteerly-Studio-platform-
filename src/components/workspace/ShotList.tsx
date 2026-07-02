@@ -1,7 +1,24 @@
 'use client';
 import React from 'react';
-import { Plus, GripVertical, CheckSquare, Square } from 'lucide-react';
+import { Plus, GripVertical } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+
+type ShotStatus = 'done' | 'pending' | 'planned';
+
+type ShotRowProps = {
+  id: number;
+  scene: string;
+  type: string;
+  status: ShotStatus;
+  notes: string;
+};
+
+const statusConfig: Record<ShotStatus, { color: string; label: string }> = {
+  done: { color: 'bg-emerald-100 text-emerald-700', label: 'تم التصوير' },
+  pending: { color: 'bg-yellow-100 text-yellow-700', label: 'مراجعة' },
+  planned: { color: 'bg-slate-100 text-slate-700', label: 'مخطط' },
+};
+
 export function ShotList() {
   return (
     <div className="bg-card border border-border rounded-xl overflow-hidden">
@@ -9,6 +26,7 @@ export function ShotList() {
           <h3 className="font-bold text-sm">قائمة اللقطات (Shot List)</h3>
           <Button size="sm" variant="outline" icon={<Plus size={14} />}>لقطة جديدة</Button>
        </div>
+
        <table className="w-full text-sm text-right">
           <thead className="bg-muted text-muted-foreground text-xs uppercase">
              <tr>
@@ -29,24 +47,20 @@ export function ShotList() {
     </div>
   );
 }
-function ShotRow({ id, scene, type, status, notes }: unknown) {
-    const statusConfig: unknown = {
-        done: { color: 'bg-emerald-100 text-emerald-700', label: 'تم التصوير' },
-        pending: { color: 'bg-yellow-100 text-yellow-700', label: 'مراجعة' },
-        planned: { color: 'bg-slate-100 text-slate-700', label: 'مخطط' },
-    };
-    return (
-        <tr className="hover:bg-muted/50 transition-colors group">
-            <td className="p-3 text-center text-muted-foreground cursor-grab"><GripVertical size={16} /></td>
-            <td className="p-3 font-mono text-xs">{String(id).padStart(3, '0')}</td>
-            <td className="p-3 font-bold">{scene}</td>
-            <td className="p-3"><span className="bg-muted px-2 py-1 rounded text-xs border border-border">{type}</span></td>
-            <td className="p-3">
-               <span className={`text-[10px] px-2 py-1 rounded-full font-bold ${statusConfig[status].color}`}>
-                  {statusConfig[status].label}
-               </span>
-            </td>
-            <td className="p-3 text-muted-foreground text-xs truncate max-w-[150px]">{notes}</td>
-        </tr>
-    )
+
+function ShotRow({ id, scene, type, status, notes }: ShotRowProps) {
+  return (
+    <tr className="hover:bg-muted/50 transition-colors group">
+        <td className="p-3 text-center text-muted-foreground cursor-grab"><GripVertical size={16} /></td>
+        <td className="p-3 font-mono text-xs">{String(id).padStart(3, '0')}</td>
+        <td className="p-3 font-bold">{scene}</td>
+        <td className="p-3"><span className="bg-muted px-2 py-1 rounded text-xs border border-border">{type}</span></td>
+        <td className="p-3">
+           <span className={`text-[10px] px-2 py-1 rounded-full font-bold ${statusConfig[status].color}`}>
+              {statusConfig[status].label}
+           </span>
+        </td>
+        <td className="p-3 text-muted-foreground text-xs truncate max-w-[150px]">{notes}</td>
+    </tr>
+  );
 }

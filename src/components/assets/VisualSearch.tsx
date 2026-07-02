@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { ScanSearch, Upload } from 'lucide-react';
+import { ScanSearch } from 'lucide-react';
 
 export function VisualSearch() {
   return (

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { use } from 'react';
 import { ShieldCheck, Lock, Loader2, ArrowRight, CreditCard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -8,13 +8,13 @@ export default function SecureCheckout({ params }: { params: Promise<{ projectId
   const { projectId } = use(params);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  
+
   // بيانات محاكية مؤقتاً لتلخيص المشروع (سيتم جلبها لاحقاً من قاعدة البيانات)
   const projectSummary = {
     title: "مونتاج فيديو إعلاني احترافي",
-    amount: 1500, // بالجنيه أو الدولار
+    amount: 1500,
     freelancer: "أحمد جمال",
-    fee: 30 // عمولة المنصة
+    fee: 30
   };
 
   const handlePayment = async () => {
@@ -25,11 +25,10 @@ export default function SecureCheckout({ params }: { params: Promise<{ projectId
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ projectId, amount: projectSummary.amount + projectSummary.fee })
       });
-      
+
       const data = await res.json();
-      
+
       if (data.redirectUrl) {
-        // إعادة توجيه العميل إلى بوابات Paymob المشفرة
         window.location.href = data.redirectUrl;
       } else {
         alert("تنبيه: بوابة الدفع في وضع التطوير (Sandbox). يلزم إدخال مفاتيح Paymob في الخزنة السرية (.env).");
@@ -59,9 +58,9 @@ export default function SecureCheckout({ params }: { params: Promise<{ projectId
 
         <div className="bg-[#0A0A0F] border border-white/5 rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
            <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-indigo-500 to-emerald-500"></div>
-           
+
            <h3 className="font-bold text-lg mb-6 border-b border-white/5 pb-4">ملخص التعاقد (م. رقم {projectId})</h3>
-           
+
            <div className="space-y-4 mb-8">
              <div className="flex justify-between items-center text-sm">
                <span className="text-slate-400">المشروع</span>
@@ -82,15 +81,15 @@ export default function SecureCheckout({ params }: { params: Promise<{ projectId
              <span className="text-3xl font-black text-white">{projectSummary.amount + projectSummary.fee} EGP</span>
            </div>
 
-           <button 
-             onClick={handlePayment} 
+           <button
+             onClick={handlePayment}
              disabled={loading}
              className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-[#12121A] disabled:text-slate-500 text-white py-4 rounded-xl font-black flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(79,70,229,0.2)]"
            >
              {loading ? <Loader2 className="animate-spin w-5 h-5" /> : <CreditCard className="w-5 h-5" />}
              {loading ? 'جاري تأمين الاتصال ببوابة الدفع...' : 'دفع آمن عبر (Paymob)'}
            </button>
-           
+
            <div className="mt-6 flex items-center justify-center gap-2 text-xs text-slate-500">
              <ShieldCheck className="w-4 h-4 text-emerald-500" />
              <span>اتصال مشفر ومحمي. لا نحتفظ ببيانات بطاقتك الائتمانية.</span>

@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Check, X, ExternalLink, AlertCircle } from 'lucide-react';
+import { Check, X, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function ModerationQueue() {
@@ -14,10 +14,8 @@ export function ModerationQueue() {
        <div className="divide-y divide-border">
           {[1, 2].map((i) => (
              <div key={i} className="p-4 flex flex-col md:flex-row gap-4 items-start md:items-center hover:bg-muted/10 transition-colors">
-                {/* Thumbnail */}
                 <div className="w-24 h-16 bg-slate-900 rounded-lg flex-shrink-0" />
-                
-                {/* Info */}
+
                 <div className="flex-1">
                    <div className="flex items-center gap-2 mb-1">
                       <span className="text-xs font-bold text-muted-foreground uppercase">خدمة (Gig)</span>
@@ -27,7 +25,6 @@ export function ModerationQueue() {
                    <p className="text-xs text-muted-foreground mt-1">بواسطة: أحمد كمال</p>
                 </div>
 
-                {/* Actions */}
                 <div className="flex items-center gap-2 w-full md:w-auto">
                    <Button size="sm" variant="ghost" icon={<ExternalLink size={16} />}>معاينة</Button>
                    <Button size="sm" variant="outline" className="text-red-500 hover:bg-red-50" icon={<X size={16} />}>رفض</Button>
@@ -39,4 +36,3 @@ export function ModerationQueue() {
     </div>
   );
 }
-

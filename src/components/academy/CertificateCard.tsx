@@ -1,8 +1,6 @@
 'use client';
 import React from 'react';
 import { Award, Share2, Download } from 'lucide-react';
-// استخدام زر TypeUI الموحد
-import { Button } from '@/components/ui/Button';
 
 export function CertificateCard() {
   return (

@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { MoreHorizontal, Mail, Shield, Plus } from 'lucide-react';
+import { MoreHorizontal, Shield, Plus } from 'lucide-react';
 
 export function AgencyTeamList() {
   const members = [

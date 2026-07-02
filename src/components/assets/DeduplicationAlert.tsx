@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Copy, AlertTriangle } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function DeduplicationAlert() {

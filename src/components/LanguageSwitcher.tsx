@@ -1,6 +1,7 @@
 "use client";
-import React from 'react';
-import { useI18n, Language } from "@/lib/i18n";
+
+import React from "react";
+import { useI18n } from "@/lib/i18n";
 import { Globe } from "lucide-react";
 
 export default function LanguageSwitcher() {
@@ -8,11 +9,11 @@ export default function LanguageSwitcher() {
 
   return (
     <button
-      onClick={() => switchLanguage(language === 'ar' ? 'en' : 'ar')}
-      className="flex items-center gap-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+      onClick={() => switchLanguage(language === "ar" ? "en" : "ar")}
+      className="flex items-center gap-2 rounded-md p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
       aria-label="Switch Language"
     >
-      <Globe className="w-4 h-4" />
+      <Globe className="h-4 w-4" />
       <span className="text-sm font-medium uppercase">{language}</span>
     </button>
   );

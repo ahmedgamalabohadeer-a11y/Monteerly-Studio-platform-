@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { Crown, Activity, Users, Wallet, ShieldAlert, TrendingUp, Settings, AlertOctagon } from 'lucide-react';
+import { Crown, Activity, Wallet, ShieldAlert, TrendingUp, AlertOctagon } from 'lucide-react';
 
 export default function SovereignGodMode() {
   const fraudAlerts = [
@@ -10,7 +10,7 @@ export default function SovereignGodMode() {
 
   return (
     <div className="min-h-screen bg-[#05050A] text-slate-50 font-sans flex flex-col md:flex-row" dir="rtl">
-      
+
       {/* Sidebar الإدارة */}
       <div className="w-full md:w-64 bg-[#0A0A0F] border-l border-white/5 p-6 flex flex-col hidden md:flex min-h-screen">
         <div className="flex items-center gap-3 mb-12">
@@ -33,7 +33,7 @@ export default function SovereignGodMode() {
 
         {/* مؤشرات حيوية (KPIs) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          {[ 
+          {[
             { label: 'إجمالي الإيرادات (المنصة)', val: '$45,230', icon: <TrendingUp className="text-emerald-500 w-6 h-6"/>, color: 'emerald' },
             { label: 'أموال في الضمان', val: '$124,500', icon: <Wallet className="text-indigo-500 w-6 h-6"/>, color: 'indigo' },
             { label: 'تراجعات بنكية (Chargebacks)', val: '1', icon: <AlertOctagon className="text-rose-500 w-6 h-6"/>, color: 'rose' }
@@ -63,7 +63,7 @@ export default function SovereignGodMode() {
                        <p className="text-xs text-slate-500 mt-1">السبب: {alert.reason}</p>
                     </div>
                     <div>
-                       {alert.score >= 20 ? 
+                       {alert.score >= 20 ?
                          <span className="text-xs font-bold text-rose-400 bg-rose-500/10 px-3 py-1.5 rounded-lg border border-rose-500/20">السحب محظور آلياً</span> :
                          <button className="text-xs bg-amber-600 hover:bg-amber-500 text-white px-3 py-1.5 rounded">مراقبة الحساب</button>
                        }

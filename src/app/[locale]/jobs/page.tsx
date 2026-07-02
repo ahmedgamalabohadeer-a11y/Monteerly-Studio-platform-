@@ -1,11 +1,10 @@
 'use client'
 import React, { useState } from 'react';
-import { Briefcase, PlusCircle, ShieldAlert } from 'lucide-react';
+import { Briefcase, PlusCircle } from 'lucide-react';
 import EmptyState from '@/components/ui/EmptyState';
 
 export default function JobsMarketplace() {
-  // محاكاة مصفوفة فارغة لإظهار شاشة الفراغ (Empty State)
-  const [jobs, setJobs] = useState([]); 
+  const [jobs] = useState([]);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50 p-8 font-sans" dir="rtl">
@@ -23,7 +22,7 @@ export default function JobsMarketplace() {
         </header>
 
         {jobs.length === 0 ? (
-          <EmptyState 
+          <EmptyState
             icon={<Briefcase className="w-12 h-12" />}
             title="لا توجد مشاريع متاحة حالياً"
             description="يبدو أن جميع المشاريع قد تم اقتناصها من قبل المبدعين. كن مستعداً للمشاريع القادمة أو قم بنشر مشروعك الخاص الآن."
@@ -32,7 +31,7 @@ export default function JobsMarketplace() {
           />
         ) : (
           <div className="space-y-4">
-             {/* الأكواد السابقة لعرض المشاريع توضع هنا */}
+            {/* الأكواد السابقة لعرض المشاريع توضع هنا */}
           </div>
         )}
       </div>

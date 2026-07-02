@@ -1,17 +1,17 @@
 'use client'
 import React, { useState, useRef } from 'react';
-import { Mic, User, Sparkles, Play, Loader2, FileAudio, AlertCircle, UploadCloud, CheckCircle } from 'lucide-react';
+import { Mic, User, Sparkles, Play, Loader2, AlertCircle, UploadCloud, CheckCircle } from 'lucide-react';
 
 export default function DigitalTwinSetup() {
   const [prompt, setPrompt] = useState('');
   const [script, setScript] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  
+
   // حالات زر رفع العينة
   const [sampleFile, setSampleFile] = useState<File | null>(null);
   const [isCloning, setIsCloning] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   // حالات المولد الصوتي
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
@@ -37,7 +37,7 @@ export default function DigitalTwinSetup() {
   const generateScript = async () => {
     if (!prompt) return;
     setIsGenerating(true);
-    setAudioUrl(null); 
+    setAudioUrl(null);
     setFallbackMsg(null);
     try {
       const res = await fetch('/api/ai/gemini', {
@@ -59,7 +59,7 @@ export default function DigitalTwinSetup() {
     setIsSpeaking(true);
     setAudioUrl(null);
     setFallbackMsg(null);
-    
+
     try {
       const res = await fetch('/api/ai/voice', {
         method: 'POST',
@@ -67,10 +67,10 @@ export default function DigitalTwinSetup() {
         body: JSON.stringify({ text: script })
       });
       const data = await res.json();
-      
+
       if (data.audioUrl) {
         setAudioUrl(data.audioUrl);
-        if (data.message) setFallbackMsg(data.message); // عرض رسالة استخدام السحابة المجانية
+        if (data.message) setFallbackMsg(data.message);
       } else {
         alert(data.error || 'حدث خطأ في توليد الصوت');
       }
@@ -96,16 +96,16 @@ export default function DigitalTwinSetup() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          
+
           {/* قسم استنساخ البصمة (تم تفعيله) */}
           <div className="bg-slate-900 border border-slate-800 p-8 rounded-[2rem]">
             <h2 className="text-xl font-black mb-6 flex items-center gap-2">
               <User className="w-5 h-5 text-indigo-400" /> بصمة التوأم
             </h2>
-            
+
             <input type="file" ref={fileInputRef} onChange={handleFileSelect} className="hidden" accept="audio/*" />
-            
-            <div 
+
+            <div
               onClick={() => fileInputRef.current?.click()}
               className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all cursor-pointer mb-6 group ${sampleFile ? 'border-emerald-500/50 bg-emerald-500/5' : 'border-slate-700 hover:border-rose-500/50'}`}
             >

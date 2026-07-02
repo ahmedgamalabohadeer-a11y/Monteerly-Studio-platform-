@@ -3,38 +3,62 @@ import { RevenueEngine } from '@/lib/finance/RevenueEngine';
 import { withAuthGuard } from '@/lib/security/apiGuard';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
-export async function POST(req: Request) {
-  // تمرير المتغيرات بشكل صريح مع السماح بتجاوز النوع المجهول
-  return withAuthGuard(req, async (req: Request, user: any) => {
-    try {
-      const { amount, tier } = await req.json();
+type AuthenticatedUser = {
+  id: string;
+};
 
-      if (!amount || amount <= 0) {
+type SplitRequestBody = {
+  amount: number;
+  tier: string;
+};
+
+export async function POST(req: Request) {
+  return withAuthGuard(req, async (request: Request, user: unknown) => {
+    try {
+      const body = (await request.json()) as Partial<SplitRequestBody>;
+      const amount = Number(body.amount);
+      const tier = body.tier;
+
+      if (!Number.isFinite(amount) || amount <= 0) {
         return NextResponse.json({ error: 'مبلغ غير صالح' }, { status: 400 });
       }
-      
+
+      if (typeof tier !== 'string' || tier.trim().length === 0) {
+        return NextResponse.json(
+          { error: 'فئة التسعير غير صالحة' },
+          { status: 400 }
+        );
+      }
+
       const breakdown = RevenueEngine.calculateSplit(amount, tier);
 
-      // تحديد نوع المتغير بوضوح (Type Casting) لاستخراج المُعرّف بأمان
-      const currentUser = user as { id: string };
+      const currentUser = user as AuthenticatedUser;
 
-      // استخدام (مفتاح الإله) لتسجيل الحركات المالية في سجل التدقيق الإجباري
-      // هذا يتخطى أي RLS Policy قد تمنع المستخدم العادي من الكتابة هنا
-      const { error } = await supabaseAdmin.from('audit_logs').insert({
-        action: 'revenue_calculated',
-        actor_identifier: currentUser.id,
-        module: 'finance',
-        snapshot: breakdown
-      });
+      if (!currentUser?.id) {
+        return NextResponse.json(
+          { error: 'بيانات المستخدم غير صالحة' },
+          { status: 401 }
+        );
+      }
 
-      if (error) {
-        console.error("Audit Log Error:", error);
+      const { error: auditError } = await supabaseAdmin
+        .from('audit_logs')
+        .insert({
+          action: 'revenue_calculated',
+          actor_identifier: currentUser.id,
+          module: 'finance',
+          snapshot: breakdown,
+        });
+
+      if (auditError) {
+        console.error('Audit Log Error:', auditError);
         throw new Error('فشل توثيق العملية مالياً');
       }
 
       return NextResponse.json(breakdown, { status: 200 });
     } catch (error: unknown) {
-      console.error(error);
+      console.error('Finance Split Route Error:', error);
+
       return NextResponse.json({ error: 'Server Error' }, { status: 500 });
     }
   });

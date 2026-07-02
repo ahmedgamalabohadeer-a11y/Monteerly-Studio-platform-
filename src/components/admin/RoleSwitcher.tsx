@@ -1,16 +1,15 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Users, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 export function RoleSwitcher() {
   const [role, setRole] = useState('Creator');
   const [visible, setVisible] = useState(false);
 
-  // Keyboard shortcut to toggle (Ctrl+.)
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === '.' && (e.ctrlKey || e.metaKey)) {
-        setVisible(v => !v);
+        setVisible((v) => !v);
       }
     };
     document.addEventListener('keydown', down);
@@ -55,4 +54,3 @@ export function RoleSwitcher() {
     </div>
   );
 }
-

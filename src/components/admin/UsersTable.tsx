@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { MoreHorizontal, Ban, Eye, Search } from 'lucide-react';
+import { Ban, Eye, Search } from 'lucide-react';
 import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/Button';
 export function UsersTable() {
   return (
     <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm">
-       {/* Toolbar */}
        <div className="p-4 border-b border-border flex justify-between items-center bg-muted/10">
           <div className="relative max-w-sm w-full">
              <Search className="absolute right-3 top-2.5 text-muted-foreground" size={16} />
@@ -19,7 +18,6 @@ export function UsersTable() {
           </div>
        </div>
 
-       {/* Table */}
        <table className="w-full text-sm text-right">
           <thead className="bg-muted text-muted-foreground">
              <tr>
@@ -55,8 +53,7 @@ export function UsersTable() {
              ))}
           </tbody>
        </table>
-       
-       {/* Footer */}
+
        <div className="p-4 border-t border-border flex justify-between items-center text-xs text-muted-foreground">
           <span>عرض 1-10 من 2450 مستخدم</span>
           <div className="flex gap-2">
@@ -67,4 +64,3 @@ export function UsersTable() {
     </div>
   );
 }
-

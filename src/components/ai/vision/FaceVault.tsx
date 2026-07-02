@@ -1,8 +1,7 @@
 'use client';
 import React from 'react';
-import { User, Plus, MoreHorizontal } from 'lucide-react';
+import { User, Plus } from 'lucide-react';
 import { Avatar } from '@/components/ui/Avatar';
-
 export function FaceVault() {
   const people = [
     { id: 1, name: 'محمد كمال', role: 'Main Actor', appearances: 142, image: '/avatars/mohamed.jpg' },

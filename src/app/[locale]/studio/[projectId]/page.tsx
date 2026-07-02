@@ -14,7 +14,7 @@ export default function DynamicStudioPage({ params }: { params: Promise<{ projec
 
   useEffect(() => {
     const fetchProjectVideo = async () => {
-      const { data, error } = await supabase.from('jobs').select('snapshot').eq('id', projectId).single();
+      const { data } = await supabase.from('jobs').select('snapshot').eq('id', projectId).single();
       if (data?.snapshot?.videoUrl) {
         setRealVideoUrl(data.snapshot.videoUrl);
       }

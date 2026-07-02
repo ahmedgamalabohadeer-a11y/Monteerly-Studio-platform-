@@ -1,16 +1,14 @@
 'use client';
 import React, { useState } from 'react';
 import { ShieldAlert, Lock, Unlock, Radio, AlertTriangle } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 export function TrafficControl() {
-  const [trafficLevel, setTrafficLevel] = useState(10); // تبدأ من 10%
+  const [trafficLevel, setTrafficLevel] = useState(10);
   const [maintenance, setMaintenance] = useState(false);
   const [broadcast, setBroadcast] = useState('');
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-       {/* Canary Release Control (التحكم في التحديثات التجريبية) */}
        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
           <div className="flex items-center gap-2 mb-6">
             <Radio className="text-indigo-400" />
@@ -25,7 +23,9 @@ export function TrafficControl() {
              </div>
              <input
                 type="range"
-                min="0" max="100" step="10"
+                min="0"
+                max="100"
+                step="10"
                 value={trafficLevel}
                 onChange={(e) => setTrafficLevel(Number(e.target.value))}
                 className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-500"
@@ -37,7 +37,6 @@ export function TrafficControl() {
           </button>
        </div>
 
-       {/* Emergency & Maintenance (الطوارئ والصيانة) */}
        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
           <div className="flex items-center gap-2 mb-6">
             <ShieldAlert className="text-red-400" />
@@ -48,7 +47,7 @@ export function TrafficControl() {
              <div className="flex items-center justify-between p-4 bg-slate-800/50 border border-slate-700 rounded-xl">
                 <div>
                    <h4 className="font-bold text-white flex items-center gap-2">
-                      {maintenance ? <Lock size={16} className="text-red-400"/> : <Unlock size={16} className="text-green-400"/>}
+                      {maintenance ? <Lock size={16} className="text-red-400" /> : <Unlock size={16} className="text-green-400" />}
                       وضع الصيانة (Maintenance Mode)
                    </h4>
                    <p className="text-xs text-slate-400 mt-1">منع دخول المستخدمين باستثناء المدراء (Admins).</p>

@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { FileSignature, ShieldCheck, Download } from 'lucide-react';
+import { FileSignature, Download } from 'lucide-react';
 
 export default function IpTransferContract() {
   return (
@@ -27,7 +27,7 @@ export default function IpTransferContract() {
           <div className="space-y-6 text-sm leading-relaxed text-slate-50 font-medium">
             <p>بموجب هذا العقد الرقمي، وبمجرد اكتمال تحويل الدفعة المالية من محفظة الضمان (Escrow) إلى حساب الطرف الثاني (المبدع/المونتير)، يقر الطرف الثاني بالتنازل الكامل والتام عن كافة حقوق الملكية الفكرية، وحقوق النشر، وحقوق التوزيع المتعلقة بالعمل الفني/المرئي المُسلم إلى الطرف الأول (العميل).</p>
             <p>يصبح الطرف الأول هو المالك الحصري والوحيد للمصنف، ويحق له تعديله، توزيعه، أو استغلاله تجارياً دون الرجوع للطرف الثاني أو التزام بأي تعويضات مالية إضافية.</p>
-            
+
             <div className="bg-slate-950 p-6 rounded-xl border border-slate-200 mt-8">
               <h4 className="font-black text-slate-50 mb-4">التوقيعات المشفرة (Cryptographic Signatures)</h4>
               <div className="grid grid-cols-2 gap-8">

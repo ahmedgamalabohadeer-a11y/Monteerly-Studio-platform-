@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    
+
     // 1. التحقق من حالة الدفع (Paymob Webhook Response)
     // عند نجاح الدفع، الحالة تكون "true" في obj.success
     const isSuccess = body.obj?.success === true;
@@ -20,13 +20,16 @@ export async function POST(req: Request) {
           to_email: email,
           clientName: 'عميلنا العزيز',
           projectId: orderId,
-          amount: amount
-        })
+          amount,
+        }),
       });
     }
 
     return NextResponse.json({ status: 'ok' }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ error: 'Webhook processing failed' }, { status: 500 });
+  } catch {
+    return NextResponse.json(
+      { error: 'Webhook processing failed' },
+      { status: 500 }
+    );
   }
 }

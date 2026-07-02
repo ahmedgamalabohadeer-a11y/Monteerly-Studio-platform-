@@ -28,8 +28,7 @@ type CommentType = { id: string; timestamp: number; content: string; user_id: st
 export default function ReviewPlayer({
   url,
   orderId,
-  ar,
-  activeVersion
+  ar
 }: {
   url: string
   orderId: string
@@ -43,36 +42,31 @@ export default function ReviewPlayer({
   const [isSyncing, setIsSyncing] = useState(false)
   const [commentsList, setCommentsList] = useState<CommentType[]>([])
 
-  // 1. جلب التعليقات الأولية والاشتراك اللحظي في قاعدة البيانات
   useEffect(() => {
-    // دالة الجلب المبدئي
     const fetchComments = async () => {
-      const data = await getOrderComments(orderId);
-      if (data) setCommentsList(data);
-    };
-    fetchComments();
+      const data = await getOrderComments(orderId)
+      if (data) setCommentsList(data)
+    }
+    fetchComments()
 
-    // إعداد قناة التحديث اللحظي (Realtime Subscription)
     const channel = supabase
       .channel(`comments_room_${orderId}`)
-      .on('postgres_changes', 
+      .on(
+        'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'order_comments', filter: `order_id=eq.${orderId}` },
         (payload) => {
-          // إضافة التعليق الجديد إلى القائمة وإعادة ترتيبها زمنياً
           setCommentsList((prev) => {
-            // منع التكرار إذا كان التعليق مضافاً محلياً بالفعل
-            if (prev.find(c => c.id === payload.new.id)) return prev;
-            return [...prev, payload.new as CommentType].sort((a, b) => a.timestamp - b.timestamp);
-          });
+            if (prev.find((c) => c.id === payload.new.id)) return prev
+            return [...prev, payload.new as CommentType].sort((a, b) => a.timestamp - b.timestamp)
+          })
         }
       )
-      .subscribe();
+      .subscribe()
 
-    // تنظيف الاتصال عند الخروج من الغرفة
     return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [orderId]);
+      supabase.removeChannel(channel)
+    }
+  }, [orderId])
 
   const handleSeek = (seconds: number) => {
     playerRef.current?.seekTo(seconds, 'seconds')
@@ -83,8 +77,6 @@ export default function ReviewPlayer({
 
     setIsSyncing(true)
     try {
-      // إرسال التعليق لقاعدة البيانات. 
-      // Supabase سيقوم ببث حدث الـ INSERT وسيلتقطه الـ useEffect أعلاه
       await addTimecodedComment(orderId, currentTime, comment)
       setComment('')
     } finally {
@@ -93,15 +85,15 @@ export default function ReviewPlayer({
   }
 
   const handleApproval = async () => {
-    if(!confirm("هل أنت متأكد من اعتماد العمل؟ سيتم تحرير الدفعة المالية للمبدع.")) return;
-    await approveDelivery(orderId);
-    alert("تم اعتماد العمل بنجاح.");
+    if (!confirm('هل أنت متأكد من اعتماد العمل؟ سيتم تحرير الدفعة المالية للمبدع.')) return
+    await approveDelivery(orderId)
+    alert('تم اعتماد العمل بنجاح.')
   }
 
   const handleDispute = async () => {
-    if(!confirm("هل تريد فتح نزاع رسمي؟ سيتم تجميد الأموال وتدخل الإدارة.")) return;
-    await disputeDelivery(orderId, "رفض العميل للنسخة المسلمة");
-    alert("تم تحويل المشروع إلى مركز فض النزاعات.");
+    if (!confirm('هل تريد فتح نزاع رسمي؟ سيتم تجميد الأموال وتدخل الإدارة.')) return
+    await disputeDelivery(orderId, 'رفض العميل للنسخة المسلمة')
+    alert('تم تحويل المشروع إلى مركز فض النزاعات.')
   }
 
   const formatTime = (seconds: number) => {
@@ -112,7 +104,6 @@ export default function ReviewPlayer({
 
   return (
     <div className="bg-slate-950 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl font-sans" dir="rtl">
-      {/* 1. قسم مشغل الفيديو */}
       <div className="relative aspect-video bg-black flex items-center justify-center group">
         <ReactPlayer
           ref={playerRef}
@@ -144,7 +135,6 @@ export default function ReviewPlayer({
         </div>
       </div>
 
-      {/* 2. قسم التعليقات والأدوات */}
       <div className="p-10 bg-slate-900/50">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
@@ -163,7 +153,6 @@ export default function ReviewPlayer({
           </div>
         </div>
 
-        {/* مربع إدخال التعليق */}
         <div className="relative mb-8">
           <textarea
             value={comment}
@@ -181,7 +170,6 @@ export default function ReviewPlayer({
           </button>
         </div>
 
-        {/* 3. قائمة التعليقات اللحظية */}
         {commentsList.length > 0 && (
           <div className="mb-8 space-y-3">
             <h4 className="text-white font-bold mb-4 flex items-center gap-2">
@@ -198,7 +186,6 @@ export default function ReviewPlayer({
           </div>
         )}
 
-        {/* 4. أزرار القرار السيادي */}
         <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-8 mt-8">
             <button onClick={handleApproval} className="flex items-center justify-center gap-2 py-4 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500 hover:text-black transition-all rounded-2xl font-black shadow-lg shadow-emerald-900/10">
                 <CheckCircle className="w-5 h-5" /> اعتماد وتسليم

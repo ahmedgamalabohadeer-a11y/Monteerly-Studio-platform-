@@ -4,6 +4,10 @@ import { Mic, Square, Disc, Settings, AlertCircle, Save, Loader2, CheckCircle } 
 import { Button } from '@/components/ui/Button'
 import { supabase } from '@/lib/supabase'
 
+type ExtendedWindow = Window & {
+  webkitAudioContext?: typeof AudioContext
+}
+
 export function VoiceoverRecorder({ projectId = 'general' }: { projectId?: string }) {
   const [isRecording, setIsRecording] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
@@ -21,134 +25,151 @@ export function VoiceoverRecorder({ projectId = 'general' }: { projectId?: strin
   const analyserRef = useRef<AnalyserNode | null>(null)
   const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null)
   const animationFrameRef = useRef<number | null>(null)
+  const drawAudioMeterRef = useRef<() => void>(() => {})
 
   const drawAudioMeter = useCallback(() => {
-    if (!analyserRef.current) return;
-    const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
-    analyserRef.current.getByteFrequencyData(dataArray);
+    if (!analyserRef.current) return
 
-    const step = Math.floor(dataArray.length / 15);
+    const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount)
+    analyserRef.current.getByteFrequencyData(dataArray)
+
+    const step = Math.max(1, Math.floor(dataArray.length / 15))
     const newLevels = Array.from({ length: 15 }, (_, i) => {
-      let sum = 0;
-      for (let j = 0; j < step; j++) { sum += dataArray[i * step + j]; }
-      const avg = sum / step;
-      return Math.max(10, Math.min(100, (avg / 255) * 100));
-    });
+      let sum = 0
+      for (let j = 0; j < step; j++) {
+        const value = dataArray[i * step + j] ?? 0
+        sum += value
+      }
+      const avg = sum / step
+      return Math.max(10, Math.min(100, (avg / 255) * 100))
+    })
 
-    setVolumeLevels(newLevels);
-    animationFrameRef.current = requestAnimationFrame(drawAudioMeter);
-  }, []);
+    setVolumeLevels(newLevels)
+    animationFrameRef.current = requestAnimationFrame(() => drawAudioMeterRef.current())
+  }, [])
+
+  useEffect(() => {
+    drawAudioMeterRef.current = drawAudioMeter
+  }, [drawAudioMeter])
 
   const startRecording = async () => {
     try {
-      setErrorMsg(null);
-      setSuccessMsg(null);
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorderRef.current = mediaRecorder;
-      audioChunksRef.current = [];
+      setErrorMsg(null)
+      setSuccessMsg(null)
 
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) audioChunksRef.current.push(event.data);
-      };
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+
+      const mediaRecorder = new MediaRecorder(stream)
+      mediaRecorderRef.current = mediaRecorder
+      audioChunksRef.current = []
+
+      mediaRecorder.ondataavailable = (event: BlobEvent) => {
+        if (event.data.size > 0) audioChunksRef.current.push(event.data)
+      }
 
       mediaRecorder.onstop = () => {
-        const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-        setAudioBlob(blob);
-        setAudioUrl(URL.createObjectURL(blob));
-      };
+        const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+        setAudioBlob(blob)
+        setAudioUrl(URL.createObjectURL(blob))
+      }
 
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const analyser = audioContext.createAnalyser();
-      const source = audioContext.createMediaStreamSource(stream);
-      
-      source.connect(analyser);
-      analyser.fftSize = 64;
-      
-      audioContextRef.current = audioContext;
-      analyserRef.current = analyser;
-      sourceRef.current = source;
+      const AudioContextClass =
+        window.AudioContext || (window as ExtendedWindow).webkitAudioContext
 
-      mediaRecorder.start();
-      setIsRecording(true);
-      setDuration(0);
-      setAudioUrl(null);
-      setAudioBlob(null);
-      
-      timerRef.current = window.setInterval(() => setDuration((prev) => prev + 1), 1000);
-      drawAudioMeter();
+      if (!AudioContextClass) {
+        throw new Error('AudioContext is not supported in this browser.')
+      }
 
-    } catch (err: any) {
-      setErrorMsg('الرجاء السماح للمتصفح باستخدام المايكروفون.');
+      const audioContext = new AudioContextClass()
+      const analyser = audioContext.createAnalyser()
+      const source = audioContext.createMediaStreamSource(stream)
+
+      source.connect(analyser)
+      analyser.fftSize = 64
+
+      audioContextRef.current = audioContext
+      analyserRef.current = analyser
+      sourceRef.current = source
+
+      mediaRecorder.start()
+      setIsRecording(true)
+      setDuration(0)
+      setAudioUrl(null)
+      setAudioBlob(null)
+
+      timerRef.current = window.setInterval(() => setDuration((prev) => prev + 1), 1000)
+      drawAudioMeterRef.current()
+    } catch {
+      setErrorMsg('الرجاء السماح للمتصفح باستخدام المايكروفون.')
     }
   }
 
   const stopRecording = () => {
     if (mediaRecorderRef.current && isRecording) {
-      mediaRecorderRef.current.stop();
-      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
-      setIsRecording(false);
-      
-      if (timerRef.current) window.clearInterval(timerRef.current);
-      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
-      setVolumeLevels(Array(15).fill(10));
+      mediaRecorderRef.current.stop()
+      mediaRecorderRef.current.stream.getTracks().forEach((track) => track.stop())
+      setIsRecording(false)
+
+      if (timerRef.current) window.clearInterval(timerRef.current)
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current)
+      setVolumeLevels(Array(15).fill(10))
     }
   }
 
   const handleSaveToCloud = async () => {
-    if (!audioBlob) return;
-    setIsSaving(true);
-    setErrorMsg(null);
-    setSuccessMsg(null);
+    if (!audioBlob) return
+
+    setIsSaving(true)
+    setErrorMsg(null)
+    setSuccessMsg(null)
 
     try {
-      // 1. الفحص الأمني الاستباقي للتحقق من هوية المستخدم
-      const { data: authData } = await supabase.auth.getUser();
+      const { data: authData } = await supabase.auth.getUser()
       if (!authData?.user) {
-        throw new Error('عملية مرفوضة: يجب تسجيل الدخول بهوية سيادية لرفع الملفات إلى الخزنة.');
+        throw new Error('عملية مرفوضة: يجب تسجيل الدخول بهوية سيادية لرفع الملفات إلى الخزنة.')
       }
 
-      const fileName = `voiceovers/${projectId}_vo_${Date.now()}.webm`;
-      
-      // 2. الرفع المباشر لخزنة secure-vault
-      const { data, error } = await supabase.storage
+      const fileName = `voiceovers/${projectId}_vo_${Date.now()}.webm`
+
+      const { error } = await supabase.storage
         .from('secure-vault')
         .upload(fileName, audioBlob, {
           contentType: 'audio/webm',
-          upsert: false
-        });
+          upsert: false,
+        })
 
       if (error) {
         if (error.message.includes('row-level security')) {
-           throw new Error('تم الحظر: ليس لديك صلاحية الرفع في هذه الخزنة.');
+          throw new Error('تم الحظر: ليس لديك صلاحية الرفع في هذه الخزنة.')
         }
-        throw error;
+        throw error
       }
 
-      setSuccessMsg('تم تأمين وحفظ المقطع السحابي بنجاح!');
-      setAudioUrl(null);
-      setAudioBlob(null);
-    } catch (error: any) {
-      console.error(error);
-      setErrorMsg(error.message || 'حدث خطأ أثناء الرفع للسحابة.');
+      setSuccessMsg('تم تأمين وحفظ المقطع السحابي بنجاح!')
+      setAudioUrl(null)
+      setAudioBlob(null)
+    } catch (error: unknown) {
+      console.error(error)
+      setErrorMsg(error instanceof Error ? error.message : 'حدث خطأ أثناء الرفع للسحابة.')
     } finally {
-      setIsSaving(false);
+      setIsSaving(false)
     }
   }
 
   useEffect(() => {
     return () => {
-      if (timerRef.current) window.clearInterval(timerRef.current);
-      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
-      if (audioContextRef.current?.state !== 'closed') audioContextRef.current?.close();
+      if (timerRef.current) window.clearInterval(timerRef.current)
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current)
+      if (audioContextRef.current?.state !== 'closed') {
+        audioContextRef.current?.close()
+      }
     }
-  }, []);
+  }, [])
 
   const formatTime = (totalSeconds: number) => {
-    const mins = Math.floor(totalSeconds / 60);
-    const secs = totalSeconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    const mins = Math.floor(totalSeconds / 60)
+    const secs = totalSeconds % 60
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
   }
 
   return (
@@ -167,13 +188,13 @@ export function VoiceoverRecorder({ projectId = 'general' }: { projectId?: strin
 
       {errorMsg && (
         <div className="mb-4 text-xs font-bold text-rose-400 bg-rose-500/10 p-3 rounded-lg flex items-start gap-2 leading-relaxed">
-           <AlertCircle size={16} className="shrink-0 mt-0.5" /> {errorMsg}
+          <AlertCircle size={16} className="shrink-0 mt-0.5" /> {errorMsg}
         </div>
       )}
 
       {successMsg && (
         <div className="mb-4 text-xs font-bold text-emerald-400 bg-emerald-500/10 p-3 rounded-lg flex items-center gap-2">
-           <CheckCircle size={14} /> {successMsg}
+          <CheckCircle size={14} /> {successMsg}
         </div>
       )}
 
@@ -194,15 +215,15 @@ export function VoiceoverRecorder({ projectId = 'general' }: { projectId?: strin
 
       {audioUrl && !isRecording && (
         <div className="mb-6 animate-in fade-in zoom-in-95">
-           <audio src={audioUrl} controls className="w-full h-10 rounded-lg outline-none mb-3" />
-           <button 
-             disabled={isSaving}
-             onClick={handleSaveToCloud}
-             className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:bg-[#12121A] disabled:text-slate-500 text-white py-3 rounded-xl text-sm font-black transition-colors flex justify-center items-center gap-2 shadow-[0_0_15px_rgba(5,150,105,0.2)]"
-           >
-              {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save size={16} />}
-              {isSaving ? 'جاري التشفير والرفع...' : 'حفظ المقطع سحابياً'}
-           </button>
+          <audio src={audioUrl} controls className="w-full h-10 rounded-lg outline-none mb-3" />
+          <button
+            disabled={isSaving}
+            onClick={handleSaveToCloud}
+            className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:bg-[#12121A] disabled:text-slate-500 text-white py-3 rounded-xl text-sm font-black transition-colors flex justify-center items-center gap-2 shadow-[0_0_15px_rgba(5,150,105,0.2)]"
+          >
+            {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save size={16} />}
+            {isSaving ? 'جاري التشفير والرفع...' : 'حفظ المقطع سحابياً'}
+          </button>
         </div>
       )}
 

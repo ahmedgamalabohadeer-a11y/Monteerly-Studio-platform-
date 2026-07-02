@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Timer, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { Timer, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function SkillQuiz() {

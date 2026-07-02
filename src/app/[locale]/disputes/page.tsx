@@ -1,4 +1,3 @@
-import React from 'react';
 import { ShieldAlert } from 'lucide-react';
 import DisputeList from '@/components/disputes/DisputeList';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
@@ -6,8 +5,7 @@ import { supabaseAdmin } from '@/lib/supabaseAdmin';
 export const dynamic = 'force-dynamic';
 
 export default async function DisputesPage() {
-  // جلب النزاعات الحقيقية من قاعدة البيانات
-  const { data: disputes, error } = await supabaseAdmin
+  const { data: disputes } = await supabaseAdmin
     .from('disputes')
     .select('*')
     .eq('status', 'pending')
@@ -16,17 +14,26 @@ export default async function DisputesPage() {
   const activeDisputes = disputes || [];
 
   return (
-    <div className="min-h-screen bg-[#05050A] text-slate-50 p-8 font-sans" dir="rtl">
-        <header className="mb-10 border-b border-white/10 pb-6 flex items-center justify-between">
-            <h1 className="text-3xl font-black flex items-center gap-3 text-rose-500">
-                <ShieldAlert size={36} /> إدارة النزاعات السيادية
-            </h1>
-            <div className="bg-[#12121A] border border-white/10 px-6 py-2 rounded-xl text-sm font-bold text-slate-400">
-                نزاعات معلقة: <span className="text-white text-lg">{activeDisputes.length}</span>
-            </div>
-        </header>
+    <section className="mx-auto w-full max-w-6xl space-y-8 px-4 py-6 md:px-6 md:py-8">
+      <header className="flex flex-col gap-4 border-b border-white/10 pb-6 md:flex-row md:items-center md:justify-between">
+        <div className="space-y-2">
+          <h1 className="flex items-center gap-3 text-3xl font-black text-rose-500">
+            <ShieldAlert size={36} />
+            إدارة النزاعات السيادية
+          </h1>
+          <p className="max-w-3xl text-sm leading-7 text-slate-400">
+            متابعة النزاعات المفتوحة ومراجعة الحالات المعلقة ضمن واجهة تنفيذية
+            هادئة تركز على القرار والإجراء، لا على الزخرفة.
+          </p>
+        </div>
 
-        <DisputeList initialDisputes={activeDisputes} />
-    </div>
+        <div className="w-fit rounded-xl border border-white/10 bg-[#12121A] px-5 py-3 text-sm font-bold text-slate-400">
+          نزاعات معلقة:{' '}
+          <span className="text-lg text-white">{activeDisputes.length}</span>
+        </div>
+      </header>
+
+      <DisputeList initialDisputes={activeDisputes} />
+    </section>
   );
 }

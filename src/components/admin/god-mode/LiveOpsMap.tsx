@@ -1,14 +1,12 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Users, DollarSign, Activity, AlertOctagon, Globe } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Users, DollarSign, AlertOctagon, Globe } from 'lucide-react';
 
 export function LiveOpsMap() {
   const [activeUsers, setActiveUsers] = useState(1240);
   const [revenue, setRevenue] = useState(15400);
   const [errorRate, setErrorRate] = useState(0.2);
 
-  // محاكاة تدفق البيانات الحية للسيرفر
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveUsers(prev => prev + Math.floor(Math.random() * 10 - 3));

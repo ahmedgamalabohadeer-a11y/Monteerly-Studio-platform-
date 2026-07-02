@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { TrendingUp, Users, DollarSign, Activity, Server } from 'lucide-react';
+import { Users, DollarSign, Activity, Server } from 'lucide-react';
 
 export function SuperAdminDashboard() {
   const stats = [
@@ -12,7 +12,6 @@ export function SuperAdminDashboard() {
 
   return (
     <div className="space-y-8">
-       {/* Stats Grid */}
        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, i) => (
              <div key={i} className="bg-slate-900 border border-white/10 p-6 rounded-xl hover:border-white/20 transition-all">
@@ -30,7 +29,6 @@ export function SuperAdminDashboard() {
           ))}
        </div>
 
-       {/* Revenue Chart Placeholder */}
        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 bg-slate-900 border border-white/10 p-6 rounded-xl">
              <div className="flex justify-between items-center mb-6">
@@ -59,7 +57,7 @@ export function SuperAdminDashboard() {
                    <span className="text-white font-bold">60%</span>
                 </div>
                 <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden"><div className="bg-indigo-500 h-full w-[60%]" /></div>
-                
+
                 <div className="flex justify-between items-center text-sm">
                    <span className="text-slate-300 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-purple-500" /> Pro Freelancers</span>
                    <span className="text-white font-bold">25%</span>
@@ -77,4 +75,3 @@ export function SuperAdminDashboard() {
     </div>
   );
 }
-

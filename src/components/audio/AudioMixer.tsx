@@ -1,9 +1,9 @@
 'use client';
 import React, { useState } from 'react';
-import { Mic, Music, Volume2, Sliders, Play, Square, Headphones } from 'lucide-react';
+import { Play, Square, Headphones } from 'lucide-react';
 
 export function AudioMixer() {
-  const [tracks, setTracks] = useState([
+  const [tracks] = useState([
     { id: 1, name: 'Dialogue (Host)', volume: 80, pan: 0, muted: false, solo: false, color: 'bg-blue-500' },
     { id: 2, name: 'Dialogue (Guest)', volume: 75, pan: 0, muted: false, solo: false, color: 'bg-green-500' },
     { id: 3, name: 'SFX: Ambience', volume: 40, pan: -20, muted: false, solo: false, color: 'bg-yellow-500' },

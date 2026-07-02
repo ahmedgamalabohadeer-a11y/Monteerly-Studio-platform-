@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { User, Lock, ShieldCheck, Bell, Save } from 'lucide-react';
+import { User, ShieldCheck, Save } from 'lucide-react';
 
 export default function SettingsPage() {
   return (
