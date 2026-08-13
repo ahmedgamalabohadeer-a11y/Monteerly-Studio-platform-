@@ -1,51 +1,142 @@
-'use client';
-import Image from 'next/image';
+"use client";
 
-const heroImages = [
-  '/images/monteerly/monteerly16editorarabthobecollaboration.png',
-  '/images/monteerly/monteerly21photographersaudiheritagetraditional.png',
-  '/images/monteerly/monteerly22photographeralgeriandroneaerial.png',
-  '/images/monteerly/monteerly23photographerlibraryheritagecinematic.png',
-  '/images/monteerly/monteerly24photographeralgeriandronecityshot.png',
-  '/images/monteerly/monteerly14editorprofessionaldualscreen.png',
-  '/images/monteerly/monteerly12editorredshirttimeline.png',
-  '/images/monteerly/monteerly10multiplatformpublishinghero.png',
-  '/images/monteerly/monteerly13analyticsdashboardwomanai.png',
-  '/images/monteerly/monteerly15creatorworkspacelaptopmodern.png',
-  '/images/monteerly/monteerly07techinnovationportrait.png',
-  '/images/monteerly/monteerly08brandingcreativeassets.png',
-  '/images/monteerly/monteerly05securitydigitallockcyber.png',
-  '/images/monteerly/monteerly04heroheadermarketingbanner.png',
-  '/images/monteerly/monteerly20testimonialbusinessexeccorporate.png',
-  '/images/monteerly/monteerly18testimonialexecutivegrowthcharts.png',
-  '/images/monteerly/monteerly17testimonialwomangraysuitoffice.png',
-  '/images/monteerly/monteerly19testimonialcreativehoodiefreelance.png',
-  '/images/monteerly/monteerly11globalcollaborationgrid4up.png',
-  '/images/monteerly/monteerly09aiperformanceadvisorhologram.png',
-  '/images/monteerly/monteerly06marketingshowcasefull.png',
-  '/images/monteerly/monteerly03profileahmedgamalcircle.png',
-  '/images/monteerly/monteerly02mainlogofull.svg',
-  '/images/monteerly/monteerly01faviconappicon.png'
+import Image from "next/image";
+
+// ─── جميع المسارات بـ / أمامية صحيحة ─────────────────────────────────────────
+const heroImages: { src: string; alt: string }[] = [
+  {
+    src: "/images/monteerly/monteerly16-editor-arab-thobe-collaboration.png",
+    alt: "Arab Video Editor Collaboration",
+  },
+  {
+    src: "/images/monteerly/monteerly21-photographer-saudi-heritage-traditional.png",
+    alt: "Saudi Heritage Photography",
+  },
+  {
+    src: "/images/monteerly/monteerly22-photographer-algerian-drone-aerial.png",
+    alt: "Professional Aerial Drone",
+  },
+  {
+    src: "/images/monteerly/monteerly23-photographer-library-heritage-cinematic.png",
+    alt: "Cinematic Heritage Assets",
+  },
+  {
+    src: "/images/monteerly/monteerly24-photographer-algerian-drone-city-shot.png",
+    alt: "Urban and Cityscapes",
+  },
+  {
+    src: "/images/monteerly/monteerly14-editor-professional-dual-screen.png",
+    alt: "Professional Dual Screen Workspace",
+  },
+  {
+    src: "/images/monteerly/monteerly12-editor-redshirt-timeline.png",
+    alt: "Video Studio Timeline",
+  },
+  {
+    src: "/images/monteerly/monteerly10-multiplatform-publishing-hero.png",
+    alt: "Multi-platform Publishing",
+  },
+  {
+    src: "/images/monteerly/monteerly13-analytics-dashboard-woman-ai.png",
+    alt: "Smart Analytics Dashboard",
+  },
+  {
+    src: "/images/monteerly/monteerly15-creator-workspace-laptop-modern.png",
+    alt: "Creative Freedom Workspace",
+  },
+  {
+    src: "/images/monteerly/monteerly07-tech-innovation-portrait.png",
+    alt: "Advanced Tech Core",
+  },
+  {
+    src: "/images/monteerly/monteerly08-branding-creative-assets.png",
+    alt: "Brand Assets Management",
+  },
+  {
+    src: "/images/monteerly/monteerly05-security-digital-lock-cyber.png",
+    alt: "Cyber Security Lock",
+  },
+  {
+    src: "/images/monteerly/monteerly04-hero-header-marketing-banner.png",
+    alt: "Marketing Hero Banner",
+  },
+  {
+    src: "/images/monteerly/monteerly20-testimonial-business-exec-corporate.png",
+    alt: "Enterprise Testimonial",
+  },
+  {
+    src: "/images/monteerly/monteerly18-testimonial-executive-growth-charts.png",
+    alt: "Executive Growth Testimonial",
+  },
+  {
+    src: "/images/monteerly/monteerly17-testimonial-woman-gray-suit-office.png",
+    alt: "Marketing Manager Testimonial",
+  },
+  {
+    src: "/images/monteerly/monteerly19-testimonial-creative-hoodie-freelance.png",
+    alt: "Freelancer Testimonial",
+  },
+  {
+    src: "/images/monteerly/monteerly11-global-collaboration-grid-4up.png",
+    alt: "Global Collaboration",
+  },
+  {
+    src: "/images/monteerly/monteerly09-ai-performance-advisor-hologram.png",
+    alt: "AI Performance Advisor",
+  },
+  {
+    src: "/images/monteerly/monteerly06-marketing-showcase-full.png",
+    alt: "Integrated Ecosystem Showcase",
+  },
+  {
+    src: "/images/monteerly/monteerly03-profile-ahmed-gamal-circle.png",
+    alt: "Ahmed Gamal - Founder",
+  },
+  {
+    src: "/images/monteerly/monteerly02-main-logo-full.svg",
+    alt: "Monteerly Studio Main Logo",
+  },
+  {
+    src: "/images/monteerly/monteerly01-favicon-app-icon.png",
+    alt: "Monteerly OS Icon",
+  },
 ];
 
 export default function HeroGallery() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-12">
-      {heroImages.map((src, i) => (
-        <div key={i} className="group relative aspect-video rounded-2xl overflow-hidden bg-slate-900 shadow-xl hover:shadow-2xl transition-all hover:scale-105 cursor-pointer">
-          <Image 
-            src={src} 
-            alt={`Monteerly Studio ${i+1}`} 
-            fill 
-            className="object-cover group-hover:scale-110 transition-transform duration-700" 
+    <section
+      aria-label="Monteerly Studio Gallery"
+      className="mb-12 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-6"
+    >
+      {heroImages.map((item, i) => (
+        <div
+          key={item.src}
+          className="group relative aspect-video cursor-pointer overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-300 hover:scale-[1.04] hover:shadow-2xl hover:z-10"
+        >
+          <Image
+            src={item.src}
+            alt={item.alt}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
+            // أول 8 صور تُحمَّل فوراً، الباقي lazy
+            loading={i < 8 ? "eager" : "lazy"}
+            priority={i < 4}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-            <span className="bg-white/20 backdrop-blur text-white px-3 py-1 rounded-full text-xs font-bold">
-              صورة {i+1}
+
+          {/* Gradient overlay on hover */}
+          <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 via-black/10 to-transparent p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <span className="rounded-full bg-white/20 px-2.5 py-1 text-[10px] font-bold text-white backdrop-blur-sm line-clamp-1">
+              {item.alt}
             </span>
+          </div>
+
+          {/* Index badge */}
+          <div className="absolute top-2 left-2 rounded-full bg-black/40 px-1.5 py-0.5 text-[9px] font-black text-white/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            {String(i + 1).padStart(2, "0")}
           </div>
         </div>
       ))}
-    </div>
+    </section>
   );
 }

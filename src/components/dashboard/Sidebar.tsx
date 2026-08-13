@@ -1,13 +1,28 @@
 'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { usePathname, useParams } from 'next/navigation';
-import { 
-  LayoutDashboard, ShieldAlert, Landmark, Users, GraduationCap, 
-  Settings, LogOut, FolderOpen, Zap, Book, X 
+import {
+  LayoutDashboard,
+  ShieldAlert,
+  Landmark,
+  Users,
+  GraduationCap,
+  LogOut,
+  FolderOpen,
+  Zap,
+  Book,
+  X,
 } from 'lucide-react';
 
-export function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (val: boolean) => void }) {
+export function Sidebar({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean;
+  setIsOpen: (val: boolean) => void;
+}) {
   const pathname = usePathname();
   const params = useParams();
   const locale = params?.locale || 'ar';
@@ -24,20 +39,21 @@ export function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (va
 
   return (
     <>
-      {/* Overlay for mobile */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[150] lg:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
 
-      <aside className={`
-        fixed inset-y-0 right-0 z-[200] w-72 bg-slate-950 border-l border-slate-800 flex flex-col h-screen transition-transform duration-300 ease-in-out
-        lg:translate-x-0 lg:static lg:block
-        ${isOpen ? 'translate-x-0' : 'translate-x-full'}
-      `} dir="rtl">
-        
+      <aside
+        className={`
+          fixed inset-y-0 right-0 z-[200] w-72 bg-slate-950 border-l border-slate-800 flex flex-col h-screen transition-transform duration-300 ease-in-out
+          lg:translate-x-0 lg:static lg:block
+          ${isOpen ? 'translate-x-0' : 'translate-x-full'}
+        `}
+        dir="rtl"
+      >
         <div className="p-6 border-b border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
@@ -57,7 +73,9 @@ export function Sidebar({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (va
               href={item.href}
               onClick={() => setIsOpen(false)}
               className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all ${
-                pathname === item.href ? 'bg-indigo-600/10 text-white border border-indigo-500/20' : 'text-slate-400 hover:bg-slate-900'
+                pathname === item.href
+                  ? 'bg-indigo-600/10 text-white border border-indigo-500/20'
+                  : 'text-slate-400 hover:bg-slate-900'
               }`}
             >
               <item.icon size={20} className={pathname === item.href ? 'text-indigo-400' : item.color} />
