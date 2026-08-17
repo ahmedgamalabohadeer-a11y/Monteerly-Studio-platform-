@@ -45,19 +45,19 @@ const heroImages: { src: string; alt: string }[] = [
     alt: "Creative Freedom Workspace",
   },
   {
-    src: "/images/monteerly/monteerly07-tech-innovation-portrait.png",
+    src: "/images/monteerly/monteerly_07_tech_innovation_portrait.png",
     alt: "Advanced Tech Core",
   },
   {
-    src: "/images/monteerly/monteerly08-branding-creative-assets.png",
+    src: "/images/monteerly/monteerly_08_branding_creative_assets.png",
     alt: "Brand Assets Management",
   },
   {
-    src: "/images/monteerly/monteerly05-security-digital-lock-cyber.png",
+    src: "/images/monteerly/monteerly_05_security_guardian_wide.png",
     alt: "Cyber Security Lock",
   },
   {
-    src: "/images/monteerly/monteerly04-hero-header-marketing-banner.png",
+    src: "/images/monteerly/monteerly_04_hero_header_marketing_banner.png",
     alt: "Marketing Hero Banner",
   },
   {
@@ -81,23 +81,23 @@ const heroImages: { src: string; alt: string }[] = [
     alt: "Global Collaboration",
   },
   {
-    src: "/images/monteerly/monteerly09-ai-performance-advisor-hologram.png",
+    src: "/images/monteerly/monteerly_09_ai_performance_advisor_hologram.png",
     alt: "AI Performance Advisor",
   },
   {
-    src: "/images/monteerly/monteerly06-marketing-showcase-full.png",
+    src: "/images/monteerly/monteerly_06_marketing_showcase_full.png",
     alt: "Integrated Ecosystem Showcase",
   },
   {
-    src: "/images/monteerly/monteerly03-profile-ahmed-gamal-circle.png",
+    src: "/images/monteerly/monteerly_03_profile_ahmed_gamal_circle.png",
     alt: "Ahmed Gamal - Founder",
   },
   {
-    src: "/images/monteerly/monteerly02-main-logo-full.svg",
+    src: "/images/monteerly/monteerly_02_main_logo_full.svg",
     alt: "Monteerly Studio Main Logo",
   },
   {
-    src: "/images/monteerly/monteerly01-favicon-app-icon.png",
+    src: "/images/monteerly/monteerly_01_favicon_app_icon.png",
     alt: "Monteerly OS Icon",
   },
 ];

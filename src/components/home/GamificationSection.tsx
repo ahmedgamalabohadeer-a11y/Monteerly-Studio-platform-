@@ -188,7 +188,7 @@ export function GamificationSection({ locale = "en" }: { locale?: "ar" | "en" })
             {/* Main image */}
             <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl aspect-square md:aspect-[4/3] bg-slate-900 group">
               <Image
-                src="/images/monteerly/monteerly07-tech-innovation-portrait.png"
+                src="/images/monteerly/monteerly_07_tech_innovation_portrait.png"
                 alt={
                   isAr
                     ? "نظام المكافآت والتحفيز"

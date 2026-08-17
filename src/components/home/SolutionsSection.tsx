@@ -28,14 +28,14 @@ const DATA_EN: SolutionsData = {
   title: "One Platform. Every Solution.",
   subtitle:
     "Monteerly OS unifies your creative workflow — from talent discovery to secure delivery.",
-  mainImage: "/images/monteerly/monteerly06-marketing-showcase-full.png",
+  mainImage: "/images/monteerly/monteerly_06_marketing_showcase_full.png",
   mainImageAlt: "Monteerly OS Integrated Ecosystem",
   features: [
     {
       id: "escrow",
       title: "Military-Grade Escrow",
       desc: "AES-256 encrypted smart contracts hold funds securely until every milestone is approved. Zero disputes, full transparency.",
-      image: "/images/monteerly/monteerly05-security-digital-lock-cyber.png",
+      image: "/images/monteerly/monteerly_05_security_guardian_wide.png",
       icon: <ShieldCheck className="w-6 h-6" />,
       accentColor: "text-emerald-500",
       bgColor: "bg-emerald-500/10",
@@ -44,7 +44,7 @@ const DATA_EN: SolutionsData = {
       id: "ai",
       title: "AI Directorial Co-Pilot",
       desc: "Analyzes your project scope, suggests pricing, negotiates terms, and maximizes your ROI automatically.",
-      image: "/images/monteerly/monteerly09-ai-performance-advisor-hologram.png",
+      image: "/images/monteerly/monteerly_09_ai_performance_advisor_hologram.png",
       icon: <Zap className="w-6 h-6" />,
       accentColor: "text-indigo-500",
       bgColor: "bg-indigo-500/10",
@@ -92,14 +92,14 @@ const DATA_AR: SolutionsData = {
   title: "منصة واحدة. كل الحلول.",
   subtitle:
     "منتيرلي OS يوحّد سير عملك الإبداعي — من اكتشاف المواهب إلى التسليم الآمن.",
-  mainImage: "/images/monteerly/monteerly06-marketing-showcase-full.png",
+  mainImage: "/images/monteerly/monteerly_06_marketing_showcase_full.png",
   mainImageAlt: "النظام البيئي المتكامل لمنتيرلي",
   features: [
     {
       id: "escrow",
       title: "ضمان بمستوى عسكري",
       desc: "عقود ذكية مشفرة بـ AES-256 تحتفظ بالأموال بشكل آمن حتى اعتماد كل معلم. صفر نزاعات، شفافية كاملة.",
-      image: "/images/monteerly/monteerly05-security-digital-lock-cyber.png",
+      image: "/images/monteerly/monteerly_05_security_guardian_wide.png",
       icon: <ShieldCheck className="w-6 h-6" />,
       accentColor: "text-emerald-500",
       bgColor: "bg-emerald-500/10",
@@ -108,7 +108,7 @@ const DATA_AR: SolutionsData = {
       id: "ai",
       title: "مساعد المخرج الذكي",
       desc: "يحلل نطاق مشروعك، يقترح الأسعار، يتفاوض على الشروط، ويزيد عائدك تلقائياً.",
-      image: "/images/monteerly/monteerly09-ai-performance-advisor-hologram.png",
+      image: "/images/monteerly/monteerly_09_ai_performance_advisor_hologram.png",
       icon: <Zap className="w-6 h-6" />,
       accentColor: "text-indigo-500",
       bgColor: "bg-indigo-500/10",
@@ -237,41 +237,56 @@ export function SolutionsSection({ locale = "en" }: { locale?: "ar" | "en" }) {
 
           {/* Features List */}
           <div className="space-y-5">
-            {data.features.map((feature) => (
-              <div
-                key={feature.id}
-                className="group flex gap-5 p-5 md:p-6 rounded-2xl bg-white dark:bg-[#0A0A0F] border border-slate-200 dark:border-white/8 hover:border-indigo-300 dark:hover:border-indigo-500/30 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
-              >
-                {/* Feature Image Thumbnail */}
-                <div className="w-20 h-20 md:w-24 md:h-24 relative flex-shrink-0 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 shadow-md">
-                  <Image
-                    src={feature.image}
-                    alt={feature.title}
-                    fill
-                    sizes="96px"
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                </div>
+            {data.features.map((feature) => {
+              const isEscrow = feature.id === "escrow";
 
-                {/* Text */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div
-                      className={`w-8 h-8 rounded-lg ${feature.bgColor} flex items-center justify-center ${feature.accentColor} flex-shrink-0`}
-                    >
-                      {feature.icon}
-                    </div>
-                    <h3 className="text-lg md:text-xl font-black text-slate-900 dark:text-white truncate">
-                      {feature.title}
-                    </h3>
+              return (
+                <div
+                  key={feature.id}
+                  className="group flex gap-5 p-5 md:p-6 rounded-2xl bg-white dark:bg-[#0A0A0F] border border-slate-200 dark:border-white/8 hover:border-indigo-300 dark:hover:border-indigo-500/30 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+                >
+                  {/* Feature Image Thumbnail */}
+                  <div
+                    className={
+                      "relative flex-shrink-0 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 shadow-md " +
+                      (isEscrow
+                        ? "w-40 h-28 md:w-48 md:h-32"
+                        : "w-24 h-24 md:w-28 md:h-28")
+                    }
+                  >
+                    <Image
+                      src={feature.image}
+                      alt={feature.title}
+                      fill
+                      sizes={isEscrow ? "320px" : "112px"}
+                      className={
+                        isEscrow
+                          ? "object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                          : "object-cover object-[center_32%] md:object-[center_28%] group-hover:scale-110 transition-transform duration-500"
+                      }
+                      loading="lazy"
+                    />
                   </div>
-                  <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
-                    {feature.desc}
-                  </p>
+
+                  {/* Text */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div
+                        className={`w-8 h-8 rounded-lg ${feature.bgColor} flex items-center justify-center ${feature.accentColor} flex-shrink-0`}
+                      >
+                        {feature.icon}
+                      </div>
+                      <h3 className="text-lg md:text-xl font-black text-slate-900 dark:text-white truncate">
+                        {feature.title}
+                      </h3>
+                    </div>
+                    <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 leading-relaxed">
+                      {feature.desc}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 

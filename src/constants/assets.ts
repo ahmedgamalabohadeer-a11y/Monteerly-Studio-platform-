@@ -27,35 +27,35 @@ const M = (filename: string) =>
 export const MONTEERLYASSETS = {
   // ── Logo & Branding ─────────────────────────────────────────────────────────
   LOGO: {
-    ICON: M("monteerly01-favicon-app-icon.png"),
-    FULL: M("monteerly02-main-logo-full.svg"),
+    ICON: M("monteerly_01_favicon_app_icon.png"),
+    FULL: M("monteerly_02_main_logo_full.svg"),
   },
 
   // ── Hero & Marketing ────────────────────────────────────────────────────────
   HERO: {
-    MAIN: M("monteerly04-hero-header-marketing-banner.png"),
-    DASHBOARD: M("monteerly06-marketing-showcase-full.png"),
+    MAIN: M("monteerly_04_hero_header_marketing_banner.png"),
+    DASHBOARD: M("monteerly_06_marketing_showcase_full.png"),
   },
 
   // ── Features ────────────────────────────────────────────────────────────────
   FEATURES: {
-    SECURITY: M("monteerly05-security-digital-lock-cyber.png"),
-    AI: M("monteerly09-ai-performance-advisor-hologram.png"),
+    SECURITY: M("monteerly_05_security_digital_lock_cyber.png"),
+    AI: M("monteerly_09_ai_performance_advisor_hologram.png"),
     WORKSPACE: M("monteerly15-creator-workspace-laptop-modern.png"),
     PUBLISHING: M("monteerly10-multiplatform-publishing-hero.png"),
     ANALYTICS: M("monteerly13-analytics-dashboard-woman-ai.png"),
-    INNOVATION: M("monteerly07-tech-innovation-portrait.png"),
-    BRANDING: M("monteerly08-branding-creative-assets.png"),
+    INNOVATION: M("monteerly_07_tech_innovation_portrait.png"),
+    BRANDING: M("monteerly_08_branding_creative_assets.png"),
     GLOBAL: M("monteerly11-global-collaboration-grid-4up.png"),
-    SHOWCASE: M("monteerly06-marketing-showcase-full.png"),
+    SHOWCASE: M("monteerly_06_marketing_showcase_full.png"),
   },
 
   // ── Avatars & People ────────────────────────────────────────────────────────
   AVATARS: {
     // ✅ إصلاح: كانت "images/avatarplaceholder.png" (MISS) → الآن مسار صحيح
-    ADMIN: M("monteerly03-profile-ahmed-gamal-circle.png"),
-    PLACEHOLDER: M("monteerly03-profile-ahmed-gamal-circle.png"),
-    FOUNDER: M("monteerly03-profile-ahmed-gamal-circle.png"),
+    ADMIN: M("monteerly_03_profile_ahmed_gamal_circle.png"),
+    PLACEHOLDER: M("monteerly_03_profile_ahmed_gamal_circle.png"),
+    FOUNDER: M("monteerly_03_profile_ahmed_gamal_circle.png"),
   },
 
   // ── Workspace & Studio ──────────────────────────────────────────────────────
@@ -100,17 +100,17 @@ export const MONTEERLYASSETS = {
 export const MCOSASSETS = {
   branding: {
     logoMain: {
-      src: M("monteerly02-main-logo-full.svg"),
+      src: M("monteerly_02_main_logo_full.svg"),
       alt: { ar: "شعار منتيرلي ستوديو الكامل", en: "Monteerly Studio main logo — Creative OS" },
     } satisfies AssetPath,
     icon: {
-      src: M("monteerly01-favicon-app-icon.png"),
+      src: M("monteerly_01_favicon_app_icon.png"),
       alt: { ar: "أيقونة النظام", en: "System Icon" },
       width: 40,
       height: 40,
     } satisfies AssetPath,
     founder: {
-      src: M("monteerly03-profile-ahmed-gamal-circle.png"),
+      src: M("monteerly_03_profile_ahmed_gamal_circle.png"),
       alt: { ar: "أحمد جمال — المؤسس والرئيس التنفيذي", en: "Ahmed Gamal — Founder & CEO" },
       width: 80,
       height: 80,
@@ -119,25 +119,25 @@ export const MCOSASSETS = {
 
   hero: {
     banner: {
-      src: M("monteerly04-hero-header-marketing-banner.png"),
+      src: M("monteerly_04_hero_header_marketing_banner.png"),
       alt: { ar: "خلفية الهيرو التسويقية", en: "Hero Background" },
     } satisfies AssetPath,
   },
 
   security: {
     digitalLock: {
-      src: M("monteerly05-security-digital-lock-cyber.png"),
+      src: M("monteerly_05_security_digital_lock_cyber.png"),
       alt: { ar: "قفل رقمي للأمن السيبراني", en: "Cyber Security Lock" },
     } satisfies AssetPath,
   },
 
   features: {
     showcase: {
-      src: M("monteerly06-marketing-showcase-full.png"),
+      src: M("monteerly_06_marketing_showcase_full.png"),
       alt: { ar: "عرض النظام البيئي المتكامل", en: "Integrated Ecosystem Showcase" },
     } satisfies AssetPath,
     brandAssets: {
-      src: M("monteerly08-branding-creative-assets.png"),
+      src: M("monteerly_08_branding_creative_assets.png"),
       alt: { ar: "إدارة أصول العلامة التجارية", en: "Brand Assets Management" },
     } satisfies AssetPath,
     globalGrid: {
@@ -148,11 +148,11 @@ export const MCOSASSETS = {
 
   techAndAi: {
     innovation: {
-      src: M("monteerly07-tech-innovation-portrait.png"),
+      src: M("monteerly_07_tech_innovation_portrait.png"),
       alt: { ar: "النواة التقنية المتقدمة", en: "Advanced Tech Core" },
     } satisfies AssetPath,
     advisor: {
-      src: M("monteerly09-ai-performance-advisor-hologram.png"),
+      src: M("monteerly_09_ai_performance_advisor_hologram.png"),
       alt: { ar: "مستشار الأداء بالذكاء الاصطناعي", en: "AI Performance Advisor" },
     } satisfies AssetPath,
     publishing: {

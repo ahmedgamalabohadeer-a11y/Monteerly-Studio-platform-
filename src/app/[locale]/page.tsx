@@ -568,7 +568,7 @@ export default function UltimateLandingPage({
               </div>
               <div className="relative z-10 -mx-6 -mb-6 md:-mx-12 md:-mb-12 mt-auto bg-slate-900 rounded-b-3xl overflow-hidden">
                 <Image
-                  src="/images/monteerly/monteerly_05_security_digital_lock_cyber.png"
+                  src="/images/monteerly/monteerly_05_security_guardian_wide.png"
                   alt={isAr ? "حماية الضمان" : "Escrow Protection"}
                   width={600}
                   height={300}
