@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Html, Body, Head, Heading, Container, Section, Text, Button, Hr } from '@react-email/components';
+import { Html, Body, Head, Heading, Container, Section, Text, Button, Hr } from 'react-email';
 
 export default function DeliveryNotification({ clientName, projectId, projectTitle }: any) {
   return (
