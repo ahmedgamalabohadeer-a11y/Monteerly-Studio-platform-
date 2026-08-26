@@ -1,4 +1,4 @@
--- تفعيل التشفير وبناء البنية العلائقية الصارمة 
+-- تفعيل التشفير وبناء البنية العلائقية الصارمة
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- 1. جدول المستخدمين وتقسيم الأدوار (RBAC Vacuum Fix)
@@ -22,7 +22,12 @@ CREATE TABLE IF NOT EXISTS wallets (
 ALTER TABLE wallets ENABLE ROW LEVEL SECURITY;
 
 -- 3. آلة حالة حسابات الضمان (Escrow State Machine)
-CREATE TYPE escrow_status AS ENUM ('created', 'funded', 'guard_period', 'held', 'released', 'disputed', 'refunded');
+-- ⚠️ استخدام IF NOT EXISTS لتجنب الخطأ إذا كان النوع موجودًا
+DO $$ BEGIN
+  CREATE TYPE escrow_status AS ENUM ('created', 'funded', 'guard_period', 'held', 'released', 'disputed', 'refunded');
+EXCEPTION
+  WHEN duplicate_object THEN null;
+END $$;
 
 CREATE TABLE IF NOT EXISTS escrow_accounts (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -38,5 +43,14 @@ CREATE TABLE IF NOT EXISTS escrow_accounts (
 ALTER TABLE escrow_accounts ENABLE ROW LEVEL SECURITY;
 
 -- 4. إرساء السياسات الأمنية المبدئية (Policies)
-CREATE POLICY "Allow authenticated read" ON users FOR SELECT USING (auth.role() = 'authenticated');
-CREATE POLICY "Users can view own wallet" ON wallets FOR SELECT USING (auth.uid() = user_id);
+DO $$ BEGIN
+  CREATE POLICY "Allow authenticated read" ON users FOR SELECT USING (auth.role() = 'authenticated');
+EXCEPTION
+  WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+  CREATE POLICY "Users can view own wallet" ON wallets FOR SELECT USING (auth.uid() = user_id);
+EXCEPTION
+  WHEN duplicate_object THEN null;
+END $$;

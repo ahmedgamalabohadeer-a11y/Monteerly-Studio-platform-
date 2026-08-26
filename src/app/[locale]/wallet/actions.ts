@@ -1,45 +1,71 @@
 'use server'
 
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase/server';
 import { logAuditEvent } from '@/lib/audit';
 
-export async function getWalletBalances() {
-  const { data: user } = await supabase.auth.getUser();
-  if (!user?.user) throw new Error('تصريح أمني مفقود');
+type WalletBalance = {
+  escrowed: number;
+  liquidity: number;
+};
 
-  // جلب كافة الأموال المرتبطة بهذا المبدع من محرك الضمان
+async function readWalletBalances(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  userId: string
+): Promise<WalletBalance> {
   const { data: escrowData, error } = await supabase
     .from('escrow_accounts')
     .select('amount, status')
-    .eq('freelancer_id', user.user.id);
+    .eq('freelancer_id', userId);
 
   if (error) throw error;
 
-  let escrowed = 0; // في حساب الضمان (held)
-  let liquidity = 0; // السيولة المتاحة (released)
+  return (escrowData ?? []).reduce<WalletBalance>(
+    (balances, record) => {
+      const amount = Number(record.amount);
+      if (!Number.isFinite(amount) || amount <= 0) return balances;
 
-  escrowData?.forEach(record => {
-    if (record.status === 'held' || record.status === 'disputed') {
-      escrowed += record.amount;
-    } else if (record.status === 'released') {
-      liquidity += record.amount;
-    }
-  });
+      if (record.status === 'held' || record.status === 'disputed') {
+        balances.escrowed += amount;
+      } else if (record.status === 'released') {
+        balances.liquidity += amount;
+      }
 
-  return { escrowed, liquidity };
+      return balances;
+    },
+    { escrowed: 0, liquidity: 0 }
+  );
 }
 
-export async function requestWithdrawal(amount: number) {
-  const { data: user } = await supabase.auth.getUser();
-  if (!user?.user) throw new Error('تصريح أمني مفقود');
+export async function getWalletBalances() {
+  const supabase = await createClient();
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error || !user) throw new Error('تصريح أمني مفقود');
 
-  // في نظام MCOS، يتم تحويل طلب السحب إلى "تذكرة مالية" للمدير التنفيذي
+  return readWalletBalances(supabase, user.id);
+}
+
+export async function requestWithdrawal() {
+  const supabase = await createClient();
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error || !user) throw new Error('تصريح أمني مفقود');
+
+  const { liquidity } = await readWalletBalances(supabase, user.id);
+  if (liquidity <= 0) {
+    throw new Error('لا توجد سيولة متاحة للسحب');
+  }
+
   await logAuditEvent({
-    actorIdentifier: `freelancer:${user.user.id}`,
+    actorIdentifier: `freelancer:${user.id}`,
     action: 'withdrawal_requested',
     module: 'finance',
-    snapshot: { requested_amount: amount, timestamp: new Date().toISOString() }
+    snapshot: {
+      requested_amount: liquidity,
+      timestamp: new Date().toISOString(),
+    },
   });
 
-  return { success: true, message: "تم إصدار مطالبة مالية رسمية. جاري المعالجة." };
+  return {
+    success: true,
+    message: 'تم إصدار مطالبة مالية رسمية. جاري المعالجة.',
+  };
 }

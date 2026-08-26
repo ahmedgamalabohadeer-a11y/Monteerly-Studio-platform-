@@ -1,4 +1,6 @@
-import { supabase } from '@/lib/supabase';
+import 'server-only';
+
+import { createClient } from '@/lib/supabase/server';
 import { logAuditEvent } from '@/lib/audit';
 
 /**
@@ -9,6 +11,7 @@ export class FinancialGuard {
   
   // التحقق من صحة مبلغ الدفع قبل إرساله للبوابة (Paymob/Stripe)
   static async validateTransaction(orderId: string, clientRequestedAmount: number) {
+    const supabase = await createClient();
     // 1. جلب السعر الفعلي من قاعدة البيانات المعزولة
     const { data: order, error } = await supabase
       .from('orders')
@@ -39,7 +42,7 @@ export class FinancialGuard {
   }
 
   // تسجيل محاولات الاختراق لإغلاق حساب العميل فوراً
-  private static async flagHackAttempt(reason: string, entityId: string, metadata: unknown = {}) {
+  private static async flagHackAttempt(reason: string, entityId: string, metadata: Record<string, unknown> = {}) {
     console.error(`🚨 FINANCIAL SECURITY ALERT: ${reason} on ${entityId}`);
     await logAuditEvent({
       actorIdentifier: 'SYSTEM_GUARD',

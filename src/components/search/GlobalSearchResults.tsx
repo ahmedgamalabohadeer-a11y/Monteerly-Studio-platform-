@@ -1,7 +1,22 @@
 'use client';
 import React, { useState } from 'react';
-import { Search, File, Folder, User, Layout, Filter } from 'lucide-react';
+import { Search, File, Folder, User, Layout, Filter, type LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+
+interface TabButtonProps {
+  label: string;
+  id: string;
+  active: string;
+  onClick: (id: string) => void;
+}
+
+interface ResultItemProps {
+  icon: LucideIcon;
+  title: string;
+  path: string;
+  meta: string;
+  type: string;
+}
 
 export function GlobalSearchResults() {
   const [activeTab, setActiveTab] = useState('all');
@@ -68,7 +83,7 @@ export function GlobalSearchResults() {
   );
 }
 
-function TabButton({ label, id, active, onClick }: unknown) {
+function TabButton({ label, id, active, onClick }: TabButtonProps) {
     return (
         <button 
            onClick={() => onClick(id)}
@@ -79,7 +94,7 @@ function TabButton({ label, id, active, onClick }: unknown) {
     )
 }
 
-function ResultItem({ icon: Icon, title, path, meta, type }: unknown) {
+function ResultItem({ icon: Icon, title, path, meta }: ResultItemProps) {
     return (
         <div className="flex items-start gap-4 p-4 bg-card border border-border rounded-xl hover:border-primary/50 hover:shadow-sm transition-all cursor-pointer group">
            <div className="p-3 bg-muted/50 rounded-lg group-hover:bg-primary/10 group-hover:text-primary transition-colors">

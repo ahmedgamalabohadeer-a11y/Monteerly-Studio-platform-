@@ -76,7 +76,26 @@ CREATE TRIGGER on_auth_user_created
 -- =====================================================================
 -- 🛡️ سياسات الأمان (Row Level Security Policies)
 -- =====================================================================
-CREATE POLICY "Users can view own profile" ON public.profiles FOR SELECT USING (auth.uid() = id);
-CREATE POLICY "Users can update own profile" ON public.profiles FOR UPDATE USING (auth.uid() = id);
-CREATE POLICY "Anyone can view open jobs" ON public.jobs FOR SELECT USING (status = 'open');
-CREATE POLICY "Clients can create jobs" ON public.jobs FOR INSERT WITH CHECK (auth.uid() = client_id);
+DO $$ BEGIN
+  CREATE POLICY "Users can view own profile" ON public.profiles FOR SELECT USING (auth.uid() = id);
+EXCEPTION
+  WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+  CREATE POLICY "Users can update own profile" ON public.profiles FOR UPDATE USING (auth.uid() = id);
+EXCEPTION
+  WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+  CREATE POLICY "Anyone can view open jobs" ON public.jobs FOR SELECT USING (status = 'open');
+EXCEPTION
+  WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+  CREATE POLICY "Clients can create jobs" ON public.jobs FOR INSERT WITH CHECK (auth.uid() = client_id);
+EXCEPTION
+  WHEN duplicate_object THEN null;
+END $$;

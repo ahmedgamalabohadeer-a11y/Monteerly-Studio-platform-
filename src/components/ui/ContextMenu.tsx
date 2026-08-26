@@ -1,6 +1,13 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
-import { Trash2, Edit2, Share2, Copy, FolderPlus, Download } from 'lucide-react';
+import { Trash2, Edit2, Share2, Copy, FolderPlus, Download, type LucideIcon } from 'lucide-react';
+interface MenuItemProps {
+  icon: LucideIcon;
+  label: string;
+  shortcut?: string;
+  color?: string;
+}
+
 
 export function ContextMenu() {
   const [visible, setVisible] = useState(false);
@@ -56,7 +63,7 @@ export function ContextMenu() {
   );
 }
 
-function MenuItem({ icon: Icon, label, shortcut, color }: unknown) {
+function MenuItem({ icon: Icon, label, shortcut, color }: MenuItemProps) {
     return (
         <button className={`w-full flex items-center justify-between px-3 py-2 text-sm rounded-lg hover:bg-primary/10 transition-colors ${color || 'text-foreground'}`}>
             <div className="flex items-center gap-2">

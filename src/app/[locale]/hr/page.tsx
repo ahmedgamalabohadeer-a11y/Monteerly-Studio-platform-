@@ -1,8 +1,10 @@
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase/server';
 import { Users, UserPlus, Activity, Briefcase, Trash2 } from 'lucide-react';
 import { addEmployee } from './actions';
 
 export default async function HRPage() {
+  const supabase = await createClient();
+
   // جلب البيانات الحقيقية من Supabase
   const { data: employees, count: totalEmployees } = await supabase
     .from('employees')

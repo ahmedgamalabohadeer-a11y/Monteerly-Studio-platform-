@@ -2,6 +2,17 @@
 import React, { useEffect, useState } from 'react';
 import { X, Command } from 'lucide-react';
 
+interface ShortcutGroupProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+interface ShortcutRowProps {
+  keys: string[];
+  desc: string;
+}
+
+
 export function ShortcutsOverlay() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -55,7 +66,7 @@ export function ShortcutsOverlay() {
   );
 }
 
-function ShortcutGroup({ title, children }: unknown) {
+function ShortcutGroup({ title, children }: ShortcutGroupProps) {
     return (
         <div>
             <h3 className="font-bold text-muted-foreground mb-4 uppercase text-xs tracking-wider">{title}</h3>
@@ -64,7 +75,7 @@ function ShortcutGroup({ title, children }: unknown) {
     )
 }
 
-function ShortcutRow({ keys, desc }: unknown) {
+function ShortcutRow({ keys, desc }: ShortcutRowProps) {
     return (
         <div className="flex justify-between items-center">
             <span className="text-sm">{desc}</span>

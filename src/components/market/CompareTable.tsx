@@ -4,6 +4,13 @@ import { Star, Clock, CheckCircle, XCircle } from 'lucide-react';
 import { Avatar } from '@/components/ui/Avatar';
 import { Button } from '@/components/ui/Button';
 
+interface ComparisonRowProps {
+  label: string;
+  c1: React.ReactNode;
+  c2: React.ReactNode;
+  c3: React.ReactNode;
+}
+
 export function CompareTable() {
   return (
     <div className="overflow-x-auto border border-border rounded-xl">
@@ -49,7 +56,7 @@ export function CompareTable() {
   );
 }
 
-function Row({ label, c1, c2, c3 }: unknown) {
+function Row({ label, c1, c2, c3 }: ComparisonRowProps) {
    return (
       <tr className="hover:bg-muted/10">
          <td className="p-4 text-right font-medium text-sm text-muted-foreground">{label}</td>

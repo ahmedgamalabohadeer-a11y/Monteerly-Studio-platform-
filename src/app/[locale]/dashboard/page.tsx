@@ -26,7 +26,7 @@ type UserRole = 'freelancer' | 'client' | 'agency';
 type Profile = {
   id: string;
   full_name: string | null;
-  role: UserRole | null;
+  account_type: UserRole | null;
   kyc_status: string | null;
 };
 
@@ -115,12 +115,11 @@ export default function ElegantDashboard() {
         }
 
         const user = authData.user;
-        const metadataRole = normalizeRole(user.user_metadata?.role);
 
         const [profileResult, jobsResult] = await Promise.all([
           supabase
             .from('profiles')
-            .select('id, full_name, role, kyc_status')
+            .select('id, full_name, account_type, kyc_status')
             .eq('id', user.id)
             .maybeSingle(),
           supabase
@@ -142,10 +141,7 @@ export default function ElegantDashboard() {
 
         const databaseProfile = profileResult.data as Profile | null;
 
-        /*
-         * إذا كان صف profiles غير موجود بعد، نستخدم metadata مؤقتًا.
-         * صفحة onboarding ستنشئ/تحدث الصف لاحقًا.
-         */
+        // account_type هو تفضيل المنتج؛ system_role لا يُقرأ في واجهة العميل.
         setProfile({
           id: user.id,
           full_name:
@@ -153,7 +149,7 @@ export default function ElegantDashboard() {
             (typeof user.user_metadata?.full_name === 'string'
               ? user.user_metadata.full_name
               : user.email?.split('@')[0] || 'مستخدم منتيرلي'),
-          role: normalizeRole(databaseProfile?.role || metadataRole),
+          account_type: normalizeRole(databaseProfile?.account_type),
           kyc_status: databaseProfile?.kyc_status || 'pending',
         });
 
@@ -180,7 +176,7 @@ export default function ElegantDashboard() {
     };
   }, [router]);
 
-  const role = normalizeRole(profile?.role);
+  const role = normalizeRole(profile?.account_type);
   const kyc = getKycPresentation(profile?.kyc_status || 'pending');
 
   const modules = useMemo<Module[]>(() => {
@@ -321,7 +317,7 @@ export default function ElegantDashboard() {
           <div>
             <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-indigo-500/25 bg-indigo-500/10 px-3 py-1 text-xs font-bold text-indigo-300">
               <UserRound className="h-3.5 w-3.5" />
-              الدور التشغيلي: {roleLabels[role]}
+              نوع الحساب: {roleLabels[role]}
             </div>
 
             <h1 className="text-3xl font-black text-white md:text-5xl">

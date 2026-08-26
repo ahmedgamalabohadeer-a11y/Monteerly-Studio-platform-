@@ -1,7 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import {
+  changeAccountType,
+  getAdminDashboardData,
+  type AccountType,
+  type AdminDashboardUser,
+} from '../actions';
 import { AuthGuard } from '@/components/auth/AuthGuard';
 import { Shield, Wallet, FileCheck, Users, UserCog } from 'lucide-react';
 
@@ -10,44 +15,36 @@ type DashboardStats = {
   activeJobs: number;
 };
 
-type UserRole = 'freelancer' | 'admin' | 'client' | string;
-
-type ProfileUser = {
-  id: string;
-  full_name: string | null;
-  email: string | null;
-  role: UserRole | null;
-};
-
 export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats>({ escrowTotal: 0, activeJobs: 0 });
-  const [users, setUsers] = useState<ProfileUser[]>([]);
+  const [users, setUsers] = useState<AdminDashboardUser[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data: escrow } = await supabase.from('escrow_accounts').select('amount').eq('status', 'held');
-      const { count: jobs } = await supabase.from('jobs').select('*', { count: 'exact', head: true }).eq('status', 'in_progress');
-      const total = escrow?.reduce((acc, curr) => acc + Number(curr.amount), 0) || 0;
-      setStats({ escrowTotal: total, activeJobs: jobs || 0 });
-
-      const { data: profilesData } = await supabase.from('profiles').select('id, full_name, email, role').order('created_at', { ascending: false }).limit(20);
-      if (profilesData) {
-        setUsers(profilesData as ProfileUser[]);
+      try {
+        const data = await getAdminDashboardData();
+        setStats(data.stats);
+        setUsers(data.users);
+      } catch {
+        alert('❌ تعذر تحميل بيانات لوحة الإدارة.');
       }
     };
 
     fetchData();
   }, []);
 
-  const changeUserRole = async (userId: string, newRole: UserRole) => {
-    if (!confirm(`هل تريد تغيير صلاحية المستخدم إلى ${newRole}؟`)) return;
+  const handleAccountTypeChange = async (userId: string, accountType: AccountType) => {
+    if (!confirm(`هل تريد تغيير نوع الحساب إلى ${accountType}؟`)) return;
 
-    const { error } = await supabase.from('profiles').update({ role: newRole }).eq('id', userId);
-
-    if (!error) {
-      setUsers(users.map((user) => (user.id === userId ? { ...user, role: newRole } : user)));
-      alert('✅ تم تحديث الصلاحية بنجاح.');
-    } else {
+    try {
+      await changeAccountType(userId, accountType);
+      setUsers((currentUsers) =>
+        currentUsers.map((user) =>
+          user.id === userId ? { ...user, account_type: accountType } : user
+        )
+      );
+      alert('✅ تم تحديث نوع الحساب بنجاح.');
+    } catch {
       alert('❌ حدث خطأ أثناء التحديث.');
     }
   };
@@ -87,7 +84,7 @@ export default function AdminDashboard() {
                 <tr>
                   <th className="pb-4 font-normal">الاسم</th>
                   <th className="pb-4 font-normal">البريد الإلكتروني</th>
-                  <th className="pb-4 font-normal">الدور الحالي</th>
+                  <th className="pb-4 font-normal">نوع الحساب</th>
                   <th className="pb-4 font-normal">الإجراءات السيادية</th>
                 </tr>
               </thead>
@@ -100,33 +97,33 @@ export default function AdminDashboard() {
                     <td className="py-4">
                       <span
                         className={`rounded-full px-3 py-1 text-xs ${
-                          user.role === 'freelancer'
+                          user.account_type === 'freelancer'
                             ? 'bg-purple-500/20 text-purple-400'
-                            : user.role === 'admin'
-                              ? 'bg-rose-500/20 text-rose-400'
+                            : user.account_type === 'agency'
+                              ? 'bg-blue-500/20 text-blue-400'
                               : 'bg-slate-800 text-slate-300'
                         }`}
                       >
-                        {user.role === 'freelancer'
+                        {user.account_type === 'freelancer'
                           ? 'مبدع (Freelancer)'
-                          : user.role === 'admin'
-                            ? 'مدير'
+                          : user.account_type === 'agency'
+                            ? 'وكالة (Agency)'
                             : 'عميل (Client)'}
                       </span>
                     </td>
                     <td className="flex gap-2 py-4">
-                      {user.role !== 'freelancer' && (
+                      {user.account_type !== 'freelancer' && (
                         <button
-                          onClick={() => changeUserRole(user.id, 'freelancer')}
+                          onClick={() => handleAccountTypeChange(user.id, 'freelancer')}
                           className="flex items-center gap-1 rounded-lg bg-purple-600/20 px-3 py-1.5 text-xs text-purple-400 transition-colors hover:bg-purple-600/40"
                         >
                           <UserCog size={14} /> ترقية كمبدع
                         </button>
                       )}
 
-                      {user.role !== 'client' && (
+                      {user.account_type !== 'client' && (
                         <button
-                          onClick={() => changeUserRole(user.id, 'client')}
+                          onClick={() => handleAccountTypeChange(user.id, 'client')}
                           className="flex items-center gap-1 rounded-lg bg-slate-800 px-3 py-1.5 text-xs text-slate-300 transition-colors hover:bg-slate-700"
                         >
                           تحويل لعميل

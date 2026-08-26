@@ -1,8 +1,10 @@
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase/server';
 import { FileText, FilePlus, RefreshCcw, ShieldCheck } from 'lucide-react';
 import { addContract, addContractRevision } from './actions';
 
 export default async function ContractsPage() {
+  const supabase = await createClient();
+
   const { data: contracts } = await supabase.from('contracts').select('*').order('created_at', { ascending: false });
   const { data: revisions } = await supabase.from('contract_revisions').select('*, contracts(title)').order('created_at', { ascending: false }).limit(5);
 

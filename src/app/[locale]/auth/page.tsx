@@ -5,6 +5,7 @@ import { ShieldCheck, Mail, Lock, Loader2, Globe, ArrowRight, Bug } from 'lucide
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
+import { setOwnAccountType } from './actions';
 export default function AuthGateway() {
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
@@ -14,11 +15,11 @@ export default function AuthGateway() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    role: 'freelancer' as 'freelancer' | 'client' | 'agency',
+    accountType: 'freelancer' as 'freelancer' | 'client' | 'agency',
     acceptTerms: false,
   });
 
-  const roles = [
+  const accountTypes = [
     { id: 'freelancer', label: 'مبدع / مستقل (Freelancer)' },
     { id: 'client', label: 'عميل (Client)' },
     { id: 'agency', label: 'وكالة إنتاج (Agency)' },
@@ -112,42 +113,13 @@ export default function AuthGateway() {
         const { data, error } = await supabase.auth.signUp({
           email: formData.email,
           password: formData.password,
-          options: { data: { role: formData.role } },
+          options: { data: { full_name: formData.email } },
         });
 
         if (error) throw error;
 
-        // إنشاء / تحديث صف في profiles لربط الدور بالمنصة
-        if (data?.user) {
-          const { id, email } = data.user;
-
-          const { error: profileError } = await supabase
-            .from('profiles')
-            .upsert(
-              {
-                id,
-                email,
-                full_name: email, // يمكن تعديلها لاحقاً في صفحة onboarding
-                role: formData.role,
-                kyc_status: 'pending',
-              },
-              { onConflict: 'id' }, // يفترض أن هناك constraint على id في الجدول
-            );
-
-          if (profileError) {
-            console.error('Profile upsert error:', profileError);
-            setDebugInfo(
-              JSON.stringify(
-                {
-                  source: 'profile-upsert',
-                  error: profileError.message,
-                  code: profileError.code,
-                },
-                null,
-                2,
-              ),
-            );
-          }
+        if (data.session) {
+          await setOwnAccountType(formData.accountType);
         }
 
         setMsg({
@@ -165,7 +137,7 @@ export default function AuthGateway() {
               userId: data?.user?.id || null,
               email: data?.user?.email || null,
               session: !!data?.session,
-              role: formData.role,
+              accountType: formData.accountType,
             },
             null,
             2,
@@ -269,16 +241,16 @@ export default function AuthGateway() {
             {!isLogin && (
               <div>
                 <label className="block text-xs font-bold text-slate-400 mb-2">
-                  الدور التشغيلي (Role)
+                  نوع الحساب (Account type)
                 </label>
                 <select
-                  value={formData.role}
+                  value={formData.accountType}
                   onChange={(e) =>
-                    setFormData({ ...formData, role: e.target.value as 'freelancer' | 'client' | 'agency' })
+                    setFormData({ ...formData, accountType: e.target.value as 'freelancer' | 'client' | 'agency' })
                   }
                   className="w-full bg-[#12121A] border border-white/10 p-4 rounded-xl text-white outline-none focus:border-indigo-500 transition-colors appearance-none cursor-pointer"
                 >
-                  {roles.map((r) => (
+                  {accountTypes.map((r) => (
                     <option key={r.id} value={r.id}>
                       {r.label}
                     </option>

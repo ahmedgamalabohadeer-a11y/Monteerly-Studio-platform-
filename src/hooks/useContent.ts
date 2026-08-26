@@ -1,3 +1,8 @@
+interface ContentStatItem {
+  value: string;
+  label: string;
+}
+
 export const useContent = () => ({
   global: { direction: 'rtl' },
   gamification: { title: 'نظام النقاط', subtitle: 'العب واربح', desc: 'تفاصيل النظام', cta: 'ابدأ الآن' },
@@ -5,5 +10,5 @@ export const useContent = () => ({
   marketplace: { title: 'المتجر', subtitle: 'تصفح الخدمات', talents: [] },
   payment: { title: 'طرق الدفع', methods: [] },
   solutions: { title: 'حلولنا', subtitle: 'لجميع الشركات', mainImage: '/img.png', features: [] },
-  stats: { items: [] }
+  stats: { items: [] as ContentStatItem[] }
 });

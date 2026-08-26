@@ -1,6 +1,18 @@
 'use client';
 import React from 'react';
-import { Info, Film, Aperture, Maximize, FileType } from 'lucide-react';
+import { Info, Film, Aperture, Maximize, FileType, type LucideIcon } from 'lucide-react';
+interface SectionProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+interface MetaRowProps {
+  label: string;
+  value: string;
+  icon?: LucideIcon;
+  highlight?: boolean;
+}
+
 export function MediaProperties() {
   const meta = {
     filename: "Scene_01_Take_04.mov",
@@ -42,7 +54,7 @@ export function MediaProperties() {
     </div>
   );
 }
-function Section({ title, children }: unknown) {
+function Section({ title, children }: SectionProps) {
     return (
         <div>
             <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">{title}</h4>
@@ -50,7 +62,7 @@ function Section({ title, children }: unknown) {
         </div>
     )
 }
-function MetaRow({ label, value, icon: Icon, highlight }: unknown) {
+function MetaRow({ label, value, icon: Icon, highlight }: MetaRowProps) {
     return (
         <div className="flex justify-between items-start text-sm group">
             <span className="text-muted-foreground flex items-center gap-2">

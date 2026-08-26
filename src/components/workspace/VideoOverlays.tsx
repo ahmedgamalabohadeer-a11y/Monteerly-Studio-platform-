@@ -1,6 +1,13 @@
 'use client';
 import React, { useState } from 'react';
-import { LayoutTemplate, Monitor, Smartphone } from 'lucide-react';
+import { LayoutTemplate, Monitor, Smartphone, type LucideIcon } from 'lucide-react';
+interface OverlayButtonProps {
+  icon: LucideIcon;
+  active: boolean;
+  onClick: () => void;
+  tooltip: string;
+}
+
 export function VideoOverlays() {
   const [activeOverlay, setActiveOverlay] = useState<'none' | 'broadcast' | 'social'>('none');
   return (
@@ -47,7 +54,7 @@ export function VideoOverlays() {
     </div>
   );
 }
-function OverlayBtn({ icon: Icon, active, onClick, tooltip }: unknown) {
+function OverlayBtn({ icon: Icon, active, onClick, tooltip }: OverlayButtonProps) {
     return (
         <button 
            onClick={onClick}

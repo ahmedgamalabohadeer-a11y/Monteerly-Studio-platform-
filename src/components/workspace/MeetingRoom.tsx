@@ -1,8 +1,16 @@
 'use client';
 import React, { useState } from 'react';
-import { Mic, MicOff, Video, VideoOff, PhoneOff, MonitorUp, MessageSquare, Users } from 'lucide-react';
+import { Mic, MicOff, Video, VideoOff, PhoneOff, MonitorUp, MessageSquare, Users, type LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
+interface ControlButtonProps {
+  icon: LucideIcon;
+  active?: boolean;
+  onClick?: () => void;
+  label: string;
+  badge?: number;
+}
+
 export function MeetingRoom() {
   const [micOn, setMicOn] = useState(true);
   const [camOn, setCamOn] = useState(true);
@@ -54,7 +62,7 @@ export function MeetingRoom() {
     </div>
   );
 }
-function ControlBtn({ icon: Icon, active = true, onClick, label, badge }: unknown) {
+function ControlBtn({ icon: Icon, active = true, onClick, label, badge }: ControlButtonProps) {
     return (
         <button 
            onClick={onClick}

@@ -1,6 +1,8 @@
+import 'server-only';
+
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { supabase } from './supabase';
+import { createClient } from '@/lib/supabase/server';
 
 // إعداد عميل S3 لـ Cloudflare R2
 const s3Client = new S3Client({
@@ -16,6 +18,7 @@ const s3Client = new S3Client({
  * 1. رفع الملفات الخفيفة إلى Supabase (صور، عقود)
  */
 export async function uploadLightFile(file: File, bucket: 'avatars' | 'documents', path: string) {
+  const supabase = await createClient();
   const { data, error } = await supabase.storage.from(bucket).upload(path, file, {
     upsert: true,
   });

@@ -1,17 +1,28 @@
-'use server'
+'use server';
 
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { auditTransaction } from '@/lib/guardian';
 import { logAuditEvent } from '@/lib/audit';
 
 export async function addTransaction(formData: FormData) {
-  const amount = parseFloat(formData.get('amount') as string);
+  const supabase = await createClient();
+
+  // التحقق من session
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return { success: false, message: 'غير مصرح - يجب تسجيل الدخول' };
+  }
+
+  // ⚠️ amount من الخادم — لا نأخذه من FormData مباشرة
+  // في التطبيق الحقيقي: نحسب amount من بيانات موثقة (order, contract, etc.)
+  const amountFromServer = 0; // TODO: استبدل بحساب حقيقي من الخادم
+
   const transaction_type = formData.get('type') as string;
   const category = formData.get('category') as string;
   const description = formData.get('description') as string;
 
-  const audit = auditTransaction(amount, transaction_type, category);
+  const audit = auditTransaction(amountFromServer, transaction_type, category);
 
   // تسجيل إذا قام الحارس بحظر العملية
   if (audit.isSuspicious && audit.riskLevel === 'high') {
@@ -19,14 +30,21 @@ export async function addTransaction(formData: FormData) {
       actorIdentifier: 'server_action:finance/addTransaction',
       action: 'blocked_transaction',
       module: 'finance',
-      snapshot: { amount, transaction_type, reason: audit.reason }
+      snapshot: { amount: amountFromServer, transaction_type, reason: audit.reason }
     });
     return { success: false, message: audit.reason };
   }
 
   const { data, error } = await supabase
     .from('finance_transactions')
-    .insert([{ amount, transaction_type, category, description, risk_level: audit.riskLevel }])
+    .insert([{
+      user_id: user.id, // ⚠️ نستخدم user_id الموثق من الخادم
+      amount: amountFromServer, // ⚠️ amount من الخادم
+      transaction_type,
+      category,
+      description,
+      risk_level: audit.riskLevel
+    }])
     .select()
     .single();
 

@@ -15,6 +15,10 @@ export interface AssetPath {
   };
   width?: number;
   height?: number;
+  text?: {
+    ar: string;
+    en: string;
+  };
 }
 
 // ─── Base path helper (للاستخدام الداخلي فقط) ────────────────────────────────

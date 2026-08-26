@@ -1,4 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
+'use client';
+
+import { createBrowserClient } from '@supabase/ssr';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -24,7 +26,7 @@ const debugFetch: typeof fetch = async (input, init) => {
   }
 };
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey, {
   global: {
     fetch: debugFetch,
   },

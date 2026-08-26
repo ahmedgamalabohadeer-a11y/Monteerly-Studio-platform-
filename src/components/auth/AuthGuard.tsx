@@ -8,17 +8,21 @@ export function AuthGuard({ children, requireAdmin = false }: { children: React.
 
   useEffect(() => {
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { user } } = await supabase.auth.getUser();
       
-      if (!session) {
+      if (!user) {
         window.location.href = '/auth'; // توجيه لصفحة تسجيل الدخول الموجودة لديك
         return;
       }
 
       if (requireAdmin) {
         // التحقق من صلاحيات الإدارة
-        const { data: profile } = await supabase.from('profiles').select('role').eq('id', session.user.id).single();
-        if (profile?.role !== 'admin') {
+        const { data: roleRecord } = await supabase
+          .from('user_system_roles')
+          .select('system_role')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        if (roleRecord?.system_role !== 'admin' && roleRecord?.system_role !== 'executive') {
           window.location.href = '/'; // طرد المستخدم العادي للرئيسية
           return;
         }

@@ -2,6 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { Keyboard, X } from 'lucide-react';
 
+interface ShortcutGroupProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+
 export function ShortcutsModal() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -47,7 +53,7 @@ export function ShortcutsModal() {
   );
 }
 
-function ShortcutGroup({ title, children }: unknown) {
+function ShortcutGroup({ title, children }: ShortcutGroupProps) {
     return (
         <div>
             <h3 className="font-bold text-muted-foreground mb-4 border-b border-border pb-2">{title}</h3>

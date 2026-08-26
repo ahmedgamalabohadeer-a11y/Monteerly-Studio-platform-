@@ -1,10 +1,13 @@
-import { supabase } from './supabase';
+import 'server-only';
+
+import { createClient } from '@/lib/supabase/server';
 import { logAuditEvent } from './audit';
 
 export type EscrowStatus = 'held' | 'released' | 'refunded' | 'disputed';
 
 // 1. حجز الأموال (الموجودة سابقاً)
 export async function holdFundsInEscrow(orderId: string, clientId: string, freelancerId: string, amount: number) {
+  const supabase = await createClient();
   const { data, error } = await supabase.from('escrow_accounts').insert({
     order_id: orderId, client_id: clientId, freelancer_id: freelancerId, amount, status: 'held'
   }).select().single();
@@ -15,6 +18,7 @@ export async function holdFundsInEscrow(orderId: string, clientId: string, freel
 
 // 2. تحديث الحالة (للدعم الفني والإدارة)
 export async function updateEscrowStatus(escrowId: string, status: EscrowStatus, actorId: string) {
+  const supabase = await createClient();
   const { data, error } = await supabase.from('escrow_accounts').update({ status }).eq('id', escrowId).select().single();
   if (error) throw error;
   await logAuditEvent({ actorIdentifier: `admin:${actorId}`, action: `escrow_${status}`, module: 'finance', entityId: escrowId });

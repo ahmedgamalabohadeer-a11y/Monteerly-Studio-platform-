@@ -2,6 +2,16 @@
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
 
+interface FilterSectionProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+interface CheckboxProps {
+  label: string;
+  count?: number;
+}
+
 export function DesktopFilters() {
   return (
     <aside className="w-64 hidden lg:block pr-6 space-y-8 border-r border-border h-[calc(100vh-100px)] overflow-y-auto sticky top-24">
@@ -51,7 +61,7 @@ export function DesktopFilters() {
   );
 }
 
-function FilterSection({ title, children }: unknown) {
+function FilterSection({ title, children }: FilterSectionProps) {
     return (
         <div className="mb-6">
             <button className="flex justify-between items-center w-full font-bold text-sm mb-3 text-muted-foreground hover:text-foreground">
@@ -64,7 +74,7 @@ function FilterSection({ title, children }: unknown) {
     )
 }
 
-function Checkbox({ label, count }: unknown) {
+function Checkbox({ label, count }: CheckboxProps) {
     return (
         <label className="flex items-center justify-between cursor-pointer group">
             <div className="flex items-center gap-2">

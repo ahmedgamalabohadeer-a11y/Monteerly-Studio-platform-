@@ -62,3 +62,7 @@ test-results/
 playwright-report/
 .next/
 node_modules/
+/artifacts/
+/.agents/skills/source-command-nextjs-build-artifacts-refresh/
+/.agents/skills/source-command-npm-dependency-update/
+/.agents/skills/source-command-update-gitignore/

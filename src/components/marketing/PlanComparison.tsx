@@ -2,6 +2,14 @@
 import React from 'react';
 import { Check, X, Minus } from 'lucide-react';
 
+interface ComparisonRowProps {
+  label: string;
+  free: React.ReactNode;
+  pro: React.ReactNode;
+  agency: React.ReactNode;
+  highlight?: boolean;
+}
+
 export function PlanComparison() {
   return (
     <div className="overflow-x-auto">
@@ -28,7 +36,7 @@ export function PlanComparison() {
   );
 }
 
-function Row({ label, free, pro, agency, highlight }: unknown) {
+function Row({ label, free, pro, agency, highlight }: ComparisonRowProps) {
    return (
       <tr className={`hover:bg-muted/50 transition-colors ${highlight ? 'bg-muted/10' : ''}`}>
          <td className="p-4 text-right font-medium text-sm">{label}</td>

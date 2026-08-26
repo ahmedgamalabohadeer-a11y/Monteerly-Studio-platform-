@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Html, Body, Head, Heading, Hr, Container, Preview, Section, Text, Button } from '@react-email/components';
+import { Html, Body, Head, Heading, Hr, Container, Preview, Section, Text, Button } from 'react-email';
 
 interface EscrowEmailProps {
   clientName: string;
@@ -27,7 +27,7 @@ export default function EscrowNotification({ clientName = 'عميلنا العز
               نؤكد لك أنه تم إيداع مبلغ <strong style={{color: '#4f46e5'}}>${amount}</strong> في حساب الضمان (Escrow) المشفر والخاص بمشروعك رقم ({projectId}).
             </Text>
             <Text style={paragraph}>
-              الأموال الآن في أمان ولن يتم تسليمها للمبدع إلا بعد استلامك للعمل النهائي واعتمادك له. يمكنك الآن الانتقال إلى "مساحة العمل" للتواصل اللحظي ومتابعة التقدم.
+              الأموال الآن في أمان ولن يتم تسليمها للمبدع إلا بعد استلامك للعمل النهائي واعتمادك له. يمكنك الآن الانتقال إلى «مساحة العمل» للتواصل اللحظي ومتابعة التقدم.
             </Text>
             
             <Section style={btnContainer}>

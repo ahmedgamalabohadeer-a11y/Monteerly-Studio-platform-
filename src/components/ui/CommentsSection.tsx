@@ -5,6 +5,14 @@ import { Avatar } from '@/components/ui/Avatar';
 import { Button } from '@/components/ui/Button';
 import { Textarea } from '@/components/ui/Textarea';
 
+interface CommentItemProps {
+  user: string;
+  time: string;
+  text: string;
+  likes: number;
+  hasReply?: boolean;
+}
+
 export function CommentsSection() {
   return (
     <div className="space-y-8 mt-8 border-t border-border pt-8">
@@ -41,7 +49,7 @@ export function CommentsSection() {
   );
 }
 
-function CommentItem({ user, time, text, likes, hasReply }: unknown) {
+function CommentItem({ user, time, text, likes, hasReply }: CommentItemProps) {
    return (
       <div className="flex gap-4">
          <Avatar fallback={user[0]} />

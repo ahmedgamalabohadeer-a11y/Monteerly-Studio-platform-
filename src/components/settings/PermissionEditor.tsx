@@ -9,6 +9,16 @@ interface Props {
   onClose: () => void;
   roleName: string;
 }
+interface PermissionGroupProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+interface PermissionRowProps {
+  label: string;
+  checked: boolean;
+}
+
 
 export function PermissionEditor({ isOpen, onClose, roleName }: Props) {
   if (!isOpen) return null;
@@ -51,7 +61,7 @@ export function PermissionEditor({ isOpen, onClose, roleName }: Props) {
   );
 }
 
-function PermissionGroup({ title, children }: unknown) {
+function PermissionGroup({ title, children }: PermissionGroupProps) {
     return (
         <div className="space-y-3">
             <h4 className="font-bold text-sm text-muted-foreground bg-muted/30 p-2 rounded">{title}</h4>
@@ -60,7 +70,7 @@ function PermissionGroup({ title, children }: unknown) {
     )
 }
 
-function PermRow({ label, checked }: unknown) {
+function PermRow({ label, checked }: PermissionRowProps) {
     return (
         <div className="flex items-center justify-between px-2">
             <span className="text-sm font-medium">{label}</span>

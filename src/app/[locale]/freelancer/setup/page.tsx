@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { MONTEERLY_ASSETS } from '@/constants/assets';
+import { MONTEERLYASSETS } from '@/constants/assets';
 import { finalizeFreelancerOnboarding } from './actions';
 import { Sparkles, ShieldCheck } from 'lucide-react';
 
@@ -10,7 +10,7 @@ export default function FreelancerSetupPage() {
         <div className="relative flex flex-col justify-between overflow-hidden bg-slate-900 p-12 text-white md:w-2/5">
           <div className="relative z-10">
             <Image
-              src={MONTEERLY_ASSETS.LOGO.FULL}
+              src={MONTEERLYASSETS.LOGO.FULL}
               alt="Monteerly Logo"
               width={160}
               height={48}
@@ -29,7 +29,7 @@ export default function FreelancerSetupPage() {
 
           <div className="relative z-10 mt-12 rounded-3xl border border-white/10 bg-slate-950/5 p-6 backdrop-blur-sm">
             <Image
-              src={MONTEERLY_ASSETS.FEATURES.WORKSPACE}
+              src={MONTEERLYASSETS.FEATURES.WORKSPACE}
               alt="Workspace Preview"
               width={1200}
               height={750}
@@ -73,7 +73,7 @@ export default function FreelancerSetupPage() {
               <div className="space-y-3">
                 <label className="text-sm font-black text-slate-50">التخصص الأساسي (الدائرة الأولى)</label>
                 <select
-                  name="role"
+                  name="specialization"
                   className="w-full rounded-2xl border border-slate-200 bg-slate-50 p-4 font-bold outline-none transition-all focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5"
                 >
                   <option value="editor">المونتير (Video Editor)</option>

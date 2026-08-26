@@ -44,7 +44,7 @@ export default function NewJobPage() {
       const user = authData.user;
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
-        .select('role')
+        .select('account_type')
         .eq('id', user.id)
         .maybeSingle();
 
@@ -56,9 +56,7 @@ export default function NewJobPage() {
         return;
       }
 
-      const resolvedRole = normalizeRole(
-        profile?.role || user.user_metadata?.role,
-      );
+      const resolvedRole = normalizeRole(profile?.account_type);
 
       setRole(resolvedRole);
 
@@ -106,7 +104,7 @@ export default function NewJobPage() {
           </h1>
 
           <p className="mt-4 text-sm leading-7 text-slate-400">
-            دور حسابك الحالي هو{' '}
+            نوع حسابك الحالي هو{' '}
             <span className="font-bold text-indigo-300">
               {role === 'freelancer' ? 'مبدع / مستقل' : 'غير محدد'}
             </span>

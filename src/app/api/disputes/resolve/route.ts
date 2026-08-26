@@ -1,46 +1,48 @@
+import { randomUUID } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { resolveDispute } from '@/lib/disputes';
+import { withAuthGuard } from '@/lib/security/apiGuard';
 
 type DecisionType = 'client' | 'freelancer';
 
 type ResolveDisputeRequest = {
   disputeId: string;
-  decision: string; // نستقبلها كنص عام أولاً من الواجهة
-  adminId: string;
+  decision: string;
 };
 
 function getErrorMessage(error: unknown) {
-  if (error instanceof Error) {
-    return error.message;
-  }
-  return 'حدث خطأ غير متوقع';
+  return error instanceof Error ? error.message : 'حدث خطأ غير متوقع';
 }
 
 export async function POST(req: Request) {
-  try {
-    const { disputeId, decision, adminId } = (await req.json()) as ResolveDisputeRequest;
+  return withAuthGuard(
+    req,
+    async (request) => {
+      try {
+        const { disputeId, decision } =
+          (await request.json()) as Partial<ResolveDisputeRequest>;
 
-    // 1. التحقق من الصلاحيات
-    if (adminId !== 'ADMIN_MASTER') {
-      return NextResponse.json({ error: 'غير مصرح' }, { status: 403 });
-    }
+        if (typeof disputeId !== 'string' || disputeId.trim().length === 0) {
+          return NextResponse.json({ error: 'معرّف النزاع غير صالح' }, { status: 400 });
+        }
 
-    // 2. التحقق من صحة قيمة القرار (Runtime Validation)
-    if (decision !== 'client' && decision !== 'freelancer') {
-      return NextResponse.json({ error: 'قيمة القرار غير صالحة. يجب أن تكون client أو freelancer' }, { status: 400 });
-    }
+        if (decision !== 'client' && decision !== 'freelancer') {
+          return NextResponse.json(
+            { error: 'قيمة القرار غير صالحة. يجب أن تكون client أو freelancer' },
+            { status: 400 }
+          );
+        }
 
-    // 3. التنفيذ بعد التأكد من نوع البيانات
-    await resolveDispute(disputeId, decision as DecisionType);
+        await resolveDispute(disputeId, decision as DecisionType);
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        resolution: decision,
-        auditId: `AUDIT-${Math.random().toString(36).slice(2, 11)}`,
-      },
-    });
-  } catch (error: unknown) {
-    return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
-  }
+        return NextResponse.json({
+          success: true,
+          data: { resolution: decision, auditId: randomUUID() },
+        });
+      } catch (error: unknown) {
+        return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
+      }
+    },
+    ['admin', 'executive']
+  );
 }

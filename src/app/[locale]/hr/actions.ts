@@ -1,13 +1,19 @@
 'use server'
 
-import { supabase } from '@/lib/supabase';
+import { requireSystemRole } from '@/lib/serverAuth';
 import { revalidatePath } from 'next/cache';
 import { logAuditEvent } from '@/lib/audit';
 
 export async function addEmployee(formData: FormData) {
+  const { supabase, user } = await requireSystemRole(['admin', 'executive']);
+
   const full_name = formData.get('full_name') as string;
   const position = formData.get('position') as string;
   const salary = parseFloat(formData.get('salary') as string);
+  if (!full_name?.trim() || !position?.trim() || !Number.isFinite(salary) || salary < 0) {
+    return { success: false, message: 'بيانات الموظف غير صالحة' };
+  }
+
 
   // 1. الإدخال الرئيسي في جدول الموظفين
   const { data, error } = await supabase
@@ -24,7 +30,7 @@ export async function addEmployee(formData: FormData) {
   // 2. تسجيل العملية فوراً في الصندوق الأسود (Audit Logs)
   if (data) {
     await logAuditEvent({
-      actorIdentifier: 'server_action:hr/addEmployee',
+      actorIdentifier: `admin:${user.id}`,
       action: 'created_employee',
       module: 'hr',
       entityId: data.id,

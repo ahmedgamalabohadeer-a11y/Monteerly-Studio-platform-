@@ -1,6 +1,13 @@
 'use client';
 import React from 'react';
 import { Hash, Volume2, Lock, Plus } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+
+interface ChannelItemProps {
+  name: string;
+  icon?: LucideIcon;
+  active?: boolean;
+}
 
 export function TeamChannels() {
   return (
@@ -29,7 +36,7 @@ export function TeamChannels() {
   );
 }
 
-function ChannelItem({ name, icon: Icon = Hash, active }: unknown) {
+function ChannelItem({ name, icon: Icon = Hash, active = false }: ChannelItemProps) {
     return (
         <button className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${active ? 'bg-primary/10 text-primary font-bold' : 'text-muted-foreground hover:bg-muted hover:text-foreground'}`}>
             <Icon size={16} />

@@ -2,6 +2,8 @@
 
 /* === Monteerly Corporate OS Typography & Colors === */
 @theme {
+  --font-cairo: "Cairo", "Segoe UI", Tahoma, Arial, sans-serif;
+  --font-ibm-plex-arabic: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
   --font-sans: var(--font-cairo), "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 }
