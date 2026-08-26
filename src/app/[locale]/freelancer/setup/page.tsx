@@ -73,7 +73,7 @@ export default function FreelancerSetupPage() {
               <div className="space-y-3">
                 <label className="text-sm font-black text-slate-50">التخصص الأساسي (الدائرة الأولى)</label>
                 <select
-                  name="role"
+                  name="specialization"
                   className="w-full rounded-2xl border border-slate-200 bg-slate-50 p-4 font-bold outline-none transition-all focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5"
                 >
                   <option value="editor">المونتير (Video Editor)</option>

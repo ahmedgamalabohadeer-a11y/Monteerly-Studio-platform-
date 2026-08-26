@@ -2,9 +2,11 @@ import { ShieldAlert } from 'lucide-react';
 import DisputeList from '@/components/disputes/DisputeList';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
+import { requireSystemRole } from '@/lib/serverAuth';
 export const dynamic = 'force-dynamic';
 
 export default async function DisputesPage() {
+  await requireSystemRole(['admin', 'executive']);
   const { data: disputes } = await supabaseAdmin
     .from('disputes')
     .select('*')

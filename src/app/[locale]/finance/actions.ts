@@ -9,8 +9,8 @@ export async function addTransaction(formData: FormData) {
   const supabase = await createClient();
 
   // التحقق من session
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session?.user) {
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
     return { success: false, message: 'غير مصرح - يجب تسجيل الدخول' };
   }
 
@@ -38,7 +38,7 @@ export async function addTransaction(formData: FormData) {
   const { data, error } = await supabase
     .from('finance_transactions')
     .insert([{ 
-      user_id: session.user.id, // ⚠️ نستخدم user_id من session
+      user_id: user.id, // ⚠️ نستخدم user_id الموثق من الخادم
       amount: amountFromServer, // ⚠️ amount من الخادم
       transaction_type, 
       category, 

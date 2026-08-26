@@ -10,7 +10,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
+import { createJob } from '@/app/[locale]/jobs/new/actions';
 
 type FormMessage = {
   type: 'error' | 'success';
@@ -64,30 +64,6 @@ export function CreateJobForm() {
     setMessage(null);
 
     try {
-      const { data: authData, error: authError } = await supabase.auth.getUser();
-
-      if (authError || !authData.user) {
-        throw new Error('يرجى تسجيل الدخول أولًا.');
-      }
-
-      const user = authData.user;
-
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .maybeSingle();
-
-      if (profileError) {
-        throw new Error(`تعذر التحقق من دور الحساب: ${profileError.message}`);
-      }
-
-      const role = profile?.role || user.user_metadata?.role;
-
-      if (role !== 'client' && role !== 'agency') {
-        throw new Error('إنشاء المشاريع متاح للعملاء والوكالات فقط.');
-      }
-
       const title = formData.title.trim();
       const description = formData.description.trim();
       const budget = Number.parseFloat(formData.budget);
@@ -104,29 +80,11 @@ export function CreateJobForm() {
         throw new Error('أدخل ميزانية صحيحة أكبر من صفر.');
       }
 
-      const { data: job, error: jobError } = await supabase
-        .from('jobs')
-        .insert({
-          title,
-          budget,
-          client_id: user.id,
-          status: 'open',
-          snapshot: {
-            description,
-            created_by_role: role,
-            escrow_status: 'not_funded',
-          },
-        })
-        .select('id')
-        .single();
-
-      if (jobError) {
-        throw new Error(`تعذر إنشاء المشروع: ${jobError.message}`);
-      }
-
-      if (!job?.id) {
-        throw new Error('تم إنشاء المشروع بدون معرف صالح.');
-      }
+      const result = await createJob({
+        title,
+        description,
+        budget: formData.budget,
+      });
 
       setMessage({
         type: 'success',
@@ -134,7 +92,7 @@ export function CreateJobForm() {
       });
 
       window.setTimeout(() => {
-        router.push(`/ar/studio/${job.id}`);
+        router.push(`/ar/studio/${result.jobId}`);
       }, 700);
     } catch (error: unknown) {
       setMessage({

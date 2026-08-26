@@ -5,6 +5,13 @@ import { MapPin, Star, MessageCircle, Share2, Play } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 
+interface PortfolioItemProps {
+  image: string;
+  title: string;
+  category: string;
+  views: string;
+}
+
 export function PublicPortfolio() {
   return (
     <div className="max-w-5xl mx-auto pb-12">
@@ -66,7 +73,7 @@ export function PublicPortfolio() {
   );
 }
 
-function PortfolioItem({ image, title, category, views }: unknown) {
+function PortfolioItem({ image, title, category, views }: PortfolioItemProps) {
     return (
         <div className="group cursor-pointer">
             <div className="relative aspect-video rounded-xl overflow-hidden mb-3 bg-slate-200">

@@ -21,8 +21,6 @@ type ReviewPlayerLabels = {
   system?: { loading?: string }
 }
 
-type ReactPlayerProgress = { playedSeconds: number }
-
 type CommentType = { id: string; timestamp: number; content: string; user_id: string }
 
 export default function ReviewPlayer({
@@ -35,7 +33,7 @@ export default function ReviewPlayer({
   ar: ReviewPlayerLabels
   activeVersion?: number
 }) {
-  const playerRef = useRef<ReactPlayer | null>(null)
+  const playerRef = useRef<HTMLVideoElement | null>(null)
   const [playing, setPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [comment, setComment] = useState('')
@@ -69,7 +67,9 @@ export default function ReviewPlayer({
   }, [orderId])
 
   const handleSeek = (seconds: number) => {
-    playerRef.current?.seekTo(seconds, 'seconds')
+    if (playerRef.current) {
+      playerRef.current.currentTime = Math.max(0, seconds)
+    }
   }
 
   const handleCommentSubmit = async () => {
@@ -107,13 +107,12 @@ export default function ReviewPlayer({
       <div className="relative aspect-video bg-black flex items-center justify-center group">
         <ReactPlayer
           ref={playerRef}
-          url={url}
+          src={url}
           width="100%"
           height="100%"
           playing={playing}
-          onProgress={(state: ReactPlayerProgress) => setCurrentTime(state.playedSeconds)}
+          onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
           controls={false}
-          config={{ file: { attributes: { controlsList: 'nodownload' } } }}
         />
 
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 bg-black/40 backdrop-blur-2xl px-10 py-5 rounded-full border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-500">

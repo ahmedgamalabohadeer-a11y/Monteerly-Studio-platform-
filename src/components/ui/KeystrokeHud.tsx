@@ -6,7 +6,7 @@ export function KeystrokeHud() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    let timeout: unknown;
+    let timeout: ReturnType<typeof setTimeout> | undefined;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       // Ignore typing in inputs
@@ -24,13 +24,16 @@ export function KeystrokeHud() {
       if (newKeys.length > 0) {
          setKeys(newKeys);
          setVisible(true);
-         clearTimeout(timeout);
+         if (timeout) clearTimeout(timeout);
          timeout = setTimeout(() => setVisible(false), 2000);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      if (timeout) clearTimeout(timeout);
+    };
   }, []);
 
   if (!visible) return null;

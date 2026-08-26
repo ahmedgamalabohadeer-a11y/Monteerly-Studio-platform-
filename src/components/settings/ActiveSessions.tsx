@@ -1,8 +1,17 @@
 'use client';
 import React from 'react';
-import { Smartphone, Monitor, LogOut, Globe } from 'lucide-react';
+import { Smartphone, Monitor, LogOut, Globe, type LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+
+interface SessionRowProps {
+  device: string;
+  location: string;
+  ip: string;
+  date: string;
+  isCurrent?: boolean;
+  icon: LucideIcon;
+}
 
 export function ActiveSessions() {
   return (
@@ -49,7 +58,7 @@ export function ActiveSessions() {
   );
 }
 
-function SessionRow({ device, location, ip, date, isCurrent, icon: Icon }: unknown) {
+function SessionRow({ device, location, ip, date, isCurrent, icon: Icon }: SessionRowProps) {
    return (
       <div className="p-4 flex items-center justify-between hover:bg-muted/30 transition-colors">
          <div className="flex items-center gap-4">

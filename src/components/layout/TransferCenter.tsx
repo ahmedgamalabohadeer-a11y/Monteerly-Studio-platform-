@@ -2,6 +2,14 @@
 import React, { useState } from 'react';
 import { Minimize2, Maximize2, X, Pause, Play, FileVideo, CheckCircle } from 'lucide-react';
 
+interface TransferItemProps {
+  name: string;
+  size: string;
+  progress: number;
+  status: 'uploading' | 'paused' | 'completed';
+}
+
+
 export function TransferCenter() {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
@@ -31,7 +39,7 @@ export function TransferCenter() {
   );
 }
 
-function TransferItem({ name, size, progress, status }: unknown) {
+function TransferItem({ name, size, progress, status }: TransferItemProps) {
    return (
       <div className="p-3 bg-muted/20 border border-border rounded-lg group">
          <div className="flex justify-between items-start mb-2">

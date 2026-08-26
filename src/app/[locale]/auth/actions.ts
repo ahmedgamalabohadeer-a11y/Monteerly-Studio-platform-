@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { logAuditEvent } from '@/lib/audit';
+import { requireUser } from '@/lib/serverAuth';
 
 export async function signUpUser(formData: FormData) {
   const supabase = await createClient();
@@ -73,4 +74,33 @@ export async function signOutUser() {
   const supabase = await createClient();
   await supabase.auth.signOut();
   redirect('/ar/auth');
+}
+
+type AccountType = 'client' | 'freelancer' | 'agency';
+
+export async function setOwnAccountType(accountType: AccountType) {
+  const { supabase, user } = await requireUser();
+
+  if (accountType !== 'client' && accountType !== 'freelancer' && accountType !== 'agency') {
+    throw new Error('نوع الحساب غير صالح.');
+  }
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({ account_type: accountType })
+    .eq('id', user.id);
+
+  if (error) {
+    throw new Error('تعذر حفظ نوع الحساب.');
+  }
+
+  await logAuditEvent({
+    actorIdentifier: `user:${user.id}`,
+    action: 'account_type_selected',
+    module: 'auth',
+    entityId: user.id,
+    snapshot: { account_type: accountType },
+  });
+
+  return { success: true };
 }

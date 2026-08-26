@@ -2,6 +2,18 @@
 import React from 'react';
 import { Folder, FileVideo, FileImage, MoreVertical, Cloud } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+interface FolderItemProps {
+  name: string;
+  count: number;
+}
+
+interface FileItemProps {
+  name: string;
+  size: string;
+  type: string;
+  date: string;
+}
+
 export function MediaLibrary() {
   return (
     <div className="bg-card border border-border rounded-xl h-[600px] flex flex-col">
@@ -39,7 +51,7 @@ export function MediaLibrary() {
     </div>
   );
 }
-function FolderItem({ name, count }: unknown) {
+function FolderItem({ name, count }: FolderItemProps) {
    return (
       <div className="p-3 border border-border rounded-xl bg-muted/5 hover:bg-primary/5 hover:border-primary cursor-pointer transition-colors text-center">
          <Folder size={32} className="mx-auto text-yellow-500 mb-2" fill="currentColor" />
@@ -48,7 +60,7 @@ function FolderItem({ name, count }: unknown) {
       </div>
    );
 }
-function FileItem({ name, size, type, date }: unknown) {
+function FileItem({ name, size, type, date }: FileItemProps) {
    return (
       <div className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/30 transition-colors group">
          <div className="flex items-center gap-3">

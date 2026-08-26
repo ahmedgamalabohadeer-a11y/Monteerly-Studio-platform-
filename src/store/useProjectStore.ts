@@ -1,9 +1,18 @@
+import { create } from 'zustand';
+
 export interface ProjectStore {
+  isPlaying: boolean;
+  currentTime: number;
+  securityAlert: boolean;
+  setIsPlaying: (isPlaying: boolean) => void;
+  setCurrentTime: (currentTime: number) => void;
   setSecurityAlert: (active: boolean) => void;
 }
-const defaultState: ProjectStore = { setSecurityAlert: (active: boolean) => {} };
-export function useProjectStore(): ProjectStore;
-export function useProjectStore<T>(selector: (state: ProjectStore) => T): T;
-export function useProjectStore<T>(selector?: (state: ProjectStore) => T) {
-  return selector ? selector(defaultState) : defaultState;
-}
+export const useProjectStore = create<ProjectStore>((set) => ({
+  isPlaying: false,
+  currentTime: 0,
+  securityAlert: false,
+  setIsPlaying: (isPlaying) => set({ isPlaying }),
+  setCurrentTime: (currentTime) => set({ currentTime }),
+  setSecurityAlert: (securityAlert) => set({ securityAlert }),
+}));

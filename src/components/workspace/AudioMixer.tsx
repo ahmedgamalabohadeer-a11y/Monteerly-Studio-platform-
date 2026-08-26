@@ -1,6 +1,14 @@
 'use client';
 import React, { useState } from 'react';
-import { Mic, Music, Volume2, Settings2 } from 'lucide-react';
+import { Mic, Music, Volume2, Settings2, type LucideIcon } from 'lucide-react';
+interface FaderProps {
+  label: string;
+  icon: LucideIcon;
+  value: number;
+  onChange: (value: number) => void;
+  color: string;
+}
+
 export function AudioMixer() {
   const [levels, setLevels] = useState({ voice: 80, music: 40, sfx: 60 });
   return (
@@ -16,7 +24,7 @@ export function AudioMixer() {
     </div>
   );
 }
-function Fader({ label, icon: Icon, value, onChange, color }: unknown) {
+function Fader({ label, icon: Icon, value, onChange, color }: FaderProps) {
     return (
         <div className="flex flex-col items-center gap-2 h-full group">
            <div className="relative flex-1 w-6 bg-muted rounded-full overflow-hidden flex flex-col justify-end border border-border">

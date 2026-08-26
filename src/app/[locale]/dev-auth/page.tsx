@@ -6,10 +6,10 @@ import { useRouter } from 'next/navigation';
 export default function DevAuthPage() {
   const router = useRouter();
 
-  const setRole = (role: string) => {
-    // حفظ الدور في الكوكيز لمحاكاة تسجيل الدخول الحقيقي
-    document.cookie = `mcos_role=${role}; path=/; max-age=86400`;
-    alert(`✅ تم تغيير الصلاحيات إلى: ${role}`);
+  const setPreviewPersona = (persona: 'executive' | 'employee') => {
+    // تفضيل عرض محلي فقط؛ لا يُستخدم لاتخاذ أي قرار صلاحيات.
+    sessionStorage.setItem('mcos_preview_persona', persona);
+    alert(`✅ تم تغيير معاينة الواجهة إلى: ${persona}`);
     router.push('/ar/dashboard');
   };
 
@@ -19,14 +19,14 @@ export default function DevAuthPage() {
             <h1 className="text-2xl font-black mb-6 flex items-center gap-3 text-indigo-400">
                 <UserCog size={28} /> محول الصلاحيات السيادي
             </h1>
-            <p className="text-slate-400 mb-8 text-sm">استخدم هذه الأداة لاختبار نظام (RBAC). اختر الهوية التي تريد تصفح النظام بها الآن:</p>
+            <p className="text-slate-400 mb-8 text-sm">هذه الأداة تغيّر معاينة الواجهة فقط ولا تمنح أي صلاحيات خادمية.</p>
             
             <div className="space-y-4">
-                <button onClick={() => setRole('EXECUTIVE')} className="w-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 hover:bg-emerald-500 hover:text-black px-6 py-4 rounded-xl font-bold flex items-center gap-3 transition-all">
+                <button onClick={() => setPreviewPersona('executive')} className="w-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 hover:bg-emerald-500 hover:text-black px-6 py-4 rounded-xl font-bold flex items-center gap-3 transition-all">
                     <Crown size={20} /> تفعيل وضع الإدارة العليا (Executive)
                 </button>
                 
-                <button onClick={() => setRole('EMPLOYEE')} className="w-full bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 px-6 py-4 rounded-xl font-bold flex items-center gap-3 transition-all">
+                <button onClick={() => setPreviewPersona('employee')} className="w-full bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 px-6 py-4 rounded-xl font-bold flex items-center gap-3 transition-all">
                     <User size={20} /> تفعيل وضع موظف عادي (Employee)
                 </button>
             </div>

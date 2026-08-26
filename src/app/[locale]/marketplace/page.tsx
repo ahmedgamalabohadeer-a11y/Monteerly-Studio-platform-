@@ -23,7 +23,7 @@ type UserRole = 'freelancer' | 'client' | 'agency';
 type Freelancer = {
   id: string;
   full_name: string | null;
-  role: string | null;
+  account_type: UserRole | null;
   kyc_status: string | null;
   bio: string | null;
   experience_years: number | null;
@@ -32,7 +32,7 @@ type Freelancer = {
 type CurrentProfile = {
   id: string;
   full_name: string | null;
-  role: UserRole | null;
+  account_type: UserRole | null;
   kyc_status: string | null;
 };
 
@@ -127,7 +127,6 @@ export default function MarketplacePage() {
         }
 
         const user = authData.user;
-        const metadataRole = normalizeRole(user.user_metadata?.role);
 
         /*
          * لا نقرأ email من profiles لأن schema الحالي لا يحتوي عمود email.
@@ -135,13 +134,13 @@ export default function MarketplacePage() {
         const [profileResult, talentResult] = await Promise.all([
           supabase
             .from('profiles')
-            .select('id, full_name, role, kyc_status')
+            .select('id, full_name, account_type, kyc_status')
             .eq('id', user.id)
             .maybeSingle(),
           supabase
             .from('profiles')
-            .select('id, full_name, role, kyc_status, bio, experience_years')
-            .eq('role', 'freelancer')
+            .select('id, full_name, account_type, kyc_status, bio, experience_years')
+            .eq('account_type', 'freelancer')
             .limit(24),
         ]);
 
@@ -164,7 +163,7 @@ export default function MarketplacePage() {
             (typeof user.user_metadata?.full_name === 'string'
               ? user.user_metadata.full_name
               : user.email?.split('@')[0] || 'مستخدم منتيرلي'),
-          role: normalizeRole(profile?.role || metadataRole),
+          account_type: normalizeRole(profile?.account_type),
           kyc_status: profile?.kyc_status || 'pending',
         });
 
@@ -191,7 +190,7 @@ export default function MarketplacePage() {
     };
   }, []);
 
-  const currentRole = normalizeRole(currentProfile?.role);
+  const currentRole = normalizeRole(currentProfile?.account_type);
   const rolePresentation = rolePresentations[currentRole];
 
   const filteredFreelancers = useMemo(() => {
@@ -201,7 +200,7 @@ export default function MarketplacePage() {
       const searchableText = [
         freelancer.full_name || '',
         freelancer.bio || '',
-        freelancer.role || '',
+        freelancer.account_type || '',
       ]
         .join(' ')
         .toLowerCase();
@@ -279,7 +278,7 @@ export default function MarketplacePage() {
           <div>
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1.5 text-xs font-bold text-indigo-300">
               {rolePresentation.icon}
-              الدور التشغيلي: {rolePresentation.label}
+              نوع الحساب: {rolePresentation.label}
             </div>
 
             <h1 className="flex items-center gap-3 text-3xl font-black text-white md:text-5xl">

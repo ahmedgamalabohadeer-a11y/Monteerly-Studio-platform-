@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { Html, Body, Head, Heading, Container, Section, Text, Button, Hr } from 'react-email';
 
-export default function DeliveryNotification({ clientName, projectId, projectTitle }: any) {
+interface DeliveryNotificationProps {
+  clientName: string;
+  projectId: string;
+  projectTitle: string;
+}
+
+export default function DeliveryNotification({ clientName, projectId, projectTitle }: DeliveryNotificationProps) {
   return (
     <Html dir="rtl">
       <Head />

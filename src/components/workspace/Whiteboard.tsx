@@ -1,6 +1,13 @@
 'use client';
 import React, { useState } from 'react';
-import { Pen, Eraser, MousePointer2, Trash, Download } from 'lucide-react';
+import { Pen, Eraser, MousePointer2, Trash, Download, type LucideIcon } from 'lucide-react';
+interface ToolButtonProps {
+  icon: LucideIcon;
+  active?: boolean;
+  onClick: () => void;
+  color?: string;
+}
+
 export function Whiteboard() {
   const [tool, setTool] = useState<'pen' | 'eraser' | 'select'>('pen');
   return (
@@ -34,7 +41,7 @@ export function Whiteboard() {
     </div>
   );
 }
-function ToolBtn({ icon: Icon, active, onClick, color }: unknown) {
+function ToolBtn({ icon: Icon, active, onClick, color }: ToolButtonProps) {
     return (
         <button 
            onClick={onClick}

@@ -20,7 +20,7 @@ export function TouchControls() {
   const gestureRef = useTouchGestures((type, val) => {
     if (type === 'swipeLeft') setTime((t) => t - 5)
     if (type === 'swipeRight') setTime((t) => t + 5)
-    if (type === 'pinch' && val) setScale(val)
+    if (type === 'pinch' && typeof val === 'number') setScale(val)
     if (type === 'tap') setIsPlaying((p) => !p)
   })
 

@@ -4,6 +4,15 @@ import { Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 
+interface PlanCardProps {
+  title: string;
+  price: string;
+  desc: string;
+  features: string[];
+  missing: string[];
+  isPopular?: boolean;
+}
+
 export function PricingTable() {
   const [annual, setAnnual] = useState(true);
 
@@ -57,7 +66,7 @@ export function PricingTable() {
   );
 }
 
-function PlanCard({ title, price, desc, features, missing, isPopular }: unknown) {
+function PlanCard({ title, price, desc, features, missing, isPopular }: PlanCardProps) {
     return (
         <div className={`relative p-8 bg-card border rounded-2xl flex flex-col ${isPopular ? 'border-primary shadow-2xl scale-105 z-10' : 'border-border shadow-sm'}`}>
             {isPopular && <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-3"><Badge variant="primary">الأكثر طلباً</Badge></div>}

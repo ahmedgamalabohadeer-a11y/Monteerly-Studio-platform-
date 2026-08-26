@@ -2,6 +2,13 @@
 import React from 'react';
 import { Activity, CheckCircle, XCircle, Clock } from 'lucide-react';
 
+interface WebhookLogItemProps {
+  status: 'success' | 'failed';
+  event: string;
+  url: string;
+  time: string;
+}
+
 export function WebhookLogs() {
   return (
     <div className="space-y-6">
@@ -46,7 +53,7 @@ export function WebhookLogs() {
   );
 }
 
-function LogItem({ status, event, url, time }: unknown) {
+function LogItem({ status, event, url, time }: WebhookLogItemProps) {
     return (
         <tr className="hover:bg-muted/30">
             <td className="p-3">

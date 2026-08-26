@@ -1,6 +1,14 @@
 'use client';
 import React from 'react';
-import { FileText, Trash, Edit, LogIn } from 'lucide-react';
+import { FileText, Trash, Edit, LogIn, type LucideIcon } from 'lucide-react';
+interface LogItemProps {
+  action: string;
+  user: string;
+  time: string;
+  icon: LucideIcon;
+  color: string;
+}
+
 
 export function ActivityLog() {
   return (
@@ -43,7 +51,7 @@ export function ActivityLog() {
   );
 }
 
-function LogItem({ action, user, time, icon: Icon, color }: unknown) {
+function LogItem({ action, user, time, icon: Icon, color }: LogItemProps) {
    return (
       <div className="p-4 flex items-center gap-4 text-sm hover:bg-muted/5 transition-colors">
          <Icon size={16} className={color} />

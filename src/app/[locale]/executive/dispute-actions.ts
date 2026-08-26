@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { updateEscrowStatus } from '@/lib/escrow';
 import { notifyUser } from '@/lib/notifications';
-import { supabase } from '@/lib/supabase';
+import { requireSystemRole } from '@/lib/serverAuth';
 
 type EscrowDecision = 'released' | 'refunded';
 
@@ -11,9 +11,6 @@ type ResolveDisputeResult =
   | { success: true; message: string }
   | { success: false; message: string };
 
-type AdminProfile = {
-  role: string | null;
-};
 
 type EscrowRecord = {
   id: string;
@@ -21,32 +18,6 @@ type EscrowRecord = {
   freelancer_id: string;
 };
 
-async function requireAdmin() {
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
-
-  if (authError || !user) {
-    throw new Error('غير مصرح. يجب تسجيل الدخول.');
-  }
-
-  const { data: profile, error: profileError } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', user.id)
-    .single<AdminProfile>();
-
-  if (profileError) {
-    throw new Error(profileError.message);
-  }
-
-  if (profile?.role !== 'admin') {
-    throw new Error('غير مصرح. صلاحيات مدير فقط.');
-  }
-
-  return user;
-}
 
 function parseDecision(value: FormDataEntryValue | null): EscrowDecision {
   if (value === 'released' || value === 'refunded') {
@@ -71,7 +42,7 @@ export async function resolveDispute(
   formData: FormData
 ): Promise<ResolveDisputeResult> {
   try {
-    const admin = await requireAdmin();
+    const { supabase, user: admin } = await requireSystemRole(['admin', 'executive']);
 
     const escrowId = parseRequiredString(
       formData.get('escrow_id'),

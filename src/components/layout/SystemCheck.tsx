@@ -3,6 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { AlertTriangle, CheckCircle, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
+interface CheckItemProps {
+  label: string;
+  pass: boolean;
+  warning?: boolean;
+}
+
+
 export function SystemCheck() {
   const [status, setStatus] = useState<'checking' | 'pass' | 'fail'>('checking');
   const [checks, setChecks] = useState({ webgl: false, wasm: false, screen: false });
@@ -49,7 +56,7 @@ export function SystemCheck() {
   );
 }
 
-function CheckItem({ label, pass, warning }: unknown) {
+function CheckItem({ label, pass, warning }: CheckItemProps) {
     return (
         <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
             <span className="text-sm font-medium">{label}</span>

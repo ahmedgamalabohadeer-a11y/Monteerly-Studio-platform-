@@ -16,28 +16,30 @@ export function RoleProvider({ children }: { children: ReactNode }) {
   const [accountType, setAccountType] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const supabase = createBrowserClient(
+  const [supabase] = useState(() => createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL || '',
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-  );
+  ));
 
   useEffect(() => {
     const fetchRole = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       
-      if (session?.user) {
+      if (user) {
         // جلب system_role من جدول user_system_roles
         const { data: roleData } = await supabase
           .from('user_system_roles')
           .select('system_role')
-          .eq('user_id', session.user.id)
+          .eq('user_id', user.id)
           .single();
 
         // جلب account_type من جدول profiles
         const { data: profileData } = await supabase
           .from('profiles')
           .select('account_type')
-          .eq('id', session.user.id)
+          .eq('id', user.id)
           .single();
 
         setSystemRole(roleData?.system_role ?? 'user');
@@ -51,7 +53,7 @@ export function RoleProvider({ children }: { children: ReactNode }) {
     };
 
     fetchRole();
-  }, [supabase.auth]);
+  }, [supabase]);
 
   return (
     <RoleContext.Provider value={{ systemRole, accountType, loading }}>

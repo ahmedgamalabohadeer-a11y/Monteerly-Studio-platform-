@@ -1,4 +1,3 @@
-// @ts-expect-error: legacy compatibility
 import React from 'react';
 import Link from 'next/link';
 import { Share2, Video } from 'lucide-react';

@@ -1,6 +1,19 @@
 'use client';
 import React, { useState, useRef } from 'react';
-import { Pen, Eraser, Undo, Trash, MousePointer } from 'lucide-react';
+import { Pen, Eraser, Undo, Trash, MousePointer, type LucideIcon } from 'lucide-react';
+interface ToolButtonProps {
+  icon: LucideIcon;
+  active?: boolean;
+  onClick: () => void;
+  color?: string;
+}
+
+interface ColorDotProps {
+  color: string;
+  active: boolean;
+  onClick: () => void;
+}
+
 export function AnnotationCanvas() {
   const [tool, setTool] = useState<'draw' | 'erase' | 'none'>('none');
   const [color, setColor] = useState('#ef4444'); // Red default
@@ -44,7 +57,7 @@ export function AnnotationCanvas() {
     </div>
   );
 }
-function ToolBtn({ icon: Icon, active, onClick, color }: unknown) {
+function ToolBtn({ icon: Icon, active, onClick, color }: ToolButtonProps) {
     return (
         <button 
            onClick={onClick}
@@ -54,7 +67,7 @@ function ToolBtn({ icon: Icon, active, onClick, color }: unknown) {
         </button>
     )
 }
-function ColorDot({ color, active, onClick }: unknown) {
+function ColorDot({ color, active, onClick }: ColorDotProps) {
     return (
         <button 
            onClick={onClick}

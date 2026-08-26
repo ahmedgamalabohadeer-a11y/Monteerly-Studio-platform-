@@ -1,11 +1,10 @@
-// @ts-expect-error: legacy compatibility
 'use client';
 import React, { useState } from 'react';
-import { FileText, Shield, User, DollarSign, Calendar, ArrowLeft } from 'lucide-react';
+import { FileText, Shield, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { SignaturePad } from './SignaturePad';
 import { useToast } from '@/components/ui/Toast';
-import { supabase } from '@/lib/supabase/client';
+import { finalizeGeneratedContract } from '@/app/[locale]/contracts/actions';
 
 export function ContractWizard({ onBack }: { onBack?: () => void }) {
   const [step, setStep] = useState(1);
@@ -44,53 +43,19 @@ export function ContractWizard({ onBack }: { onBack?: () => void }) {
     try {
       addToast('success', 'جاري التوثيق القانوني، فتح مشروع الإنتاج، وإنشاء السجل المالي...');
       
-      const val = parseFloat(contractValue);
-
-      // 1. التوثيق القانوني
-      const { data: contractData, error: contractError } = await supabase
-        .from('legal_contracts')
-        .insert([{
-          contract_type: type,
-          client_name: clientName,
-          contract_value: val,
-          delivery_date: deliveryDate,
-          ai_content: aiDraft,
-          status: 'signed'
-        }])
-        .select();
-
-      if (contractError) throw contractError;
-      const contractId = contractData[0].id;
-
-      // 2. إنشاء مشروع الإنتاج
-      const { error: productionError } = await supabase
-        .from('production_projects')
-        .insert([{
-          contract_id: contractId,
-          project_name: type === 'service' ? `إنتاج: ${clientName}` : `مشروع NDA: ${clientName}`,
-          production_status: 'pending'
-        }]);
-
-      if (productionError) throw productionError;
-
-      // 3. إنشاء السجل المالي (الوكيل المالي)
-      const { error: financialError } = await supabase
-        .from('financial_ledgers')
-        .insert([{
-          contract_id: contractId,
-          client_name: clientName,
-          total_amount: val,
-          remaining_amount: val,
-          due_date: deliveryDate,
-          payment_status: 'pending'
-        }]);
-
-      if (financialError) throw financialError;
+      await finalizeGeneratedContract({
+        type,
+        clientName,
+        contractValue,
+        deliveryDate,
+        aiDraft,
+      });
 
       addToast('success', 'اكتمل الدمج الثلاثي: قانوني - إنتاجي - مالي.');
       if (onBack) setTimeout(onBack, 2000);
     } catch (err) {
-      addToast('error', 'فشل التكامل: ' + (err.message || 'خطأ في قاعدة البيانات'));
+      const message = err instanceof Error ? err.message : 'خطأ في قاعدة البيانات';
+      addToast('error', 'فشل التكامل: ' + message);
     }
   };
 

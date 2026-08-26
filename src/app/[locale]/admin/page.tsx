@@ -44,9 +44,8 @@ export default function ExecutiveDashboard() {
       });
   }, []);
 
-  const handleApprove = async (logId: string, freelancerStr: string, amount: number) => {
-    const fId = freelancerStr.split(':')[1];
-    await approveWithdrawal(logId, fId, amount);
+  const handleApprove = async (logId: string) => {
+    await approveWithdrawal(logId);
 
     setData((prev) => ({
       ...prev,
@@ -105,7 +104,7 @@ export default function ExecutiveDashboard() {
                   </div>
 
                   <button
-                    onClick={() => handleApprove(req.id, req.actor_identifier, req.snapshot?.requested_amount ?? 0)}
+                    onClick={() => handleApprove(req.id)}
                     className="flex items-center gap-2 rounded-xl bg-emerald-500/10 px-6 py-3 text-xs font-black text-emerald-400 transition-all hover:bg-emerald-500 hover:text-slate-950"
                   >
                     <CheckCircle className="h-4 w-4" /> اعتماد الصرف

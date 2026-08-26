@@ -3,6 +3,14 @@ import React, { useState } from 'react';
 import { MessageSquarePlus, X, Send, Smile, Frown, Meh } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Textarea } from '@/components/ui/Textarea';
+import type { LucideIcon } from 'lucide-react';
+
+interface EmojiButtonProps {
+  icon: LucideIcon;
+  active: boolean;
+  onClick: () => void;
+}
+
 
 export function FeedbackWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +52,7 @@ export function FeedbackWidget() {
   );
 }
 
-function EmojiBtn({ icon: Icon, active, onClick }: unknown) {
+function EmojiBtn({ icon: Icon, active, onClick }: EmojiButtonProps) {
     return (
         <button 
            onClick={onClick}

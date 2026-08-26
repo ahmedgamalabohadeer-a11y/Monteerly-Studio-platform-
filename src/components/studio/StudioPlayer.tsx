@@ -1,4 +1,3 @@
-// @ts-expect-error: legacy compatibility
 'use client';
 import React, { useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
@@ -6,22 +5,24 @@ import { Play, Pause, SkipBack, SkipForward, Maximize, PenTool } from 'lucide-re
 import { useProjectStore } from '@/store/useProjectStore';
 
 export const StudioPlayer = () => {
-  const playerRef = useRef<ReactPlayer>(null);
+  const playerRef = useRef<HTMLVideoElement>(null);
   const { isPlaying, setIsPlaying, setCurrentTime, currentTime } = useProjectStore();
   const [drawMode, setDrawMode] = useState(false);
 
   const handlePlayPause = () => setIsPlaying(!isPlaying);
 
-  const handleProgress = (state: { playedSeconds: number }) => {
+  const handleTimeUpdate = (event: React.SyntheticEvent<HTMLVideoElement>) => {
     if (!isPlaying) return; // منع التحديث العشوائي
-    setCurrentTime(state.playedSeconds);
+    setCurrentTime(event.currentTarget.currentTime);
   };
 
   // محاكاة التنقل بالفريم (نفترض 30fps)
   const stepFrame = (frames: number) => {
-    const current = playerRef.current?.getCurrentTime() || 0;
+    const current = playerRef.current?.currentTime ?? 0;
     const newTime = current + (frames / 30);
-    playerRef.current?.seekTo(newTime, 'seconds');
+    if (playerRef.current) {
+      playerRef.current.currentTime = Math.max(0, newTime);
+    }
     setCurrentTime(newTime);
   };
 
@@ -31,11 +32,11 @@ export const StudioPlayer = () => {
       <div className="flex-1 relative bg-black flex items-center justify-center overflow-hidden">
         <ReactPlayer
           ref={playerRef}
-          url="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" // Placeholder Video
+          src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" // Placeholder Video
           width="100%"
           height="100%"
           playing={isPlaying}
-          onProgress={handleProgress}
+          onTimeUpdate={handleTimeUpdate}
           controls={false} // Custom controls only
         />
         

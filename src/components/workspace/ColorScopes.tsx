@@ -1,6 +1,13 @@
 'use client';
 import React, { useState } from 'react';
-import { Activity, CircleDashed, BarChart3 } from 'lucide-react';
+import { Activity, CircleDashed, BarChart3, type LucideIcon } from 'lucide-react';
+interface ScopeTabProps {
+  icon: LucideIcon;
+  active: boolean;
+  onClick: () => void;
+  title: string;
+}
+
 export function ColorScopes() {
   const [activeScope, setActiveScope] = useState<'waveform' | 'vectorscope' | 'histogram'>('waveform');
   return (
@@ -53,7 +60,7 @@ export function ColorScopes() {
     </div>
   );
 }
-function ScopeTab({ icon: Icon, active, onClick, title }: unknown) {
+function ScopeTab({ icon: Icon, active, onClick, title }: ScopeTabProps) {
     return (
         <button 
            onClick={onClick}

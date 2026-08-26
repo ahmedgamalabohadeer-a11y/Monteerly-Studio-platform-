@@ -1,4 +1,3 @@
-// @ts-expect-error: legacy compatibility
 'use client';
 import React from 'react';
 import { useSuperID } from '@/lib/context/SuperIDContext';

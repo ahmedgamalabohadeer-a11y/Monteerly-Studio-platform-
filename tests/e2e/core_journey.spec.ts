@@ -1,28 +1,52 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('MCOS Sovereign Operations & Security Audit', () => {
+  test('صفحة المصادقة العامة تعمل دون 404', async ({ page }) => {
+    await page.goto('/ar/auth');
 
-  test('مركز القيادة يجب أن يعمل ويحمل الهوية البصرية الداكنة', async ({ page }) => {
-    await page.goto('/ar/dashboard');
-    // التحقق من الهوية البصرية الصارمة
-    await expect(page.locator('body')).toHaveClass(/bg-slate-950/);
-    // التحقق من عدم وجود خطأ 404
+    await expect(page).toHaveURL(/\/ar\/auth/);
     expect(await page.title()).not.toContain('404');
   });
 
-  test('نظام الصلاحيات (RBAC) يجب أن يمنع الزوار من دخول لوحة التدقيق المالي', async ({ page }) => {
+  test('الزائر يُعاد إلى تسجيل الدخول عند طلب صفحة مالية محمية', async ({ page }) => {
     await page.goto('/ar/finance');
-    // النظام يجب أن يعترض الدخول ويوجه المستخدم لصفحة 403 (وصول مرفوض)
-    await expect(page).toHaveURL(/.*\/unauthorized/);
-    await expect(page.getByText('وصول مرفوض (403)')).toBeVisible();
+
+    await expect(page).toHaveURL(/\/ar\/auth/);
   });
 
-  test('الإدارة العليا يمكنها الدخول لصفحة النزاعات السيادية', async ({ page, context }) => {
-    // حقن تصريح الإدارة العليا في المتصفح الوهمي
-    await context.addCookies([{ name: 'mcos_role', value: 'EXECUTIVE', domain: 'localhost', path: '/' }]);
+  test('cookie مزورة لا تمنح وصولًا إلى صفحة النزاعات السيادية', async ({
+    page,
+    context,
+  }) => {
+    await context.addCookies([
+      {
+        name: 'mcos_role',
+        value: 'EXECUTIVE',
+        domain: 'localhost',
+        path: '/',
+      },
+    ]);
+
     await page.goto('/ar/disputes');
-    // يجب أن تفتح الصفحة بنجاح لوجود التصريح
-    await expect(page.getByText('إدارة النزاعات السيادية')).toBeVisible();
+
+    await expect(page).toHaveURL(/\/ar\/auth/);
+    await expect(page.getByText('إدارة النزاعات السيادية')).toHaveCount(0);
   });
 
+  test('واجهات الإدارة والمالية الحساسة ترفض الطلبات دون جلسة', async ({
+    request,
+  }) => {
+    const financeResponse = await request.post('/api/finance/split', {
+      data: { jobId: '00000000-0000-0000-0000-000000000000' },
+    });
+    const disputeResponse = await request.post('/api/disputes/resolve', {
+      data: {
+        disputeId: '00000000-0000-0000-0000-000000000000',
+        decision: 'client',
+      },
+    });
+
+    expect(financeResponse.status()).toBe(401);
+    expect(disputeResponse.status()).toBe(401);
+  });
 });

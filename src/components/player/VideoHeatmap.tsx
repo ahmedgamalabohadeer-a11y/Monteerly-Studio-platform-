@@ -54,7 +54,8 @@ export function VideoHeatmap({
           };
 
           if (newMarker.version_number === activeVersion && typeof newMarker.timecode === 'number' && newMarker.id) {
-            setMarkers((prev) => [...prev, { id: newMarker.id, timecode: newMarker.timecode }]);
+            const marker: Marker = { id: newMarker.id, timecode: newMarker.timecode };
+            setMarkers((prev) => [...prev, marker]);
           }
         }
       )

@@ -1,4 +1,3 @@
-// @ts-expect-error: legacy compatibility
 'use client';
 import React, { useState } from 'react';
 import { Gift, Lock, Share2, Globe } from 'lucide-react';

@@ -1,11 +1,12 @@
 'use server'
 
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { logAuditEvent } from '@/lib/audit';
 
 export async function submitKYCDocuments(documentId: string, documentType: string) {
   try {
+    const supabase = await createClient();
     const { data: auth } = await supabase.auth.getUser();
     if (!auth?.user) throw new Error('غير مصرح لك بالوصول');
 

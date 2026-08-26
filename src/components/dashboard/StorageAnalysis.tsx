@@ -1,6 +1,14 @@
 'use client';
 import React from 'react';
 import { HardDrive, FileVideo, Music, Image as ImageIcon, File } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+
+interface StorageItemProps {
+  label: string;
+  size: string;
+  color: string;
+  icon: LucideIcon;
+}
 
 export function StorageAnalysis() {
   return (
@@ -36,7 +44,7 @@ export function StorageAnalysis() {
   );
 }
 
-function StorageItem({ label, size, color, icon: Icon }: unknown) {
+function StorageItem({ label, size, color, icon: Icon }: StorageItemProps) {
     return (
         <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/30">
             <div className={`p-2 rounded-lg text-white ${color}`}>

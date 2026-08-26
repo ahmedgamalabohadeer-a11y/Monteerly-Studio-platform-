@@ -1,6 +1,11 @@
 import { create } from 'zustand';
 
-export const useStore = create((set) => ({
+interface WorkspaceState {
+  open: boolean;
+  toggle: () => void;
+}
+
+export const useStore = create<WorkspaceState>((set) => ({
   open: true,
-  toggle: () => set((s: unknown) => ({ open: !s.open }))
+  toggle: () => set((state) => ({ open: !state.open }))
 }));

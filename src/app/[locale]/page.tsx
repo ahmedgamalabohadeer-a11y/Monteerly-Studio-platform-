@@ -134,10 +134,10 @@ export default function UltimateLandingPage({
     agency: t.personas?.agency ?? "Production Agency",
   };
   const personaDesc: Record<PersonaKey, string> = {
-    editor: t.personas?.editordesc ?? "",
-    photographer: t.personas?.photographerdesc ?? "",
-    creator: t.personas?.creatordesc ?? "",
-    agency: t.personas?.agencydesc ?? "",
+    editor: t.personas?.editor_desc ?? "",
+    photographer: t.personas?.photographer_desc ?? "",
+    creator: t.personas?.creator_desc ?? "",
+    agency: t.personas?.agency_desc ?? "",
   };
 
   const active = activePersona as PersonaKey;
@@ -303,7 +303,7 @@ export default function UltimateLandingPage({
               {t.hero?.title1 ?? (isAr ? "النظام المركزي" : "The Central")}
               <br className="hidden sm:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-400 drop-shadow-lg">
-                {t.hero?.titlehighlight ?? (isAr ? "لنظام التشغيل" : "Operating System")}
+                {t.hero?.title_highlight ?? (isAr ? "لنظام التشغيل" : "Operating System")}
               </span>
               <br className="hidden sm:block" />
               {t.hero?.title2 ?? (isAr ? "للإنتاج الحديث" : "for Modern Production")}
@@ -324,19 +324,19 @@ export default function UltimateLandingPage({
               {[
                 {
                   val: t.stats?.vol ?? "500K",
-                  lbl: t.stats?.vollbl ?? (isAr ? "سيولة في الضمان" : "Liquidity in Escrow"),
+                  lbl: t.stats?.vol_lbl ?? (isAr ? "سيولة في الضمان" : "Liquidity in Escrow"),
                 },
                 {
                   val: t.stats?.hrs ?? "10,000",
-                  lbl: t.stats?.hrslbl ?? (isAr ? "ساعة رندر سحابي" : "Cloud Render Hours"),
+                  lbl: t.stats?.hrs_lbl ?? (isAr ? "ساعة رندر سحابي" : "Cloud Render Hours"),
                 },
                 {
                   val: t.stats?.upt ?? "AES-256",
-                  lbl: t.stats?.uptlbl ?? (isAr ? "تشفير عسكري" : "Military Encryption"),
+                  lbl: t.stats?.upt_lbl ?? (isAr ? "تشفير عسكري" : "Military Encryption"),
                 },
                 {
                   val: t.stats?.fee ?? "0",
-                  lbl: t.stats?.feelbl ?? (isAr ? "رسوم خفية" : "Hidden Fees"),
+                  lbl: t.stats?.fee_lbl ?? (isAr ? "رسوم خفية" : "Hidden Fees"),
                 },
               ].map((s) => (
                 <div key={s.lbl} className="text-center">
@@ -361,7 +361,7 @@ export default function UltimateLandingPage({
                 className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 active:scale-[0.98] text-white px-8 py-4 md:px-12 md:py-5 rounded-xl md:rounded-2xl font-black text-base md:text-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_0_40px_rgba(79,70,229,0.4)] hover:shadow-[0_0_60px_rgba(79,70,229,0.6)] hover:-translate-y-1"
               >
                 <ShieldCheck className="w-5 h-5" />
-                {t.hero?.deploybtn ?? (isAr ? "انشر الاستوديو مجاناً" : "Deploy Studio Free")}
+                {t.hero?.deploy_btn ?? (isAr ? "انشر الاستوديو مجاناً" : "Deploy Studio Free")}
                 {!isAr && <ArrowRight className="w-4 h-4" />}
                 {isAr && <ArrowLeft className="w-4 h-4" />}
               </Link>
@@ -373,7 +373,7 @@ export default function UltimateLandingPage({
                     : "border-slate-300 text-slate-700 hover:bg-slate-100"
                 }`}
               >
-                {t.hero?.explorebtn ?? (isAr ? "استكشاف النظام" : "Explore System")}
+                {t.hero?.explore_btn ?? (isAr ? "استكشاف النظام" : "Explore System")}
               </Link>
             </div>
           </motion.div>
@@ -560,7 +560,7 @@ export default function UltimateLandingPage({
                     (isAr ? "حماية الأصول بمستوى عسكري" : "Military-Grade Asset Protection")}
                 </h3>
                 <p className={`text-sm md:text-base leading-relaxed ${mutedText}`}>
-                  {t.bento?.escrowdesc ??
+                  {t.bento?.escrow_desc ??
                     (isAr
                       ? "عملك ليس مجرد ملفات — إنه أصول رقمية. محمية بـ AES-256 وعقود ضمان ذكية حتى التسليم."
                       : "Your work isn't just files — it's digital assets. Protected with AES-256 and Escrow smart contracts until delivery.")}
@@ -595,7 +595,7 @@ export default function UltimateLandingPage({
                     (isAr ? "مساعد المخرج الذكي" : "Directorial Assistant Co-Pilot")}
                 </h3>
                 <p className={`text-sm md:text-base leading-relaxed ${mutedText}`}>
-                  {t.bento?.aidesc ??
+                  {t.bento?.ai_desc ??
                     (isAr
                       ? "يحلل المشاريع ويسعّر العروض ويتفاوض لزيادة عائدك وتقليل الجهد اليدوي."
                       : "Analyzes projects, prices offers, and negotiates to maximize your ROI and reduce manual effort.")}

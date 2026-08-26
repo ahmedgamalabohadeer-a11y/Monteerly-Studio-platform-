@@ -1,21 +1,6 @@
 import type { Metadata } from 'next';
 import React from 'react';
-import { Cairo, IBM_Plex_Sans_Arabic } from 'next/font/google';
 import '@/app/globals.css';
-
-const cairo = Cairo({
-  subsets: ['arabic', 'latin'],
-  variable: '--font-cairo',
-  display: 'swap',
-  weight: ['400', '600', '700', '800', '900'],
-});
-
-const ibmPlexArabic = IBM_Plex_Sans_Arabic({
-  subsets: ['arabic'],
-  variable: '--font-ibm-plex-arabic',
-  display: 'swap',
-  weight: ['400', '500', '600', '700'],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://monteerly.com'),
@@ -82,7 +67,7 @@ export default async function RootLayout({
     <html
       lang={locale}
       dir={isArabic ? 'rtl' : 'ltr'}
-      className={`${cairo.variable} ${ibmPlexArabic.variable} scroll-smooth`}
+      className="scroll-smooth"
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >

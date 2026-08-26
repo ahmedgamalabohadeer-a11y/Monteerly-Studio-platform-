@@ -17,11 +17,11 @@ import {
   Users,
   Video,
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
+import { getStudioProject } from './actions';
 import ReviewPlayer from '@/components/workspace/ReviewPlayer';
 
 type UserRole = 'freelancer' | 'client' | 'agency';
+type ProjectAccessRole = 'client' | 'freelancer';
 
 type JobSnapshot = {
   description?: string;
@@ -98,12 +98,12 @@ export default function DynamicStudioPage({
 }: {
   params: Promise<{ projectId: string }>;
 }) {
-  const router = useRouter();
   const { projectId } = use(params);
 
   const [loading, setLoading] = useState(true);
   const [project, setProject] = useState<Project | null>(null);
   const [role, setRole] = useState<UserRole>('freelancer');
+  const [accessRole, setAccessRole] = useState<ProjectAccessRole>('freelancer');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [activeVersion, setActiveVersion] = useState(1);
   const [actionMessage, setActionMessage] = useState<string | null>(null);
@@ -116,65 +116,13 @@ export default function DynamicStudioPage({
       setErrorMessage(null);
 
       try {
-        const { data: authData, error: authError } = await supabase.auth.getUser();
-
-        if (authError || !authData.user) {
-          router.replace('/ar/auth');
-          return;
-        }
-
-        const user = authData.user;
-
-        const [profileResult, projectResult] = await Promise.all([
-          supabase
-            .from('profiles')
-            .select('role')
-            .eq('id', user.id)
-            .maybeSingle(),
-          supabase
-            .from('jobs')
-            .select('id, title, budget, status, client_id, freelancer_id, snapshot')
-            .eq('id', projectId)
-            .maybeSingle(),
-        ]);
+        const result = await getStudioProject(projectId);
 
         if (!active) return;
 
-        if (profileResult.error) {
-          throw new Error(`تعذر تحميل دور المستخدم: ${profileResult.error.message}`);
-        }
-
-        if (projectResult.error) {
-          throw new Error(`تعذر تحميل المشروع: ${projectResult.error.message}`);
-        }
-
-        const fetchedProject = projectResult.data as Project | null;
-
-        if (!fetchedProject) {
-          throw new Error('المشروع المطلوب غير موجود أو تم حذفه.');
-        }
-
-        const resolvedRole = normalizeRole(
-          profileResult.data?.role || user.user_metadata?.role,
-        );
-
-        /*
-         * العميل هو صاحب المشروع.
-         * المستقل هو المنفذ عند تعيين freelancer_id.
-         * الوكالة يسمح لها بالوصول مؤقتًا في النسخة الحالية؛
-         * لاحقًا يجب ربطها بجدول agency_members أو project_members.
-         */
-        const isClient = fetchedProject.client_id === user.id;
-        const isFreelancer = fetchedProject.freelancer_id === user.id;
-        const isAgency = resolvedRole === 'agency';
-
-        if (!isClient && !isFreelancer && !isAgency) {
-          router.replace('/ar/unauthorized');
-          return;
-        }
-
-        setRole(resolvedRole);
-        setProject(fetchedProject);
+        setRole(normalizeRole(result.accountType));
+        setAccessRole(result.accessRole);
+        setProject(result.project as Project);
       } catch (error: unknown) {
         if (!active) return;
 
@@ -195,7 +143,7 @@ export default function DynamicStudioPage({
     return () => {
       active = false;
     };
-  }, [projectId, router]);
+  }, [projectId]);
 
   const versions = useMemo<ProjectVersion[]>(() => {
     const mainVideoUrl = getSafeVideoUrl(project?.snapshot || null);
@@ -219,10 +167,8 @@ export default function DynamicStudioPage({
   const selectedVersion =
     versions.find((version) => version.id === activeVersion) || versions[0];
 
-  const canRequestReview =
-    role === 'freelancer' || role === 'agency';
-
-  const canApproveDelivery = role === 'client';
+  const canRequestReview = accessRole === 'freelancer';
+  const canApproveDelivery = accessRole === 'client';
 
   const handleWorkspaceAction = (action: 'review' | 'approve' | 'assign') => {
     if (action === 'review') {
@@ -323,7 +269,7 @@ export default function DynamicStudioPage({
         </div>
 
         <div className="space-y-3">
-          {(role === 'freelancer' || role === 'agency') && (
+          {accessRole === 'freelancer' && (
             <>
               <button
                 type="button"
@@ -351,7 +297,7 @@ export default function DynamicStudioPage({
             </>
           )}
 
-          {role === 'client' && (
+          {accessRole === 'client' && (
             <div className="rounded-2xl border border-indigo-500/20 bg-indigo-500/10 p-4">
               <div className="mb-2 flex items-center gap-2 text-indigo-300">
                 <MonitorPlay className="h-5 w-5" />

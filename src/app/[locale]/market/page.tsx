@@ -1,8 +1,10 @@
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/supabase/server';
 import { ShoppingCart, Video, Clock, DollarSign, Star } from 'lucide-react';
 import { createOrder } from './actions';
 
 export default async function MarketPage() {
+  const supabase = await createClient();
+
   // جلب الخدمات المتاحة
   const { data: services } = await supabase
     .from('services')
@@ -42,7 +44,7 @@ export default async function MarketPage() {
 
               <form action={async () => {
                 "use server"
-                await createOrder(service.id, service.freelancer_id, service.price);
+                await createOrder(service.id);
               }}>
                 <button type="submit" className="w-full bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-black transition-all active:scale-95 flex justify-center items-center gap-2">
                   <ShoppingCart className="w-5 h-5" />

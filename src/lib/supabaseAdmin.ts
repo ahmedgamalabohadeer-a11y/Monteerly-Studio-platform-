@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { createClient } from '@supabase/supabase-js';
 
 // استخدام مفتاح Service Role لتخطي صلاحيات RLS في العمليات الخلفية (Backend Only)

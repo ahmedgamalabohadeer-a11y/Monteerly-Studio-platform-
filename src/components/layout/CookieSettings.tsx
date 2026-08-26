@@ -9,6 +9,12 @@ interface Props {
   onClose: () => void;
 }
 
+
+interface CookieGroupProps {
+  title: string;
+  desc: string;
+  required?: boolean;
+}
 export function CookieSettingsModal({ isOpen, onClose }: Props) {
   if (!isOpen) return null;
 
@@ -52,7 +58,7 @@ export function CookieSettingsModal({ isOpen, onClose }: Props) {
   );
 }
 
-function CookieGroup({ title, desc, required }: unknown) {
+function CookieGroup({ title, desc, required }: CookieGroupProps) {
     const [enabled, setEnabled] = useState(required || false);
     
     return (

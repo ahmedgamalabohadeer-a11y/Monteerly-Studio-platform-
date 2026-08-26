@@ -5,13 +5,10 @@ type GeminiRequestBody = {
   type?: 'voice_script' | 'security_audit' | 'storyboard' | string;
 };
 
-type GeminiErrorResponse = {
+type GeminiResponse = {
   error?: {
     message?: string;
   };
-};
-
-type GeminiSuccessResponse = {
   candidates?: Array<{
     content?: {
       parts?: Array<{
@@ -72,12 +69,10 @@ export async function POST(req: Request) {
       }
     );
 
-    const data = (await response.json()) as
-      | GeminiErrorResponse
-      | GeminiSuccessResponse;
+    const data = (await response.json()) as GeminiResponse;
 
-    if ('error' in data && data.error?.message) {
-      throw new Error(data.error.message);
+    if (!response.ok || data.error?.message) {
+      throw new Error(data.error?.message ?? 'فشل طلب Gemini');
     }
 
     const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;

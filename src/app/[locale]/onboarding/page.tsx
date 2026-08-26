@@ -14,6 +14,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
+import { saveOnboardingProfile } from './actions';
 type UserRole = 'freelancer' | 'client' | 'agency';
 
 type StatusMessage = {
@@ -111,11 +112,10 @@ export default function OnboardingGateway() {
       }
 
       const user = authData.user;
-      const metadataRole = normalizeRole(user.user_metadata?.role);
 
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
-        .select('id, full_name, role, kyc_status, tax_id, experience_years, bio')
+        .select('id, full_name, account_type, kyc_status, tax_id, experience_years, bio')
         .eq('id', user.id)
         .maybeSingle();
 
@@ -128,7 +128,7 @@ export default function OnboardingGateway() {
         });
       }
 
-      setRole(normalizeRole(profile?.role || metadataRole));
+      setRole(normalizeRole(profile?.account_type));
       setFullName(
         profile?.full_name ||
           (typeof user.user_metadata?.full_name === 'string'
@@ -170,13 +170,6 @@ export default function OnboardingGateway() {
     setMessage(null);
 
     try {
-      const { data: authData, error: authError } = await supabase.auth.getUser();
-
-      if (authError || !authData.user) {
-        throw new Error('انتهت جلسة الدخول. يرجى تسجيل الدخول مرة أخرى.');
-      }
-
-      const user = authData.user;
       const years = Number.parseInt(formData.experienceYears, 10);
 
       if (!fullName.trim()) {
@@ -195,44 +188,14 @@ export default function OnboardingGateway() {
         throw new Error('يرجى كتابة نبذة لا تقل عن 20 حرفًا.');
       }
 
-      /*
-       * لا نرسل email هنا، لأن schema الحالي لجدول profiles
-       * لا يحتوي على عمود email.
-       *
-       * لا نرسل professionalFocus أيضًا إلا إذا كان لديك عمود مخصص له.
-       * يمكن حفظه داخل bio أو إضافة عمود مستقل لاحقًا.
-       */
-      const profilePayload = {
-        id: user.id,
-        full_name: fullName.trim(),
-        role,
-        experience_years: years,
-        bio: `${formData.professionalFocus.trim()}\n\n${formData.bio.trim()}`,
-        kyc_status: 'pending',
-        ...(formData.taxId.trim()
-          ? { tax_id: formData.taxId.trim() }
-          : {}),
-      };
-
-      const { error: saveError } = await supabase
-        .from('profiles')
-        .upsert(profilePayload, { onConflict: 'id' });
-
-      if (saveError) {
-        throw new Error(`تعذر حفظ البيانات: ${saveError.message}`);
-      }
-
-      const { error: metadataError } = await supabase.auth.updateUser({
-        data: {
-          role,
-          full_name: fullName.trim(),
-          onboarding_completed: true,
-        },
+      await saveOnboardingProfile({
+        accountType: role,
+        fullName,
+        professionalFocus: formData.professionalFocus,
+        experienceYears: formData.experienceYears,
+        bio: formData.bio,
+        taxId: formData.taxId,
       });
-
-      if (metadataError) {
-        console.warn('Metadata update failed:', metadataError.message);
-      }
 
       setMessage({
         type: 'success',

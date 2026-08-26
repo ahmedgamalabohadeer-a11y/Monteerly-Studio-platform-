@@ -4,7 +4,18 @@ import React, { useEffect, useState } from 'react';
 import { getWalletBalances, requestWithdrawal } from '@/app/[locale]/wallet/actions';
 import { Wallet, ShieldCheck, ArrowDownToLine, Activity, AlertCircle, Loader2 } from 'lucide-react';
 
-export default function FreelancerWallet({ ar }: { ar: unknown }) {
+interface WalletCopy {
+  finance?: {
+    invoice?: string;
+    liquidity?: string;
+    escrow?: string;
+  };
+  system?: {
+    gpu_alloc?: string;
+  };
+}
+
+export default function FreelancerWallet({ ar }: { ar: WalletCopy }) {
   const [balances, setBalances] = useState({ escrowed: 0, liquidity: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [isWithdrawing, setIsWithdrawing] = useState(false);
@@ -21,7 +32,7 @@ export default function FreelancerWallet({ ar }: { ar: unknown }) {
     if (balances.liquidity <= 0) return;
     setIsWithdrawing(true);
     try {
-      const res = await requestWithdrawal(balances.liquidity);
+      const res = await requestWithdrawal();
       setMessage(ar.finance?.invoice || res.message);
       // محاكاة سحب الرصيد مؤقتاً في الواجهة
       setBalances(prev => ({ ...prev, liquidity: 0 }));

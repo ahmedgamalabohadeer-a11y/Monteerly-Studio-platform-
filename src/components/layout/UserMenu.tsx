@@ -2,6 +2,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { User, Settings, CreditCard, LogOut, HelpCircle } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+
+interface MenuItemProps {
+  href: string;
+  icon: LucideIcon;
+  label: string;
+}
+
 
 export function UserMenu() {
   return (
@@ -29,7 +37,7 @@ export function UserMenu() {
   );
 }
 
-function MenuItem({ href, icon: Icon, label }: unknown) {
+function MenuItem({ href, icon: Icon, label }: MenuItemProps) {
     return (
         <Link href={href} className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-muted rounded-lg transition-colors">
             <Icon size={16} className="text-muted-foreground" />

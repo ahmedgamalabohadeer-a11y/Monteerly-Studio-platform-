@@ -1,9 +1,10 @@
 import { supabase } from '@/lib/supabase';
+import type { RealtimeChannel } from '@supabase/supabase-js';
 
 // نظام دمج يضيف التزامن اللحظي للدردشة ويربطها بالاستشارات المدفوعة
 export class ChatEscrowEngine {
   private roomId: string;
-  private channel: unknown;
+  private channel: RealtimeChannel | null = null;
 
   constructor(roomId: string) {
     this.roomId = roomId;

@@ -8,14 +8,10 @@ export function TimeTracker() {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-    let interval: unknown;
-    if (isActive) {
-      interval = setInterval(() => setSeconds(s => s + 1), 1000);
-    } else if (!isActive && seconds !== 0) {
-      clearInterval(interval);
-    }
+    if (!isActive) return;
+    const interval = setInterval(() => setSeconds((value) => value + 1), 1000);
     return () => clearInterval(interval);
-  }, [isActive, seconds]);
+  }, [isActive]);
 
   const formatTime = (totalSeconds: number) => {
     const h = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');

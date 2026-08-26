@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { logAuditEvent } from '@/lib/audit';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { requireSystemRole } from '@/lib/serverAuth';
 
 type DisputeResolutionType = 'release_to_freelancer' | 'refund_to_client';
 
@@ -17,6 +18,8 @@ export async function resolveDispute(
   notes: string
 ): Promise<ResolveDisputeResult> {
   try {
+    const { user } = await requireSystemRole(['admin', 'executive']);
+
     const { error: disputeUpdateError } = await supabaseAdmin
       .from('disputes')
       .update({
@@ -78,7 +81,7 @@ export async function resolveDispute(
     }
 
     await logAuditEvent({
-      actorIdentifier: 'system:admin_arbiter',
+      actorIdentifier: `admin_arbiter:${user.id}`,
       action: 'dispute_resolved',
       module: 'legal',
       entityId: disputeId,

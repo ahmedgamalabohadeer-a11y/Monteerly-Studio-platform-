@@ -1,6 +1,19 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Search, ArrowRight, FilePlus, User, CreditCard, Settings } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+
+interface MenuGroupProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+interface CommandItemProps {
+  icon: LucideIcon;
+  label: string;
+  shortcut?: string;
+}
+
 
 export function CommandPalette() {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,7 +74,7 @@ export function CommandPalette() {
   );
 }
 
-function MenuGroup({ title, children }: unknown) {
+function MenuGroup({ title, children }: MenuGroupProps) {
     return (
         <div className="mb-2">
             <h4 className="px-3 py-2 text-xs font-bold text-muted-foreground">{title}</h4>
@@ -70,7 +83,7 @@ function MenuGroup({ title, children }: unknown) {
     )
 }
 
-function CommandItem({ icon: Icon, label, shortcut }: unknown) {
+function CommandItem({ icon: Icon, label, shortcut }: CommandItemProps) {
     return (
         <button className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors text-left group">
             <div className="flex items-center gap-3">
