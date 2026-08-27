@@ -1,90 +1,109 @@
-import { NextResponse } from 'next/server';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { NextResponse } from 'next/server';
 import { withAuthGuard } from '@/lib/security/apiGuard';
-
-const s3Client = new S3Client({
-  region: 'auto',
-  endpoint:
-    process.env.R2_ENDPOINT_URL ||
-    'https://dummy.r2.cloudflarestorage.com',
-  credentials: {
-    accessKeyId: process.env.R2_ACCESS_KEY_ID || 'dummy',
-    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || 'dummy',
-  },
-});
-
-type AuthenticatedUser = {
-  id: string;
-};
+import { createClient } from '@/lib/supabase/server';
 
 type R2UploadRequest = {
   fileName: string;
   fileType: string;
-  projectId?: string;
+  projectId: string;
+};
+
+type OrderMembership = {
+  client_id: string;
+  freelancer_id: string | null;
 };
 
 export async function POST(req: Request) {
-  return withAuthGuard(req, async (request: Request, user: unknown) => {
+  return withAuthGuard(req, async (request, user) => {
     try {
       const body = (await request.json()) as Partial<R2UploadRequest>;
-      const fileName = body.fileName;
-      const fileType = body.fileType;
-      const projectId = body.projectId;
+      const fileName =
+        typeof body.fileName === 'string' ? body.fileName.trim() : '';
+      const fileType =
+        typeof body.fileType === 'string' ? body.fileType.trim() : '';
+      const orderId =
+        typeof body.projectId === 'string' ? body.projectId.trim() : '';
+      const allowedType = ['video/', 'audio/', 'image/'].some((prefix) =>
+        fileType.startsWith(prefix)
+      );
 
-      if (
-        typeof fileName !== 'string' ||
-        typeof fileType !== 'string' ||
-        !fileName.trim() ||
-        !fileType.trim()
-      ) {
+      if (!fileName || !allowedType || !orderId || orderId.length > 128) {
         return NextResponse.json(
-          { error: 'بيانات ناقصة.' },
+          { error: 'بيانات الرفع أو معرّف الطلب غير صالحة.' },
           { status: 400 }
         );
       }
 
-      const currentUser = user as AuthenticatedUser;
+      const supabase = await createClient();
+      const { data: order, error: orderError } = await supabase
+        .from('orders')
+        .select('client_id, freelancer_id')
+        .eq('id', orderId)
+        .maybeSingle<OrderMembership>();
 
-      if (!currentUser?.id) {
+      if (
+        orderError ||
+        !order ||
+        (order.client_id !== user.id && order.freelancer_id !== user.id)
+      ) {
         return NextResponse.json(
-          { error: 'بيانات المستخدم غير صالحة.' },
-          { status: 401 }
+          { error: 'لا تملك عضوية في هذا الطلب.' },
+          { status: 403 }
         );
       }
 
-      const safeProjectId =
-        typeof projectId === 'string' && projectId.trim()
-          ? projectId.trim()
-          : 'general';
+      const endpoint = process.env.R2_ENDPOINT_URL;
+      const accessKeyId = process.env.R2_ACCESS_KEY_ID;
+      const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
+      const bucket = process.env.R2_BUCKET_NAME;
+      const publicDomain = process.env.R2_PUBLIC_DOMAIN?.replace(/\/$/, '');
 
-      const sanitizedFileName = fileName.replace(/[^a-zA-Z0-9.-]/g, '_');
+      if (!endpoint || !accessKeyId || !secretAccessKey || !bucket || !publicDomain) {
+        return NextResponse.json(
+          { error: 'خدمة التخزين غير مهيأة.' },
+          { status: 503 }
+        );
+      }
 
-      const secureKey = `projects/${safeProjectId}/${currentUser.id}_${Date.now()}_${sanitizedFileName}`;
+      const sanitizedFileName = fileName
+        .replace(/[^a-zA-Z0-9._-]/g, '_')
+        .slice(-180);
 
+      if (!sanitizedFileName) {
+        return NextResponse.json(
+          { error: 'اسم الملف غير صالح.' },
+          { status: 400 }
+        );
+      }
+
+      const secureKey =
+        `orders/${orderId}/${user.id}/${Date.now()}_${sanitizedFileName}`;
+      const s3Client = new S3Client({
+        region: 'auto',
+        endpoint,
+        credentials: { accessKeyId, secretAccessKey },
+      });
       const command = new PutObjectCommand({
-        Bucket: process.env.R2_BUCKET_NAME || 'monteerly-vault',
+        Bucket: bucket,
         Key: secureKey,
         ContentType: fileType,
       });
-
-      const presignedUrl = await getSignedUrl(s3Client, command, {
+      const uploadUrl = await getSignedUrl(s3Client, command, {
         expiresIn: 900,
       });
 
       return NextResponse.json(
         {
-          uploadUrl: presignedUrl,
-          finalFileUrl: `${
-            process.env.R2_PUBLIC_DOMAIN || 'https://pub-domain.r2.dev'
-          }/${secureKey}`,
+          uploadUrl,
+          finalFileUrl: `${publicDomain}/${secureKey}`,
           secureKey,
         },
         { status: 200 }
       );
     } catch (error: unknown) {
       console.error('R2 Generation Error:', error);
-
       return NextResponse.json(
         { error: 'فشل في توليد بوابة الرفع.' },
         { status: 500 }

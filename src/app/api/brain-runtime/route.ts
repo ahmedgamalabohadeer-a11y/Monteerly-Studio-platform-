@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { withAuthGuard } from '@/lib/security/apiGuard';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
@@ -25,7 +26,8 @@ type BrainManifest = {
   needs_rebuild?: boolean;
 };
 
-export async function GET() {
+export async function GET(req: Request) {
+  return withAuthGuard(req, async () => {
   try {
     const manifestPath = path.join(process.cwd(), '.docs', 'runtime', 'brain.manifest.json');
     const raw = await fs.readFile(manifestPath, 'utf-8');
@@ -55,4 +57,5 @@ export async function GET() {
       }
     );
   }
+  }, ['admin', 'executive']);
 }

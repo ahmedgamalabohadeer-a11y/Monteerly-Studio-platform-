@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { withAuthGuard } from '@/lib/security/apiGuard';
 
 type VoiceRequestBody = {
   text: string;
@@ -6,8 +7,9 @@ type VoiceRequestBody = {
 };
 
 export async function POST(req: Request) {
+  return withAuthGuard(req, async (request) => {
   try {
-    const body = (await req.json()) as Partial<VoiceRequestBody>;
+    const body = (await request.json()) as Partial<VoiceRequestBody>;
     const text = body.text;
     const voiceId = body.voiceId;
 
@@ -116,4 +118,5 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ error: message }, { status: 500 });
   }
+  });
 }

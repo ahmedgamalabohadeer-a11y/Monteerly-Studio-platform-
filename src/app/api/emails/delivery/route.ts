@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { withAuthGuard } from '@/lib/security/apiGuard';
 import { Resend } from 'resend';
 import DeliveryNotification from '@/emails/DeliveryNotification';
 
@@ -12,8 +13,9 @@ type DeliveryEmailRequest = {
 };
 
 export async function POST(req: Request) {
+  return withAuthGuard(req, async (request) => {
   try {
-    const body = (await req.json()) as Partial<DeliveryEmailRequest>;
+    const body = (await request.json()) as Partial<DeliveryEmailRequest>;
 
     const toEmail = body.to_email;
     const clientName = body.clientName;
@@ -54,4 +56,5 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ error: message }, { status: 500 });
   }
+  }, ['finance_operator', 'admin', 'executive']);
 }

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { withAuthGuard } from '@/lib/security/apiGuard';
 import { Resend } from 'resend';
 import EscrowNotification from '@/emails/EscrowNotification';
 
@@ -12,8 +13,9 @@ type SendEscrowEmailBody = {
 };
 
 export async function POST(req: Request) {
+  return withAuthGuard(req, async (request) => {
   try {
-    const body = (await req.json()) as SendEscrowEmailBody;
+    const body = (await request.json()) as SendEscrowEmailBody;
     const { to_email, clientName, projectId, amount } = body;
 
     if (!to_email || typeof to_email !== 'string') {
@@ -51,4 +53,5 @@ export async function POST(req: Request) {
     const message = error instanceof Error ? error.message : 'حدث خطأ غير متوقع أثناء إرسال البريد الإلكتروني';
     return NextResponse.json({ error: message }, { status: 500 });
   }
+  }, ['finance_operator', 'admin', 'executive']);
 }

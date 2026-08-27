@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { withAuthGuard } from '@/lib/security/apiGuard';
 
 type GeminiRequestBody = {
   prompt: string;
@@ -19,8 +20,9 @@ type GeminiResponse = {
 };
 
 export async function POST(req: Request) {
+  return withAuthGuard(req, async (request) => {
   try {
-    const body = (await req.json()) as Partial<GeminiRequestBody>;
+    const body = (await request.json()) as Partial<GeminiRequestBody>;
     const prompt = body.prompt;
     const type = body.type;
     const apiKey = process.env.GEMINI_API_KEY;
@@ -92,4 +94,5 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ error: message }, { status: 500 });
   }
+  });
 }
