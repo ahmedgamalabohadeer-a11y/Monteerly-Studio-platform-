@@ -20,28 +20,27 @@ export default function KYCSecurityPortal() {
 
     setStatus('uploading');
     try {
-      const { data: authData } = await supabase.auth.getUser();
-      const userId = authData.user?.id || 'guest';
-      
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${userId}-${Date.now()}.${fileExt}`;
-      const filePath = `kyc-docs/${fileName}`;
+      const { data: authData, error: authError } = await supabase.auth.getUser();
+      const userId = authData.user?.id;
 
-      // رفع الملف إلى Supabase Storage (يجب التأكد من إنشاء bucket باسم 'secure-vault')
+      if (authError || !userId) {
+        throw new Error('يجب تسجيل الدخول قبل رفع مستندات التوثيق.');
+      }
+
+      const fileExt = file.name.split('.').pop()?.toLowerCase() || 'bin';
+      const filePath = `kyc-docs/${userId}/${Date.now()}.${fileExt}`;
+
       const { error: uploadError } = await supabase.storage
         .from('secure-vault')
-        .upload(filePath, file);
+        .upload(filePath, file, { upsert: false });
 
       if (uploadError) {
-          console.error("Storage Error:", uploadError);
-          // إذا فشل التخزين (بسبب عدم وجود الـ Bucket)، سنقوم بمحاكاة النجاح مؤقتاً لتجنب إيقاف العمل
-          console.warn("جاري محاكاة الرفع نظراً لعدم إعداد Storage Bucket بعد.");
+        throw new Error('تعذر رفع مستند التوثيق إلى الخزنة الآمنة.');
       }
 
       setStatus('processing');
-      
-      // إرسال البيانات لقاعدة البيانات
-      const res = await submitKYCDocuments(docId, 'national_id');
+
+      const res = await submitKYCDocuments(filePath, 'national_id');
       
       if (res.success) {
           setStatus('pending');

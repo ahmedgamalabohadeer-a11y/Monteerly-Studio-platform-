@@ -57,7 +57,6 @@ export async function saveOnboardingProfile(input: OnboardingInput) {
       account_type: input.accountType,
       experience_years: years,
       bio: `${professionalFocus}\n\n${bio}`,
-      kyc_status: 'pending',
       ...(taxId ? { tax_id: taxId } : {}),
     })
     .eq('id', user.id)
@@ -86,7 +85,6 @@ export async function saveOnboardingProfile(input: OnboardingInput) {
     entityId: user.id,
     snapshot: {
       account_type: input.accountType,
-      kyc_status: 'pending',
     },
   });
 

@@ -1,46 +1,49 @@
-'use server'
+'use server';
 
-import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { logAuditEvent } from '@/lib/audit';
+import { requireUser } from '@/lib/serverAuth';
 
-export async function submitKYCDocuments(documentId: string, documentType: string) {
+type KycDocumentType = 'national_id' | 'passport';
+
+export async function submitKYCDocuments(
+  documentPath: string,
+  documentType: KycDocumentType
+) {
   try {
-    const supabase = await createClient();
-    const { data: auth } = await supabase.auth.getUser();
-    if (!auth?.user) throw new Error('غير مصرح لك بالوصول');
+    const { supabase, user } = await requireUser();
+    const normalizedPath = documentPath.trim();
+    const expectedPrefix = `kyc-docs/${user.id}/`;
 
-    // افتراض وجود جدول profiles يحتوي على kyc_status
-    const { error } = await supabase.from('profiles').update({
-      kyc_status: 'pending',
-      kyc_submitted_at: new Date().toISOString(),
-      document_id: documentId,
-      document_type: documentType
-    }).eq('id', auth.user.id);
-
-    if (error) {
-       // محاولة إنشاء السجل إذا لم يكن موجوداً
-       await supabase.from('profiles').insert({
-          id: auth.user.id,
-          kyc_status: 'pending',
-          document_id: documentId,
-          document_type: documentType
-       });
+    if (
+      !normalizedPath.startsWith(expectedPrefix) ||
+      normalizedPath.length > 512 ||
+      (documentType !== 'national_id' && documentType !== 'passport')
+    ) {
+      throw new Error('بيانات مستند التوثيق غير صالحة.');
     }
 
-    // تسجيل التدقيق الجنائي للعملية
+    const { error } = await supabase.rpc('submit_own_kyc', {
+      p_document_path: normalizedPath,
+      p_document_type: documentType,
+    });
+
+    if (error) {
+      throw new Error('تعذر تسجيل طلب التوثيق.');
+    }
+
     await logAuditEvent({
-      actorIdentifier: `user:${auth.user.id}`,
+      actorIdentifier: `user:${user.id}`,
       action: 'kyc_submitted',
       module: 'security',
-      entityId: auth.user.id,
-      snapshot: { documentType }
+      entityId: user.id,
+      snapshot: { documentType },
     });
 
     revalidatePath('/[locale]/kyc');
     return { success: true };
   } catch (error) {
-    console.error("KYC Submission Error:", error);
+    console.error('KYC Submission Error:', error);
     return { success: false, error: 'حدث خطأ أثناء تقديم مستندات التوثيق' };
   }
 }

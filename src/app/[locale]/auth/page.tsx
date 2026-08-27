@@ -113,7 +113,12 @@ export default function AuthGateway() {
         const { data, error } = await supabase.auth.signUp({
           email: formData.email,
           password: formData.password,
-          options: { data: { full_name: formData.email } },
+          options: {
+            data: {
+              full_name: formData.email,
+              account_type: formData.accountType,
+            },
+          },
         });
 
         if (error) throw error;

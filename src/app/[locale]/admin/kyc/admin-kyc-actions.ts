@@ -15,21 +15,8 @@ export async function getPendingKYCRequests() {
       .eq('kyc_status', 'pending');
 
     if (error) {
-      console.error("⚠️ فشل الاستعلام الدقيق، جاري الفحص العام. الخطأ:", error.message);
-      
-      // محاولة ثانية للفحص الاستكشافي: جلب كل شيء لمعرفة هيكل الجدول الفعلي
-      const { data: testData, error: testError } = await supabaseAdmin
-        .from('profiles')
-        .select('*')
-        .limit(1);
-        
-      if (testData && testData.length > 0) {
-          console.log("🔍 الأعمدة الموجودة فعلياً في جدول profiles لديك هي:", Object.keys(testData[0]));
-      } else if (testError) {
-          console.error("❌ الجدول profiles غير موجود أو لا يمكن الوصول إليه:", testError.message);
-      }
-      
-      return []; // إرجاع مصفوفة فارغة لمنع الانهيار
+      console.error('تعذر تحميل طلبات KYC المعلقة:', error.message);
+      throw new Error('تعذر تحميل طلبات KYC المعلقة.');
     }
 
     return data || [];
