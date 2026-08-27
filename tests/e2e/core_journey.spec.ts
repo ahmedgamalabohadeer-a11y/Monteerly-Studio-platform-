@@ -1,6 +1,19 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('MCOS Sovereign Operations & Security Audit', () => {
+  test.beforeEach(async ({ context }) => {
+    await context.route('**/*', async (route) => {
+      const requestUrl = new URL(route.request().url());
+
+      if (requestUrl.hostname === 'localhost' || requestUrl.hostname === '127.0.0.1') {
+        await route.continue();
+        return;
+      }
+
+      await route.abort();
+    });
+  });
+
   test('صفحة المصادقة العامة تعمل دون 404', async ({ page }) => {
     await page.goto('/ar/auth');
 
@@ -48,5 +61,28 @@ test.describe('MCOS Sovereign Operations & Security Audit', () => {
 
     expect(financeResponse.status()).toBe(401);
     expect(disputeResponse.status()).toBe(401);
+  });
+  test('نقاط API الحساسة ترفض الزائر ولا تنفذ عمليات خارجية', async ({
+    request,
+  }) => {
+    const responses = await Promise.all([
+      request.post('/api/ai/gemini', { data: { prompt: 'test' } }),
+      request.post('/api/ai/voice', { data: { text: 'test' } }),
+      request.post('/api/analyze-image'),
+      request.post('/api/emails/send', { data: {} }),
+      request.post('/api/emails/delivery', { data: {} }),
+      request.get('/api/brain-runtime'),
+      request.post('/api/checkout/paymob', { data: {} }),
+      request.post('/api/storage/r2', { data: {} }),
+    ]);
+
+    for (const response of responses) {
+      expect(response.status()).toBe(401);
+    }
+
+    const webhookResponse = await request.post('/api/webhooks/paymob', {
+      data: { obj: { success: true } },
+    });
+    expect(webhookResponse.status()).toBe(503);
   });
 });
