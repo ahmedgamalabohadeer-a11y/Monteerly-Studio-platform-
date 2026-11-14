@@ -66,3 +66,22 @@ node_modules/
 /.agents/skills/source-command-nextjs-build-artifacts-refresh/
 /.agents/skills/source-command-npm-dependency-update/
 /.agents/skills/source-command-update-gitignore/
+
+# Secrets
+.env
+.env.*
+!.env.example
+.sentryclirc
+*.pem
+*.key
+
+# Operational scripts
+run_*.sh
+execute_*.sh
+export_backup.sh
+run_dump.js
+auto_backup_driver.sh
+
+# Supabase local state
+supabase/.temp/
+archive/root-config-backups/
