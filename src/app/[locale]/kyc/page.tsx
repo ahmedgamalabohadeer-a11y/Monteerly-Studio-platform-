@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { ShieldAlert, Upload, CheckCircle2, UserCheck, AlertTriangle, ShieldCheck, Loader2 } from 'lucide-react';
 import { MCOS_ASSETS } from '@/lib/ui/assets';
 import { supabase } from '@/lib/supabase';
-import { submitKYCDocuments } from './kyc-actions';
+import { canSubmitKYCDocuments, submitKYCDocuments } from './kyc-actions';
 
 export default function KYCSecurityPortal() {
   const [step, setStep] = useState(1);
@@ -18,8 +18,20 @@ export default function KYCSecurityPortal() {
         return;
     }
 
+    if (
+      !['image/jpeg', 'image/png', 'image/webp', 'application/pdf'].includes(file.type) ||
+      file.size > 10 * 1024 * 1024
+    ) {
+      alert('نوع الملف أو حجمه غير مدعوم.');
+      return;
+    }
+
     setStatus('uploading');
     try {
+      if (!(await canSubmitKYCDocuments())) {
+        throw new Error('لا يمكن إعادة تقديم طلب أثناء المراجعة أو بعد الاعتماد.');
+      }
+
       const { data: authData, error: authError } = await supabase.auth.getUser();
       const userId = authData.user?.id;
 

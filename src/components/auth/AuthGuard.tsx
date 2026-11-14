@@ -11,7 +11,7 @@ export function AuthGuard({ children, requireAdmin = false }: { children: React.
       const { data: { user } } = await supabase.auth.getUser();
       
       if (!user) {
-        window.location.href = '/auth'; // توجيه لصفحة تسجيل الدخول الموجودة لديك
+        window.location.href = '/ar/auth';
         return;
       }
 
@@ -23,7 +23,7 @@ export function AuthGuard({ children, requireAdmin = false }: { children: React.
           .eq('user_id', user.id)
           .maybeSingle();
         if (roleRecord?.system_role !== 'admin' && roleRecord?.system_role !== 'executive') {
-          window.location.href = '/'; // طرد المستخدم العادي للرئيسية
+          window.location.href = '/ar/unauthorized';
           return;
         }
       }

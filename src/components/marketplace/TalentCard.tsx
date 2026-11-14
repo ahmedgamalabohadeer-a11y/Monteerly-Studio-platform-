@@ -20,8 +20,8 @@ interface TalentProps {
   id: string;
   name: string;
   roleLabel: string;
-  rating: number;
-  reviews: number;
+  rating: number | null;
+  experienceYears: number | null;
   rate: string;
   skills: string[];
   verified?: boolean;
@@ -57,7 +57,7 @@ export function TalentCard({
   name,
   roleLabel,
   rating,
-  reviews,
+  experienceYears,
   rate,
   skills,
   verified = false,
@@ -146,11 +146,20 @@ export function TalentCard({
           </div>
 
           <div className="mt-3 flex items-center gap-1 text-sm text-yellow-400">
-            <Star size={14} fill="currentColor" />
-            <span className="font-bold text-white">{rating.toFixed(1)}</span>
-            <span className="text-slate-500">
-              ({reviews > 0 ? `${reviews} خبرة` : 'عضو جديد'})
-            </span>
+            {rating === null ? (
+              <span className="text-slate-400">No reviews yet</span>
+            ) : (
+              <>
+                <Star size={14} fill="currentColor" />
+                <span className="font-bold text-white">{rating.toFixed(1)}</span>
+              </>
+            )}
+          </div>
+
+          <div className="mt-2 text-xs text-slate-500">
+            {experienceYears === null
+              ? 'سنوات الخبرة غير محددة'
+              : `${experienceYears} سنوات خبرة`}
           </div>
         </div>
 

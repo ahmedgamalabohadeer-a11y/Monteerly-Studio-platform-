@@ -1,10 +1,15 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FileText, Shield, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { SignaturePad } from './SignaturePad';
 import { useToast } from '@/components/ui/Toast';
-import { finalizeGeneratedContract } from '@/app/[locale]/contracts/actions';
+import {
+  finalizeGeneratedContract,
+  issueGeneratedContractIdempotencyKey,
+} from '@/app/[locale]/contracts/actions';
+
+const pendingRequestKeyStorage = 'mcos.contract-wizard.pending-request-key';
 
 export function ContractWizard({ onBack }: { onBack?: () => void }) {
   const [step, setStep] = useState(1);
@@ -14,12 +19,30 @@ export function ContractWizard({ onBack }: { onBack?: () => void }) {
   const [deliveryDate, setDeliveryDate] = useState('');
   const [aiDraft, setAiDraft] = useState('');
   const [isDrafting, setIsDrafting] = useState(false);
+  const idempotencyKeyRef = useRef<string | null>(null);
+  const finalizationInFlightRef = useRef(false);
+  const [requestKeyReady, setRequestKeyReady] = useState(false);
   const { addToast } = useToast();
+
+  useEffect(() => {
+    try {
+      idempotencyKeyRef.current = sessionStorage.getItem(pendingRequestKeyStorage);
+    } catch {
+      idempotencyKeyRef.current = null;
+    }
+    setRequestKeyReady(true);
+  }, []);
 
   const handleGenerateDraft = async () => {
     if (!clientName || !contractValue || !deliveryDate) {
       addToast('error', 'يرجى إكمال جميع بيانات المشروع أولاً.');
       return;
+    }
+    idempotencyKeyRef.current = null;
+    try {
+      sessionStorage.removeItem(pendingRequestKeyStorage);
+    } catch {
+      // In-memory retention still supports retries when browser storage is unavailable.
     }
     setIsDrafting(true);
     setStep(3);
@@ -31,7 +54,7 @@ export function ContractWizard({ onBack }: { onBack?: () => void }) {
       });
       const data = await res.json();
       if (data.draft) setAiDraft(data.draft);
-    } catch (err) {
+    } catch {
       addToast('error', 'فشل الوكيل الذكي في توليد العقد.');
       setStep(2);
     } finally {
@@ -40,8 +63,20 @@ export function ContractWizard({ onBack }: { onBack?: () => void }) {
   };
 
   const handleFinish = async () => {
+    if (!requestKeyReady || finalizationInFlightRef.current) return;
+    finalizationInFlightRef.current = true;
+
     try {
-      addToast('success', 'جاري التوثيق القانوني، فتح مشروع الإنتاج، وإنشاء السجل المالي...');
+      addToast('success', 'جاري حفظ مسودة العقد...');
+
+      const idempotencyKey =
+        idempotencyKeyRef.current ?? await issueGeneratedContractIdempotencyKey();
+      idempotencyKeyRef.current = idempotencyKey;
+      try {
+        sessionStorage.setItem(pendingRequestKeyStorage, idempotencyKey);
+      } catch {
+        // The ref keeps the server-issued key available for retries in this view.
+      }
       
       await finalizeGeneratedContract({
         type,
@@ -49,13 +84,21 @@ export function ContractWizard({ onBack }: { onBack?: () => void }) {
         contractValue,
         deliveryDate,
         aiDraft,
+        idempotencyKey,
       });
 
-      addToast('success', 'اكتمل الدمج الثلاثي: قانوني - إنتاجي - مالي.');
+      idempotencyKeyRef.current = null;
+      try {
+        sessionStorage.removeItem(pendingRequestKeyStorage);
+      } catch {
+        // The persisted value is an opaque request key and is not an authorization token.
+      }
+      addToast('success', 'تم حفظ مسودة العقد.');
       if (onBack) setTimeout(onBack, 2000);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'خطأ في قاعدة البيانات';
-      addToast('error', 'فشل التكامل: ' + message);
+    } catch {
+      addToast('error', 'تعذر إتمام طلب العقد. يرجى المحاولة مرة أخرى.');
+    } finally {
+      finalizationInFlightRef.current = false;
     }
   };
 
@@ -108,8 +151,8 @@ export function ContractWizard({ onBack }: { onBack?: () => void }) {
 
           {step === 3 && (
             <div className="space-y-4">
-              <h3 className="font-bold text-white text-lg">التوقيع والاعتماد</h3>
-              <SignaturePad onSign={handleFinish} disabled={isDrafting} />
+            <h3 className="font-bold text-white text-lg">مراجعة وحفظ المسودة</h3>
+              <SignaturePad onSign={handleFinish} disabled={isDrafting || !requestKeyReady} />
               <Button onClick={() => setStep(2)} variant="outline" className="w-full text-white">رجوع</Button>
             </div>
           )}

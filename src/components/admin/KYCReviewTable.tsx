@@ -5,7 +5,7 @@ import { reviewKYCRequest } from '@/app/[locale]/admin/kyc/admin-kyc-actions';
 
 type KYCRequest = {
   id: string;
-  document_id: string;
+  document_type: string | null;
   kyc_submitted_at: string;
 };
 
@@ -45,7 +45,7 @@ export default function KYCReviewTable({ requests }: { requests: KYCRequest[] })
         <thead>
           <tr className="bg-[#12121A] text-slate-400 text-sm border-b border-white/10">
             <th className="p-6 font-bold">معرف المستخدم (ID)</th>
-            <th className="p-6 font-bold">رقم الوثيقة</th>
+            <th className="p-6 font-bold">نوع الوثيقة</th>
             <th className="p-6 font-bold">تاريخ التقديم</th>
             <th className="p-6 font-bold text-center">القرار السيادي</th>
           </tr>
@@ -54,8 +54,14 @@ export default function KYCReviewTable({ requests }: { requests: KYCRequest[] })
           {requests.map((req) => (
             <tr key={req.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
               <td className="p-6 font-mono text-indigo-400 font-bold">{req.id.substring(0, 12)}...</td>
-              <td className="p-6 text-slate-300 flex items-center gap-2">
-                <FileImage className="w-4 h-4 text-amber-500" /> {req.document_id}
+              <td className="p-6 text-slate-300">
+                <a
+                  href={`/api/admin/kyc/${encodeURIComponent(req.id)}/document`}
+                  className="inline-flex items-center gap-2 text-indigo-300 hover:text-indigo-200"
+                >
+                  <FileImage className="w-4 h-4 text-amber-500" />
+                  {req.document_type || 'مستند KYC'}
+                </a>
               </td>
               <td className="p-6 text-slate-500 font-mono text-xs">
                 {new Date(req.kyc_submitted_at).toLocaleDateString('ar-EG')}

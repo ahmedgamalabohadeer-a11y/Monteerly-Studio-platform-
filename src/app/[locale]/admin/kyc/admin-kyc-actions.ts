@@ -3,15 +3,13 @@
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 import { revalidatePath } from 'next/cache';
 import { requireSystemRole } from '@/lib/serverAuth';
-import { logAuditEvent } from '@/lib/audit';
 
 export async function getPendingKYCRequests() {
   try {
-    await requireSystemRole(['admin', 'executive', 'kyc_operator']);
-    // محاولة أولى: جلب البيانات بالاعتماد على الأعمدة الجديدة
+    await requireSystemRole(['admin', 'kyc_operator']);
     const { data, error } = await supabaseAdmin
       .from('profiles')
-      .select('id, kyc_status, document_id, document_type, kyc_submitted_at')
+      .select('id, document_type, kyc_submitted_at')
       .eq('kyc_status', 'pending');
 
     if (error) {
@@ -28,21 +26,18 @@ export async function getPendingKYCRequests() {
 
 export async function reviewKYCRequest(userId: string, decision: 'approved' | 'rejected', adminNotes: string) {
   try {
-    const { user } = await requireSystemRole(['admin', 'executive', 'kyc_operator']);
+    const { user } = await requireSystemRole(['admin', 'kyc_operator']);
+    if (!/^[0-9a-f-]{36}$/i.test(userId)) {
+      throw new Error('Invalid KYC profile identifier');
+    }
 
-    const { error } = await supabaseAdmin.from('profiles').update({
-      kyc_status: decision
-    }).eq('id', userId);
-
-    if (error) throw error;
-
-    await logAuditEvent({
-      actorIdentifier: `kyc_operator:${user.id}`,
-      action: `kyc_${decision}`,
-      module: 'security',
-      entityId: userId,
-      snapshot: { adminNotes: adminNotes.trim().slice(0, 1000) }
+    const { error } = await supabaseAdmin.rpc('review_kyc_request', {
+      p_profile_id: userId,
+      p_decision: decision,
+      p_actor_id: user.id,
+      p_review_note: adminNotes.trim().slice(0, 1000),
     });
+    if (error) throw error;
 
     revalidatePath('/[locale]/admin/kyc');
     return { success: true };
