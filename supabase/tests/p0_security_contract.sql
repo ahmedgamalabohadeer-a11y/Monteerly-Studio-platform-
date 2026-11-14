@@ -1,6 +1,6 @@
 -- Run only after the P0 containment migration has been applied to an
--- isolated disposable database. This script is transactional and read-only
--- except for SET LOCAL state; it raises on any privilege regression.
+-- isolated disposable database. It creates disposable test rows inside one
+-- transaction, raises on any privilege regression, and rolls everything back.
 
 BEGIN;
 
@@ -99,23 +99,243 @@ BEGIN
   WHERE oid = 'public.handle_new_user()'::regprocedure;
 
   IF function_search_path IS NULL
-    OR NOT ('search_path=' = ANY(function_search_path))
+    OR NOT EXISTS (
+      SELECT 1
+      FROM unnest(function_search_path) AS setting(value)
+      WHERE value IN ('search_path=', 'search_path=""')
+    )
   THEN
     RAISE EXCEPTION 'handle_new_user search_path must be empty';
   END IF;
 
   IF to_regclass('public.production_projects') IS NOT NULL THEN
-    IF has_table_privilege('anon', 'public.production_projects', 'SELECT')
-      OR has_table_privilege(
-        'authenticated',
-        'public.production_projects',
-        'SELECT, INSERT, UPDATE, DELETE'
-      )
-    THEN
-      RAISE EXCEPTION 'production_projects must fail closed for Data API roles';
+    IF has_table_privilege('anon', 'public.production_projects', 'SELECT') THEN
+      RAISE EXCEPTION 'production_projects must deny anon Data API access';
+    END IF;
+    IF NOT (
+      SELECT relrowsecurity
+      FROM pg_class
+      WHERE oid = 'public.production_projects'::regclass
+    ) THEN
+      RAISE EXCEPTION 'production_projects must enforce member-aware RLS';
     END IF;
   END IF;
 END;
 $$;
+
+-- Runtime RLS checks. The fixed UUIDs are reserved for this disposable,
+-- transactional harness and are removed by the final ROLLBACK.
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1
+    FROM auth.users
+    WHERE id IN (
+      '00000000-0000-4000-8000-0000000000a1'::uuid,
+      '00000000-0000-4000-8000-0000000000b2'::uuid
+    )
+  ) THEN
+    RAISE EXCEPTION 'P0 test user UUID collision';
+  END IF;
+END;
+$$;
+
+INSERT INTO auth.users (
+  id,
+  email,
+  aud,
+  role,
+  raw_app_meta_data,
+  raw_user_meta_data,
+  created_at,
+  updated_at
+)
+VALUES
+  (
+    '00000000-0000-4000-8000-0000000000a1'::uuid,
+    'p0-user-a@example.invalid',
+    'authenticated',
+    'authenticated',
+    '{}'::jsonb,
+    '{"role":"executive","account_type":"client"}'::jsonb,
+    now(),
+    now()
+  ),
+  (
+    '00000000-0000-4000-8000-0000000000b2'::uuid,
+    'p0-user-b@example.invalid',
+    'authenticated',
+    'authenticated',
+    '{}'::jsonb,
+    '{"role":"admin","account_type":"freelancer"}'::jsonb,
+    now(),
+    now()
+  );
+
+DO $$
+DECLARE
+  user_a_role text;
+  user_b_role text;
+BEGIN
+  SELECT system_role
+  INTO user_a_role
+  FROM public.user_system_roles
+  WHERE user_id = '00000000-0000-4000-8000-0000000000a1'::uuid;
+
+  SELECT system_role
+  INTO user_b_role
+  FROM public.user_system_roles
+  WHERE user_id = '00000000-0000-4000-8000-0000000000b2'::uuid;
+
+  IF user_a_role IS DISTINCT FROM 'user'
+    OR user_b_role IS DISTINCT FROM 'user'
+  THEN
+    RAISE EXCEPTION 'forged metadata must not change the default system role';
+  END IF;
+
+  IF (SELECT count(*) FROM public.profiles WHERE id IN (
+    '00000000-0000-4000-8000-0000000000a1'::uuid,
+    '00000000-0000-4000-8000-0000000000b2'::uuid
+  )) <> 2 OR NOT EXISTS (
+    SELECT 1
+    FROM public.profiles
+    WHERE id = '00000000-0000-4000-8000-0000000000a1'::uuid
+      AND account_type = 'client'
+  ) OR NOT EXISTS (
+    SELECT 1
+    FROM public.profiles
+    WHERE id = '00000000-0000-4000-8000-0000000000b2'::uuid
+      AND account_type = 'freelancer'
+  ) THEN
+    RAISE EXCEPTION 'profile trigger must create validated account types';
+  END IF;
+
+  IF EXISTS (
+    SELECT 1
+    FROM public.profiles
+    WHERE id IN (
+      '00000000-0000-4000-8000-0000000000a1'::uuid,
+      '00000000-0000-4000-8000-0000000000b2'::uuid
+    )
+      AND role IN ('admin', 'executive')
+  ) THEN
+    RAISE EXCEPTION 'forged metadata must not populate a privileged legacy role';
+  END IF;
+
+  IF position(
+    'ON CONFLICT (user_id) DO NOTHING'
+    IN pg_get_functiondef(
+      'public.handle_new_user_system_role()'::regprocedure
+    )
+  ) = 0 THEN
+    RAISE EXCEPTION 'default role trigger must be idempotent';
+  END IF;
+END;
+$$;
+
+SET LOCAL ROLE anon;
+
+DO $$
+BEGIN
+  BEGIN
+    PERFORM 1
+    FROM public.user_system_roles
+    LIMIT 1;
+    RAISE EXCEPTION 'anon unexpectedly read user_system_roles';
+  EXCEPTION
+    WHEN insufficient_privilege THEN
+      NULL;
+  END;
+END;
+$$;
+
+RESET ROLE;
+SET LOCAL ROLE authenticated;
+SELECT set_config(
+  'request.jwt.claim.sub',
+  '00000000-0000-4000-8000-0000000000a1',
+  true
+);
+
+DO $$
+DECLARE
+  visible_role_count integer;
+BEGIN
+  SELECT count(*)
+  INTO visible_role_count
+  FROM public.user_system_roles;
+
+  IF visible_role_count <> 1 OR NOT EXISTS (
+    SELECT 1
+    FROM public.user_system_roles
+    WHERE user_id = '00000000-0000-4000-8000-0000000000a1'::uuid
+      AND system_role = 'user'
+  ) THEN
+    RAISE EXCEPTION 'user A must see only its own default role';
+  END IF;
+
+  IF EXISTS (
+    SELECT 1
+    FROM public.user_system_roles
+    WHERE user_id = '00000000-0000-4000-8000-0000000000b2'::uuid
+  ) THEN
+    RAISE EXCEPTION 'user A unexpectedly read user B role';
+  END IF;
+
+  BEGIN
+    UPDATE public.user_system_roles
+    SET system_role = 'admin'
+    WHERE user_id = '00000000-0000-4000-8000-0000000000a1'::uuid;
+    RAISE EXCEPTION 'user A unexpectedly updated its system role';
+  EXCEPTION
+    WHEN insufficient_privilege THEN
+      NULL;
+  END;
+
+  BEGIN
+    INSERT INTO public.user_system_roles (user_id, system_role)
+    VALUES (
+      '00000000-0000-4000-8000-0000000000b2'::uuid,
+      'admin'
+    )
+    ON CONFLICT (user_id) DO UPDATE
+    SET system_role = EXCLUDED.system_role;
+    RAISE EXCEPTION 'user A unexpectedly wrote user B role';
+  EXCEPTION
+    WHEN insufficient_privilege THEN
+      NULL;
+  END;
+
+  BEGIN
+    DELETE FROM public.user_system_roles
+    WHERE user_id = '00000000-0000-4000-8000-0000000000a1'::uuid;
+    RAISE EXCEPTION 'user A unexpectedly deleted its system role';
+  EXCEPTION
+    WHEN insufficient_privilege THEN
+      NULL;
+  END;
+END;
+$$;
+
+SELECT set_config(
+  'request.jwt.claim.sub',
+  '00000000-0000-4000-8000-0000000000b2',
+  true
+);
+
+DO $$
+BEGIN
+  IF (SELECT count(*) FROM public.user_system_roles) <> 1 OR NOT EXISTS (
+    SELECT 1
+    FROM public.user_system_roles
+    WHERE user_id = '00000000-0000-4000-8000-0000000000b2'::uuid
+      AND system_role = 'user'
+  ) THEN
+    RAISE EXCEPTION 'user B must see only its own default role';
+  END IF;
+END;
+$$;
+
+RESET ROLE;
 
 ROLLBACK;

@@ -67,7 +67,7 @@ export async function signInUser(formData: FormData) {
   });
 
   revalidatePath('/');
-  redirect('/ar/executive'); // تحويل مؤقت لغرفة القيادة
+  redirect('/ar/dashboard');
 }
 
 export async function signOutUser() {

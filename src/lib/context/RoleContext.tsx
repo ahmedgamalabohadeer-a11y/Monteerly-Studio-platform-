@@ -2,18 +2,27 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
+import { useAuth } from '@/context/AuthContext';
+import { isSystemRole, type SystemRole } from '@/lib/auth/systemRoles';
+
+type AccountType = 'client' | 'freelancer' | 'agency';
+
+function isAccountType(value: unknown): value is AccountType {
+  return value === 'client' || value === 'freelancer' || value === 'agency';
+}
 
 interface RoleContextType {
-  systemRole: string | null;
-  accountType: string | null;
+  systemRole: SystemRole | null;
+  accountType: AccountType | null;
   loading: boolean;
 }
 
 const RoleContext = createContext<RoleContextType | undefined>(undefined);
 
 export function RoleProvider({ children }: { children: ReactNode }) {
-  const [systemRole, setSystemRole] = useState<string | null>(null);
-  const [accountType, setAccountType] = useState<string | null>(null);
+  const { user, loading: authLoading } = useAuth();
+  const [systemRole, setSystemRole] = useState<SystemRole | null>(null);
+  const [accountType, setAccountType] = useState<AccountType | null>(null);
   const [loading, setLoading] = useState(true);
 
   const [supabase] = useState(() => createBrowserClient(
@@ -22,38 +31,48 @@ export function RoleProvider({ children }: { children: ReactNode }) {
   ));
 
   useEffect(() => {
+    let active = true;
+
     const fetchRole = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      
-      if (user) {
-        // جلب system_role من جدول user_system_roles
-        const { data: roleData } = await supabase
+      if (authLoading) {
+        return;
+      }
+
+      if (!user) {
+        setSystemRole(null);
+        setAccountType(null);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+
+      const [{ data: roleData }, { data: profileData }] = await Promise.all([
+        supabase
           .from('user_system_roles')
           .select('system_role')
           .eq('user_id', user.id)
-          .single();
-
-        // جلب account_type من جدول profiles
-        const { data: profileData } = await supabase
+          .maybeSingle(),
+        supabase
           .from('profiles')
           .select('account_type')
           .eq('id', user.id)
-          .single();
+          .maybeSingle(),
+      ]);
 
-        setSystemRole(roleData?.system_role ?? 'user');
-        setAccountType(profileData?.account_type ?? null);
-      } else {
-        setSystemRole(null);
-        setAccountType(null);
+      if (active) {
+        setSystemRole(isSystemRole(roleData?.system_role) ? roleData.system_role : 'user');
+        setAccountType(isAccountType(profileData?.account_type) ? profileData.account_type : null);
+        setLoading(false);
       }
-      
-      setLoading(false);
     };
 
     fetchRole();
-  }, [supabase]);
+
+    return () => {
+      active = false;
+    };
+  }, [authLoading, supabase, user]);
 
   return (
     <RoleContext.Provider value={{ systemRole, accountType, loading }}>

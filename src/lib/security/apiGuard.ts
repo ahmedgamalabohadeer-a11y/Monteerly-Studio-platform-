@@ -1,15 +1,9 @@
 import { NextResponse } from 'next/server';
 import type { User } from '@supabase/supabase-js';
+import { isSystemRole, type SystemRole } from '@/lib/auth/systemRoles';
 import { createClient } from '@/lib/supabase/server';
 
-export type SystemRole =
-  | 'user'
-  | 'support'
-  | 'moderator'
-  | 'kyc_operator'
-  | 'finance_operator'
-  | 'admin'
-  | 'executive';
+export type { SystemRole } from '@/lib/auth/systemRoles';
 
 export async function withAuthGuard(
   req: Request,
@@ -36,8 +30,8 @@ export async function withAuthGuard(
 
       if (
         roleError ||
-        !roleRecord ||
-        !requiredRoles.includes(roleRecord.system_role as SystemRole)
+        !isSystemRole(roleRecord?.system_role) ||
+        !requiredRoles.includes(roleRecord.system_role)
       ) {
         return NextResponse.json(
           { error: 'حظر امتثال: لا تملك الصلاحيات.' },

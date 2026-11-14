@@ -21,11 +21,13 @@ import { FeaturedVideoCreators } from '@/components/marketplace/FeaturedVideoCre
 type UserRole = 'freelancer' | 'client' | 'agency';
 
 type Freelancer = {
-  id: string;
-  full_name: string | null;
-  account_type: UserRole | null;
-  kyc_status: string | null;
-  bio: string | null;
+  profile_id: string;
+  display_name: string;
+  headline: string | null;
+  skills: unknown;
+  availability: string | null;
+  rating: number | null;
+  kyc_status_simplified: string;
   experience_years: number | null;
 };
 
@@ -87,16 +89,15 @@ function normalizeRole(value: unknown): UserRole {
   return 'freelancer';
 }
 
-function extractSkills(bio: string | null) {
-  if (!bio) {
+function readSkills(value: unknown) {
+  if (!Array.isArray(value)) {
     return ['إنتاج محتوى', 'تعاون آمن', 'Monteerly OS'];
   }
 
-  const words = bio
-    .replace(/\n/g, ' ')
-    .split(/[،,|/]/)
-    .map((word) => word.trim())
-    .filter((word) => word.length >= 3)
+  const words = value
+    .filter((skill): skill is string => typeof skill === 'string')
+    .map((skill) => skill.trim())
+    .filter((skill) => skill.length >= 3)
     .slice(0, 3);
 
   return words.length > 0
@@ -128,9 +129,6 @@ export default function MarketplacePage() {
 
         const user = authData.user;
 
-        /*
-         * لا نقرأ email من profiles لأن schema الحالي لا يحتوي عمود email.
-         */
         const [profileResult, talentResult] = await Promise.all([
           supabase
             .from('profiles')
@@ -138,20 +136,19 @@ export default function MarketplacePage() {
             .eq('id', user.id)
             .maybeSingle(),
           supabase
-            .from('profiles')
-            .select('id, full_name, account_type, kyc_status, bio, experience_years')
-            .eq('account_type', 'freelancer')
+            .from('published_freelancer_profiles')
+            .select('profile_id, display_name, headline, skills, availability, rating, kyc_status_simplified, experience_years')
             .limit(24),
         ]);
 
         if (!active) return;
 
         if (profileResult.error) {
-          throw new Error(`تعذر تحميل دور الحساب: ${profileResult.error.message}`);
+          throw new Error('تعذر تحميل دور الحساب. يرجى إعادة المحاولة.');
         }
 
         if (talentResult.error) {
-          throw new Error(`تعذر تحميل المواهب: ${talentResult.error.message}`);
+          throw new Error('تعذر تحميل المواهب. يرجى إعادة المحاولة.');
         }
 
         const profile = profileResult.data as CurrentProfile | null;
@@ -198,9 +195,9 @@ export default function MarketplacePage() {
 
     return freelancers.filter((freelancer) => {
       const searchableText = [
-        freelancer.full_name || '',
-        freelancer.bio || '',
-        freelancer.account_type || '',
+        freelancer.display_name || '',
+        freelancer.headline || '',
+        ...readSkills(freelancer.skills),
       ]
         .join(' ')
         .toLowerCase();
@@ -208,10 +205,7 @@ export default function MarketplacePage() {
       const matchesQuery =
         !normalizedQuery || searchableText.includes(normalizedQuery);
 
-      /*
-       * التصنيف حاليًا UI filtering based on biography keywords.
-       * يمكن لاحقًا استبداله بعمود تخصص حقيقي داخل profiles أو talent_skills.
-       */
+      /* Category filtering remains a UI filter over the approved projection. */
       const matchesCategory =
         category === 'الكل' ||
         searchableText.includes(category.replace('محررين ', '').replace('مصممين ', ''));
@@ -375,15 +369,15 @@ export default function MarketplacePage() {
           <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredFreelancers.map((freelancer) => (
               <TalentCard
-                key={freelancer.id}
-                id={freelancer.id}
-                name={freelancer.full_name || 'مبدع منتيرلي'}
+                key={freelancer.profile_id}
+                id={freelancer.profile_id}
+                name={freelancer.display_name || 'مبدع منتيرلي'}
                 roleLabel="مبدع / مستقل"
-                rating={freelancer.kyc_status === 'approved' ? 5 : 4.7}
-                reviews={freelancer.experience_years || 0}
+                rating={freelancer.rating}
+                experienceYears={freelancer.experience_years}
                 rate="يُحدد عند التواصل"
-                skills={extractSkills(freelancer.bio)}
-                verified={freelancer.kyc_status === 'approved'}
+                skills={readSkills(freelancer.skills)}
+                verified={freelancer.kyc_status_simplified === 'approved'}
                 currentRole={currentRole}
               />
             ))}

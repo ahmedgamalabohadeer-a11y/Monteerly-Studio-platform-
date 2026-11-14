@@ -1,16 +1,10 @@
 import 'server-only';
 
 import type { User } from '@supabase/supabase-js';
+import { isSystemRole, type SystemRole } from '@/lib/auth/systemRoles';
 import { createClient } from '@/lib/supabase/server';
 
-export type SystemRole =
-  | 'user'
-  | 'support'
-  | 'moderator'
-  | 'kyc_operator'
-  | 'finance_operator'
-  | 'admin'
-  | 'executive';
+export type { SystemRole } from '@/lib/auth/systemRoles';
 
 export type AuthenticatedServerContext = {
   supabase: Awaited<ReturnType<typeof createClient>>;
@@ -26,18 +20,6 @@ export async function requireUser(): Promise<AuthenticatedServerContext> {
   }
 
   return { supabase, user };
-}
-
-function isSystemRole(value: unknown): value is SystemRole {
-  return (
-    value === 'user' ||
-    value === 'support' ||
-    value === 'moderator' ||
-    value === 'kyc_operator' ||
-    value === 'finance_operator' ||
-    value === 'admin' ||
-    value === 'executive'
-  );
 }
 
 export async function requireSystemRole(

@@ -7,12 +7,40 @@ BEGIN;
 
 DO $$
 BEGIN
+  IF to_regclass('auth.users') IS NULL THEN
+    RAISE EXCEPTION 'P0 precondition failed: auth.users is missing';
+  END IF;
+
   IF to_regclass('public.user_system_roles') IS NULL THEN
     RAISE EXCEPTION 'P0 precondition failed: public.user_system_roles is missing';
   END IF;
 
   IF to_regclass('public.profiles') IS NULL THEN
     RAISE EXCEPTION 'P0 precondition failed: public.profiles is missing';
+  END IF;
+
+  IF EXISTS (
+    SELECT required.column_name
+    FROM (
+      VALUES
+        ('user_system_roles', 'user_id'),
+        ('user_system_roles', 'system_role'),
+        ('profiles', 'id'),
+        ('profiles', 'email'),
+        ('profiles', 'full_name'),
+        ('profiles', 'avatar_url'),
+        ('profiles', 'account_type'),
+        ('profiles', 'role')
+    ) AS required(table_name, column_name)
+    WHERE NOT EXISTS (
+      SELECT 1
+      FROM information_schema.columns AS existing
+      WHERE existing.table_schema = 'public'
+        AND existing.table_name = required.table_name
+        AND existing.column_name = required.column_name
+    )
+  ) THEN
+    RAISE EXCEPTION 'P0 precondition failed: required auth/profile columns are missing';
   END IF;
 END;
 $$;
@@ -47,6 +75,11 @@ ALTER TABLE public.user_system_roles ENABLE ROW LEVEL SECURITY;
 UPDATE public.user_system_roles
 SET system_role = 'user'
 WHERE system_role IS NULL;
+
+INSERT INTO public.user_system_roles (user_id, system_role)
+SELECT auth_user.id, 'user'
+FROM auth.users AS auth_user
+ON CONFLICT (user_id) DO NOTHING;
 
 ALTER TABLE public.user_system_roles
   ALTER COLUMN system_role SET DEFAULT 'user',
@@ -100,6 +133,12 @@ $$;
 
 REVOKE ALL ON FUNCTION public.handle_new_user_system_role()
   FROM PUBLIC, anon, authenticated;
+
+DROP TRIGGER IF EXISTS on_auth_user_system_role_created ON auth.users;
+CREATE TRIGGER on_auth_user_system_role_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW
+  EXECUTE FUNCTION public.handle_new_user_system_role();
 
 -- ---------------------------------------------------------------------
 -- Profiles: account_type is self-service; role and compliance decisions
@@ -197,12 +236,14 @@ BEGIN
 
   INSERT INTO public.profiles (
     id,
+    email,
     full_name,
     avatar_url,
     account_type
   )
   VALUES (
     new.id,
+    new.email,
     new.raw_user_meta_data->>'full_name',
     new.raw_user_meta_data->>'avatar_url',
     selected_account_type
@@ -215,6 +256,36 @@ $$;
 
 REVOKE ALL ON FUNCTION public.handle_new_user()
   FROM PUBLIC, anon, authenticated;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW
+  EXECUTE FUNCTION public.handle_new_user();
+
+INSERT INTO public.profiles (
+  id,
+  email,
+  full_name,
+  avatar_url,
+  account_type
+)
+SELECT
+  auth_user.id,
+  auth_user.email,
+  auth_user.raw_user_meta_data->>'full_name',
+  auth_user.raw_user_meta_data->>'avatar_url',
+  CASE
+    WHEN auth_user.raw_user_meta_data->>'account_type' IN (
+      'client',
+      'freelancer',
+      'agency'
+    )
+      THEN auth_user.raw_user_meta_data->>'account_type'
+    ELSE 'client'
+  END
+FROM auth.users AS auth_user
+ON CONFLICT (id) DO NOTHING;
 
 -- The RPC deliberately uses dynamic SQL so a repository/target schema drift
 -- fails closed at call time instead of granting direct writes to KYC columns.

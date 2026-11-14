@@ -1,8 +1,10 @@
 'use server'
 
+import { randomUUID } from 'node:crypto';
 import { requireUser } from '@/lib/serverAuth';
 import { revalidatePath } from 'next/cache';
 import { logAuditEvent } from '@/lib/audit';
+import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
 // 1. إنشاء عقد جديد (موجودة مسبقاً)
 export async function addContract(formData: FormData) {
@@ -79,90 +81,76 @@ type GeneratedContractInput = {
   contractValue: string;
   deliveryDate: string;
   aiDraft: string;
+  idempotencyKey: string;
 };
 
+export async function issueGeneratedContractIdempotencyKey() {
+  try {
+    await requireUser();
+    return randomUUID();
+  } catch {
+    throw new Error('تعذر بدء طلب العقد. يرجى المحاولة مرة أخرى.');
+  }
+}
+
 export async function finalizeGeneratedContract(input: GeneratedContractInput) {
-  const { supabase, user } = await requireUser();
-  const clientName = input.clientName.trim();
-  const contractValue = Number(input.contractValue);
-  const aiDraft = input.aiDraft.trim();
+  try {
+    const { user } = await requireUser();
+    const clientName = input.clientName.trim();
+    const contractValue = Number(input.contractValue);
+    const aiDraft = input.aiDraft.trim();
 
-  if (input.type !== 'nda' && input.type !== 'service') {
-    throw new Error('نوع العقد غير صالح');
+    if (input.type !== 'nda' && input.type !== 'service') {
+      throw new Error('invalid');
+    }
+
+    if (!clientName || clientName.length > 160) {
+      throw new Error('invalid');
+    }
+
+    if (
+      !/^(?:0|[1-9]\d{0,9})(?:\.\d{1,2})?$/.test(input.contractValue) ||
+      !Number.isFinite(contractValue) ||
+      contractValue <= 0 ||
+      contractValue > 1_000_000_000
+    ) {
+      throw new Error('invalid');
+    }
+
+    if (
+      !/^\d{4}-\d{2}-\d{2}$/.test(input.deliveryDate) ||
+      !Number.isFinite(Date.parse(`${input.deliveryDate}T00:00:00.000Z`)) ||
+      new Date(`${input.deliveryDate}T00:00:00.000Z`).toISOString().slice(0, 10) !== input.deliveryDate
+    ) {
+      throw new Error('invalid');
+    }
+
+    if (!aiDraft || aiDraft.length > 50_000) {
+      throw new Error('invalid');
+    }
+
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input.idempotencyKey)) {
+      throw new Error('invalid');
+    }
+
+    const { data, error } = await supabaseAdmin.rpc('finalize_generated_contract', {
+      p_actor_id: user.id,
+      p_contract_type: input.type,
+      p_client_name: clientName,
+      p_contract_value: contractValue,
+      p_delivery_date: input.deliveryDate,
+      p_ai_content: aiDraft,
+      p_idempotency_key: input.idempotencyKey,
+    });
+
+    if (error || !data || data.length !== 1 || data[0]?.success !== true) {
+      throw new Error('failed');
+    }
+
+    revalidatePath('/[locale]/contracts');
+    revalidatePath('/[locale]/production');
+    return { success: true };
+  } catch {
+    throw new Error('تعذر إتمام طلب العقد. يرجى المحاولة مرة أخرى.');
   }
-
-  if (!clientName || clientName.length > 160) {
-    throw new Error('اسم العميل غير صالح');
-  }
-
-  if (!Number.isFinite(contractValue) || contractValue <= 0 || contractValue > 1_000_000_000) {
-    throw new Error('قيمة العقد غير صالحة');
-  }
-
-  if (!Number.isFinite(Date.parse(input.deliveryDate))) {
-    throw new Error('تاريخ التسليم غير صالح');
-  }
-
-  if (!aiDraft || aiDraft.length > 50_000) {
-    throw new Error('محتوى العقد غير صالح');
-  }
-
-  const { data: contract, error: contractError } = await supabase
-    .from('legal_contracts')
-    .insert({
-      contract_type: input.type,
-      client_name: clientName,
-      contract_value: contractValue,
-      delivery_date: input.deliveryDate,
-      ai_content: aiDraft,
-      status: 'signed',
-    })
-    .select('id')
-    .single();
-
-  if (contractError || !contract) {
-    throw new Error('تعذر توثيق العقد');
-  }
-
-  const projectName =
-    input.type === 'service' ? `إنتاج: ${clientName}` : `مشروع NDA: ${clientName}`;
-
-  const { error: productionError } = await supabase.from('production_projects').insert({
-    contract_id: contract.id,
-    project_name: projectName,
-    production_status: 'pending',
-  });
-
-  if (productionError) {
-    throw new Error('تعذر إنشاء مشروع الإنتاج');
-  }
-
-  const { error: financialError } = await supabase.from('financial_ledgers').insert({
-    contract_id: contract.id,
-    client_name: clientName,
-    total_amount: contractValue,
-    remaining_amount: contractValue,
-    due_date: input.deliveryDate,
-    payment_status: 'pending',
-  });
-
-  if (financialError) {
-    throw new Error('تعذر إنشاء السجل المالي');
-  }
-
-  await logAuditEvent({
-    actorIdentifier: `user:${user.id}`,
-    action: 'generated_contract_finalized',
-    module: 'contracts',
-    entityId: contract.id,
-    snapshot: {
-      contract_type: input.type,
-      contract_value: contractValue,
-      delivery_date: input.deliveryDate,
-    },
-  });
-
-  revalidatePath('/[locale]/contracts');
-  revalidatePath('/[locale]/production');
-  return { success: true, contractId: contract.id };
 }

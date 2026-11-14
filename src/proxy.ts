@@ -1,6 +1,23 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
+import { isSystemRole, type SystemRole } from '@/lib/auth/systemRoles';
+
+const ROUTE_POLICIES = [
+  { segment: '/admin', allowedRoles: ['admin', 'executive'] },
+  { segment: '/executive', allowedRoles: ['executive'] },
+  {
+    segment: '/finance',
+    allowedRoles: ['finance_operator', 'admin', 'executive'],
+  },
+  {
+    segment: '/disputes',
+    allowedRoles: ['moderator', 'admin', 'executive'],
+  },
+] as const satisfies ReadonlyArray<{
+  segment: string;
+  allowedRoles: readonly SystemRole[];
+}>;
 
 function redirectWithCookies(url: URL, sourceResponse: NextResponse) {
   const redirectResponse = NextResponse.redirect(url);
@@ -68,30 +85,24 @@ export async function proxy(request: NextRequest) {
     .eq('user_id', user.id)
     .single();
 
-  const systemRole = roleData?.system_role ?? 'user';
+  const systemRole = isSystemRole(roleData?.system_role)
+    ? roleData.system_role
+    : 'user';
 
-  const routePolicies = [
-    { segment: '/admin', allowedRoles: ['admin', 'executive'] },
-    { segment: '/executive', allowedRoles: ['executive'] },
-    {
-      segment: '/finance',
-      allowedRoles: ['finance_operator', 'admin', 'executive'],
-    },
-    {
-      segment: '/disputes',
-      allowedRoles: ['moderator', 'admin', 'executive'],
-    },
-  ];
-  const routePolicy = routePolicies.find(
+  const routePolicy = ROUTE_POLICIES.find(
     ({ segment }) =>
       pathWithoutLocale === segment || pathWithoutLocale.startsWith(segment + '/')
   );
 
-  if (routePolicy && !routePolicy.allowedRoles.includes(systemRole)) {
-    return redirectWithCookies(
-      new URL('/' + locale + '/unauthorized', request.url),
-      supabaseResponse
-    );
+  if (routePolicy) {
+    const allowedRoles: readonly SystemRole[] = routePolicy.allowedRoles;
+
+    if (!allowedRoles.includes(systemRole)) {
+      return redirectWithCookies(
+        new URL('/' + locale + '/unauthorized', request.url),
+        supabaseResponse
+      );
+    }
   }
 
   return supabaseResponse;
