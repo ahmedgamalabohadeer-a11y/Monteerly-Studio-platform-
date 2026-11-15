@@ -161,7 +161,7 @@ BEGIN
     SELECT 1 FROM pg_constraint
     WHERE conrelid = 'public.financial_ledgers'::regclass
       AND conname = 'financial_ledgers_transaction_id_fkey'
-      AND confdeltype = 'c'
+      AND confdeltype = 'r'
   ) OR NOT EXISTS (
     SELECT 1 FROM pg_constraint
     WHERE conrelid = 'public.financial_ledgers'::regclass

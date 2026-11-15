@@ -15,9 +15,13 @@ export async function finalizeFreelancerOnboarding(formData: FormData) {
   const bio = formData.get('bio') as string;
   const portfolio = formData.get('portfolio_url') as string;
 
+  const { error: accountTypeError } = await supabase.rpc('set_own_account_type', {
+    p_account_type: 'freelancer',
+  });
+  if (accountTypeError) return { success: false, message: 'تعذر حفظ نوع الحساب.' };
+
   const { error } = await supabase.from('profiles').update({
     full_name: fullName,
-    account_type: 'freelancer',
     bio: bio,
     metadata: { 
       portfolio_url: portfolio, 

@@ -251,6 +251,45 @@ test('ledger-wide currency default and selected FK actions match latest owner fi
   assert.match(verification, /Financial ledger FK delete actions do not match latest owner contract/);
 });
 
+test('P0 safety reconciliation closes historical access and data-loss paths', async () => {
+  const migration = await source(
+    'supabase/migrations/20261115030000_p0_remote_apply_safety_reconciliation.sql'
+  );
+
+  assert.match(migration, /ALTER TABLE storage\.objects ENABLE ROW LEVEL SECURITY/);
+  assert.match(migration, /FROM PUBLIC, anon, authenticated/);
+  assert.match(migration, /GRANT SELECT, INSERT ON TABLE storage\.objects TO authenticated/);
+  assert.match(migration, /GRANT SELECT ON TABLE storage\.objects TO service_role/);
+  assert.match(migration, /UPDATE storage\.buckets[\s\S]*SET public = false/);
+  assert.match(migration, /headline = NULL/);
+  assert.match(migration, /skills = '\[\]'::jsonb/);
+  assert.match(migration, /ON DELETE RESTRICT/);
+  assert.match(migration, /REVOKE ALL ON FUNCTION public\.finalize_generated_contract/);
+  assert.match(migration, /TO service_role/);
+  assert.match(migration, /CREATE OR REPLACE FUNCTION public\.set_own_account_type/);
+  assert.match(migration, /GRANT EXECUTE ON FUNCTION public\.set_own_account_type\(text\) TO authenticated/);
+});
+
+test('account-type self-service uses the validated RPC while direct profile writes stay restricted', async () => {
+  const [authActions, onboardingActions] = await Promise.all([
+    source('src/app/[locale]/auth/actions.ts'),
+    source('src/app/[locale]/onboarding/actions.ts'),
+  ]);
+  const freelancerSetup = await source('src/app/[locale]/freelancer/setup/actions.ts');
+
+  assert.match(authActions, /rpc\('set_own_account_type'/);
+  assert.match(onboardingActions, /rpc\('set_own_account_type'/);
+  assert.match(freelancerSetup, /rpc\('set_own_account_type'/);
+  assert.doesNotMatch(
+    onboardingActions,
+    /\.update\(\{[\s\S]{0,250}account_type:\s*input\.accountType/
+  );
+  assert.doesNotMatch(
+    freelancerSetup,
+    /\.update\(\{[\s\S]{0,250}account_type:\s*'freelancer'/
+  );
+});
+
 test('KYC self-service cannot write compliance decisions directly', async () => {
   const [action, onboarding] = await Promise.all([
     source('src/app/[locale]/kyc/kyc-actions.ts'),

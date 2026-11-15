@@ -85,10 +85,9 @@ export async function setOwnAccountType(accountType: AccountType) {
     throw new Error('نوع الحساب غير صالح.');
   }
 
-  const { error } = await supabase
-    .from('profiles')
-    .update({ account_type: accountType })
-    .eq('id', user.id);
+  const { error } = await supabase.rpc('set_own_account_type', {
+    p_account_type: accountType,
+  });
 
   if (error) {
     throw new Error('تعذر حفظ نوع الحساب.');

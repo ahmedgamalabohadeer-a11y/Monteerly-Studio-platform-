@@ -54,7 +54,6 @@ export async function saveOnboardingProfile(input: OnboardingInput) {
     .from('profiles')
     .update({
       full_name: fullName,
-      account_type: input.accountType,
       experience_years: years,
       bio: `${professionalFocus}\n\n${bio}`,
       ...(taxId ? { tax_id: taxId } : {}),
@@ -65,6 +64,14 @@ export async function saveOnboardingProfile(input: OnboardingInput) {
 
   if (saveError || !profile) {
     throw new Error('تعذر حفظ بيانات الملف.');
+  }
+
+  const { error: accountTypeError } = await supabase.rpc('set_own_account_type', {
+    p_account_type: input.accountType,
+  });
+
+  if (accountTypeError) {
+    throw new Error('تعذر حفظ نوع الحساب.');
   }
 
   const { error: metadataError } = await supabase.auth.updateUser({
