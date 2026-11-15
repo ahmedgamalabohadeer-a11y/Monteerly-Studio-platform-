@@ -1,7 +1,7 @@
 # MCOS Schema and Access Contract
 
-**Status:** Approved / Implementation Pending  
-**Date:** 2026-10-11  
+**Status:** Approved / Implementation Pending
+**Date:** 2026-10-11
 **Scope:** Approved design direction for schema authority, identity and role boundaries, marketplace profile visibility, production-project membership, and KYC storage/state transitions. Implementation, DDL, Storage configuration, local replay, and remote inspection remain separately gated.
 
 ## Evidence boundary
