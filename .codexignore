@@ -1,0 +1,11 @@
+# Sensitive files and folders: do not include as agent context
+.env
+.env.*
+!.env.example
+.sentryclirc
+*.pem
+*.key
+node_modules/
+.git/
+supabase/.temp/
+archive/root-config-backups/
