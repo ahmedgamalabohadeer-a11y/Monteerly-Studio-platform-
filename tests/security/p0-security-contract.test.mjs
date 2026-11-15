@@ -327,8 +327,9 @@ test('privileged and cost-bearing API boundaries fail closed', async () => {
   assert.match(checkout, /withAuthGuard/);
   assert.match(checkout, /status: 503/);
   assert.doesNotMatch(checkout, /accept\.paymob\.com/);
-  assert.match(paymobWebhook, /status: 503/);
-  assert.doesNotMatch(paymobWebhook, /req\.json|emails\/send/);
+  assert.match(paymobWebhook, /handlePaymobWebhookRequest/);
+  assert.match(paymobWebhook, /provider_events_inbox/);
+  assert.match(paymobWebhook, /status: response\.status/);
   assert.doesNotMatch(relay, /mcos_super_secret_agent_key/);
   assert.match(relay, /if \(!secret\)/);
   assert.match(storage, /\.from\('orders'\)/);
