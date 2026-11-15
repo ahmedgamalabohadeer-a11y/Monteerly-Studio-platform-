@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { FileVideo, User, Calendar, MoreHorizontal } from 'lucide-react';
+import { FileVideo, User, MoreHorizontal } from 'lucide-react';
 
 export function OrderPipeline() {
   const orders = [

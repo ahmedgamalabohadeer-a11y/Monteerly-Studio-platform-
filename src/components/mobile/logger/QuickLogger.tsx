@@ -1,11 +1,10 @@
 'use client';
 import React, { useState } from 'react';
 import { Plus, Minus, Film, Mic, AlertTriangle } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
 
 export function QuickLogger() {
   const [scene, setScene] = useState(4);
-  const [shot, setShot] = useState('A');
+  const shot = 'A';
   const [take, setTake] = useState(1);
 
   return (

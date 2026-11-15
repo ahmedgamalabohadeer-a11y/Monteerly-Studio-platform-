@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Trophy, Star, Zap, Shield } from 'lucide-react';
+import { Star, Zap, Shield } from 'lucide-react';
 import { Tooltip } from '@/components/ui/Tooltip';
 
 export function GamificationBadges() {

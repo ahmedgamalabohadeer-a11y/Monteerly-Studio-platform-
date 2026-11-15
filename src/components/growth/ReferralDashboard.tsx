@@ -1,6 +1,6 @@
 'use client';
-import React, { useState } from 'react';
-import { Gift, Copy, Users, Trophy, ChevronRight } from 'lucide-react';
+import React from 'react';
+import { Gift, Copy, Users, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useToast } from '@/components/ui/Toast';
 

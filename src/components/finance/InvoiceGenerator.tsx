@@ -1,7 +1,6 @@
 'use client';
 import React, { useState } from 'react';
 import { Download, Plus, Trash2, Printer } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
 
 export function InvoiceGenerator() {
   const [items, setItems] = useState([{ id: 1, desc: 'تصميم موشن جرافيك (دقيقة)', qty: 1, price: 500 }]);
@@ -36,7 +35,7 @@ export function InvoiceGenerator() {
           <div className="border-t border-white/10 pt-4">
              <label className="text-xs text-slate-400 block mb-3">الخدمات</label>
              <div className="space-y-2">
-                {items.map((item, index) => (
+                {items.map((item) => (
                    <div key={item.id} className="flex gap-2">
                       <input 
                         type="text" 

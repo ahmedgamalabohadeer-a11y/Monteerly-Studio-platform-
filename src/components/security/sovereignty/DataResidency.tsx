@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Server, Globe, ShieldCheck, Map } from 'lucide-react';
+import { Server, Globe, ShieldCheck } from 'lucide-react';
 
 export function DataResidency() {
   const [region, setRegion] = useState('ksa');

@@ -1,9 +1,8 @@
 'use client';
 import React, { useState } from 'react';
-import { FileText, Globe, AlertCircle } from 'lucide-react';
+import { FileText, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { Checkbox } from '@/components/ui/Checkbox'; // Assume exists
 
 export function TaxResidencyForm() {
   const [isUS, setIsUS] = useState<boolean | null>(null);

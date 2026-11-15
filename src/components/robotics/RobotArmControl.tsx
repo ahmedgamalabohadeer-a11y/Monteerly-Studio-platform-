@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Move, Maximize, RotateCw, Video, Settings, Play } from 'lucide-react';
+import { Move, Video, Settings, Play } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function RobotArmControl() {

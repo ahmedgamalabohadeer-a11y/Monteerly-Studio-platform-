@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Lock, Star, CheckCircle, Zap } from 'lucide-react';
+import { Lock, CheckCircle, Zap } from 'lucide-react';
 
 export function SkillTree() {
   const skills = [

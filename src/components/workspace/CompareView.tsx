@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { SplitSquareHorizontal, ArrowRightLeft } from 'lucide-react';
+import { ArrowRightLeft } from 'lucide-react';
 export function CompareView() {
   const [sliderPosition, setSliderPosition] = useState(50);
   return (

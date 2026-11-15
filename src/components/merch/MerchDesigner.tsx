@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Shirt, ShoppingBag, Upload, DollarSign } from 'lucide-react';
+import { ShoppingBag, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function MerchDesigner() {

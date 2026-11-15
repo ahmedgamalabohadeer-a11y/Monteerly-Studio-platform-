@@ -1,10 +1,9 @@
 'use client';
 import React, { useState } from 'react';
-import { Bell, X, Check, Info, AlertTriangle } from 'lucide-react';
+import { X, Check, Info, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function NotificationHub() {
-  const [isOpen, setIsOpen] = useState(true); // Open for demo
   const [notifications, setNotifications] = useState([
     { id: 1, type: 'success', title: 'تم الريندر بنجاح', msg: 'مشروع "Ramadan Ad" جاهز للتحميل.', time: 'الآن' },
     { id: 2, type: 'info', title: 'دفعة مستلمة', msg: 'استلمت $450 من العميل خالد.', time: 'منذ 5 د' },

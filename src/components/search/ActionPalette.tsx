@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Command, Moon, Sun, FolderPlus, LogOut, User, Settings } from 'lucide-react';
+import { Command, Moon, FolderPlus, LogOut, User, Settings } from 'lucide-react';
 
 export function ActionPalette() {
   const [isOpen, setIsOpen] = useState(false);

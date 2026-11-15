@@ -1,10 +1,10 @@
 'use client';
-import React, { useState } from 'react';
-import { FileText, Download, Check, PenTool } from 'lucide-react';
+import React from 'react';
+import { FileText, Check, PenTool } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function ContractGenerator() {
-  const [step, setStep] = useState(1);
+  const step = 1;
 
   return (
     <div className="bg-slate-900 border border-white/10 rounded-xl p-8 max-w-2xl mx-auto">

@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { Heart, MessageCircle, Share2, MoreHorizontal, Image as ImageIcon } from 'lucide-react';
+import Image from 'next/image';
+import { Heart, MessageCircle, Share2, MoreHorizontal } from 'lucide-react';
 import { Avatar } from '@/components/ui/Avatar';
 
 interface PostProps {
@@ -42,7 +43,14 @@ export function PostCard({ author, role, avatar, time, content, image, likes: in
        
        {image && (
           <div className="rounded-lg overflow-hidden mb-3 border border-white/5">
-             <img src={image} alt="Post content" className="w-full h-auto object-cover max-h-[400px]" />
+             <Image
+               src={image}
+               alt="Post content"
+               width={1200}
+               height={800}
+               unoptimized={!image.startsWith('/')}
+               className="w-full h-auto object-cover max-h-[400px]"
+             />
           </div>
        )}
 

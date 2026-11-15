@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Copy, Eye, Plus, History } from 'lucide-react';
+import { Copy, Eye, History } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function VirtualCard() {

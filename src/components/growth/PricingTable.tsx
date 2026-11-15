@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Check, Star, Zap } from 'lucide-react';
+import { Check, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { InteractiveButton } from '@/components/system/InteractiveButton';
 

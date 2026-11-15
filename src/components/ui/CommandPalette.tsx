@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Search, Command, File, User, Settings, CreditCard, ArrowRight, Shield, Video } from 'lucide-react';
+import { Search, File, User, CreditCard, ArrowRight, Shield, Video } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export function CommandPalette() {

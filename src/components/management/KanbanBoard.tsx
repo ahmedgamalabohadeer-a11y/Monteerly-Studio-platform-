@@ -1,17 +1,9 @@
 'use client';
-import React, { useState } from 'react';
-import { MoreHorizontal, Plus, User } from 'lucide-react';
-
-interface Task {
-  id: string;
-  title: string;
-  assignee: string;
-  tag: string;
-  color: string;
-}
+import React from 'react';
+import { MoreHorizontal, Plus } from 'lucide-react';
 
 export function KanbanBoard() {
-  const [columns, setColumns] = useState({
+  const columns = {
     todo: {
       title: 'قائمة المهام (To Do)',
       items: [
@@ -37,7 +29,7 @@ export function KanbanBoard() {
         { id: '5', title: 'استلام المواد الخام', assignee: 'محمد', tag: 'Ingest', color: 'bg-green-500' },
       ]
     }
-  });
+  };
 
   return (
     <div className="flex gap-6 overflow-x-auto pb-8 h-[calc(100vh-300px)] min-h-[400px]">

@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { UserPlus, Shield, Trash2, MoreVertical } from 'lucide-react';
+import { UserPlus, MoreVertical } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
 

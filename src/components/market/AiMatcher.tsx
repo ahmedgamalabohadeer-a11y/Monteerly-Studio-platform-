@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import { Sparkles, Loader2, Target, Cpu } from 'lucide-react';
+import { Loader2, Target, Cpu } from 'lucide-react';
 
 export default function AiMatcher({ onMatchComplete }: { onMatchComplete: (result: string) => void }) {
   const [prompt, setPrompt] = useState('');

@@ -19,7 +19,7 @@ const s3Client = new S3Client({
  */
 export async function uploadLightFile(file: File, bucket: 'avatars' | 'documents', path: string) {
   const supabase = await createClient();
-  const { data, error } = await supabase.storage.from(bucket).upload(path, file, {
+  const { error } = await supabase.storage.from(bucket).upload(path, file, {
     upsert: true,
   });
   if (error) throw error;

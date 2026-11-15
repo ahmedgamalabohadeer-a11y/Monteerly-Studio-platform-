@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Send, Bot, User, Check, DollarSign } from 'lucide-react';
+import { Send, Bot, Check } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function NegotiatorBot() {

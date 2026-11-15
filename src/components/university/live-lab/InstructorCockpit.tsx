@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
-import { LayoutGrid, Maximize, Mic, Video, Hand, MoreVertical } from 'lucide-react';
+import Image from 'next/image';
+import { LayoutGrid, Maximize, Mic, Hand, MoreVertical } from 'lucide-react';
 
 export function InstructorCockpit() {
   const students = [
@@ -33,7 +34,13 @@ export function InstructorCockpit() {
                 {/* Screen Preview */}
                 <div className="aspect-video bg-black relative">
                    {student.active ? (
-                      <img src={student.screen} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                      <Image
+                        src={student.screen}
+                        alt={`شاشة الطالب ${student.name}`}
+                        fill
+                        sizes="(max-width: 768px) 50vw, 25vw"
+                        className="object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                      />
                    ) : (
                       <div className="w-full h-full flex items-center justify-center text-slate-600 text-xs">No Signal</div>
                    )}

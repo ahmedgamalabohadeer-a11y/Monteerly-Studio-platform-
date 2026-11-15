@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Building2, Users, TrendingUp } from 'lucide-react';
+import { Building2, Users } from 'lucide-react';
 
 export function AgencyDashboard() {
   return (

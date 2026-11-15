@@ -1,7 +1,7 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { PieChart, DollarSign, Percent, ShieldCheck } from 'lucide-react';
-import { RevenueEngine, SubscriptionTier, RevenueBreakdown } from '@/lib/finance/RevenueEngine';
+import { RevenueEngine, SubscriptionTier } from '@/lib/finance/RevenueEngine';
 
 export default function RevenueSplitter({ amount, tier }: { amount: number, tier: SubscriptionTier }) {
   const breakdown = React.useMemo(() => (amount > 0 ? RevenueEngine.calculateSplit(amount, tier) : null), [amount, tier]);

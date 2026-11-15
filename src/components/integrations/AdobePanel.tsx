@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { MessageSquare, Clock, Check, Play } from 'lucide-react';
+import { Clock, Check, Play } from 'lucide-react';
 
 export function AdobePanel() {
   const comments = [

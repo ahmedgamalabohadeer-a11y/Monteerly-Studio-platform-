@@ -107,7 +107,7 @@ export function SignaturePad({ onSign, disabled = false }: SignaturePadProps) {
           disabled={disabled || !hasSignature}
           className="flex-1 px-4 py-2 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-colors disabled:opacity-50"
         >
-          اعتماد التوقيع وحفظ العقد
+          حفظ المسودة
         </button>
       </div>
     </div>

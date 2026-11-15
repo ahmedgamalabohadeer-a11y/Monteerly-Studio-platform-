@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/Button';
 export function DriveBrowser() {
   const [view, setView] = useState<'grid' | 'list'>('grid');
 
-  const files = [
+  const files: React.ComponentProps<typeof FileCard>[] = [
     { name: 'Rushes_Day01', type: 'folder', date: 'Jan 15', size: '12 items' },
     { name: 'Audio_Effects', type: 'folder', date: 'Jan 12', size: '5 items' },
     { name: 'Interview_CamA.mp4', type: 'video', date: 'Jan 10', size: '2.4 GB', thumbnail: '/images/features/live.jpg' },
@@ -47,7 +47,6 @@ export function DriveBrowser() {
        <h3 className="font-bold text-white mb-4">الملفات ({files.length})</h3>
        <div className={`grid gap-4 ${view === 'grid' ? 'grid-cols-2 md:grid-cols-4 lg:grid-cols-5' : 'grid-cols-1'}`}>
           {files.map((file, i) => (
-             // @ts-expect-error: legacy compatibility
              <FileCard key={i} {...file} />
           ))}
        </div>

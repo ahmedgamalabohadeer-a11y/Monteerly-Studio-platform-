@@ -40,8 +40,8 @@ function Fader({ label, icon: Icon, value, onChange, color }: FaderProps) {
                  value={value} 
                  onChange={(e) => onChange(Number(e.target.value))}
                  className="absolute inset-0 opacity-0 cursor-ns-resize"
-                 // @ts-expect-error: legacy compatibility
-                 orient="vertical" 
+                 aria-label={label}
+                 style={{ writingMode: 'vertical-lr', direction: 'rtl' }}
               />
            </div>
            <Icon size={12} className="text-muted-foreground" />

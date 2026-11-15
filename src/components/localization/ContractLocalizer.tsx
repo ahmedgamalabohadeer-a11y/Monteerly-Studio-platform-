@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { FileText, Download, CheckCircle } from 'lucide-react';
+import { Download, CheckCircle } from 'lucide-react';
 
 export function ContractLocalizer() {
   const clauses = [

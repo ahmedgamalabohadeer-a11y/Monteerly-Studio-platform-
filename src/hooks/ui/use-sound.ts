@@ -1,3 +1,7 @@
-export const useSound = () => ({
-  play: (soundName?: string) => {}
+interface SoundControls {
+  play: (soundName?: string) => void;
+}
+
+export const useSound = (): SoundControls => ({
+  play: () => {},
 });

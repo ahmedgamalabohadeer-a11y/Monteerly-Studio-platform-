@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { ShieldAlert, Download, Filter, Search, Globe } from 'lucide-react';
+import { ShieldAlert, Download, Search } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function AuditLogViewer() {

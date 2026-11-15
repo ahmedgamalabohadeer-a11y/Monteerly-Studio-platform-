@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { ShieldCheck, Share2, Download, ExternalLink, QrCode } from 'lucide-react';
+import { ShieldCheck, Share2, Download, QrCode } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function CertificateBadge() {

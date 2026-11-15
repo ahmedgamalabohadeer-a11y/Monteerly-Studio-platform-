@@ -1,10 +1,10 @@
 'use client';
-import React, { useState } from 'react';
-import { Gift, Lock, Share2, Globe } from 'lucide-react';
+import React from 'react';
+import { Gift, Share2, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export function ViralUnlock() {
-  const [invites, setInvites] = useState(1); // Demo: User has invited 1 friend
+  const invites = 1; // Demo: User has invited 1 friend
 
   return (
     <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-6 text-white relative overflow-hidden">

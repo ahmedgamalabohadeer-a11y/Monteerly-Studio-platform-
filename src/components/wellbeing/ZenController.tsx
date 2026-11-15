@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Moon, Music, BellOff, Clock, Maximize, Wind } from 'lucide-react';
+import { Moon, Music, BellOff, Maximize, Wind } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { InteractiveButton } from '@/components/system/InteractiveButton';
 

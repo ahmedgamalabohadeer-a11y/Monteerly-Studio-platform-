@@ -1,12 +1,12 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { UploadCloud, X, Pause, Play, CheckCircle, AlertTriangle, WifiOff } from 'lucide-react';
+import { UploadCloud, Pause, Play, CheckCircle, AlertTriangle, WifiOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function ResumableUploader() {
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState<'uploading' | 'paused' | 'error' | 'completed'>('uploading');
-  const [speed, setSpeed] = useState('12 MB/s');
+  const speed = '12 MB/s';
 
   // Simulate upload process with random network failure
   useEffect(() => {

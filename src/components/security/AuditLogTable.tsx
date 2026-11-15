@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Search, Filter, Download, ShieldAlert, ShieldCheck } from 'lucide-react';
+import { Search, Download, ShieldCheck } from 'lucide-react';
 
 export function AuditLogTable() {
   const logs = [

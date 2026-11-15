@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Activity, AlertTriangle, CheckCircle, XCircle, Search, RefreshCw } from 'lucide-react';
+import { Activity, XCircle, Search, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function QCReport() {

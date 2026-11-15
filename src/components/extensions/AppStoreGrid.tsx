@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Download, Star, Puzzle, Check, Search } from 'lucide-react';
+import { Download, Star, Puzzle, Search } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function AppStoreGrid() {

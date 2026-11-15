@@ -1,6 +1,13 @@
 export type Language = 'ar' | 'en';
-export const useI18n = () => ({
-  language: 'ar' as Language,
-  switchLanguage: (lang: Language) => {},
-  t: (key: string) => key
+
+interface I18nControls {
+  language: Language;
+  switchLanguage: (lang: Language) => void;
+  t: (key: string) => string;
+}
+
+export const useI18n = (): I18nControls => ({
+  language: 'ar',
+  switchLanguage: () => {},
+  t: (key) => key,
 });

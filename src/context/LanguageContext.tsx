@@ -1,5 +1,11 @@
-export const useLang = () => ({
+interface LanguageContextValue {
+  lang: string;
+  t: (key: string) => string;
+  switchLanguage: (lang: string) => void;
+}
+
+export const useLang = (): LanguageContextValue => ({
   lang: 'ar',
-  t: (key: string) => key,
-  switchLanguage: (lang: string) => {}
+  t: (key) => key,
+  switchLanguage: () => {},
 });

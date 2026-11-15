@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Star, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { Star, CheckCircle, XCircle } from 'lucide-react';
 import { Avatar } from '@/components/ui/Avatar';
 import { Button } from '@/components/ui/Button';
 

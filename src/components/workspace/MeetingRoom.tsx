@@ -64,7 +64,10 @@ export function MeetingRoom() {
 }
 function ControlBtn({ icon: Icon, active = true, onClick, label, badge }: ControlButtonProps) {
     return (
-        <button 
+        <button
+           type="button"
+           aria-label={label}
+           title={label}
            onClick={onClick}
            className={`relative p-3 rounded-full transition-all flex flex-col items-center gap-1 ${active ? 'bg-slate-800 hover:bg-slate-700 text-white' : 'bg-red-500/10 text-red-500 hover:bg-red-500/20'}`}
         >

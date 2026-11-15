@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import '@/app/globals.css';
+import { AppProviders } from './providers';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://monteerly.com'),
@@ -72,34 +73,36 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-[#02050B] text-slate-50 antialiased selection:bg-cyan-400/20 selection:text-cyan-100">
-        <div className="relative min-h-screen overflow-x-clip bg-[linear-gradient(180deg,#02050B_0%,#050914_42%,#030711_100%)]">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:120px_120px]"
-          />
+        <AppProviders>
+          <div className="relative min-h-screen overflow-x-clip bg-[linear-gradient(180deg,#02050B_0%,#050914_42%,#030711_100%)]">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:120px_120px]"
+            />
 
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_14%,rgba(6,182,212,0.05),transparent_24%),radial-gradient(circle_at_82%_10%,rgba(16,185,129,0.05),transparent_20%),radial-gradient(circle_at_50%_100%,rgba(255,255,255,0.025),transparent_34%)]"
-          />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_14%,rgba(6,182,212,0.05),transparent_24%),radial-gradient(circle_at_82%_10%,rgba(16,185,129,0.05),transparent_20%),radial-gradient(circle_at_50%_100%,rgba(255,255,255,0.025),transparent_34%)]"
+            />
 
-          <div className="relative z-10 flex min-h-screen flex-col">
-            <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-px w-full max-w-[1600px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+            <div className="relative z-10 flex min-h-screen flex-col">
+              <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-px w-full max-w-[1600px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-            <main className="relative z-10 flex min-h-screen flex-1 flex-col">
-              <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-1 flex-col">
-                {children}
-              </div>
-            </main>
+              <main className="relative z-10 flex min-h-screen flex-1 flex-col">
+                <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-1 flex-col">
+                  {children}
+                </div>
+              </main>
+            </div>
+
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/20 to-transparent"
+            />
+
+            <div className="sr-only">{getShellDescriptor(locale)}</div>
           </div>
-
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/20 to-transparent"
-          />
-
-          <div className="sr-only">{getShellDescriptor(locale)}</div>
-        </div>
+        </AppProviders>
       </body>
     </html>
   );

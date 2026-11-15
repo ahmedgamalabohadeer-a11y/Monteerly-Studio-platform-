@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { QrCode, Box, AlertTriangle, Search, Filter } from 'lucide-react';
+import { QrCode, AlertTriangle, Search, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function InventoryScanner() {

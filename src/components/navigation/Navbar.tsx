@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import { Zap, Menu } from 'lucide-react';
+import { Zap } from 'lucide-react';
 
 export function Navbar() {
   return (

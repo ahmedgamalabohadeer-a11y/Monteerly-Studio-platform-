@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import { Eye, Activity, GlassWater, Move } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 export function HealthGuardian() {
   const stats = [

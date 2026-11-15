@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Timer, AlertTriangle, CheckCircle, HelpCircle, ChevronRight, Flag } from 'lucide-react';
+import { AlertTriangle, CheckCircle, ChevronRight, Flag } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function ExamInterface() {

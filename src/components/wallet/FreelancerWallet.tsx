@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { getWalletBalances, requestWithdrawal } from '@/app/[locale]/wallet/actions';
-import { Wallet, ShieldCheck, ArrowDownToLine, Activity, AlertCircle, Loader2 } from 'lucide-react';
+import { Wallet, ShieldCheck, ArrowDownToLine, Activity, Loader2 } from 'lucide-react';
 
 interface WalletCopy {
   finance?: {

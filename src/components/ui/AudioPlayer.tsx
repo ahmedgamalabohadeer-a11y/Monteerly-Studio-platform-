@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Play, Pause, Volume2, Download } from 'lucide-react';
 
 interface AudioProps {
@@ -10,15 +10,35 @@ interface AudioProps {
 
 export function AudioPlayer({ src, title, duration }: AudioProps) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const togglePlayback = async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (audio.paused) {
+      try {
+        await audio.play();
+        setIsPlaying(true);
+      } catch {
+        setIsPlaying(false);
+      }
+    } else {
+      audio.pause();
+      setIsPlaying(false);
+    }
+  };
   
   // محاكاة بصرية للموجات الصوتية (Mock Waveform Bars)
   const bars = Array.from({ length: 40 }, (_, index) => Math.floor((index * 9) % 80) + 20);
 
   return (
     <div className="bg-card border border-border rounded-xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow">
+       <audio ref={audioRef} src={src} preload="metadata" onEnded={() => setIsPlaying(false)} aria-label={title} />
+
        {/* Play Button */}
        <button 
-         onClick={() => setIsPlaying(!isPlaying)}
+         onClick={() => void togglePlayback()}
          className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white hover:scale-105 transition-transform shrink-0"
        >
           {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" className="ml-1" />}
@@ -45,7 +65,7 @@ export function AudioPlayer({ src, title, duration }: AudioProps) {
        {/* Actions */}
        <div className="flex items-center gap-2 border-l border-border pl-4">
           <button className="p-2 text-muted-foreground hover:text-foreground"><Volume2 size={18} /></button>
-          <button className="p-2 text-muted-foreground hover:text-primary"><Download size={18} /></button>
+          <a href={src} download className="p-2 text-muted-foreground hover:text-primary" aria-label={`Download ${title}`}><Download size={18} /></a>
        </div>
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { ArrowUpRight, ArrowDownLeft, Clock } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft } from 'lucide-react';
 
 interface TransactionProps {
   type: 'deposit' | 'withdrawal' | 'payment';

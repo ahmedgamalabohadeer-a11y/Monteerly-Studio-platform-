@@ -1,8 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { DollarSign, Users, Link as LinkIcon, Copy, TrendingUp, Gift } from 'lucide-react';
-import { InteractiveButton } from '@/components/system/InteractiveButton';
-import { motion } from 'framer-motion';
+import { DollarSign, Users, Copy, TrendingUp } from 'lucide-react';
 
 export function AffiliateDashboard() {
   const [copied, setCopied] = useState(false);

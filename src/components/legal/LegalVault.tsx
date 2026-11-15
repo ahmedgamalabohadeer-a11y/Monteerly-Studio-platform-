@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import { FileText, Download, Eye, Lock, Clock } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
 
 export function LegalVault() {
   const docs = [

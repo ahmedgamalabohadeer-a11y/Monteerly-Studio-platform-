@@ -1,5 +1,5 @@
 import React from 'react';
-import { Zap, Globe, Mail } from 'lucide-react';
+import { Zap, Mail } from 'lucide-react';
 
 export function Footer() {
   return (

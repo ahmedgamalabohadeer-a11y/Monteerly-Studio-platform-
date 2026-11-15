@@ -1,13 +1,13 @@
 'use client';
-import React, { useState } from 'react';
-import { Save, Settings, Trash2, Plus, MonitorPlay } from 'lucide-react';
+import React from 'react';
+import { Settings, Trash2, Plus, MonitorPlay } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 export function ExportPresets() {
-  const [presets, setPresets] = useState([
+  const presets = [
     { id: 1, name: 'YouTube 4K High', format: 'H.264', res: '3840x2160', bitrate: '40 Mbps' },
     { id: 2, name: 'Instagram Reel', format: 'H.264', res: '1080x1920', bitrate: '15 Mbps' },
     { id: 3, name: 'Client Draft (Low)', format: 'H.264', res: '1280x720', bitrate: '5 Mbps' },
-  ]);
+  ];
   return (
     <div className="bg-card border border-border rounded-xl overflow-hidden h-full flex flex-col">
        <div className="p-4 border-b border-border bg-muted/10 flex justify-between items-center">

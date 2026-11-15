@@ -14,7 +14,7 @@ interface CloudUploadZoneProps {
 }
 
 // 2. تطبيق الواجهة على المكون
-export default function CloudUploadZone({ orderId, clientId, ar }: CloudUploadZoneProps) {
+export default function CloudUploadZone({ orderId }: CloudUploadZoneProps) {
   const [file, setFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'preparing' | 'uploading' | 'success' | 'error'>('idle');
   const [progress, setProgress] = useState(0);

@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Calendar, Clock, CreditCard, X, Check } from 'lucide-react';
+import { Calendar, CreditCard, X } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function InstantBookingModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {

@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { AlertTriangle, ThumbsUp, MessageSquare, Send } from 'lucide-react';
+import { AlertTriangle, ThumbsUp, Send } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
 

@@ -1,7 +1,7 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
-import { Send, Globe, Languages, Check, RefreshCw } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { Send, Globe, Languages } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface Message {
   id: number;

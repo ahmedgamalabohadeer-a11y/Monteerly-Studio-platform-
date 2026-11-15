@@ -1,14 +1,14 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { Lock, Plus, ArrowRight, X } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function ZeroTrustBuilder() {
-  const [rules, setRules] = useState([
+  const rules = [
     { if: 'User Role', is: 'Freelancer', then: 'Require MFA' },
     { if: 'Location', is: 'Outside KSA', then: 'Block Access' },
     { if: 'Device', is: 'Unmanaged', then: 'Read-Only Mode' },
-  ]);
+  ];
 
   return (
     <div className="bg-slate-900 border border-white/10 rounded-xl p-6">

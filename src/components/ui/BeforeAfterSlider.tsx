@@ -28,19 +28,22 @@ export function BeforeAfterSlider({ beforeImage, afterImage }: Props) {
       onTouchMove={handleMove}
     >
        {/* After Image (Base) */}
-       <Image src={afterImage} alt="After" fill className="object-cover" />
+       <Image src={afterImage} alt="After" fill sizes="100vw" unoptimized={!afterImage.startsWith('/')} className="object-cover" />
        <div className="absolute top-4 right-4 bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">After</div>
 
        {/* Before Image (Overlay) */}
-       <div 
-         className="absolute top-0 left-0 bottom-0 overflow-hidden border-r-2 border-white"
-         style={{ width: `${sliderPosition}%` }}
+       <div
+         className="absolute inset-0 overflow-hidden"
+         style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
        >
-          <div className="relative w-full h-full">
-             {/* We use a trick here: Image must be absolute and full width relative to PARENT container, not this clipped div */}
-             {/* Note: In production, you might need fixed dimensions or advanced CSS to prevent squishing. For simplicity: */}
-             <img src={beforeImage} alt="Before" className="absolute top-0 left-0 h-full max-w-none w-[100vw] sm:w-[500px] md:w-[800px] object-cover" style={{ width: '100%' }} />
-          </div>
+          <Image
+            src={beforeImage}
+            alt="Before"
+            fill
+            sizes="100vw"
+            unoptimized={!beforeImage.startsWith('/')}
+            className="object-cover"
+          />
           <div className="absolute top-4 left-4 bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">Before</div>
        </div>
 
@@ -49,7 +52,8 @@ export function BeforeAfterSlider({ beforeImage, afterImage }: Props) {
          className="absolute top-0 bottom-0 w-8 -ml-4 flex items-center justify-center pointer-events-none"
          style={{ left: `${sliderPosition}%` }}
        >
-          <div className="w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-900">
+          <div className="absolute inset-y-0 left-1/2 w-0.5 -translate-x-1/2 bg-white" />
+          <div className="relative w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-900">
              <ChevronsLeftRight size={16} />
           </div>
        </div>

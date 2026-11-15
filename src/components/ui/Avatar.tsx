@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import Image from 'next/image';
 
 interface AvatarProps {
   src?: string;
@@ -26,9 +27,12 @@ export function Avatar({ src, fallback = 'Ui', size = 'md', className }: AvatarP
   return (
     <div className={`relative rounded-full overflow-hidden bg-muted flex items-center justify-center font-bold text-muted-foreground border border-border shrink-0 ${currentSize} ${className || ''}`}>
        {src ? (
-         <img 
-           src={src} 
-           alt="Avatar" 
+         <Image
+           src={src}
+           alt="Avatar"
+           width={80}
+           height={80}
+           unoptimized={!src.startsWith('/')}
            className="w-full h-full object-cover"
            onError={(e) => {
              e.currentTarget.style.display = 'none';

@@ -1,13 +1,11 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Command, Search, FileVideo, User, GraduationCap, CreditCard, ArrowRight, CornerDownLeft } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import { Command, FileVideo, User, GraduationCap, CreditCard, CornerDownLeft } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export function OmniCommand() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const router = useRouter();
 
   // Toggle with CMD+K
   useEffect(() => {

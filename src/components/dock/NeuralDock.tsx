@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Home, Briefcase, Film, Bell, Settings, Plus, DollarSign, Search, User } from 'lucide-react';
+import { Home, Briefcase, Film, Bell, Plus, DollarSign, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 

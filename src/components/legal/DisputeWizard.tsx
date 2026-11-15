@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { ShieldAlert, FileText, MessageSquare, Upload, CheckCircle, Scale } from 'lucide-react';
+import { ShieldAlert, Upload, Scale } from 'lucide-react';
 import { InteractiveButton } from '@/components/system/InteractiveButton';
 import { motion } from 'framer-motion';
 

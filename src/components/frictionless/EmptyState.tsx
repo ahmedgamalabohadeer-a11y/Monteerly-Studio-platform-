@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Plus, PlayCircle, HelpCircle } from 'lucide-react';
+import { Plus, PlayCircle } from 'lucide-react';
 import { InteractiveButton } from '@/components/system/InteractiveButton'; // Using our new system button
 import { LucideIcon } from 'lucide-react';
 

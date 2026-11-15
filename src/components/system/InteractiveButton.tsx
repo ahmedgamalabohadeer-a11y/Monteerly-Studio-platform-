@@ -1,16 +1,17 @@
 'use client';
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, type HTMLMotionProps } from 'framer-motion';
 import { useSound } from '@/hooks/ui/use-sound';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/design/tokens';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+type ButtonProps = Omit<HTMLMotionProps<'button'>, 'children'> & {
+  children?: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
   icon?: React.ReactNode;
-}
+};
 
 export function InteractiveButton({ 
   children, 
@@ -20,6 +21,7 @@ export function InteractiveButton({
   icon,
   className,
   onClick,
+  disabled = false,
   ...props 
 }: ButtonProps) {
   const { play } = useSound();
@@ -40,20 +42,19 @@ export function InteractiveButton({
   };
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!loading && !props.disabled) {
+    if (!loading && !disabled) {
       play('click');
       onClick?.(e);
     }
   };
 
   return (
-    // @ts-expect-error: legacy compatibility
     <motion.button
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.95 }}
       className={cn(baseStyles, variants[variant], sizes[size], className)}
       onClick={handleClick}
-      disabled={loading || props.disabled}
+      disabled={loading || disabled}
       {...props}
     >
       {/* Loading Spinner */}

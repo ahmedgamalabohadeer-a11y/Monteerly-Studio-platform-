@@ -1,6 +1,6 @@
 'use client';
-import React, { useState, useRef } from 'react';
-import { Pen, Eraser, Undo, Trash, MousePointer, type LucideIcon } from 'lucide-react';
+import React, { useState } from 'react';
+import { Pen, Undo, Trash, MousePointer, type LucideIcon } from 'lucide-react';
 interface ToolButtonProps {
   icon: LucideIcon;
   active?: boolean;
