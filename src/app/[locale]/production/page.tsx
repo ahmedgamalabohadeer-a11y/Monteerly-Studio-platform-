@@ -10,7 +10,7 @@ type ProductionProject = {
   project_name: string;
   production_status: string | null;
   contract_id: string | null;
-  legal_contracts?: {
+  legal_contract?: {
     client_name?: string | null;
   } | null;
 };
@@ -23,7 +23,7 @@ export default function ProductionPage() {
     const fetchProjects = async () => {
       const { data } = await supabase
         .from('production_projects')
-        .select('id, project_name, production_status, contract_id, legal_contracts ( client_name )')
+        .select('id, project_name, production_status, contract_id, legal_contract:legal_contracts!production_projects_implementation_contract_id_fkey(client_name)')
         .order('last_update', { ascending: false });
 
       if (data) {
@@ -85,7 +85,7 @@ export default function ProductionPage() {
                     <p className="text-slate-400 text-sm">
                       العميل:{' '}
                       <span className="text-white font-semibold">
-                        {project.legal_contracts?.client_name || 'غير متوفر'}
+                        {project.legal_contract?.client_name || 'غير متوفر'}
                       </span>
                       <span className="mx-2 text-slate-50">|</span>
                       كود الربط: {project.contract_id?.substring(0, 8) || '---'}

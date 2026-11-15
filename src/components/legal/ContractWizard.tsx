@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { FileText, Shield, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { SignaturePad } from './SignaturePad';
@@ -21,17 +21,7 @@ export function ContractWizard({ onBack }: { onBack?: () => void }) {
   const [isDrafting, setIsDrafting] = useState(false);
   const idempotencyKeyRef = useRef<string | null>(null);
   const finalizationInFlightRef = useRef(false);
-  const [requestKeyReady, setRequestKeyReady] = useState(false);
   const { addToast } = useToast();
-
-  useEffect(() => {
-    try {
-      idempotencyKeyRef.current = sessionStorage.getItem(pendingRequestKeyStorage);
-    } catch {
-      idempotencyKeyRef.current = null;
-    }
-    setRequestKeyReady(true);
-  }, []);
 
   const handleGenerateDraft = async () => {
     if (!clientName || !contractValue || !deliveryDate) {
@@ -63,14 +53,21 @@ export function ContractWizard({ onBack }: { onBack?: () => void }) {
   };
 
   const handleFinish = async () => {
-    if (!requestKeyReady || finalizationInFlightRef.current) return;
+    if (finalizationInFlightRef.current) return;
     finalizationInFlightRef.current = true;
 
     try {
       addToast('success', 'جاري حفظ مسودة العقد...');
 
-      const idempotencyKey =
-        idempotencyKeyRef.current ?? await issueGeneratedContractIdempotencyKey();
+      let idempotencyKey = idempotencyKeyRef.current;
+      if (!idempotencyKey) {
+        try {
+          idempotencyKey = sessionStorage.getItem(pendingRequestKeyStorage);
+        } catch {
+          idempotencyKey = null;
+        }
+      }
+      idempotencyKey ??= await issueGeneratedContractIdempotencyKey();
       idempotencyKeyRef.current = idempotencyKey;
       try {
         sessionStorage.setItem(pendingRequestKeyStorage, idempotencyKey);
@@ -152,7 +149,7 @@ export function ContractWizard({ onBack }: { onBack?: () => void }) {
           {step === 3 && (
             <div className="space-y-4">
             <h3 className="font-bold text-white text-lg">مراجعة وحفظ المسودة</h3>
-              <SignaturePad onSign={handleFinish} disabled={isDrafting || !requestKeyReady} />
+              <SignaturePad onSign={handleFinish} disabled={isDrafting} />
               <Button onClick={() => setStep(2)} variant="outline" className="w-full text-white">رجوع</Button>
             </div>
           )}

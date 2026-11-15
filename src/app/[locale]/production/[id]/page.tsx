@@ -14,7 +14,7 @@ type ProjectRecord = {
   id: string;
   project_name: string;
   production_status: string | null;
-  legal_contracts?: {
+  legal_contract?: {
     client_name?: string | null;
     delivery_date?: string | null;
   } | null;
@@ -58,7 +58,7 @@ export default function ProductionWorkspace({ params }: { params: Promise<RouteP
 
       const { data: projData } = await supabase
         .from('production_projects')
-        .select('*, legal_contracts(client_name, delivery_date)')
+        .select('*, legal_contract:legal_contracts!production_projects_implementation_contract_id_fkey(client_name,delivery_date)')
         .eq('id', projectId)
         .single();
 
@@ -158,10 +158,10 @@ export default function ProductionWorkspace({ params }: { params: Promise<RouteP
           </div>
           <div className="text-left">
             <div className="text-xs text-slate-500 font-mono">
-              CLIENT: {project.legal_contracts?.client_name || '---'}
+              CLIENT: {project.legal_contract?.client_name || '---'}
             </div>
             <div className="text-xs text-amber-500 font-mono">
-              DUE: {project.legal_contracts?.delivery_date || '---'}
+              DUE: {project.legal_contract?.delivery_date || '---'}
             </div>
           </div>
         </header>
